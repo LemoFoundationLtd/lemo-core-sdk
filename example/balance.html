@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<script type="text/javascript" src="../node_modules/bignumber.js/bignumber.min.js"></script>
+<script type="text/javascript" src="../dist/lemo_client_light.js"></script>
+<script type="text/javascript">
+
+    var LemoClient = require('lemo_client');
+    var lemoClient = new LemoClient();
+    lemoClient.setProvider(new LemoClient.providers.HttpProvider());
+
+    function watchBalance() {
+        var coinbase = lemoClient.lemo.coinbase;
+
+        var originalBalance = lemoClient.lemo.getBalance(coinbase).toNumber();
+        document.getElementById('coinbase').innerText = 'coinbase: ' + coinbase;
+        document.getElementById('original').innerText = ' original balance: ' + originalBalance + '    watching...';
+
+        lemoClient.lemo.filter('latest').watch(function() {
+            var currentBalance = lemoClient.lemo.getBalance(coinbase).toNumber();
+            document.getElementById("current").innerText = 'current: ' + currentBalance;
+            document.getElementById("diff").innerText = 'diff:    ' + (currentBalance - originalBalance);
+        });
+    }
+
+</script>
+</head>
+<body>
+    <h1>coinbase balance</h1>
+    <button type="button" onClick="watchBalance();">watch balance</button>
+    <div></div>
+    <div id="coinbase"></div>
+    <div id="original"></div>
+    <div id="current"></div>
+    <div id="diff"></div>
+</body>
+</html>
+
