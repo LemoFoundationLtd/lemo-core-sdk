@@ -1,7 +1,7 @@
 var chai = require('chai');
 var assert = chai.assert;
 var FakeHttpProvider = require('./helpers/FakeHttpProvider');
-var LemoClient = require('../lib/lemo_client');
+var LemoClient = require('../lib/lemo-client');
 var lemoClient = new LemoClient();
 
 

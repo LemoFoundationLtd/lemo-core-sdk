@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lemo_client": "LemoFoundationLtd/lemo_client#master"
+    "lemo-client": "LemoFoundationLtd/lemo-client#master"
   }
 }

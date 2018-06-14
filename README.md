@@ -11,18 +11,18 @@ You need to run a local LemoChain node to use this library.
 ### Node.js
 
 ```bash
-npm install lemo_client
+npm install lemo-client
 ```
 
 ### Yarn
 
 ```bash
-yarn add lemo_client
+yarn add lemo-client
 ```
 
 ### As Browser module
 
-* Include `lemo_client.min.js` in your html file.
+* Include `lemo-client.min.js` in your html file.
 
 ## Usage
 Use the `LemoClient` object directly from global namespace:
@@ -55,7 +55,7 @@ var coinbase = lemoClient.lemo.coinbase;
 var balance = lemoClient.lemo.getBalance(coinbase);
 ```
 
-You can find more examples in [`example`](https://github.com/LemoFoundationLtd/lemo_client/tree/master/example) directory.
+You can find more examples in [`example`](https://github.com/LemoFoundationLtd/lemo-client/tree/master/example) directory.
 
 
 ## Contribute!
@@ -86,5 +86,5 @@ npm test
 ```
 
 
-[npm-image]: https://badge.fury.io/js/lemo_client.svg
-[npm-url]: https://npmjs.org/package/lemo_client
+[npm-image]: https://badge.fury.io/js/lemo-client.svg
+[npm-url]: https://npmjs.org/package/lemo-client

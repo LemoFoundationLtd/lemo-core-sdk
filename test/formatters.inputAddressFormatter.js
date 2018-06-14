@@ -1,6 +1,6 @@
 var chai = require('chai');
 var assert = chai.assert;
-var formatters = require('../lib/lemo_client/formatters.js');
+var formatters = require('../lib/lemo-client/formatters.js');
 var BigNumber = require('bignumber.js');
 
 var tests = [

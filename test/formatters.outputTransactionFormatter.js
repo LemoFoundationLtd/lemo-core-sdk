@@ -1,5 +1,5 @@
 var assert = require('assert');
-var formatters = require('../lib/lemo_client/formatters.js');
+var formatters = require('../lib/lemo-client/formatters.js');
 var BigNumber = require('bignumber.js');
 
 describe('formatters', function () {

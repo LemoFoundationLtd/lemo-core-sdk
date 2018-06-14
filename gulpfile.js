@@ -18,8 +18,8 @@ var replace = require('gulp-replace');
 
 var DEST = path.join(__dirname, 'dist/');
 var src = 'index';
-var dst = 'lemo_client';
-var lightDst = 'lemo_client_light';
+var dst = 'lemo-client';
+var lightDst = 'lemo-client-light';
 
 var browserifyOptions = {
     debug: true,
@@ -46,7 +46,7 @@ gulp.task('clean', ['lint'], function(cb) {
 
 gulp.task('light', ['clean'], function () {
     return browserify(browserifyOptions)
-        .require('./' + src + '.js', {expose: 'lemo_client'})
+        .require('./' + src + '.js', {expose: 'lemo-client'})
         .ignore('bignumber.js')
         .require('./lib/utils/browser-bn.js', {expose: 'bignumber.js'}) // fake bignumber.js
         .add('./' + src + '.js')
@@ -61,7 +61,7 @@ gulp.task('light', ['clean'], function () {
 
 gulp.task('standalone', ['clean'], function () {
     return browserify(browserifyOptions)
-        .require('./' + src + '.js', {expose: 'lemo_client'})
+        .require('./' + src + '.js', {expose: 'lemo-client'})
         .require('bignumber.js') // expose it to dapp users
         .add('./' + src + '.js')
         .ignore('crypto')

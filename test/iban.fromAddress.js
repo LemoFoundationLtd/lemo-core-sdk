@@ -1,5 +1,5 @@
 var chai = require('chai');
-var Iban = require('../lib/lemo_client/iban.js');
+var Iban = require('../lib/lemo-client/iban.js');
 var assert = chai.assert;
 
 var tests = [
@@ -10,7 +10,7 @@ var tests = [
     { address: '0x0000a5327eab78357cbf2ae8f3d49fd9d90c7d22', expected: 'XE0600DQK33XDTYUCRI0KYM5ELAKXDWWF6'}
 ];
 
-describe('lib/lemo_client/iban', function () {
+describe('lib/lemo-client/iban', function () {
     describe('fromAddress', function () {
         tests.forEach(function (test) {
             it('shoud create indirect iban: ' +  test.expected, function () {

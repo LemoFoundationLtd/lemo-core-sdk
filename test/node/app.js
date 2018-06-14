@@ -1,4 +1,4 @@
-var lemo = require('lemo_client');
+var lemo = require('lemo-client');
 
 console.log(lemo.version.api);
 

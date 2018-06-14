@@ -1,5 +1,5 @@
 var chai = require('chai');
-var Iban = require('../lib/lemo_client/iban.js');
+var Iban = require('../lib/lemo-client/iban.js');
 var assert = chai.assert;
 
 var tests = [
@@ -23,7 +23,7 @@ var tests = [
     { obj: 'XE1222Q908LN1QBBU6XUQSO1OHWJIOS46OO', is: true}
 ];
 
-describe('lib/lemo_client/iban', function () {
+describe('lib/lemo-client/iban', function () {
     describe('isValid', function () {
         tests.forEach(function (test) {
             it('shoud test if value ' + test.obj + ' is iban: ' + test.is, function () {

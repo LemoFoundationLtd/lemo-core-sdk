@@ -1,6 +1,6 @@
 var chai = require('chai');
 var assert = chai.assert;
-var formatters = require('../lib/lemo_client/formatters');
+var formatters = require('../lib/lemo-client/formatters');
 
 var tests = [
     { value: 'latest', expected: 'latest' },
@@ -10,7 +10,7 @@ var tests = [
     { value: '0x1', expected: '0x1' }
 ];
 
-describe('lib/lemo_client/formatters', function () {
+describe('lib/lemo-client/formatters', function () {
     describe('inputDefaultBlockNumberFormatter', function () {
         tests.forEach(function (test) {
             it('should turn ' + test.value + ' to ' + test.expected, function () {

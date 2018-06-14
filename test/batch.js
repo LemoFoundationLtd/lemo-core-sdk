@@ -5,7 +5,7 @@ var lemoClient = new LemoClient();
 var FakeHttpProvider = require('./helpers/FakeHttpProvider');
 var bn = require('bignumber.js');
 
-describe('lib/lemo_client/batch', function () {
+describe('lib/lemo-client/batch', function () {
     describe('execute', function () {
         it('should execute batch request', function (done) {
 

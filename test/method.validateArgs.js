@@ -1,9 +1,9 @@
 var chai = require('chai');
 var assert = chai.assert;
-var Method = require('../lib/lemo_client/method');
-var errors = require('../lib/lemo_client/errors');
+var Method = require('../lib/lemo-client/method');
+var errors = require('../lib/lemo-client/errors');
 
-describe('lib/lemo_client/method', function () {
+describe('lib/lemo-client/method', function () {
     describe('validateArgs', function () {
         it('should pass', function () {
 

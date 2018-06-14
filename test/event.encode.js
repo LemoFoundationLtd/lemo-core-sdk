@@ -1,6 +1,6 @@
 var chai = require('chai');
 var assert = chai.assert;
-var SolidityEvent = require('../lib/lemo_client/event');
+var SolidityEvent = require('../lib/lemo-client/event');
 var LemoClient = require('../index');
 
 
@@ -218,7 +218,7 @@ var tests = [{
     }
 }];
 
-describe('lib/lemo_client/event', function () {
+describe('lib/lemo-client/event', function () {
     describe('encode', function () {
         tests.forEach(function (test, index) {
             it('test no: ' + index, function () {

@@ -1,8 +1,8 @@
 var chai = require('chai');
 var assert = chai.assert;
-var Method = require('../lib/lemo_client/method');
+var Method = require('../lib/lemo-client/method');
 
-describe('lib/lemo_client/method', function () {
+describe('lib/lemo-client/method', function () {
     describe('extractCallback', function () {
         it('should extract callback', function () {
 

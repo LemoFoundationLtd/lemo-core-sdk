@@ -1,7 +1,7 @@
 var chai = require('chai');
 var assert = chai.assert;
 var BigNumber = require('bignumber.js');
-var AllSolidityEvents = require('../lib/lemo_client/allevents');
+var AllSolidityEvents = require('../lib/lemo-client/allevents');
 var LemoClient = require('../index');
 
 
@@ -131,7 +131,7 @@ var tests = [{
     }
 }];
 
-describe('lib/lemo_client/allevents', function () {
+describe('lib/lemo-client/allevents', function () {
     describe('decode', function () {
         tests.forEach(function (test, index) {
             it('test no: ' + index, function () {

@@ -3,7 +3,7 @@ var LemoClient = require('../index');
 var lemoClient = new LemoClient();
 var assert = chai.assert;
 var FakeHttpProvider = require('./helpers/FakeHttpProvider');
-var errors = require('../lib/lemo_client/errors');
+var errors = require('../lib/lemo-client/errors');
 
 var method = 'filter';
 

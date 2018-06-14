@@ -1,12 +1,12 @@
 var chai = require('chai');
 var assert = chai.assert;
-var RequestManager = require('../lib/lemo_client/requestmanager');
+var RequestManager = require('../lib/lemo-client/requestmanager');
 var FakeHttpProvider = require('./helpers/FakeHttpProvider');
 
 // TODO: handling errors!
 // TODO: validation of params!
 
-describe('lib/lemo_client/requestmanager', function () {
+describe('lib/lemo-client/requestmanager', function () {
     describe('send', function () {
         it('should return expected result synchronously', function () {
             var provider = new FakeHttpProvider();

@@ -1,5 +1,5 @@
 var assert = require('assert');
-var formatters = require('../lib/lemo_client/formatters.js');
+var formatters = require('../lib/lemo-client/formatters.js');
 
 describe('formatters', function () {
     describe('outputPostFormatter', function () {

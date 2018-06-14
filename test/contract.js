@@ -4,7 +4,7 @@ var LemoClient = require('../index');
 var FakeHttpProvider = require('./helpers/FakeHttpProvider');
 var FakeHttpProvider2 = require('./helpers/FakeHttpProvider2');
 var utils = require('../lib/utils/utils');
-var errors = require('../lib/lemo_client/errors');
+var errors = require('../lib/lemo-client/errors');
 var BigNumber = require('bignumber.js');
 var sha3 = require('../lib/utils/sha3');
 

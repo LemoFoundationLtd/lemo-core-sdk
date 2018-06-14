@@ -1,8 +1,8 @@
 var chai = require('chai');
 var assert = chai.assert;
-var errors = require('../lib/lemo_client/errors');
+var errors = require('../lib/lemo-client/errors');
 
-describe('lib/lemo_client/method', function () {
+describe('lib/lemo-client/method', function () {
     describe('getCall', function () {
 
         for(var key in errors) {

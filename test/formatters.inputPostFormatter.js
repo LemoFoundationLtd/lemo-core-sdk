@@ -1,6 +1,6 @@
 var chai = require('chai');
 var assert = chai.assert;
-var formatters = require('../lib/lemo_client/formatters.js');
+var formatters = require('../lib/lemo-client/formatters.js');
 
 describe('formatters', function () {
     describe('inputPostFormatter', function () {

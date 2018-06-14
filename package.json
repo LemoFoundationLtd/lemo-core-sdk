@@ -1,5 +1,5 @@
 {
-  "name": "lemo_client",
+  "name": "lemo-client",
   "namespace": "LemoFoundationLtd",
   "version": "0.1.2",
   "description": "Lemochain JavaScript API, middleware to talk to a lemochain node over RPC",
@@ -44,7 +44,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/LemoFoundationLtd/lemo_client.git"
+    "url": "https://github.com/LemoFoundationLtd/lemo-client.git"
   },
   "keywords": [
     "lemochain",

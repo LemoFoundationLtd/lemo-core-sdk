@@ -1,8 +1,8 @@
 var chai = require('chai');
 var assert = chai.assert;
-var Jsonrpc = require('../lib/lemo_client/jsonrpc');
+var Jsonrpc = require('../lib/lemo-client/jsonrpc');
 
-describe('lib/lemo_client/jsonrpc', function () {
+describe('lib/lemo-client/jsonrpc', function () {
     describe('id', function () {
         it('should increment the id', function () {
 

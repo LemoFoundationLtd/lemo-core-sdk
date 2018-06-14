@@ -5,14 +5,14 @@ var FakeIpcRequest = require('./helpers/FakeIpcRequest')
 var net = new FakeIpcRequest();
 
 SandboxedModule.registerBuiltInSourceTransformer('istanbul');
-var IpcProvider = SandboxedModule.require('../lib/lemo_client/ipcprovider', {
+var IpcProvider = SandboxedModule.require('../lib/lemo-client/ipcprovider', {
     requires: {
         'bignumber.js': require('bignumber.js'),
     },
     singleOnly: true
 });
 
-describe('lib/lemo_client/ipcprovider', function () {
+describe('lib/lemo-client/ipcprovider', function () {
     describe('send', function () {
         it('should send basic request', function () {
             var provider = new IpcProvider('', net);

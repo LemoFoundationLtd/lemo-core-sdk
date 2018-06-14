@@ -3,7 +3,7 @@ var assert = chai.assert;
 var SandboxedModule = require('sandboxed-module');
 
 SandboxedModule.registerBuiltInSourceTransformer('istanbul');
-var HttpProvider = SandboxedModule.require('../lib/lemo_client/httpprovider', {
+var HttpProvider = SandboxedModule.require('../lib/lemo-client/httpprovider', {
     requires: {
         'xhr2': require('./helpers/FakeXHR2'),
         'xmlhttprequest': require('./helpers/FakeXMLHttpRequest')
@@ -11,7 +11,7 @@ var HttpProvider = SandboxedModule.require('../lib/lemo_client/httpprovider', {
     singleOnly: true
 });
 
-describe('lib/lemo_client/httpprovider', function () {
+describe('lib/lemo-client/httpprovider', function () {
     describe('prepareRequest', function () {
         it('should set request header', function () {
             var provider = new HttpProvider('http://localhost:8545', 0 , null, null, [{name: 'Access-Control-Allow-Origin',  value: '*'}]);

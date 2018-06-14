@@ -1,5 +1,5 @@
 var assert = require('assert');
-var Jsonrpc = require('../lib/lemo_client/jsonrpc');
+var Jsonrpc = require('../lib/lemo-client/jsonrpc');
 
 describe('jsonrpc', function () {
     describe('toBatchPayload', function () {
