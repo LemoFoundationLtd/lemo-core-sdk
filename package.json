@@ -1,7 +1,7 @@
 {
   "name": "lemo_client",
   "namespace": "LemoFoundationLtd",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Lemochain JavaScript API, middleware to talk to a lemochain node over RPC",
   "main": "./index.js",
   "directories": {
