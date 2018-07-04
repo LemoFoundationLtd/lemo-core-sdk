@@ -19,7 +19,6 @@ describe('lemoClient', function() {
         u.propertyExists(lemoClient, 'providers');
         u.propertyExists(lemoClient, 'lemo');
         u.propertyExists(lemoClient, 'db');
-        u.propertyExists(lemoClient, 'shh');
     });
 });
 

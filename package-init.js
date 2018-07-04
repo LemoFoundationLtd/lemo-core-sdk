@@ -10,7 +10,7 @@ if(typeof window !== 'undefined') {
 
 // Node environment
 if(typeof global !== 'undefined') {
-    LemoClient = (typeof global.LemoClient !== 'undefined') ? global.LemoClient : require('lemo-client');
+    LemoClient = (typeof global.LemoClient !== 'undefined') ? global.LemoClient : require('./dist/lemo-client');
     BigNumber = (typeof global.BigNumber !== 'undefined') ? global.BigNumber : require('bignumber.js');
 }
 

@@ -28,7 +28,7 @@ yarn add lemo-client
 Use the `LemoClient` object directly from global namespace:
 
 ```js
-console.log(LemoClient); // {lemo: .., shh: ...} // it's here!
+console.log(LemoClient); // {lemo: ...} // it's here!
 ```
 
 Set a provider (HttpProvider)

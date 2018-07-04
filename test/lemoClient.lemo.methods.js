@@ -16,13 +16,11 @@ describe('lemoClient.lemo', function() {
         u.methodExists(lemoClient.lemo, 'call');
         u.methodExists(lemoClient.lemo, 'getBlock');
         u.methodExists(lemoClient.lemo, 'getTransaction');
-        u.methodExists(lemoClient.lemo, 'getUncle');
         u.methodExists(lemoClient.lemo, 'getCompilers');
         u.methodExists(lemoClient.lemo.compile, 'lll');
         u.methodExists(lemoClient.lemo.compile, 'solidity');
         u.methodExists(lemoClient.lemo.compile, 'serpent');
         u.methodExists(lemoClient.lemo, 'getBlockTransactionCount');
-        u.methodExists(lemoClient.lemo, 'getBlockUncleCount');
         u.methodExists(lemoClient.lemo, 'filter');
         u.methodExists(lemoClient.lemo, 'contract');
 
