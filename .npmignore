@@ -5,5 +5,3 @@ test
 .editorconfig
 .travis.yml
 .npmignore
-component.json
-testling.html
