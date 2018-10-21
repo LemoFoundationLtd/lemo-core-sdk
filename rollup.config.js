@@ -1,5 +1,6 @@
 import replace from 'rollup-plugin-replace';
 import pkg from './package.json';
+import json from "rollup-plugin-json";
 
 export default [
     {
@@ -7,6 +8,9 @@ export default [
         external: ['bignumber.js', 'axios'],
         output: [
             {file: pkg.main, format: 'cjs'}, // CommonJS (for Node) build
+        ],
+        plugins: [
+            json(),
         ]
     },
     {
@@ -17,6 +21,7 @@ export default [
         ],
         plugins: [
             replace({'process.browser': true}),
+            json(),
         ]
     }
 ]

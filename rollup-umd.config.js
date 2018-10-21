@@ -28,6 +28,15 @@ function umdConfig(name) {
     }
 }
 
+function umdLightConfig(name) {
+    const config = umdConfig(name)
+    config.external = ['bignumber.js']
+    config.output.globals = {
+        'bignumber.js': 'BigNumber'
+    }
+    return config
+}
+
 const umdVersion = umdConfig('lemo-client.js')
 // eslint should before babel
 umdVersion.plugins.unshift(eslint({formatter}))
@@ -36,17 +45,9 @@ const umdMinVersion = umdConfig('lemo-client.min.js')
 umdMinVersion.output.sourcemap = true
 umdMinVersion.plugins.push(uglify({sourcemap: true}))
 
-const lightVersion = umdConfig('lemo-client-light.js')
-lightVersion.external = ['bignumber.js']
-lightVersion.output.globals = {
-    'bignumber.js': 'BigNumber'
-}
+const lightVersion = umdLightConfig('lemo-client-light.js')
 
-const lightMinVersion = umdConfig('lemo-client-light.min.js')
-lightMinVersion.external = ['bignumber.js']
-lightMinVersion.output.globals = {
-    'bignumber.js': 'BigNumber'
-}
+const lightMinVersion = umdLightConfig('lemo-client-light.min.js')
 lightMinVersion.output.sourcemap = true
 lightMinVersion.plugins.push(uglify({sourcemap: true}))
 

@@ -11,19 +11,22 @@ const testProvider = {
         }
     }
 }
-const lemo = new LemoClient(LemoClient.newProvider({url: 'http://127.0.0.1:8001'}))
-lemo.extend([
-    LemoClient.newMethod({
-        module: 'aaa',
+
+
+async function test() {
+    const lemo = new LemoClient({host: 'http://127.0.0.1:8001'})
+    lemo.createAPI('aaa', [{
         name: 'bbb',
-        call: 'ccc',
-    })
-])
+        api: 'ccc',
+    }])
+    lemo.chain.getCurrentBlock(true)
+        .then(d => console.log(d))
+    lemo.chain.getNodeVersion()
+        .then(d => console.log(d))
+    lemo.aaa.bbb(123, '8293')
+        .catch(e => console.error(e))
+    const stopFunc = lemo.chain.watchBlock(newBlock => console.log(newBlock))
+    stopFunc()
+}
 
-
-lemo.chain.test1()
-lemo.aaa.bbb(123, '8293')
-    .catch(e => console.error(e))
-
-lemo.chain.getBlockByNumber(0)
-    .then(d => console.log(d))
+test()

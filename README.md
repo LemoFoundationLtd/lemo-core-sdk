@@ -1,6 +1,6 @@
 # LemoChain JavaScript API
 
-This is the LemoChain compatible JavaScript API which implements the Generic JSON RPC spec. It's available on npm as a node module.
+This is the LemoChain compatible JavaScript API which implements the Generic JSON RPC.
 
 [![NPM version][npm-image]][npm-url]
 
@@ -8,13 +8,7 @@ You need to run a local LemoChain node to use this library.
 
 ## Installation
 
-### Node.js
-
-```bash
-npm install lemo-client
-```
-
-### Yarn
+### Using Yarn
 
 ```bash
 yarn add lemo-client
@@ -23,39 +17,36 @@ yarn add lemo-client
 ### As Browser module
 
 * Include `lemo-client.min.js` in your html file.
+* Use the `LemoClient` object directly from global namespace:
+    ```js
+    const lemo = new LemoClient()
+    ```
 
-## Usage
-Use the `LemoClient` object directly from global namespace:
-
-```js
-console.log(LemoClient); // {lemo: ...} // it's here!
-```
-
-Set a provider (HttpProvider)
+## Example
 
 ```js
-if (typeof lemoClient !== 'undefined') {
-  lemoClient = new LemoClient(lemoClient.currentProvider);
-} else {
-  // set the provider you want from LemoClient.providers
-  lemoClient = new LemoClient(new LemoClient.providers.HttpProvider("http://localhost:8545"));
-}
+const LemoClient = require('lemo-client)
+const lemo = new LemoClient({
+	host: 'http://127.0.0.1:8001'
+})
+
+lemo.chain.getBlockByNumber(0)
+    .then(function(block) {
+		console.log(block)
+	})
 ```
 
-Set a provider (HttpProvider using [HTTP Basic Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication))
+## LemoChain API
 
-```js
-lemoClient.setProvider(new LemoClient.providers.HttpProvider('http://host.url', 0, BasicAuthUsername, BasicAuthPassword));
-```
-
-There you go, now you can use it:
-
-```js
-var coinbase = lemoClient.lemo.coinbase;
-var balance = lemoClient.lemo.getBalance(coinbase);
-```
-
-You can find more examples in [`example`](https://github.com/LemoFoundationLtd/lemo-client/tree/master/example) directory.
+lemo.getCurrentBlock(stable)
+lemo.getBlock(hashOrHeight)
+lemo.getGasPriceAdvice()
+lemo.getCurrentHeight(stable)
+lemo.getNodeVersion()
+lemo.getSdkVersion()
+lemo.net.getPeerCount()
+lemo.mine.getMining()
+lemo.mine.getLemoBase()
 
 
 ## Contribute!
@@ -63,26 +54,24 @@ You can find more examples in [`example`](https://github.com/LemoFoundationLtd/l
 ### Requirements
 
 * Node.js
-* npm
+* yarn
 
 ```bash
 sudo apt-get update
 sudo apt-get install nodejs
-sudo apt-get install npm
-sudo apt-get install nodejs-legacy
+sudo apt-get install yarn
 ```
 
-### Building (gulp)
+### Building (rollup)
 
 ```bash
-npm run build
+yarn build
 ```
-
 
 ### Testing (mocha)
 
 ```bash
-npm test
+yarn test
 ```
 
 
