@@ -1,6 +1,5 @@
 import replace from 'rollup-plugin-replace';
 import pkg from './package.json';
-import json from "rollup-plugin-json";
 
 export default [
     {
@@ -10,7 +9,7 @@ export default [
             {file: pkg.main, format: 'cjs'}, // CommonJS (for Node) build
         ],
         plugins: [
-            json(),
+            replace({'process.env.SDK_VERSION': JSON.stringify(pkg.version)}),
         ]
     },
     {
@@ -20,8 +19,10 @@ export default [
             {file: pkg.browser, format: 'cjs'}, // CommonJS (for Node) build
         ],
         plugins: [
-            replace({'process.browser': true}),
-            json(),
+            replace({
+                'process.browser': 'true',
+                'process.env.SDK_VERSION': JSON.stringify(pkg.version),
+            }),
         ]
     }
 ]

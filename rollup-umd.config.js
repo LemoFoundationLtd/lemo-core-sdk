@@ -6,6 +6,7 @@ import {eslint} from 'rollup-plugin-eslint';
 import formatter from 'eslint-friendly-formatter';
 import babel from 'rollup-plugin-babel';
 import {uglify} from 'rollup-plugin-uglify';
+import pkg from './package.json';
 
 function umdConfig(name) {
     return {
@@ -16,7 +17,10 @@ function umdConfig(name) {
             format: 'umd',
         },
         plugins: [
-            replace({'process.env.NODE_ENV': process.env.NODE_ENV}),
+            replace({
+                'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+                'process.env.SDK_VERSION': JSON.stringify(pkg.version),
+            }),
             resolve({browser: true}), // so Rollup can find external libraries
             commonjs(), // so Rollup can convert external libraries to an ES module
             babel({

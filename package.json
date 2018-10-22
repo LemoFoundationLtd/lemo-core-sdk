@@ -6,6 +6,7 @@
     "main": "dist/lemo-client.cjs.js",
     "browser": "dist/lemo-client-browser.cjs.js",
     "dependencies": {
+        "@babel/polyfill": "7.0.0",
         "@babel/runtime": "7.1.2",
         "axios": "0.18.0",
         "bignumber.js": "7.2.0",

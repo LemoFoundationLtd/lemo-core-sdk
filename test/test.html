@@ -6,21 +6,20 @@
 <p>LemoClient Demo</p>
 <script src="../dist/lemo-client.min.js"></script>
 <script>
-    const lemo = new LemoClient(LemoClient.newProvider({url: 'http://127.0.0.1:8001'}))
-    lemo.extend([
-        LemoClient.newMethod({
-            module: 'aaa',
-            name: 'bbb',
-            call: 'ccc',
-        })
-    ])
+    const lemo = new LemoClient({host: 'http://127.0.0.1:8001'})
+    lemo.createAPI('aaa', [{
+        name: 'bbb',
+        api: 'ccc',
+    }])
 
-    lemo.chain.test1()
+    lemo.chain.getCurrentBlock(true)
+        .then(d => console.log(d))
+    lemo.chain.getNodeVersion()
+        .then(d => console.log(d))
     lemo.aaa.bbb(123, '8293')
         .catch(e => console.error(e))
-
-    lemo.chain.getBlockByNumber(0)
-        .then(d => console.log(d))
+    const stopFunc = lemo.chain.watchBlock(newBlock => console.log(newBlock))
+    stopFunc()
 </script>
 </body>
 </html>
