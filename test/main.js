@@ -19,14 +19,17 @@ async function test() {
         name: 'bbb',
         api: 'ccc',
     }])
-    lemo.chain.getCurrentBlock(true)
+    lemo.getCurrentBlock(true)
         .then(d => console.log(d))
-    lemo.chain.getNodeVersion()
+    lemo.getNodeVersion()
         .then(d => console.log(d))
     lemo.aaa.bbb(123, '8293')
         .catch(e => console.error(e))
-    const stopFunc = lemo.chain.watchBlock(newBlock => console.log(newBlock))
-    stopFunc()
+
+    const watchId = lemo.watchBlock(false, newBlock => console.log(newBlock))
+    setTimeout(() => {
+        lemo.stopWatch(watchId)
+    }, 10000)
 }
 
 test()

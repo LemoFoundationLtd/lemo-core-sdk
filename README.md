@@ -2,7 +2,6 @@
 
 This is the LemoChain compatible JavaScript API which implements the Generic JSON RPC.
 
-[![NPM version][npm-image]][npm-url]
 
 You need to run a local LemoChain node to use this library.
 
@@ -73,7 +72,3 @@ yarn build
 ```bash
 yarn test
 ```
-
-
-[npm-image]: https://badge.fury.io/js/lemo-client.svg
-[npm-url]: https://npmjs.org/package/lemo-client
