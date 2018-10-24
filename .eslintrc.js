@@ -43,7 +43,7 @@ module.exports = {
         'no-unused-vars': 1,
         'no-extend-native': 0,
         'brace-style': [2, '1tbs', {'allowSingleLine': false}],
-        'no-underscore-dangle': 2,
+        'no-underscore-dangle': 0,
         'class-methods-use-this': 0,
         'prefer-arrow-callback': 1,
         'eol-last': 0,
