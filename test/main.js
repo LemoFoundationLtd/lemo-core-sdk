@@ -1,24 +1,9 @@
 import {assert} from 'chai'
 import LemoClient from '../lib/main'
 import HttpConn from '../lib/network/conn/http_conn'
-import {resetRPC} from '../lib/network/jsonrpc'
-
-function createTestConn() {
-    let sendRecord = null
-    const conn = {
-        send(...args) {
-            sendRecord = args
-            return {jsonrpc: '2.0', id: 1, result: {}}
-        }
-    }
-    return [conn, () => sendRecord]
-}
+import errors from "../lib/errors"
 
 describe('LemoClient_new', () => {
-    beforeEach(() => {
-        resetRPC()
-    })
-
     it('default conn', () => {
         const lemo = new LemoClient()
         assert.equal(lemo._requester.conn instanceof HttpConn, true)
@@ -36,14 +21,21 @@ describe('LemoClient_new', () => {
         const config = {host: 'abc'}
         assert.throws(() => {
             new LemoClient(config)
-        }, `unknown conn config: ${config}`)
+        }, errors.invalidConnConfig(config))
     })
     it('custom conn', async () => {
-        const [testConn, getRecord] = createTestConn()
-        const lemo = new LemoClient(testConn)
-        assert.equal(lemo._requester.conn, testConn)
+        let sendRecord = null
+        const conn = {
+            send(...args) {
+                sendRecord = args
+                return {jsonrpc: '2.0', id: 1, result: {}}
+            }
+        }
+
+        const lemo = new LemoClient(conn)
+        assert.equal(lemo._requester.conn, conn)
         await lemo.getCurrentBlock()
-        assert.deepEqual(getRecord(), [{
+        assert.deepEqual(sendRecord, [{
             'jsonrpc': '2.0',
             'id': 1,
             'method': 'chain_latestStableBlock',
@@ -53,65 +45,46 @@ describe('LemoClient_new', () => {
 })
 
 describe('LemoClient__createAPI', () => {
-    beforeEach(() => {
-        resetRPC()
-    })
+    const testConn = {
+        send: () => {
+        }
+    }
 
-    it('lemo.test.setData', async () => {
-        const [testConn, getRecord] = createTestConn()
+    it('lemo.test.setData', () => {
         const lemo = new LemoClient(testConn)
         lemo._createAPI('test', [{
             name: 'setData',
             method: 'api_name',
         }])
-        await lemo.test.setData(123, {a: '8293'})
-        assert.deepEqual(getRecord(), [{
-            'jsonrpc': '2.0',
-            'id': 1,
-            'method': 'api_name',
-            'params': [123, {a: '8293'}]
-        }])
+        assert.isFunction(lemo.test.setData)
     })
 
-    it('no module name', async () => {
-        const [testConn, getRecord] = createTestConn()
+    it('2 apis without module name', async () => {
         const lemo = new LemoClient(testConn)
         lemo._createAPI('', [{
             name: 'setData',
             method: 'api_name',
+        }, {
+            name: 'setData2',
+            method: 'api_name2',
         }])
-        await lemo.setData(123)
-        assert.deepEqual(getRecord(), [{
-            'jsonrpc': '2.0',
-            'id': 1,
-            'method': 'api_name',
-            'params': [123]
-        }])
+        assert.isFunction(lemo.setData)
+        assert.isFunction(lemo.setData2)
     })
 
-    it('custom call', async () => {
-        const [testConn] = createTestConn()
+    it('0 api', async () => {
         const lemo = new LemoClient(testConn)
-        lemo._createAPI('', [{
-            name: 'callMyFunc',
-            call: (requester, ...args) => {
-                assert.equal(requester, lemo._requester)
-                assert.deepEqual(args, [123, '8293'])
-                return 100
-            },
-        }])
-        const result = lemo.callMyFunc(123, '8293')
-        assert.equal(result, 100)
+        lemo._createAPI('aaa', [])
+        assert.exists(lemo.aaa)
     })
 
-    it('custom async call', async () => {
-        const [testConn] = createTestConn()
+    it('moduleName is unavailable', async () => {
         const lemo = new LemoClient(testConn)
-        lemo._createAPI('', [{
-            name: 'callMyFunc',
-            call: () => Promise.resolve(200),
-        }])
-        const result = await lemo.callMyFunc()
-        assert.equal(result, 200)
+        assert.throws(() => {
+            lemo._createAPI('stopWatch', [{
+                name: 'setData',
+                method: 'api_name',
+            }])
+        }, errors.UnavailableAPIModule('stopWatch'))
     })
 })
