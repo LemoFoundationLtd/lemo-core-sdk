@@ -67,3 +67,7 @@ modules.xml
 
 ### System Files ###
 *.DS_Store
+
+
+/.reify-cache/
+/.nyc_output/
