@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import LemoClient from '../lib/main'
-import HttpConn from '../lib/conn/http_conn'
-import {resetRPC} from '../lib/jsonrpc'
+import HttpConn from '../lib/network/conn/http_conn'
+import {resetRPC} from '../lib/network/jsonrpc'
 
 function createTestConn() {
     let sendRecord = null

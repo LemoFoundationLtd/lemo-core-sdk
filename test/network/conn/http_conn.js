@@ -1,6 +1,6 @@
 import {assert} from 'chai';
-import HttpConn from '../../lib/conn/http_conn'
-import {DEFAULT_HTTP_HOST} from '../../lib/config'
+import HttpConn from '../../../lib/network/conn/http_conn'
+import {DEFAULT_HTTP_HOST} from '../../../lib/config'
 
 describe('HttpConn_new', function() {
     it('default conn', function() {
