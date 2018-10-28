@@ -6,6 +6,8 @@ import {eslint} from 'rollup-plugin-eslint';
 import formatter from 'eslint-friendly-formatter';
 import babel from 'rollup-plugin-babel';
 import {uglify} from 'rollup-plugin-uglify';
+import builtins from 'rollup-plugin-node-builtins';
+import globals from 'rollup-plugin-node-globals';
 import pkg from './package.json';
 
 function umdConfig(name) {
@@ -28,6 +30,8 @@ function umdConfig(name) {
                 runtimeHelpers: true
             }),
             json(),
+            globals(),
+            builtins(),
         ]
     }
 }

@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import LemoClient from '../lib/main'
 import HttpConn from '../lib/network/conn/http_conn'
-import errors from "../lib/errors"
+import errors from '../lib/errors'
 
 describe('LemoClient_new', () => {
     it('default conn', () => {
