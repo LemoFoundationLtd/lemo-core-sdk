@@ -12,10 +12,10 @@
         "base-x": "3.0.4",
         "bignumber.js": "7.2.0",
         "crypto-js": "3.1.4",
+        "elliptic": "github:LemoFoundationLtd/elliptic#fit_rollup",
         "keccak": "1.4.0",
         "rollup-plugin-node-globals": "1.4.0",
-        "safe-buffer": "5.1.2",
-        "secp256k1": "3.5.2"
+        "safe-buffer": "5.1.2"
     },
     "devDependencies": {
         "@babel/core": "7.1.2",

@@ -23,8 +23,11 @@ function umdConfig(name) {
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
                 'process.env.SDK_VERSION': JSON.stringify(pkg.version),
             }),
-            resolve({browser: true}), // so Rollup can find external libraries
-            commonjs(), // so Rollup can convert external libraries to an ES module
+            // use resolve so Rollup can find external libraries
+            // set preferBuiltins to false cause we had rollup-plugin-node-builtins already
+            resolve({browser: true, preferBuiltins: false}),
+            // use commonjs so Rollup can convert external libraries to an ES module
+            commonjs(),
             babel({
                 exclude: 'node_modules/**',
                 runtimeHelpers: true
