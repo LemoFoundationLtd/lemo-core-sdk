@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 import BigNumber from 'bignumber.js'
-import LemoClient from '../../lib/main'
+import LemoClient from '../../lib/index'
 import {lemoBase} from '../datas'
 import '../mock'
 

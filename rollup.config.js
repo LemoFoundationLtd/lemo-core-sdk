@@ -3,8 +3,8 @@ import pkg from './package.json';
 
 export default [
     {
-        input: 'lib/main.js',
-        external: ['bignumber.js', 'axios'],
+        input: 'lib/index.js',
+        external: ['bignumber.js', 'axios', 'safe-buffer', 'secp256k1', 'keccak', 'base-x'],
         output: [
             {file: pkg.main, format: 'cjs'}, // CommonJS (for Node) build
         ],
@@ -13,8 +13,8 @@ export default [
         ]
     },
     {
-        input: 'lib/main.js',
-        external: ['bignumber.js', 'axios'],
+        input: 'lib/index.js',
+        external: ['bignumber.js', 'axios', 'safe-buffer', 'secp256k1', 'keccak', 'base-x'],
         output: [
             {file: pkg.browser, format: 'cjs'}, // CommonJS (for Node) build
         ],

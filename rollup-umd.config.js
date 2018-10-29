@@ -12,7 +12,7 @@ import pkg from './package.json';
 
 function umdConfig(name) {
     return {
-        input: 'lib/main.js',
+        input: 'lib/index.js',
         output: {
             name: 'LemoClient',
             file: `dist/${name}`,

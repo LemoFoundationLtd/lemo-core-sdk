@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import LemoClient from '../../lib/main'
+import LemoClient from '../../lib/index'
 import {testTxs, testPrivate} from '../datas'
 import '../mock'
 

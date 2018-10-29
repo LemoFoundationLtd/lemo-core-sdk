@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import LemoClient from '../lib/main'
+import LemoClient from '../lib/index'
 import HttpConn from '../lib/network/conn/http_conn'
 import errors from '../lib/errors'
 
