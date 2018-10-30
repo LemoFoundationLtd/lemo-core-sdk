@@ -23,6 +23,12 @@ function umdConfig(name) {
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
                 'process.env.SDK_VERSION': JSON.stringify(pkg.version),
             }),
+            // force not use Uint8Array polyfill, because otto do not support the Buffer which implemented by Uint8Array
+            replace({
+                include: 'node_modules/buffer-es6/index.js',
+                'global.TYPED_ARRAY_SUPPORT': false,
+                delimiters: ['', '']
+            }),
             // use resolve so Rollup can find external libraries
             // set preferBuiltins to false cause we had rollup-plugin-node-builtins already
             resolve({browser: true, preferBuiltins: false}),
@@ -39,15 +45,6 @@ function umdConfig(name) {
     }
 }
 
-function umdLightConfig(name) {
-    const config = umdConfig(name)
-    config.external = ['bignumber.js']
-    config.output.globals = {
-        'bignumber.js': 'BigNumber'
-    }
-    return config
-}
-
 const umdVersion = umdConfig('lemo-client.js')
 // eslint should before babel
 umdVersion.plugins.unshift(eslint({formatter}))
@@ -56,15 +53,7 @@ const umdMinVersion = umdConfig('lemo-client.min.js')
 umdMinVersion.output.sourcemap = true
 umdMinVersion.plugins.push(uglify({sourcemap: true}))
 
-const lightVersion = umdLightConfig('lemo-client-light.js')
-
-const lightMinVersion = umdLightConfig('lemo-client-light.min.js')
-lightMinVersion.output.sourcemap = true
-lightMinVersion.plugins.push(uglify({sourcemap: true}))
-
 export default [
     umdVersion,
     umdMinVersion,
-    lightVersion,
-    lightMinVersion,
 ]

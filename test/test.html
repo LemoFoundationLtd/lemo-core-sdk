@@ -7,19 +7,17 @@
 <script src="../dist/lemo-client.min.js"></script>
 <script>
     var lemo = new LemoClient({host: 'http://127.0.0.1:8001'})
-    lemo._createAPI('aaa', [{
-        name: 'bbb',
-        method: 'ccc',
-    }])
 
     lemo.getCurrentBlock(true)
         .then(d => console.log(d))
     lemo.getNodeVersion()
         .then(d => console.log(d))
-    lemo.aaa.bbb(123, '8293')
-        .catch(e => console.error(e))
+    lemo.tx.sendTx('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb',{expirationTime: 1544584596})
+        .then(d => console.log(d))
     var watchId = lemo.watchBlock(false, newBlock => console.log(newBlock))
-    // lemo.stopWatch(watchId)
+    setTimeout(() => {
+        lemo.stopWatch(watchId)
+    }, 10000)
 </script>
 </body>
 </html>
