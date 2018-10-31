@@ -42,6 +42,16 @@ describe('LemoClient_new', () => {
             'params': [undefined]
         }])
     })
+    it('hide property', () => {
+        const hideProperties = ['_requester', '_createAPI']
+        hideProperties.forEach(property => {
+            const lemo = new LemoClient()
+            assert.exists(lemo._requester)
+            for (const key in lemo) {
+                assert.notEqual(key, property)
+            }
+        })
+    })
 })
 
 describe('LemoClient__createAPI', () => {

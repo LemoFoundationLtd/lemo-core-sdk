@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 import Api from '../lib/api'
-import errors from "../lib/errors";
+import errors from '../lib/errors';
 
 describe('Api_new', () => {
     const testRequester = {
@@ -29,7 +29,7 @@ describe('Api_new', () => {
         }
         assert.throws(() => {
             new Api(apiConfig, testRequester)
-        }, errors.InvalidAPIDefinition(apiConfig))
+        }, errors.InvalidAPIMethod(apiConfig))
     })
 })
 
