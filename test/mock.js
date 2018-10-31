@@ -1,7 +1,7 @@
 import nock from 'nock'
 import Tx from '../lib/tx';
-import {DEFAULT_HTTP_HOST} from '../lib/config'
-import {lemoBase} from './datas'
+import { DEFAULT_HTTP_HOST } from '../lib/config'
+import { lemoBase } from './datas'
 
 const emptyAccount = {
     'balance': '0x0',
@@ -10,8 +10,7 @@ const emptyAccount = {
     'root': '0x0000000000000000000000000000000000000000000000000000000000000000',
 }
 
-const mockInfos = [
-    {
+const mockInfos = [{
         method: 'account_getAccount',
         paramsCount: 1,
         reply(args) {
@@ -32,14 +31,14 @@ const mockInfos = [
 
 function startMock() {
     nock(DEFAULT_HTTP_HOST)
-    // .log(console.log)
+        // .log(console.log)
         .post('/', (body) => {
             const mockInfo = mockInfos.find(info => info.method === body.method)
-            return body.jsonrpc === '2.0'
-                && typeof body.id === 'number'
-                && Array.isArray(body.params)
-                && mockInfo
-                && body.params.length === mockInfo.paramsCount
+            return body.jsonrpc === '2.0' &&
+                typeof body.id === 'number' &&
+                Array.isArray(body.params) &&
+                mockInfo &&
+                body.params.length === mockInfo.paramsCount
         })
         .times(10000000000)
         .reply((uri, body) => {
@@ -53,4 +52,4 @@ function startMock() {
         })
 }
 
-startMock()
+// startMock()

@@ -1,6 +1,6 @@
-import {assert} from 'chai'
+import { assert } from 'chai'
 import LemoClient from '../../lib/index'
-import {testTxs, testPrivate} from '../datas'
+import { testTxs, testPrivate } from '../datas'
 import '../mock'
 
 describe('module_tx_sendTx', () => {
@@ -14,7 +14,7 @@ describe('module_tx_sendTx', () => {
 })
 
 describe('module_tx_sign_send', () => {
-    it('sign', () => {
+    it('sign_send', () => {
         testTxs.forEach(async (test, i) => {
             const lemo = new LemoClient()
             const json = await lemo.tx.sign(testPrivate, test.txConfig)

@@ -1,7 +1,7 @@
-import {assert} from 'chai'
+import { assert } from 'chai'
 import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
-import {lemoBase} from '../datas'
+import { lemoBase } from '../datas'
 import '../mock'
 
 describe('account_getAccount', () => {
@@ -34,3 +34,19 @@ describe('account_getAccount', () => {
         })
     })
 })
+
+
+
+/** 
+ *   no use 
+ *   mock.js   
+ */
+
+// describe('account_getBalance', () => {
+//     it('balance', async () => {
+//         const lemo = new LemoClient()
+//         const result = await lemo.account.getBalance('0x1234567890123456789012345678901234567890')
+//         assert.equal(result, 0)
+//     })
+
+// })
