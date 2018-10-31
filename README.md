@@ -24,7 +24,7 @@ yarn add lemo-client
 ## Example
 
 ```js
-const LemoClient = require('lemo-client)
+const LemoClient = require('lemo-client')
 const lemo = new LemoClient({
 	host: 'http://127.0.0.1:8001'
 })
