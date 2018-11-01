@@ -2,8 +2,8 @@ import {assert} from 'chai';
 import HttpConn from '../../../lib/network/conn/http_conn'
 import {DEFAULT_HTTP_HOST} from '../../../lib/config'
 
-describe('HttpConn_new', function() {
-    it('default conn', function() {
+describe('HttpConn_new', () => {
+    it('default conn', () => {
         const conn = new HttpConn()
         assert.strictEqual(conn.host, DEFAULT_HTTP_HOST);
         assert.strictEqual(conn.timeout, 0);

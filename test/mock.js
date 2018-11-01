@@ -11,22 +11,22 @@ const emptyAccount = {
 }
 
 const mockInfos = [{
-        method: 'account_getAccount',
-        paramsCount: 1,
-        reply(args) {
-            const result = (args[0] === lemoBase.address) ? lemoBase : emptyAccount
-            result.address = args[0]
-            return result
-        }
-    },
-    {
-        method: 'tx_sendTx',
-        paramsCount: 1,
-        reply(args) {
-            const tx = new Tx(args[0])
-            return `0x${tx.hash().toString('hex')}`
-        }
-    },
+    method: 'account_getAccount',
+    paramsCount: 1,
+    reply(args) {
+        const result = (args[0] === lemoBase.address) ? lemoBase : emptyAccount
+        result.address = args[0]
+        return result
+    }
+},
+{
+    method: 'tx_sendTx',
+    paramsCount: 1,
+    reply(args) {
+        const tx = new Tx(args[0])
+        return `0x${tx.hash().toString('hex')}`
+    }
+},
 ]
 
 function startMock() {

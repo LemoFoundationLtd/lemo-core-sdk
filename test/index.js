@@ -47,6 +47,7 @@ describe('LemoClient_new', () => {
         hideProperties.forEach(property => {
             const lemo = new LemoClient()
             assert.exists(lemo._requester)
+            // eslint-disable-next-line guard-for-in
             for (const key in lemo) {
                 assert.notEqual(key, property)
             }
