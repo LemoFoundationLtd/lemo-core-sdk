@@ -29,6 +29,7 @@ const mockInfos = [
             return `0x${tx.hash().toString('hex')}`
         }
     },
+
 ]
 
 function startMock() {

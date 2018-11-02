@@ -46,7 +46,7 @@
         "dev": "rollup -c -w",
         "test": "mocha",
         "pretest": "npm run build",
-        "lint": "eslint -f node_modules/eslint-friendly-formatter src --fix"
+        "lint": "eslint -f node_modules/eslint-friendly-formatter lib, test --fix"
     },
     "files": [
         "dist"

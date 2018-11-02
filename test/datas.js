@@ -5,7 +5,7 @@ export const testPrivate = '0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95
 export const testAddr = 'Lemo36BQKCBZ2Z7B7N4G4N4SNGBT84ZZSJQD84D'
 
 export const lemoBase = {
-    'address': '0x015780f8456f9c1532645087a19dcf9a7e0c7f97',
+    'address': 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
     'balance': '0x52b7d2dcc80cd2e40000000',
     'codeHash': '0x0000000000000000000000000000000000000000000000000000000000000000',
     'records': {

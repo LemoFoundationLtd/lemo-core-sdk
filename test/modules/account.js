@@ -35,11 +35,11 @@ describe('account_getAccount', () => {
     })
 })
 
-// describe('account_getBalance', () => {
-//     it('balance', async () => {
-//         const lemo = new LemoClient()
-//         const result = await lemo.account.getBalance('0x1234567890123456789012345678901234567890')
-//         assert.equal(result, 0)
-//     })
 
-// })
+describe('account_getBalance', () => {
+    it('balance', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.account.getBalance('0x1234567890123456789012345678901234567890')
+        assert.equal(result, 0)
+    })
+})
