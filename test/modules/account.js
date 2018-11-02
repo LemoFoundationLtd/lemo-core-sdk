@@ -35,6 +35,7 @@ describe('account_getAccount', () => {
     })
 })
 
+
 describe('account_getBalance', () => {
     it('balance', async () => {
         const lemo = new LemoClient()
