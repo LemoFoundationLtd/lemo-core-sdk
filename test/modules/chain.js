@@ -1,75 +1,22 @@
 import { assert } from 'chai'
+import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
-import { testTx } from '../datas'
+import { testTx, currentBlock } from '../datas'
 
-describe('getCurrentBlock', () => {
-    it('currentBlock', async () => {
-        const lemo = new LemoClient()
-        const result = await lemo.getCurrentBlock(true)
-        assert.deepEqual(result, {
-            ChangeLogs: [{
-                address: '0x015780f8456f9c1532645087a19dcf9a7e0c7f97',
-                extra: '',
-                newValue: '0x8c052b7d2dcc80cd2e40000000',
-                type: 1,
-                version: 1
-            }],
-            ConfirmPackage: [],
-            Events: [],
-            Header: {
-                changeLogRoot: '0x93273cebb4f0728991811d5d7c57ae8f88a83524eedb0af48b3061ed2e8017b8',
-                eventRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
-                extraData: '0x',
-                gasLimit: '0x6422c40',
-                gasUsed: '0x0',
-                hash: '0x2f08cf8e56b14d6f1bcb92357942067fa738b54a2edaf89d731f2f50637a8841',
-                height: 0,
-                logsBloom: '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-                miner: '0x015780f8456f9c1532645087a19dcf9a7e0c7f97',
-                parentHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
-                signData: '0x',
-                timestamp: '0x5b87dc40',
-                transactionsRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
-                versionRoot: '0x1e78c4779248d3d8d3cd9b77bf7b67b4c759ec87d45d52a3e79c928290773f4c'
-            },
-            Txs: []
-        })
-    })
+describe('chain_getCurrentBlock', () => {
     it('latestStableBlock', async () => {
         const lemo = new LemoClient()
+        const result = await lemo.getCurrentBlock(true)
+        assert.deepEqual(result, currentBlock)
+    })
+    it('currentBlock', async () => {
+        const lemo = new LemoClient()
         const result = await lemo.getCurrentBlock(false)
-        assert.deepEqual(result, {
-            ChangeLogs: [{
-                address: '0x015780f8456f9c1532645087a19dcf9a7e0c7f97',
-                extra: '',
-                newValue: '0x8c052b7d2dcc80cd2e40000000',
-                type: 1,
-                version: 1
-            }],
-            ConfirmPackage: [],
-            Events: [],
-            Header: {
-                changeLogRoot: '0x93273cebb4f0728991811d5d7c57ae8f88a83524eedb0af48b3061ed2e8017b8',
-                eventRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
-                extraData: '0x',
-                gasLimit: '0x6422c40',
-                gasUsed: '0x0',
-                hash: '0x2f08cf8e56b14d6f1bcb92357942067fa738b54a2edaf89d731f2f50637a8841',
-                height: 0,
-                logsBloom: '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-                miner: '0x015780f8456f9c1532645087a19dcf9a7e0c7f97',
-                parentHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
-                signData: '0x',
-                timestamp: '0x5b87dc40',
-                transactionsRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
-                versionRoot: '0x1e78c4779248d3d8d3cd9b77bf7b67b4c759ec87d45d52a3e79c928290773f4c'
-            },
-            Txs: []
-        })
+        assert.deepEqual(result, currentBlock)
     })
 })
 
-describe('getBlock', () => {
+describe('chain_getBlock', () => {
     it('getBlockByHash', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getBlock(testTx.hash)
@@ -82,96 +29,82 @@ describe('getBlock', () => {
     })
 })
 
-describe('getCurrentHeight', () => {
-    it('currentHeight', async () => {
-        const lemo = new LemoClient()
-        const result = await lemo.getCurrentHeight(true)
-        assert.equal(result, 0)
-    })
+describe('chain_getCurrentHeight', () => {
     it('latestStableHeight', async () => {
         const lemo = new LemoClient()
+        const result = await lemo.getCurrentHeight(true)
+        assert.strictEqual(result, 0)
+    })
+    it('currentHeight', async () => {
+        const lemo = new LemoClient()
         const result = await lemo.getCurrentHeight(false)
-        assert.equal(result, 0)
+        assert.strictEqual(result, 0)
     })
 })
 
-describe('getGenesis', () => {
+describe('chain_getGenesis', () => {
     it('getGenesis', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getGenesis()
-        assert.deepEqual(result, {
-            ChangeLogs: [{
-                address: '0x015780f8456f9c1532645087a19dcf9a7e0c7f97',
-                extra: '',
-                newValue: '0x8c052b7d2dcc80cd2e40000000',
-                type: 1,
-                version: 1
-            }],
-            ConfirmPackage: [],
-            Events: [],
-            Header: {
-                changeLogRoot: '0x93273cebb4f0728991811d5d7c57ae8f88a83524eedb0af48b3061ed2e8017b8',
-                eventRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
-                extraData: '0x',
-                gasLimit: '0x6422c40',
-                gasUsed: '0x0',
-                hash: '0x2f08cf8e56b14d6f1bcb92357942067fa738b54a2edaf89d731f2f50637a8841',
-                height: 0,
-                logsBloom: '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-                miner: '0x015780f8456f9c1532645087a19dcf9a7e0c7f97',
-                parentHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
-                signData: '0x',
-                timestamp: '0x5b87dc40',
-                transactionsRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
-                versionRoot: '0x1e78c4779248d3d8d3cd9b77bf7b67b4c759ec87d45d52a3e79c928290773f4c'
-            },
-            Txs: []
-        })
+        result.ChangeLogs[0].type = String(result.ChangeLogs[0].type)
+        assert.deepEqual(result, currentBlock)
     })
 })
 
-describe('getChainID', () => {
+describe('chain_getChainID', () => {
     it('getChainID', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getChainID()
-        assert.equal(result, '1')
+        assert.strictEqual(result, 1)
     })
 })
 
-describe('getGasPriceAdvice', () => {
+describe('chain_getGasPriceAdvice', () => {
     it('getGasPriceAdvice', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getGasPriceAdvice()
-        assert.equal(result, 100000000)
+        assert.strictEqual(result instanceof BigNumber, true)
+        assert.strictEqual(result.toNumber(), 100000000)
     })
 })
 
-describe('getNodeVersion', () => {
+describe('chain_getNodeVersion', () => {
     it('getNodeVersion', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getNodeVersion()
-        assert.equal(result, '1.0')
+        assert.strictEqual(result, '0.1.0-beta')
     })
 })
 
-// describe('getSdkVersion', () => {
-//     it('getSdkVersion', async () => {
-//         const lemo = new LemoClient()
-//         const result = await lemo.getSdkVersion()
-//         console.log(result)
-//         assert.equal(result, '0.9.0') // value is  undefined
-//     })
-// })
 
-describe('watchBlock', () => {
+describe('chain_watchBlock', () => {
+    const callback = function() {}
     it('watchBlock false', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.watchBlock(false)
+        const result = await lemo.watchBlock(false, callback)
         assert.equal(result, 0)
+        await lemo.stopWatch(false, callback)
     })
     it('watchBlock true', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.watchBlock(true)
+        const result = await lemo.watchBlock(true, callback)
         assert.equal(result, 0)
+        await lemo.stopWatch(false, callback)
+    })
+    it('watchBlock id++', async () => {
+        async function getId() {
+            const id = await lemo.watchBlock(true, callback)
+            return id
+        }
+        const lemo = new LemoClient()
+        for (let i = 0; i < 3; i++) {
+            getId()
+            if (i === 2) {
+                getId().then(id => {
+                    assert.equal(id, 3)
+                })
+            }
+        }
+        await lemo.stopWatch(false, callback)
     })
 })
