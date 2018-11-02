@@ -10,7 +10,9 @@ const emptyAccount = {
     'root': '0x0000000000000000000000000000000000000000000000000000000000000000',
 }
 
-const mockInfos = [{
+const mockInfos = [
+
+    {
         method: 'account_getAccount',
         paramsCount: 1,
         reply(args) {
@@ -52,4 +54,4 @@ function startMock() {
         })
 }
 
-// startMock()
+startMock()

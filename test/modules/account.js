@@ -35,13 +35,6 @@ describe('account_getAccount', () => {
     })
 })
 
-
-
-/** 
- *   no use 
- *   mock.js   
- */
-
 // describe('account_getBalance', () => {
 //     it('balance', async () => {
 //         const lemo = new LemoClient()
