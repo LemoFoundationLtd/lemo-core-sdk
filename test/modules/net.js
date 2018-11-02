@@ -13,6 +13,10 @@ describe('getInfo', () => {
     it('getInfo', async () => {
         const lemo = new LemoClient()
         const result = await lemo.net.getInfo()
-        assert.equal(result, '0x0000000000000000000000000000000000000000')
+        assert.deepEqual(result, {
+            nodeName: 'Glemo/v0.1.0-beta/windows-amd64/go1.9.2',
+            nodeVersion: '0.1.0-beta',
+            port: ':7001'
+        })
     })
 })
