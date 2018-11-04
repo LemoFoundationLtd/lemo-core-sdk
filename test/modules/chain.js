@@ -64,7 +64,8 @@ describe('chain_getGasPriceAdvice', () => {
         const lemo = new LemoClient()
         const result = await lemo.getGasPriceAdvice()
         assert.strictEqual(result instanceof BigNumber, true)
-        assert.strictEqual(result.toNumber(), 100000000)
+        assert.exists(result.toMoney)
+        assert.strictEqual(result.toMoney(), '100MMo')
     })
 })
 
