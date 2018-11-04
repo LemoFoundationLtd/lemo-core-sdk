@@ -73,7 +73,7 @@ describe('chain_getNodeVersion', () => {
     it('getNodeVersion', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getNodeVersion()
-        assert.strictEqual(result, '0.1.0-beta')
+        assert.equal(result, '1.0.0')
     })
 })
 

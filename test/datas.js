@@ -2,7 +2,7 @@ const bigNum = '0x111111111111111111111111111111111111111111111111111111111111'
 const bigString = '888888888888888888888888888888888888888888888888888888888888'
 
 export const testPrivate = '0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb'
-export const testAddr = 'Lemo36BQKCBZ2Z7B7N4G4N4SNGBT84ZZSJQD84D'
+export const testAddr = 'Lemo36BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'
 
 export const lemoBase = {
     'address': 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
@@ -10,8 +10,8 @@ export const lemoBase = {
     'codeHash': '0x0000000000000000000000000000000000000000000000000000000000000000',
     'records': {
         '1': {
-            'Height': 1,
-            'Version': 1,
+            'Height': '1',
+            'Version': '1',
         },
     },
     'root': '0x0000000000000000000000000000000000000000000000000000000000000000',
@@ -72,45 +72,45 @@ export const currentBlock = {
         address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
         extra: '',
         newValue: '0x8c052b7d2dcc80cd2e40000000',
-        type: String(1),
-        version: 1
+        type: '1',
+        version: '1'
     }],
     ConfirmPackage: [],
     DeputyNodes: [{
         ip: '127.0.0.1',
         lemoBase: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
         nodeID: '0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
-        port: 7001,
-        rank: 0,
-        votes: 50000
+        port: '7001',
+        rank: '0',
+        votes: '50000'
     }, {
         ip: '127.0.0.1',
         lemoBase: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
         nodeID: '0xddb5fc36c415799e4c0cf7046ddde04aad6de8395d777db4f46ebdf258e55ee1d698fdd6f81a950f00b78bb0ea562e4f7de38cb0adf475c5026bb885ce74afb0',
-        port: 7002,
-        rank: 1,
-        votes: 40000
+        port: '7002',
+        rank: '1',
+        votes: '40000'
     }, {
         ip: '127.0.0.1',
         lemoBase: 'Lemo842BJZ4DKCC764C63Y6A943775JH6NQ3Z33Y',
         nodeID: '0x7739f34055d3c0808683dbd77a937f8e28f707d5b1e873bbe61f6f2d0347692f36ef736f342fb5ce4710f7e337f062cc2110d134b63a9575f78cb167bfae2f43',
-        port: 7003,
-        rank: 2,
-        votes: 30000
+        port: '7003',
+        rank: '2',
+        votes: '30000'
     }, {
         ip: '127.0.0.1',
         lemoBase: 'Lemo837QGPS3YNTYNF53CD88WA5DR3ABNA95W2DG',
         nodeID: '0x34f0df789b46e9bc09f23d5315b951bc77bbfeda653ae6f5aab564c9b4619322fddb3b1f28d1c434250e9d4dd8f51aa8334573d7281e4d63baba913e9fa6908f',
-        port: 7004,
-        rank: 3,
-        votes: 20000
+        port: '7004',
+        rank: '3',
+        votes: '20000'
     }, {
         ip: '127.0.0.1',
         lemoBase: 'Lemo83HKZK68JQZDRGS5PWT2ZBSKR5CRADCSJB9B',
         nodeID: '0x5b980ffb1b463fce4773a22ebf376c07c6207023b016b36ccfaba7be1cd1ab4a91737741cd43b7fcb10879e0fcf314d69fa953daec0f02be0f8f9cedb0cb3797',
-        port: 7005,
-        rank: 4,
-        votes: 10000
+        port: '7005',
+        rank: '4',
+        votes: '10000'
     }],
     Events: [],
     Header: {
@@ -118,15 +118,15 @@ export const currentBlock = {
         deputyRoot: '0x49b613bbdf76be3fe761fd60d1ade6d2835315047c53d6e8199737898b8d9b47',
         eventRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
         extraData: '0x',
-        gasLimit: 105000000,
-        gasUsed: 0,
+        gasLimit: '105000000',
+        gasUsed: '0',
         hash: '0x11d9153b14adb92a14c16b66c3524d62b4742c0e7d375025525e2f131de37a8b',
-        height: 0,
+        height: '0',
         logsBloom: '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
         miner: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
         parentHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
         signData: '0x',
-        timestamp: 1535630400,
+        timestamp: '1535630400',
         transactionsRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
         versionRoot: '0x1e78c4779248d3d8d3cd9b77bf7b67b4c759ec87d45d52a3e79c928290773f4c'
     },
