@@ -1,10 +1,10 @@
 import { assert } from 'chai'
 import LemoClient from '../../lib/index'
 
-describe('getPeerCount', () => {
-    it('getPeerCount', async () => {
+describe('getPeersCount', () => {
+    it('getPeersCount', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.net.getPeerCount()
+        const result = await lemo.net.getPeersCount()
         assert.equal(result, [])
     })
 })
@@ -14,9 +14,11 @@ describe('getInfo', () => {
         const lemo = new LemoClient()
         const result = await lemo.net.getInfo()
         assert.deepEqual(result, {
-            nodeName: 'Glemo/v0.1.0-beta/windows-amd64/go1.9.2',
-            nodeVersion: '0.1.0-beta',
-            port: ':7001'
+            goVersion: 'go1.9.2',
+            nodeName: 'Lemo',
+            nodeOS: 'windows-amd64',
+            nodeVersion: '1.0.0',
+            port: '7001'
         })
     })
 })

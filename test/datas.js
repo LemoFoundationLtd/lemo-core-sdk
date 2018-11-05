@@ -72,7 +72,7 @@ export const currentBlock = {
         address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
         extra: '',
         newValue: '0x8c052b7d2dcc80cd2e40000000',
-        type: '1',
+        type: 'BalanceLog',
         version: '1'
     }],
     ConfirmPackage: [],
@@ -127,7 +127,7 @@ export const currentBlock = {
         parentHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
         signData: '0x',
         timestamp: '1535630400',
-        transactionsRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
+        transactionRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
         versionRoot: '0x1e78c4779248d3d8d3cd9b77bf7b67b4c759ec87d45d52a3e79c928290773f4c'
     },
     Txs: []

@@ -68,6 +68,8 @@ modules.xml
 ### System Files ###
 *.DS_Store
 
+/coverage
+/.vscode
 
 /.reify-cache/
 /.nyc_output/
