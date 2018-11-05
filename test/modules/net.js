@@ -1,11 +1,11 @@
-import { assert } from 'chai'
+import {assert} from 'chai'
 import LemoClient from '../../lib/index'
 
 describe('getPeersCount', () => {
     it('getPeersCount', async () => {
         const lemo = new LemoClient()
         const result = await lemo.net.getPeersCount()
-        assert.equal(result, [])
+        assert.strictEqual(result, 0)
     })
 })
 

@@ -1,8 +1,7 @@
-import { assert } from 'chai'
+import {assert} from 'chai'
 import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
-import { testTx, currentBlock } from '../datas'
-import { parseChangeLogType } from '../../lib/utils'
+import {testTx, currentBlock} from '../datas'
 
 describe('chain_getCurrentBlock', () => {
     it('latestStableBlock', async () => {
@@ -52,7 +51,6 @@ describe('chain_getGenesis', () => {
     it('getGenesis', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getGenesis()
-        result.ChangeLogs[0].type = parseChangeLogType(result.ChangeLogs[0].type)
         assert.deepEqual(result, currentBlock)
     })
 })
@@ -82,7 +80,6 @@ describe('chain_getNodeVersion', () => {
         assert.equal(result, '1.0.0')
     })
 })
-
 
 describe('chain_watchBlock', () => {
     const callback = function() {}

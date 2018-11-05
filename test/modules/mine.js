@@ -1,4 +1,4 @@
-import { assert } from 'chai'
+import {assert} from 'chai'
 import LemoClient from '../../lib/index'
 
 describe('getMining', () => {
