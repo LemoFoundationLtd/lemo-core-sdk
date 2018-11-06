@@ -82,7 +82,8 @@ describe('chain_getNodeVersion', () => {
 })
 
 describe('chain_watchBlock', () => {
-    const callback = function() {}
+    const callback = () => {
+    }
     it('watchBlock false', async () => {
         const lemo = new LemoClient()
         const result = await lemo.watchBlock(false, callback)
