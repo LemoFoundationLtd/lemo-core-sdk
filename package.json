@@ -2,7 +2,7 @@
     "name": "lemo-client",
     "namespace": "LemoFoundationLtd",
     "version": "0.9.0",
-    "description": "Lemochain JavaScript API, connect to a lemochain node over RPC",
+    "description": "Lemochain JavaScript SDK, access to a lemochain node over RPC",
     "main": "dist/lemo-client.cjs.js",
     "browser": "dist/lemo-client-browser.cjs.js",
     "dependencies": {
