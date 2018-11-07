@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
-import {testTx, currentBlock, severalChangeLogsBlock, oneChangeLogsBlock} from '../datas'
+import {testTx, currentBlock, oneChangeLogsBlock, txsBlock} from '../datas'
 
 describe('chain_getCurrentBlock', () => {
     it('latestStableBlock', async () => {
@@ -17,20 +17,20 @@ describe('chain_getCurrentBlock', () => {
 })
 
 describe('chain_getBlock', () => {
-    it('getBlockByHash', async () => {
+    it('getBlockByHeight', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.getBlock(1, true)
+        assert.deepEqual(result, txsBlock)
+    })
+    it('getBlockByHash_noValue', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getBlock(testTx.hash)
         assert.equal(result, null)
     })
-    it('getBlockByHeight', async () => {
+    it('getBlockByHash_Value', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.getBlock(1, true)
-        assert.deepEqual(result, severalChangeLogsBlock)
-    })
-    it('getBlock(0)', async () => {
-        const lemo = new LemoClient()
-        const result = await lemo.getBlock(0)
-        assert.deepEqual(result, oneChangeLogsBlock)
+        const result = await lemo.getBlock('0x2eee5835c7f5f1ec12551d5863af6f4ce3a119fc6afecae83e3fdfcb2752d004', true)
+        assert.deepEqual(result, txsBlock)
     })
 })
 
@@ -38,12 +38,12 @@ describe('chain_getCurrentHeight', () => {
     it('latestStableHeight', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getCurrentHeight(true)
-        assert.strictEqual(result, 13)
+        assert.strictEqual(result, 25)
     })
     it('currentHeight', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getCurrentHeight(false)
-        assert.strictEqual(result, 13)
+        assert.strictEqual(result, 25)
     })
 })
 
