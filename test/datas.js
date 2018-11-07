@@ -10,24 +10,24 @@ export const lemoBase = {
     balance: '0x52b7d2dcc80cd2e40000000',
     codeHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
     records: {
-        '1': {
+        1: {
             Height: '1',
-            Version: '1'
-        }
+            Version: '1',
+        },
     },
-    root: '0x0000000000000000000000000000000000000000000000000000000000000000'
+    root: '0x0000000000000000000000000000000000000000000000000000000000000000',
 }
 
 // empty tx
 export const testEmptyTx = {
     txConfig: {
-        expirationTime: 1544584596
+        expirationTime: 1544584596,
     },
     rlp: '0xed9400000000000000000000000000000000000000008084b2d05e00831e84808080845c107d9480830200018080',
     hash: '0x6648a4e6c41458a3e6dc62eb380892ae966ec4b62b27fa8399780f1a99dedb4e',
     rlpAfterSign:
         '0xf86d9400000000000000000000000000000000000000008084b2d05e00831e84808080845c107d948083020001a00425a02d5f230dbc9ea2325870de84f17bb802c2a9b7e4ec1c27874d6970fa7ea044cb0c2538e32de45980a7bc8f97805bb1bb7237b28558ae1945acce64c29fd4',
-    hashAfterSign: '0x66eb281e9f93ffb3de4d6b10eef4ecd841eb924f4cc51d0d59042a71fb3a0544'
+    hashAfterSign: '0x66eb281e9f93ffb3de4d6b10eef4ecd841eb924f4cc51d0d59042a71fb3a0544',
 }
 
 // normal tx
@@ -41,13 +41,13 @@ export const testTx = {
         amount: 1,
         data: 12,
         expirationTime: 1544584596,
-        message: 'aaa'
+        message: 'aaa',
     },
     rlp: '0xeb9400000000000000000000000000000000000000018261610264010c845c107d9483616161830200c88080',
     hash: '0xa3cddd511dd5ca88b3f724e82e469d828cdc6dc6bb436e9e40a7ceb8cac94bdd',
     rlpAfterSign:
         '0xf86b9400000000000000000000000000000000000000018261610264010c845c107d9483616161830300c8a08c0499083cb3d27bead4f21994aeebf8e75fa11df6bfe01c71cad583fc9a3c70a0778a437607d072540719a866adb630001fabbfb6b032d1a8dfbffac7daed8f02',
-    hashAfterSign: '0xde6f000340bded2b5c581e72698154615da2c24ee599b3848c3cedba14d9f144'
+    hashAfterSign: '0xde6f000340bded2b5c581e72698154615da2c24ee599b3848c3cedba14d9f144',
 }
 
 // big tx
@@ -61,14 +61,14 @@ export const testBigTx = {
         amount: bigNum,
         data: bigData,
         expirationTime: 1544584596,
-        message: bigString
+        message: bigString,
     },
     rlp:
         '0xf8e4941000000000000000000000000000000000000000b83c3838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838389e111111111111111111111111111111111111111111111111111111111111649e111111111111111111111111111111111111111111111111111111111111884949494949494949845c107d94b83c383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838830200c88080',
     hash: '0x3ca241c27e83d4a3f963870c9f85f28aea38ccaf54038d7807e49bd3326da4ab',
     rlpAfterSign:
         '0xf90124941000000000000000000000000000000000000000b83c3838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838389e111111111111111111111111111111111111111111111111111111111111649e111111111111111111111111111111111111111111111111111111111111884949494949494949845c107d94b83c383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838830300c8a0acba6ce994874d7b856d663a7f1d04bc7bf65278d33afb0a7fd8da69f626292aa001e6badf976c360673b71c54ff363bbcb521ae545fec47cb0bf83eb4c83332b6',
-    hashAfterSign: '0xa53514e7207eaec136fb36879c19a0b5ff5ab2e4288666e17f9adf91cecbf723'
+    hashAfterSign: '0xa53514e7207eaec136fb36879c19a0b5ff5ab2e4288666e17f9adf91cecbf723',
 }
 
 //  currentBlock
@@ -90,13 +90,13 @@ export const currentBlock = {
             '0x6a6257f9a6b84ecbf174f5b46e5c6ee6e2116030e0e6f8c588140b67791a021c049c515cb10a635bbd4e6de931034b04da690303f6280622ecae6f1138d49a9601',
         deputyRoot: '0x',
         extraData: '0x',
-        hash: '0x06ca327fc63a61d97c3f333f0c53dd4a768d28e42278d5f74ba71c1e0726efef'
+        hash: '0x06ca327fc63a61d97c3f333f0c53dd4a768d28e42278d5f74ba71c1e0726efef',
     },
     Txs: [],
     ChangeLogs: [],
     Events: [],
     ConfirmPackage: [],
-    DeputyNodes: []
+    DeputyNodes: [],
 }
 
 //  severalChangeLogsBlock
@@ -118,7 +118,7 @@ export const severalChangeLogsBlock = {
             '0xb6a6ab310c7cc7dcdd84836051e5bc5075a69ef9d7524f7be9195952eed04ceb6ef4be0ab14eeac2ec796542dc756b386936f9f855639fd4e7a8deb1780df19601',
         deputyRoot: '0x',
         extraData: '0x',
-        hash: '0xb73e7fc3f6d73c0f49b9c48afca09d944de4ee9a52456cfd51642824d3c26ba0'
+        hash: '0xb73e7fc3f6d73c0f49b9c48afca09d944de4ee9a52456cfd51642824d3c26ba0',
     },
     Txs: [],
     ChangeLogs: [
@@ -127,26 +127,26 @@ export const severalChangeLogsBlock = {
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '2',
             newValue: '0x8c052b7d2dcc8093e1eb610f9c',
-            extra: ''
+            extra: '',
         },
         {
             type: 'BalanceLog',
             address: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
             version: '1',
             newValue: '0x64',
-            extra: ''
+            extra: '',
         },
         {
             type: 'BalanceLog',
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '3',
             newValue: '0x8c052b7d2dcc80cd2e3fffff9c',
-            extra: ''
-        }
+            extra: '',
+        },
     ],
     Events: [],
     ConfirmPackage: [],
-    DeputyNodes: []
+    DeputyNodes: [],
 }
 export const oneChangeLogsBlock = {
     Header: {
@@ -165,7 +165,7 @@ export const oneChangeLogsBlock = {
         signData: '0x',
         deputyRoot: '0xd448943c5cf120118a5b2337b661ff1bc578d6bd89400287fbb82de62ae13933',
         extraData: '0x',
-        hash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab'
+        hash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
     },
     Txs: [],
     ChangeLogs: [
@@ -174,8 +174,8 @@ export const oneChangeLogsBlock = {
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '1',
             newValue: '0x8c052b7d2dcc80cd2e40000000',
-            extra: ''
-        }
+            extra: '',
+        },
     ],
     Events: [],
     ConfirmPackage: [],
@@ -187,9 +187,9 @@ export const oneChangeLogsBlock = {
             ip: '127.0.0.1',
             port: '7001',
             rank: '0',
-            votes: '50000'
-        }
-    ]
+            votes: '50000',
+        },
+    ],
 }
 
 export const testTxs = [testEmptyTx, testTx, testBigTx]
@@ -201,5 +201,5 @@ export default {
     testEmptyTx,
     testTx,
     testBigTx,
-    testTxs
+    testTxs,
 }

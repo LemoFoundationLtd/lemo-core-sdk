@@ -29,7 +29,7 @@ describe('LemoClient_new', () => {
             send(...args) {
                 sendRecord = args
                 return {jsonrpc: '2.0', id: 1, result: {}}
-            }
+            },
         }
 
         const lemo = new LemoClient(conn)
@@ -40,8 +40,8 @@ describe('LemoClient_new', () => {
                 jsonrpc: '2.0',
                 id: 1,
                 method: 'chain_currentBlock',
-                params: [undefined]
-            }
+                params: [undefined],
+            },
         ])
     })
     it('hide property', () => {
@@ -50,16 +50,16 @@ describe('LemoClient_new', () => {
             const lemo = new LemoClient()
             assert.exists(lemo._requester)
             // eslint-disable-next-line guard-for-in
-            for (const key in lemo) {
+            Object.keys(lemo).forEach(key => {
                 assert.notEqual(key, property)
-            }
+            })
         })
     })
 })
 
 describe('LemoClient__createAPI', () => {
     const testConn = {
-        send: () => {}
+        send: () => {},
     }
 
     it('lemo.test.setData', () => {
@@ -67,8 +67,8 @@ describe('LemoClient__createAPI', () => {
         lemo._createAPI('test', [
             {
                 name: 'setData',
-                method: 'api_name'
-            }
+                method: 'api_name',
+            },
         ])
         assert.isFunction(lemo.test.setData)
     })
@@ -78,12 +78,12 @@ describe('LemoClient__createAPI', () => {
         lemo._createAPI('', [
             {
                 name: 'setData',
-                method: 'api_name'
+                method: 'api_name',
             },
             {
                 name: 'setData2',
-                method: 'api_name2'
-            }
+                method: 'api_name2',
+            },
         ])
         assert.isFunction(lemo.setData)
         assert.isFunction(lemo.setData2)
@@ -101,8 +101,8 @@ describe('LemoClient__createAPI', () => {
             lemo._createAPI('stopWatch', [
                 {
                     name: 'setData',
-                    method: 'api_name'
-                }
+                    method: 'api_name',
+                },
             ])
         }, errors.UnavailableAPIModule('stopWatch'))
     })

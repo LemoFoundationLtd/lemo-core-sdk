@@ -5,7 +5,7 @@ import errors from '../lib/errors';
 describe('Api_new', () => {
     const testRequester = {
         send: () => {
-        }
+        },
     }
 
     it('correct config', () => {
@@ -40,7 +40,7 @@ describe('Api_attachTo', () => {
         send(...args) {
             sendRecord = args
             return Promise.resolve(REQUESTER_RESULT)
-        }
+        },
     }
     const apiHolder = {}
 

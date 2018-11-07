@@ -18,7 +18,7 @@ describe('getInfo', () => {
             nodeVersion: '1.0.0',
             os: 'windows-amd64',
             port: '7001',
-            runtime: 'go1.9.2'
+            runtime: 'go1.9.2',
         })
     })
 })

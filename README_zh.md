@@ -45,60 +45,60 @@ lemo.chain.getBlockByNumber(0)
 > NOTE: Every API returns a promise, except `watchXXX` which return `watchId` for stop watching
 
 ### chain
-methods | description | available on http
+jsSDK | 功能 | web端可用
 ---|---|---
-lemo.getBlock(number, withTxList) | Get block by height (only stable block) | ✓
-lemo.getBlock(hash, withTxList) | Get block by block hash | ✓
-lemo.getCurrentBlock(false, withTxList) | Get the newest block | ✓
-lemo.getCurrentBlock(true, withTxList) | Get the newest stable block | ✓
-lemo.getCurrentHeight(false) | Get the newest block height | ✓
-lemo.getCurrentHeight(true) | Get the newest stable block height | ✓
-lemo.getGenesis() | Get the first block | ✓
-lemo.getChainID() | Get the chain ID | ✓
-lemo.getGasPriceAdvice() | Get transaction gas price advice | ✓
-lemo.getNodeVersion() | Get the version of LemoChain node | ✓
-lemo.getSdkVersion() | Get the version of lemo-client | ✓
-lemo.watchBlock(withTxList, callback) | Listen for new block | ✓
+lemo.getBlock(number, withTxList) | 根据高度获取稳定块（已共识） | ✓
+lemo.getBlock(hash, withTxList) | 根据hash获取区块 | ✓
+lemo.getCurrentBlock(false, withTxList) | 获取当前最新块 | ✓
+lemo.getCurrentBlock(true, withTxList) | 获取最新的稳定块（已共识） | ✓
+lemo.getCurrentHeight(false) | 获取当前高度 | ✓
+lemo.getCurrentHeight(true) | 获取当前稳定块高度（已共识） | ✓
+lemo.getGenesis() | 获取创世区块 | ✓
+lemo.getChainID() | 获取当前链ID | ✓
+lemo.getGasPriceAdvice() | 获取建议gas价格 | ✓
+lemo.getNodeVersion() | 节点版本号 | ✓
+lemo.getSdkVersion() | js SDK版本号 | ✓
+lemo.watchBlock(withTxList, callback) | 监听新的区块 | ✓
 
 ### net
-methods | description | available on http
+jsSDK | 功能 | web端可用
 ---|---|---
-lemo.net.addPeer(nodeAddr) | Connect to a peer | ✖
-lemo.net.dropPeer(nodeAddr) | Disconnect to a peer | ✖
-lemo.net.getPeers() | Get the connected peer list | ✖
-lemo.net.getPeersCount() | Get the number of connected peers | ✓
-lemo.net.getInfo() | Get the information of current LemoChain node | ✓
+lemo.net.addPeer(nodeAddr) | 连接节点 | ✖
+lemo.net.dropPeer(nodeAddr) | 断开节点 | ✖
+lemo.net.getPeers() | 获取已连接的节点信息 | ✖
+lemo.net.getPeersCount() | 获取已连接的节点数 | ✓
+lemo.net.getInfo() | 获取本节点信息 | ✓
 
 ### mine
-methods | description | available on http
+jsSDK | 功能 | web端可用
 ---|---|---
-lemo.mine.start() | Start mining | ✖
-lemo.mine.stop() | Stop mining | ✖
-lemo.mine.getMining() | True if current LemoChain node is mining | ✓
-lemo.mine.getLemoBase() | Get the mining benefit account address of current LemoChain node | ✓
+lemo.mine.start() | 开启挖矿 | ✖
+lemo.mine.stop() | 停止挖矿 | ✖
+lemo.mine.getMining() | 是否正在出块 | ✓
+lemo.mine.getLemoBase() | 获取当前矿工节点的地址 | ✓
 
 ### account
-methods | description | available on http
+jsSDK | 功能 | web端可用
 ---|---|---
-lemo.account.newKeyPair() | Create a private key and account address | ✖
-lemo.account.getBalance(addr) | Get the balance of an account | ✓
-lemo.account.getAccount(addr) | Get the information of an account | ✓
+lemo.account.newKeyPair() | 获得秘钥对 | ✖
+lemo.account.getBalance(addr) | 获得输入地址余额 | ✓
+lemo.account.getAccount(addr) | 获取输入地址的账户信息 | ✓
 
 ### tx
-methods | description | available on http
+jsSDK | 功能 | web端可用
 ---|---|---
-lemo.tx.sendTx(privateKey, txInfo) | Sign and send transaction | ✓
-lemo.tx.send(signedTxInfo) | Send a signed transaction | ✓
-lemo.tx.sign(privateKey, txInfo) | Sign transaction | ✓
-lemo.tx.watchPendingTx(callback) | Listen for the new Transaction | ✖
+lemo.tx.sendTx(privateKey, txInfo) | 签名并发送交易 | ✓
+lemo.tx.send(signedTxInfo) | 发送已签名的交易 | ✓
+lemo.tx.sign(privateKey, txInfo) | 签名交易 | ✓
+lemo.tx.watchPendingTx(callback) | 监听新的pending交易 | ✖
 
 
-### other
-methods | description | available on http
+### 其它
+js接口 | 功能 | web端可用
 ---|---|---
-lemo.stopWatch(watchId) | Stop watching by watch ID | ✓
-lemo.stopWatch() | Stop all watching | ✓
-lemo.isWatching() | True if is watching some data | ✓
+lemo.stopWatch(watchId) | 停止指定的轮询 | ✓
+lemo.stopWatch() | 停止所有轮询 | ✓
+lemo.isWatching() | 是否正在轮询 | ✓
 
 
 ## Developing

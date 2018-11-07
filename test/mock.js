@@ -7,7 +7,7 @@ const emptyAccount = {
     balance: '0x0',
     codeHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
     records: {},
-    root: '0x0000000000000000000000000000000000000000000000000000000000000000'
+    root: '0x0000000000000000000000000000000000000000000000000000000000000000',
 }
 
 const mockInfos = [
@@ -18,7 +18,7 @@ const mockInfos = [
             const result = args[0] === lemoBase.address ? lemoBase : emptyAccount
             result.address = args[0]
             return result
-        }
+        },
     },
     {
         method: 'tx_sendTx',
@@ -26,8 +26,8 @@ const mockInfos = [
         reply(args) {
             const tx = new Tx(args[0])
             return `0x${tx.hash().toString('hex')}`
-        }
-    }
+        },
+    },
 ]
 
 function startMock() {
@@ -52,8 +52,8 @@ function startMock() {
                 {
                     jsonrpc: '2.0',
                     id: 123,
-                    result
-                }
+                    result,
+                },
             ]
         })
 }
