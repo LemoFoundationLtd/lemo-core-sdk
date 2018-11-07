@@ -35,12 +35,14 @@ describe('LemoClient_new', () => {
         const lemo = new LemoClient(conn)
         assert.equal(lemo._requester.conn, conn)
         await lemo.getCurrentBlock()
-        assert.deepEqual(sendRecord, [{
-            'jsonrpc': '2.0',
-            'id': 1,
-            'method': 'chain_latestStableBlock',
-            'params': [undefined]
-        }])
+        assert.deepEqual(sendRecord, [
+            {
+                jsonrpc: '2.0',
+                id: 1,
+                method: 'chain_currentBlock',
+                params: [undefined]
+            }
+        ])
     })
     it('hide property', () => {
         const hideProperties = ['_requester', '_createAPI']
@@ -57,28 +59,32 @@ describe('LemoClient_new', () => {
 
 describe('LemoClient__createAPI', () => {
     const testConn = {
-        send: () => {
-        }
+        send: () => {}
     }
 
     it('lemo.test.setData', () => {
         const lemo = new LemoClient(testConn)
-        lemo._createAPI('test', [{
-            name: 'setData',
-            method: 'api_name',
-        }])
+        lemo._createAPI('test', [
+            {
+                name: 'setData',
+                method: 'api_name'
+            }
+        ])
         assert.isFunction(lemo.test.setData)
     })
 
     it('2 apis without module name', async () => {
         const lemo = new LemoClient(testConn)
-        lemo._createAPI('', [{
-            name: 'setData',
-            method: 'api_name',
-        }, {
-            name: 'setData2',
-            method: 'api_name2',
-        }])
+        lemo._createAPI('', [
+            {
+                name: 'setData',
+                method: 'api_name'
+            },
+            {
+                name: 'setData2',
+                method: 'api_name2'
+            }
+        ])
         assert.isFunction(lemo.setData)
         assert.isFunction(lemo.setData2)
     })
@@ -92,10 +98,12 @@ describe('LemoClient__createAPI', () => {
     it('moduleName is unavailable', async () => {
         const lemo = new LemoClient(testConn)
         assert.throws(() => {
-            lemo._createAPI('stopWatch', [{
-                name: 'setData',
-                method: 'api_name',
-            }])
+            lemo._createAPI('stopWatch', [
+                {
+                    name: 'setData',
+                    method: 'api_name'
+                }
+            ])
         }, errors.UnavailableAPIModule('stopWatch'))
     })
 })

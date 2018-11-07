@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
-import {testTx, currentBlock} from '../datas'
+import {testTx, currentBlock, severalChangeLogsBlock, oneChangeLogsBlock} from '../datas'
 
 describe('chain_getCurrentBlock', () => {
     it('latestStableBlock', async () => {
@@ -24,13 +24,13 @@ describe('chain_getBlock', () => {
     })
     it('getBlockByHeight', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.getBlock(1)
-        assert.equal(result, null)
+        const result = await lemo.getBlock(1, true)
+        assert.deepEqual(result, severalChangeLogsBlock)
     })
     it('getBlock(0)', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getBlock(0)
-        assert.deepEqual(result, currentBlock)
+        assert.deepEqual(result, oneChangeLogsBlock)
     })
 })
 
@@ -38,12 +38,12 @@ describe('chain_getCurrentHeight', () => {
     it('latestStableHeight', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getCurrentHeight(true)
-        assert.strictEqual(result, 0)
+        assert.strictEqual(result, 13)
     })
     it('currentHeight', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getCurrentHeight(false)
-        assert.strictEqual(result, 0)
+        assert.strictEqual(result, 13)
     })
 })
 
@@ -51,7 +51,7 @@ describe('chain_getGenesis', () => {
     it('getGenesis', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getGenesis()
-        assert.deepEqual(result, currentBlock)
+        assert.deepEqual(result, oneChangeLogsBlock)
     })
 })
 
@@ -69,7 +69,7 @@ describe('chain_getGasPriceAdvice', () => {
         const result = await lemo.getGasPriceAdvice()
         assert.strictEqual(result instanceof BigNumber, true)
         assert.exists(result.toMoney)
-        assert.strictEqual(result.toMoney(), '100MMo')
+        assert.strictEqual(result.toMoney(), '100M mo')
     })
 })
 
@@ -83,32 +83,30 @@ describe('chain_getNodeVersion', () => {
 
 describe('chain_watchBlock', () => {
     const callback = function() {}
-    it('watchBlock false', async () => {
+    it('watchBlock false', () => {
         const lemo = new LemoClient()
-        const result = await lemo.watchBlock(false, callback)
+        const result = lemo.watchBlock(false, callback)
         assert.equal(result, 0)
-        await lemo.stopWatch(false, callback)
+        lemo.stopWatch(false, callback)
     })
-    it('watchBlock true', async () => {
+    it('watchBlock true', () => {
         const lemo = new LemoClient()
-        const result = await lemo.watchBlock(true, callback)
+        const result = lemo.watchBlock(true, callback)
         assert.equal(result, 0)
-        await lemo.stopWatch(false, callback)
+        lemo.stopWatch(false, callback)
     })
-    it('watchBlock id++', async () => {
-        async function getId() {
-            const id = await lemo.watchBlock(true, callback)
+    it('watchBlock id++', () => {
+        function getId() {
+            const id = lemo.watchBlock(true, callback)
             return id
         }
         const lemo = new LemoClient()
         for (let i = 0; i < 3; i++) {
             getId()
             if (i === 2) {
-                getId().then(id => {
-                    assert.equal(id, 3)
-                })
+                assert.equal(getId(), 3)
             }
         }
-        await lemo.stopWatch(false, callback)
+        lemo.stopWatch(false, callback)
     })
 })

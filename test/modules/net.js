@@ -5,7 +5,7 @@ describe('getPeersCount', () => {
     it('getPeersCount', async () => {
         const lemo = new LemoClient()
         const result = await lemo.net.getPeersCount()
-        assert.strictEqual(result, 0)
+        assert.strictEqual(result, '0')
     })
 })
 
@@ -14,11 +14,11 @@ describe('getInfo', () => {
         const lemo = new LemoClient()
         const result = await lemo.net.getInfo()
         assert.deepEqual(result, {
-            goVersion: 'go1.9.2',
             nodeName: 'Lemo',
-            nodeOS: 'windows-amd64',
             nodeVersion: '1.0.0',
-            port: '7001'
+            os: 'windows-amd64',
+            port: '7001',
+            runtime: 'go1.9.2'
         })
     })
 })
