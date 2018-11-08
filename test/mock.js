@@ -1,7 +1,8 @@
+import BigNumber from 'bignumber.js'
 import nock from 'nock'
 import Tx from '../lib/tx'
 import {DEFAULT_HTTP_HOST} from '../lib/config'
-import {lemoBase} from './datas'
+import {lemoBase, formatedLemoBase} from './datas'
 
 const emptyAccount = {
     balance: '0x0',
@@ -17,6 +18,14 @@ const mockInfos = [
         reply(args) {
             const result = args[0] === lemoBase.address ? lemoBase : emptyAccount
             result.address = args[0]
+            return result
+        },
+    },
+    {
+        method: 'account_getBalance',
+        paramsCount: 1,
+        reply(args) {
+            const result = args[0] === lemoBase.address ? new BigNumber(1599999999999999999999999900) : new BigNumber(0)
             return result
         },
     },

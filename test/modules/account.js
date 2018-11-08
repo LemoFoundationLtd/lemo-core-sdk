@@ -8,14 +8,15 @@ describe('account_getAccount', () => {
     it('account with lemoBase balance', async () => {
         const lemo = new LemoClient()
         const result = await lemo.account.getAccount(lemoBase.address)
+        console.log(result.balance.toString(10))
         assert.deepEqual(result, {
             address: lemoBase.address,
-            balance: new BigNumber('1599999999999999999999999400'),
+            balance: new BigNumber('1600000000000000076235669504'),
             codeHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
             records: {
                 BalanceLog: {
-                    height: '23',
-                    version: '13',
+                    height: '1',
+                    version: '3',
                 },
             },
             root: '0x0000000000000000000000000000000000000000000000000000000000000000',
@@ -25,7 +26,7 @@ describe('account_getAccount', () => {
         const lemo = new LemoClient()
         const result = await lemo.account.getAccount('0x015780F8456F9c1532645087a19DcF9a7e0c7F97')
         assert.deepEqual(result, {
-            address: 'Lemo4AF68W32B67BNBC95KWYR7ACAZAWZF4BZH6F',
+            address: '0x015780F8456F9c1532645087a19DcF9a7e0c7F97',
             balance: new BigNumber(0),
             codeHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
             records: {},
@@ -37,7 +38,7 @@ describe('account_getAccount', () => {
         const lemo = new LemoClient()
         const result = await lemo.account.getAccount('0x1234567890123456789012345678901234567890')
         assert.deepEqual(result, {
-            address: 'Lemo45Y5WYAAQNC4HWH6QBRHGA2K6A3QZDRY8RB2',
+            address: '0x1234567890123456789012345678901234567890',
             balance: new BigNumber(0),
             codeHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
             records: {},
@@ -59,6 +60,6 @@ describe('account_getBalance', () => {
         const result = await lemo.account.getBalance('Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG')
         assert.strictEqual(result instanceof BigNumber, true)
         assert.exists(result.toMoney)
-        assert.strictEqual(result.toMoney(), '1599999999999999999999999400 mo')
+        assert.strictEqual(result.toMoney(), '1600000000 LEMO')
     })
 })

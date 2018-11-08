@@ -7,12 +7,24 @@ export const testAddr = 'Lemo36BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'
 
 export const lemoBase = {
     address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
-    balance: '0x52b7d2dcc80cd2e40000000',
+    balance: '0x52b7d2dcc80cd4000000000',
     codeHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
     records: {
         1: {
-            Height: '1',
-            Version: '1',
+            height: '1',
+            version: '3',
+        },
+    },
+    root: '0x0000000000000000000000000000000000000000000000000000000000000000',
+}
+export const formatedLemoBase = {
+    address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
+    balance: '1599999999999999999999999900',
+    codeHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+    records: {
+        BalanceLog: {
+            height: '1',
+            version: '1',
         },
     },
     root: '0x0000000000000000000000000000000000000000000000000000000000000000',
