@@ -32,7 +32,7 @@ describe('module_tx_sign_send', () => {
             testTxs.map(async (test, i) => {
                 const lemo = new LemoClient()
                 const json = await lemo.tx.sign(testPrivate, test.txConfig)
-                const result = await lemo.tx.send(JSON.parse(json))
+                const result = await lemo.tx.send(json)
                 assert.equal(result, test.hashAfterSign, `index=${i}`)
             }),
         )
@@ -43,7 +43,7 @@ describe('module_tx_sign_send', () => {
             withLemoAddrTestTxs.map(async (test, i) => {
                 const lemo = new LemoClient()
                 const json = await lemo.tx.sign(testPrivate, test.txConfig)
-                const result = await lemo.tx.send(JSON.parse(json))
+                const result = await lemo.tx.send(json)
                 assert.equal(result, test.hashAfterSign, `index=${i}`)
             }),
         )
