@@ -9,10 +9,10 @@ describe('getMining', () => {
     })
 })
 
-describe('getLemoBase', () => {
-    it('getLemoBase', async () => {
+describe('getMiner', () => {
+    it('getMiner', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.mine.getLemoBase()
+        const result = await lemo.mine.getMiner()
         assert.equal(result, 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG')
     })
 })

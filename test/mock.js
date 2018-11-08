@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import nock from 'nock'
 import Tx from '../lib/tx'
 import {DEFAULT_HTTP_HOST} from '../lib/config'
-import {lemoBase, formatedLemoBase} from './datas'
+import {miner, formatedMiner} from './datas'
 
 const emptyAccount = {
     balance: '0x0',
@@ -16,7 +16,7 @@ const mockInfos = [
         method: 'account_getAccount',
         paramsCount: 1,
         reply(args) {
-            const result = args[0] === lemoBase.address ? lemoBase : emptyAccount
+            const result = args[0] === miner.address ? miner : emptyAccount
             result.address = args[0]
             return result
         },
@@ -25,7 +25,7 @@ const mockInfos = [
         method: 'account_getBalance',
         paramsCount: 1,
         reply(args) {
-            const result = args[0] === lemoBase.address ? new BigNumber(1599999999999999999999999900) : new BigNumber(0)
+            const result = args[0] === miner.address ? new BigNumber(1599999999999999999999999900) : new BigNumber(0)
             return result
         },
     },

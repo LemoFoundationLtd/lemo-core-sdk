@@ -1,16 +1,16 @@
 import {assert} from 'chai'
 import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
-import {lemoBase} from '../datas'
+import {miner} from '../datas'
 import '../mock'
 
 describe('account_getAccount', () => {
-    it('account with lemoBase balance', async () => {
+    it('account with miner balance', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.account.getAccount(lemoBase.address)
+        const result = await lemo.account.getAccount(miner.address)
         console.log(result.balance.toString(10))
         assert.deepEqual(result, {
-            address: lemoBase.address,
+            address: miner.address,
             balance: new BigNumber('1600000000000000076235669504'),
             codeHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
             records: {

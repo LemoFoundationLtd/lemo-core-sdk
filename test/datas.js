@@ -5,7 +5,7 @@ const bigData = '0x4949494949494949'
 export const testPrivate = '0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb'
 export const testAddr = 'Lemo36BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'
 
-export const lemoBase = {
+export const miner = {
     address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
     balance: '0x52b7d2dcc80cd4000000000',
     codeHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
@@ -17,7 +17,7 @@ export const lemoBase = {
     },
     root: '0x0000000000000000000000000000000000000000000000000000000000000000',
 }
-export const formatedLemoBase = {
+export const formatedMiner = {
     address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
     balance: '1599999999999999999999999900',
     codeHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
@@ -227,7 +227,7 @@ export const oneChangeLogsBlock = {
     confirms: [],
     deputyNodes: [
         {
-            lemoBase: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
+            miner: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             nodeID:
                 '0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
             ip: '127.0.0.1',
@@ -243,7 +243,7 @@ export const withLemoAddrTestTxs = [testEmptyTx, testTx, widthLemoAddrTestBigTx]
 export default {
     testPrivate,
     testAddr,
-    lemoBase,
+    miner,
     testEmptyTx,
     testTx,
     testBigTx,
