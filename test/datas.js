@@ -12,6 +12,7 @@ export const lemoBase = {
     records: {
         1: {
             height: '1',
+<<<<<<< HEAD
             version: '3',
         },
     },
@@ -24,6 +25,8 @@ export const formatedLemoBase = {
     records: {
         BalanceLog: {
             height: '1',
+=======
+>>>>>>> 21ed764c7778b21a37d6361c640b03442c34c58f
             version: '1',
         },
     },
@@ -105,7 +108,7 @@ const widthLemoAddrTestBigTx = {
 
 //  currentBlock
 export const currentBlock = {
-    Header: {
+    header: {
         parentHash: '0x5f7a532c1418114420c072df0d45ab8e44b5f869f116ef8ae431027885687b2b',
         miner: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
         versionRoot: '0x12378f27b0b509f8c40d9bb9e2123ca3a97f859cfa1a55d9bbe058ba0a02c055',
@@ -124,15 +127,15 @@ export const currentBlock = {
         extraData: '0x',
         hash: '0x7bface2fcef509823b029577a9251edb0e16a4019856722f8946da25b53321b1',
     },
-    Txs: null,
-    ChangeLogs: null,
-    Events: null,
-    ConfirmPackage: null,
-    DeputyNodes: null,
+    transactions: null,
+    changeLogs: null,
+    events: null,
+    confirms: null,
+    deputyNodes: null,
 }
 
 export const txsBlock = {
-    Header: {
+    header: {
         parentHash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
         miner: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
         versionRoot: '0x8117e9b6e78c6182a504aee2141e44dccd93fa0e8a0defbf77237b3c7fc79536',
@@ -151,7 +154,7 @@ export const txsBlock = {
         extraData: '0x',
         hash: '0x2eee5835c7f5f1ec12551d5863af6f4ce3a119fc6afecae83e3fdfcb2752d004',
     },
-    Txs: [
+    transactions: [
         {
             to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
             toName: '',
@@ -167,7 +170,7 @@ export const txsBlock = {
             hash: '0xca653e881c7d5875c686a2eac01b77461438a8e718b7e30302b3ef59fa61a822',
         },
     ],
-    ChangeLogs: [
+    changeLogs: [
         {
             type: 'BalanceLog',
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
@@ -190,12 +193,12 @@ export const txsBlock = {
             extra: '',
         },
     ],
-    Events: [],
-    ConfirmPackage: [],
-    DeputyNodes: [],
+    events: [],
+    confirms: [],
+    deputyNodes: [],
 }
 export const oneChangeLogsBlock = {
-    Header: {
+    header: {
         parentHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
         miner: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
         versionRoot: '0x1e78c4779248d3d8d3cd9b77bf7b67b4c759ec87d45d52a3e79c928290773f4c',
@@ -213,8 +216,8 @@ export const oneChangeLogsBlock = {
         extraData: '0x',
         hash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
     },
-    Txs: [],
-    ChangeLogs: [
+    transactions: [],
+    changeLogs: [
         {
             type: 'BalanceLog',
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
@@ -223,9 +226,9 @@ export const oneChangeLogsBlock = {
             extra: '',
         },
     ],
-    Events: [],
-    ConfirmPackage: [],
-    DeputyNodes: [
+    events: [],
+    confirms: [],
+    deputyNodes: [
         {
             lemoBase: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             nodeID:
