@@ -12,7 +12,6 @@ export const lemoBase = {
     records: {
         1: {
             height: '1',
-<<<<<<< HEAD
             version: '3',
         },
     },
@@ -25,8 +24,6 @@ export const formatedLemoBase = {
     records: {
         BalanceLog: {
             height: '1',
-=======
->>>>>>> 21ed764c7778b21a37d6361c640b03442c34c58f
             version: '1',
         },
     },
