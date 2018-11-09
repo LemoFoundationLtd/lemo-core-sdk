@@ -33,6 +33,7 @@ const mockInfos = [
         paramsCount: 1,
         reply(args) {
             const result = args[0] === miner.address ? miner.balance : emptyAccount.balance
+
             return result
         },
     },

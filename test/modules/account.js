@@ -2,12 +2,14 @@ import {assert} from 'chai'
 import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
 import {miner, formatedMiner, formatedSpecialLemoBase, formatedNoexistLemoBase} from '../datas'
+
 import '../mock'
 
 describe('account_getAccount', () => {
     it('account with miner balance', async () => {
         const lemo = new LemoClient()
         const result = await lemo.account.getAccount(miner.address)
+
         assert.deepEqual(result, formatedMiner)
     })
     it('account with special balance', async () => {
