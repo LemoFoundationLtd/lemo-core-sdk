@@ -1,22 +1,29 @@
-import BigNumber from 'bignumber.js'
 import nock from 'nock'
 import Tx from '../lib/tx'
 import {DEFAULT_HTTP_HOST} from '../lib/config'
-import {lemoBase, formatedLemoBase} from './datas'
-
-const emptyAccount = {
-    balance: '0x0',
-    codeHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
-    records: {},
-    root: '0x0000000000000000000000000000000000000000000000000000000000000000',
-}
+import {
+    miner,
+    emptyAccount,
+    currentBlock,
+    txsBlock,
+    block0,
+    testTx,
+    currentHeight,
+    oneChangeLogsBlock,
+    chainID,
+    HxGasPriceAdvice,
+    nodeVersion,
+    isMining,
+    peersCount,
+    infos,
+} from './datas'
 
 const mockInfos = [
     {
         method: 'account_getAccount',
         paramsCount: 1,
         reply(args) {
-            const result = args[0] === lemoBase.address ? lemoBase : emptyAccount
+            const result = args[0] === miner.address ? miner : emptyAccount
             result.address = args[0]
             return result
         },
@@ -25,8 +32,118 @@ const mockInfos = [
         method: 'account_getBalance',
         paramsCount: 1,
         reply(args) {
-            const result = args[0] === lemoBase.address ? new BigNumber(1599999999999999999999999900) : new BigNumber(0)
+            const result = args[0] === miner.address ? miner.balance : emptyAccount.balance
             return result
+        },
+    },
+    {
+        method: 'chain_latestStableBlock',
+        paramsCount: 1,
+        reply() {
+            return currentBlock
+        },
+    },
+    {
+        method: 'chain_currentBlock',
+        paramsCount: 1,
+        reply() {
+            return currentBlock
+        },
+    },
+    {
+        method: 'chain_getBlockByHeight',
+        paramsCount: 2,
+        reply(args) {
+            let result
+            if (args[0] === 1 && args[1] === true) {
+                result = txsBlock
+            } else if (args[0] === 0) {
+                result = block0
+            }
+            return result
+        },
+    },
+    {
+        method: 'chain_getBlockByHash',
+        paramsCount: 2,
+        reply(args) {
+            let result
+            if (args[0] === txsBlock.header.hash && args[1] === true) {
+                result = txsBlock
+            } else if (args[0] === testTx.hash) {
+                result = null
+            }
+            return result
+        },
+    },
+    {
+        method: 'chain_latestStableHeight',
+        paramsCount: 0,
+        reply() {
+            return currentHeight
+        },
+    },
+    {
+        method: 'chain_currentHeight',
+        paramsCount: 0,
+        reply() {
+            return currentHeight
+        },
+    },
+    {
+        method: 'chain_genesis',
+        paramsCount: 0,
+        reply() {
+            return oneChangeLogsBlock
+        },
+    },
+    {
+        method: 'chain_chainID',
+        paramsCount: 0,
+        reply() {
+            return chainID
+        },
+    },
+    {
+        method: 'chain_gasPriceAdvice',
+        paramsCount: 0,
+        reply() {
+            return HxGasPriceAdvice
+        },
+    },
+    {
+        method: 'chain_nodeVersion',
+        paramsCount: 0,
+        reply() {
+            return nodeVersion
+        },
+    },
+    {
+        method: 'mine_isMining',
+        paramsCount: 0,
+        reply() {
+            return isMining
+        },
+    },
+    {
+        method: 'mine_miner',
+        paramsCount: 0,
+        reply() {
+            return miner.address
+        },
+    },
+    {
+        method: 'net_peersCount',
+        paramsCount: 0,
+        reply() {
+            return peersCount
+        },
+    },
+    {
+        method: 'net_info',
+        paramsCount: 0,
+        reply() {
+            return infos
         },
     },
     {

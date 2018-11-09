@@ -1,7 +1,8 @@
 import {assert} from 'chai'
 import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
-import {testTx, currentBlock, oneChangeLogsBlock, txsBlock} from '../datas'
+import {testTx, currentBlock, oneChangeLogsBlock, txsBlock, block0, currentHeight} from '../datas'
+import '../mock'
 
 describe('chain_getCurrentBlock', () => {
     it('latestStableBlock', async () => {
@@ -22,6 +23,11 @@ describe('chain_getBlock', () => {
         const result = await lemo.getBlock(1, true)
         assert.deepEqual(result, txsBlock)
     })
+    it('getBlockByHeight(0)', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.getBlock(0)
+        assert.deepEqual(result, block0)
+    })
     it('getBlockByHash_noValue', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getBlock(testTx.hash)
@@ -29,7 +35,7 @@ describe('chain_getBlock', () => {
     })
     it('getBlockByHash_Value', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.getBlock('0x2eee5835c7f5f1ec12551d5863af6f4ce3a119fc6afecae83e3fdfcb2752d004', true)
+        const result = await lemo.getBlock(txsBlock.header.hash, true)
         assert.deepEqual(result, txsBlock)
     })
 })
@@ -38,12 +44,12 @@ describe('chain_getCurrentHeight', () => {
     it('latestStableHeight', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getCurrentHeight(true)
-        assert.strictEqual(result, 25)
+        assert.strictEqual(result, currentHeight)
     })
     it('currentHeight', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getCurrentHeight(false)
-        assert.strictEqual(result, 25)
+        assert.strictEqual(result, currentHeight)
     })
 })
 
@@ -86,27 +92,27 @@ describe('chain_watchBlock', () => {
     it('watchBlock false', async () => {
         const lemo = new LemoClient()
         const result = lemo.watchBlock(false, callback)
-        assert.equal(result, 0)
-        lemo.stopWatch(false, callback)
+        assert.equal(result, 1)
+        lemo.stopWatch(result, callback)
     })
     it('watchBlock true', () => {
         const lemo = new LemoClient()
         const result = lemo.watchBlock(true, callback)
-        assert.equal(result, 0)
-        lemo.stopWatch(false, callback)
+        assert.equal(result, 1)
+        lemo.stopWatch(result, callback)
     })
     it('watchBlock id++', () => {
         function getId() {
             const id = lemo.watchBlock(true, callback)
+            lemo.stopWatch(id, callback)
             return id
         }
         const lemo = new LemoClient()
         for (let i = 0; i < 3; i++) {
             getId()
             if (i === 2) {
-                assert.equal(getId(), 3)
+                assert.equal(getId(), 4)
             }
         }
-        lemo.stopWatch(false, callback)
     })
 })

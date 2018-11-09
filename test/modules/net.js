@@ -1,5 +1,6 @@
 import {assert} from 'chai'
 import LemoClient from '../../lib/index'
+import '../mock'
 
 describe('getPeersCount', () => {
     it('getPeersCount', async () => {
