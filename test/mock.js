@@ -5,11 +5,11 @@ import {
     miner,
     emptyAccount,
     currentBlock,
-    txsBlock,
+    formatedTxsBlock,
     block0,
     testTx,
     currentHeight,
-    oneChangeLogsBlock,
+    formatedOneChangeLogsBlock,
     chainID,
     HxGasPriceAdvice,
     nodeVersion,
@@ -57,7 +57,7 @@ const mockInfos = [
         reply(args) {
             let result
             if (args[0] === 1 && args[1] === true) {
-                result = txsBlock
+                result = formatedTxsBlock
             } else if (args[0] === 0) {
                 result = block0
             }
@@ -69,8 +69,8 @@ const mockInfos = [
         paramsCount: 2,
         reply(args) {
             let result
-            if (args[0] === txsBlock.header.hash && args[1] === true) {
-                result = txsBlock
+            if (args[0] === formatedTxsBlock.header.hash && args[1] === true) {
+                result = formatedTxsBlock
             } else if (args[0] === testTx.hash) {
                 result = null
             }
@@ -95,7 +95,7 @@ const mockInfos = [
         method: 'chain_genesis',
         paramsCount: 0,
         reply() {
-            return oneChangeLogsBlock
+            return formatedOneChangeLogsBlock
         },
     },
     {
@@ -185,4 +185,4 @@ function startMock() {
         })
 }
 
-startMock()
+// startMock()

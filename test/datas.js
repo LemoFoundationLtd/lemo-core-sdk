@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import {parseMoney, parseChangeLogType} from '../lib/utils'
 
 const bigNum = '0x111111111111111111111111111111111111111111111111111111111111'
 const bigString = '888888888888888888888888888888888888888888888888888888888888'
@@ -50,13 +51,13 @@ export const formatedMiner = {
         },
     },
 }
-export const formatedSpecialLemoBase = {
+export const formatedSpecialLemoMiner = {
     ...miner,
     address: '0x015780F8456F9c1532645087a19DcF9a7e0c7F97',
     balance: new BigNumber('0'),
     records: {},
 }
-export const formatedNoexistLemoBase = {
+export const formatedNoexistLemoMiner = {
     ...miner,
     address: '0x1234567890123456789012345678901234567890',
     balance: new BigNumber('0'),
@@ -72,7 +73,7 @@ export const testEmptyTx = {
     hash: '0x6648a4e6c41458a3e6dc62eb380892ae966ec4b62b27fa8399780f1a99dedb4e',
     rlpAfterSign:
         '0xf86d9400000000000000000000000000000000000000008084b2d05e00831e84808080845c107d948083020001a00425a02d5f230dbc9ea2325870de84f17bb802c2a9b7e4ec1c27874d6970fa7ea044cb0c2538e32de45980a7bc8f97805bb1bb7237b28558ae1945acce64c29fd4',
-    hashAfterSign: '0x66eb281e9f93ffb3de4d6b10eef4ecd841eb924f4cc51d0d59042a71fb3a0544',
+    hashAfterSign: '0x1708c423ba606b00ff14551f6ce2d205e7f710e97b9ead972cd5c8f686558c50',
 }
 
 // normal tx
@@ -81,9 +82,9 @@ export const testTx = {
         chainId: 200,
         to: '0x000000000000000000000001',
         toName: 'aa',
-        gasPrice: 2,
+        gasPrice: parseMoney(2),
         gasLimit: 100,
-        amount: 1,
+        amount: parseMoney(1),
         data: 12,
         expirationTime: 1544584596,
         message: 'aaa',
@@ -101,9 +102,9 @@ export const testBigTx = {
         chainId: 200,
         to: '0x1000000000000000000000000000000000000000',
         toName: bigString,
-        gasPrice: bigNum,
+        gasPrice: parseMoney(bigNum),
         gasLimit: 100,
-        amount: bigNum,
+        amount: parseMoney(bigNum),
         data: bigData,
         expirationTime: 1544584596,
         message: bigString,
@@ -121,9 +122,9 @@ const widthLemoAddrTestBigTx = {
         chainId: 200,
         to: testAddr,
         toName: bigString,
-        gasPrice: bigNum,
+        gasPrice: parseMoney(bigNum),
         gasLimit: 100,
-        amount: bigNum,
+        amount: parseMoney(bigNum),
         data: bigData,
         expirationTime: 1544584596,
         message: bigString,
@@ -164,7 +165,7 @@ export const currentBlock = {
     transactions: null,
 }
 
-export const txsBlock = {
+export const formatedTxsBlock = {
     header: {
         parentHash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
         miner: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
@@ -188,9 +189,9 @@ export const txsBlock = {
         {
             to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
             toName: '',
-            gasPrice: '3000000000',
+            gasPrice: parseMoney('3000000000'),
             gasLimit: '2000000',
-            amount: '100',
+            amount: parseMoney('100'),
             data: '0x',
             expirationTime: '1541649535',
             message: '',
@@ -202,21 +203,21 @@ export const txsBlock = {
     ],
     changeLogs: [
         {
-            type: '1',
+            type: parseChangeLogType('1'),
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '2',
             newValue: '0x8c052b7d2dcc8093e1eb610f9c',
             extra: '',
         },
         {
-            type: '1',
+            type: parseChangeLogType('1'),
             address: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
             version: '1',
             newValue: '0x64',
             extra: '',
         },
         {
-            type: '1',
+            type: parseChangeLogType('1'),
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '3',
             newValue: '0x8c052b7d2dcc80cd2e3fffff9c',
@@ -252,7 +253,7 @@ export const block0 = {
     confirms: null,
     deputyNodes: null,
 }
-export const oneChangeLogsBlock = {
+export const formatedOneChangeLogsBlock = {
     header: {
         parentHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
         miner: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
@@ -274,7 +275,7 @@ export const oneChangeLogsBlock = {
     transactions: [],
     changeLogs: [
         {
-            type: '1',
+            type: parseChangeLogType('1'),
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '1',
             newValue: '0x8c052b7d2dcc80cd2e40000000',
