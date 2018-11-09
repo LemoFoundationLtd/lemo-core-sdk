@@ -126,8 +126,8 @@ API | 功能 | 可远程使用
 
 ### 数据结构
 
-#### block
 <a name="data-structure-block"></a>
+#### block
 ```json
 {
     "header": {},
@@ -145,8 +145,8 @@ API | 功能 | 可远程使用
 - `events` 该块中所有交易产生的[合约事件](#data-structure-event)列表
 - `deputyNodes` 如果该块是一个`快照块`，则这里保存新一代[共识节点信息](#data-structure-deputyNode)的列表。否则为空
 
-#### header
 <a name="data-structure-header"></a>
+#### header
 区块头
 ```json
 {
@@ -155,7 +155,7 @@ API | 功能 | 可远程使用
     "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "miner": "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG",
     "signData": "0x",
-    "timestamp": "1535630400"
+    "timestamp": "1535630400",
     "gasLimit": "105000000",
     "gasUsed": "0",
     "eventBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
@@ -183,8 +183,8 @@ API | 功能 | 可远程使用
 - `versionRoot` 该块打包时全局账户版本树的根节点hash
 - `extraData` (可选) 出块者向区块中添加的自定义信息
 
-#### transaction
 <a name="data-structure-transaction"></a>
+#### transaction
 交易
 ```json
 {
@@ -223,8 +223,8 @@ chainID | 说明
 ---|---
 1 | LemoChain主网
 
-#### changeLog
 <a name="data-structure-changeLog"></a>
+#### changeLog
 交易对链上数据的修改记录
 ```json
 {
@@ -247,25 +247,24 @@ CodeLog | 合约账户创建 | 合约code | -
 AddEventLog | 产生一条合约日志 | 合约日志 | -
 SuicideLog | 合约账户销毁 | - | -
 
-#### confirm
 <a name="data-structure-confirm"></a>
+#### confirm
 共识节点验证区块通过后，对该块hash的签名
 ```
 0x1234
 ```
 
-#### event
 <a name="data-structure-event"></a>
+#### event
 合约事件
 ```json
 {
-    "address": "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG",
-    ...
+    "address": "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
 }
 ```
 
-#### deputyNode
 <a name="data-structure-deputyNode"></a>
+#### deputyNode
 共识节点的信息
 ```json
 {
@@ -280,12 +279,12 @@ SuicideLog | 合约账户销毁 | - | -
 - `ip` 节点的ip地址
 - `minerAddress` 节点的Lemo收益账号地址
 - `nodeID` 节点的ID，即节点对区块签名时的私钥对应的公钥
-- `port` 节点的端口号
+- `port` 与其它节点链接用的端口号
 - `rank` 节点的排名
 - `votes` 节点的总票数
 
-#### account
 <a name="data-structure-account"></a>
+#### account
 账户信息
 ```json
 {
@@ -293,8 +292,8 @@ SuicideLog | 合约账户销毁 | - | -
     "balance": "1599999999999999999999999900",
     "records": {
         "BalanceLog": {
-            version: "3",
-            height: "1"
+            "version": "3",
+            "height": "1"
         }
     },
     "codeHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -315,14 +314,15 @@ lemo = new LemoClient({
     host: 'http://127.0.0.1:8001'
 })
 ```
-- `host` LemoChain节点的地址。默认值`http://127.0.0.1:8001`
+- `host` LemoChain节点的HTTP连接地址。默认值`http://127.0.0.1:8001`
 > 注意: 如果连接后出现跨域问题，则需要用参数`--rpccorsdomain http://sdk所在web的域名:端口号`的方式启动LemoChain节点
 
+---
 
 ### chain模块API
 
-#### lemo.getBlock
 <a name="submodule-chain-getBlock"></a>
+#### lemo.getBlock
 ```
 lemo.getBlock(heightOrHash [, withBody])
 ```
@@ -344,8 +344,8 @@ lemo.getBlock(0).then(function(block) {
 
 ---
 
-#### lemo.getCurrentBlock
 <a name="submodule-chain-getCurrentBlock"></a>
+#### lemo.getCurrentBlock
 ```
 lemo.getCurrentBlock([stable [, withBody]])
 ```
@@ -367,8 +367,8 @@ lemo.getCurrentBlock(true).then(function(block) {
 
 ---
 
-#### lemo.getCurrentHeight
 <a name="submodule-chain-getCurrentHeight"></a>
+#### lemo.getCurrentHeight
 ```
 lemo.getCurrentHeight([stable])
 ```
@@ -389,8 +389,8 @@ lemo.getCurrentHeight(true).then(function(height) {
 
 ---
 
-#### lemo.getGenesis
 <a name="submodule-chain-getGenesis"></a>
+#### lemo.getGenesis
 ```
 lemo.getGenesis()
 ```
@@ -411,8 +411,8 @@ lemo.getGenesis().then(function(height) {
 
 ---
 
-#### lemo.getChainID
 <a name="submodule-chain-getChainID"></a>
+#### lemo.getChainID
 ```
 lemo.getChainID()
 ```
@@ -433,8 +433,8 @@ lemo.getChainID().then(function(chainID) {
 
 ---
 
-#### lemo.getGasPriceAdvice
 <a name="submodule-chain-getGasPriceAdvice"></a>
+#### lemo.getGasPriceAdvice
 ```
 lemo.getGasPriceAdvice()
 ```
@@ -455,8 +455,8 @@ lemo.getGasPriceAdvice().then(function(gasPrice) {
 
 ---
 
-#### lemo.getNodeVersion
 <a name="submodule-chain-getNodeVersion"></a>
+#### lemo.getNodeVersion
 ```
 lemo.getNodeVersion()
 ```
@@ -477,8 +477,8 @@ lemo.getNodeVersion().then(function(version) {
 
 ---
 
-#### lemo.getSdkVersion
 <a name="submodule-chain-getSdkVersion"></a>
+#### lemo.getSdkVersion
 ```
 lemo.getSdkVersion()
 ```
@@ -499,8 +499,8 @@ lemo.getSdkVersion().then(function(version) {
 
 ---
 
-#### lemo.watchBlock
 <a name="submodule-chain-watchBlock"></a>
+#### lemo.watchBlock
 ```
 lemo.watchBlock(withBody, callback)
 ```
@@ -525,8 +525,8 @@ lemo.watchBlock(true, function(block) {
 
 ### net模块API
 
-#### lemo.net.connect
 <a name="submodule-net-connect"></a>
+#### lemo.net.connect
 ```
 lemo.net.connect(nodeAddr)
 ```
@@ -545,8 +545,8 @@ lemo.net.connect('127.0.0.1:60002')
 
 ---
 
-#### lemo.net.disconnect
 <a name="submodule-net-disconnect"></a>
+#### lemo.net.disconnect
 ```
 lemo.net.disconnect(nodeAddr)
 ```
@@ -567,8 +567,8 @@ lemo.net.disconnect('127.0.0.1:60002').then(function(success) {
 
 ---
 
-#### lemo.net.getConnections
 <a name="submodule-net-getConnections"></a>
+#### lemo.net.getConnections
 ```
 lemo.net.getConnections()
 ```
@@ -594,8 +594,8 @@ lemo.net.getConnections().then(function(connections) {
 
 ---
 
-#### lemo.net.getConnectionsCount
 <a name="submodule-net-getConnectionsCount"></a>
+#### lemo.net.getConnectionsCount
 ```
 lemo.net.getConnectionsCount()
 ```
@@ -616,8 +616,8 @@ lemo.net.getConnectionsCount().then(function(count) {
 
 ---
 
-#### lemo.net.getInfo
 <a name="submodule-net-getInfo"></a>
+#### lemo.net.getInfo
 ```
 lemo.net.getInfo()
 ```
@@ -627,7 +627,7 @@ lemo.net.getInfo()
 无
 
 ##### Returns
-`Promise` - 通过`then`可以获取到连接数
+`Promise` - 通过`then`可以获取到节点信息
 
 ##### Example
 ```js
@@ -644,8 +644,8 @@ lemo.net.getInfo().then(function(info) {
 
 ### mine模块API
 
+<a name="submodule-mine-start"></a>
 #### lemo.mine.start
-<a name="submodule-mine-getInfo"></a>
 ```
 lemo.mine.start()
 ```
@@ -664,8 +664,8 @@ lemo.mine.start()
 
 ---
 
-#### lemo.mine.stop
 <a name="submodule-mine-stop"></a>
+#### lemo.mine.stop
 ```
 lemo.mine.stop()
 ```
@@ -684,8 +684,8 @@ lemo.mine.stop()
 
 ---
 
-#### lemo.mine.getMining
 <a name="submodule-mine-getMining"></a>
+#### lemo.mine.getMining
 ```
 lemo.mine.getMining()
 ```
@@ -706,8 +706,8 @@ lemo.mine.getMining().then(function(isMining) {
 
 ---
 
-#### lemo.mine.getMiner
 <a name="submodule-mine-getMiner"></a>
+#### lemo.mine.getMiner
 ```
 lemo.mine.getMiner()
 ```
@@ -731,8 +731,8 @@ lemo.mine.getMiner()
 
 ### account模块API
 
-#### lemo.account.newKeyPair
 <a name="submodule-account-newKeyPair"></a>
+#### lemo.account.newKeyPair
 ```
 lemo.account.newKeyPair()
 ```
@@ -755,8 +755,8 @@ lemo.account.newKeyPair()
 
 ---
 
-#### lemo.account.getBalance
 <a name="submodule-account-getBalance"></a>
+#### lemo.account.getBalance
 ```
 lemo.account.getBalance(address)
 ```
@@ -778,8 +778,8 @@ lemo.account.getBalance('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
 
 ---
 
-#### lemo.account.getAccount
 <a name="submodule-account-getAccount"></a>
+#### lemo.account.getAccount
 ```
 lemo.account.getAccount(address)
 ```
@@ -803,8 +803,8 @@ lemo.account.getBalance('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
 
 ### tx模块API
 
-#### lemo.tx.sendTx
 <a name="submodule-tx-sendTx"></a>
+#### lemo.tx.sendTx
 ```
 lemo.tx.sendTx(privateKey, txInfo)
 ```
@@ -812,18 +812,18 @@ lemo.tx.sendTx(privateKey, txInfo)
 
 ##### Parameters
 1. `string` - 账户私钥
-2. `object` - 签名前的[交易信息](#data-structure-transaction)
-    - `type` - `{number}` (选填) 交易类型，默认值为0
-    - `version` - `{number}` (选填) 交易编码版本号，默认值为0
-    - `chainId` - `{number}` (选填) 区块链的chainID，默认值为1，即LemoChain主链
-    - `to` - `{string}` (选填) 交易接收者的账户地址。为空表示这是创建智能合约的交易，必须携带`data`
-    - `toName` - `{string}` (选填) 交易接收者的账户名，会与账户地址进行比对校验。类似银行转账时填写的姓名与卡号的关系
-    - `amount` - `{number|string}` (选填) 交易金额，单位`mo`，默认值为0
-    - `gasPrice` - `{number|string}` (选填) 交易消耗的gas上限，默认值为3000000000
-    - `gasLimit` - `{number|string}` (选填) 交易消耗gas的单价，单位为`mo`，默认值为2000000
-    - `data` - `{Buffer|string}` (选填) 交易附带的数据，可用于调用智能合约，默认为空
-    - `expirationTime` - `{number}` (选填)交易过期时间戳，单位为秒，默认值为半小时后
-    - `message` - `{string}` (选填)交易附带的文本消息，默认为空
+2. `object` - 签名前的交易信息
+    - `type` - (number) (选填) 交易类型，默认值为`0`
+    - `version` - (number) (选填) 交易编码版本号，默认值为`0`
+    - `chainId` - (number) (选填) 区块链的chainID，默认值为`1`，即LemoChain主链
+    - `to` - (string) (选填) 交易接收者的账户地址。为空表示这是创建智能合约的交易，必须携带`data`
+    - `toName` - (string) (选填) 交易接收者的账户名，会与账户地址进行比对校验。类似银行转账时填写的姓名与卡号的关系
+    - `amount` - (number|string) (选填) 交易金额，单位`mo`，默认值为`0`
+    - `gasPrice` - (number|string) (选填) 交易消耗的gas上限，默认值为`3000000000`
+    - `gasLimit` - (number|string) (选填) 交易消耗gas的单价，单位为`mo`，默认值为`2000000`
+    - `data` - (Buffer|string) (选填) 交易附带的数据，可用于调用智能合约，默认为空
+    - `expirationTime` - (number) (选填)交易过期时间戳，单位为秒，默认值为半小时后
+    - `message` - (string) (选填)交易附带的文本消息，默认为空
 
 ##### Returns
 `Promise` - 通过`then`可以获取到交易hash
@@ -839,19 +839,23 @@ lemo.tx.sendTx('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee
 
 ---
 
-#### lemo.tx.sign
 <a name="submodule-tx-sign"></a>
+#### lemo.tx.sign
 ```
 lemo.tx.sign(privateKey, txInfo)
 ```
-签名交易并返回出签名后的交易信息字符串。可以在离线电脑上签名，再将签名后的数据拷到联网电脑上，通过[`lemo.tx.send`](submodule-tx-send)方法发送出去
+签名交易并返回出签名后的交易信息字符串  
+该方法用于实现安全的离线交易
+1. 在离线电脑上签名
+2. 将签名后的数据拷贝到联网电脑上
+3. 通过[`lemo.tx.send`](submodule-tx-send)方法发送到LemoChain
 
 ##### Parameters
 1. `string` - 账户私钥
 2. `object` - 签名前的交易信息，细节参考[`lemo.tx.sendTx`](submodule-tx-sendTx)
 
 ##### Returns
-`Promise` - 通过`then`可以获取到签名后的交易信息字符串
+`Promise` - 通过`then`可以获取到签名后的[交易](#data-structure-transaction)信息字符串
 
 ##### Example
 ```js
@@ -865,19 +869,19 @@ lemo.tx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52
 
 ---
 
-#### lemo.tx.send
 <a name="submodule-tx-send"></a>
+#### lemo.tx.send
 ```
 lemo.tx.send(signedTxInfo)
 ```
 发送已签名的交易
 
 ##### Parameters
-1. `object|string` - 签名后的交易信息，可以是对象形式也可以是[`lemo.tx.sign`](submodule-tx-sign)返回的字符串形式  
+1. `object|string` - 签名后的[交易](#data-structure-transaction)信息，可以是对象形式也可以是[`lemo.tx.sign`](submodule-tx-sign)返回的字符串形式  
     相对于[`lemo.tx.sendTx`](submodule-tx-sendTx)中的交易信息少了`type`、`version`、`chainId`字段，并多出了以下字段
-    - `r` - `{Buffer|string}` 交易签名字段
-    - `s` - `{Buffer|string}` 交易签名字段
-    - `v` - `{Buffer|string}` `type`、`version`、交易签名字段、`chainId`这4个字段组合而成的数据
+    - `r` - (Buffer|string) 交易签名字段
+    - `s` - (Buffer|string) 交易签名字段
+    - `v` - (Buffer|string) `type`、`version`、交易签名字段、`chainId`这4个字段组合而成的数据
 
 ##### Returns
 `Promise` - 通过`then`可以获取到交易hash
@@ -895,8 +899,8 @@ lemo.tx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52
 
 ---
 
-#### lemo.tx.watchPendingTx
 <a name="submodule-tx-watchPendingTx"></a>
+#### lemo.tx.watchPendingTx
 ```
 lemo.tx.watchPendingTx(callback)
 ```
@@ -919,8 +923,8 @@ lemo.watchPendingTx(true, function(transactions) {
 
 ### 其它API
 
-#### lemo.stopWatch
 <a name="submodule-stopWatch"></a>
+#### lemo.stopWatch
 ```
 lemo.tx.stopWatch(watchId)
 ```
@@ -939,8 +943,8 @@ lemo.stopWatch()
 
 ---
 
-#### lemo.isWatching
 <a name="submodule-isWatching"></a>
+#### lemo.isWatching
 ```
 lemo.tx.isWatching()
 ```
