@@ -12,7 +12,7 @@
 通过 JSON RPC 协议访问LemoChain上的数据
 
 
-> 需要先在本地或远程通过`--rpc`参数启动一个LemoChain的节点，才能运行本项目
+> 需要先在本地通过`--rpc`参数启动一个[LemoChain节点](https://github.com/LemoFoundationLtd/lemochain-go)，或远程连接到一个已存在的LemoChain节点，才能运行本项目
 
 [中文版](https://github.com/LemoFoundationLtd/lemo-client/blob/master/README_zh.md)  
 [English](https://github.com/LemoFoundationLtd/lemo-client/blob/master/README.md)
@@ -276,10 +276,10 @@ SuicideLog | 合约账户销毁 | - | -
     "votes": "50000"
 }
 ```
-- `ip` 节点的ip地址
-- `minerAddress` 节点的Lemo收益账号地址
+- `ip` 节点的IP地址
+- `minerAddress` 节点的挖矿收益账号地址
 - `nodeID` 节点的ID，即节点对区块签名时的私钥对应的公钥
-- `port` 与其它节点链接用的端口号
+- `port` 与其它节点连接用的端口号
 - `rank` 节点的排名
 - `votes` 节点的总票数
 
@@ -742,13 +742,14 @@ lemo.account.newKeyPair()
 无
 
 ##### Returns
-`Promise` - 通过`then`可以获取到私钥和账号地址
+`Promise` - 通过`then`可以获取到私钥，账号公钥和账号地址
 
 ##### Example
 ```js
 lemo.account.newKeyPair()
     .then(function(accountKey) {
         console.log(accountKey.private); // "0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52"
+        console.log(accountKey.public); // "0x0b3eebecd39c972767ad39e2df2db4c8af91b9f50a038e18f1e20335630d11624a794c5e0e4d6a0547f30bf21ca1d6cf87f6390676f42c2201b15fdc88d5f6f7"
         console.log(accountKey.address); // "Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34"
     })
 ```

@@ -12,7 +12,7 @@
 This is the LemoChain compatible JavaScript SDK which implements the Generic JSON RPC.
 
 
-> You need to run a local or remote LemoChain node with flag `--rpc` to use this library.
+> You need to run a local [LemoChain node](https://github.com/LemoFoundationLtd/lemochain-go) with flag `--rpc` or connect to a remote LemoChain node to use this library.
 
 [中文版](https://github.com/LemoFoundationLtd/lemo-client/blob/master/README_zh.md)  
 [English](https://github.com/LemoFoundationLtd/lemo-client/blob/master/README.md)
@@ -276,7 +276,7 @@ Deputy node information
     "votes": "50000"
 }
 ```
-- `ip` Deputy node ip address
+- `ip` Deputy node IP address
 - `minerAddress` The account address to receive mining benefit
 - `nodeID` The LemoChain node ID, it is from the public key whose private key is using for sign blocks
 - `port` The port to connect other nodes
@@ -749,6 +749,7 @@ None
 lemo.account.newKeyPair()
     .then(function(accountKey) {
         console.log(accountKey.private); // "0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52"
+        console.log(accountKey.public); // "0x0b3eebecd39c972767ad39e2df2db4c8af91b9f50a038e18f1e20335630d11624a794c5e0e4d6a0547f30bf21ca1d6cf87f6390676f42c2201b15fdc88d5f6f7"
         console.log(accountKey.address); // "Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34"
     })
 ```
