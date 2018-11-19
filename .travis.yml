@@ -11,7 +11,7 @@ before_script:
 cache: yarn
 install:
 - yarn install
-- yarn global add node-coveralls
+- yarn global add coveralls
 
 
 script:
