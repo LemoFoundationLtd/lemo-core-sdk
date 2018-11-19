@@ -44,8 +44,7 @@
     "scripts": {
         "build": "rollup -c && rollup -c rollup-umd.config.js",
         "dev": "rollup -c -w",
-        
-        "test": "nyc --reporter=text node test | tap-spec",
+        "test": "mocha",
         "pretest": "npm run build",
         "lint": "eslint -f node_modules/eslint-friendly-formatter lib, test --fix"
     },
