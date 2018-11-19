@@ -10,7 +10,7 @@ before_script:
 script:
   - npm run-script build
   - npm run-script lint
-  - npm run coverage
+  - npm run test
   
 after_success:
   - npm run coveralls
