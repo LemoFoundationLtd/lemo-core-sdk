@@ -7,7 +7,7 @@ before_script:
   - npm install
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-  - npm -g add node-coveralls
+  - npm -g install node-coveralls
 script:
   - npm run-script build
   - npm run-script lint
