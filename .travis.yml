@@ -7,12 +7,15 @@ before_script:
   - npm install
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-  - npm install node-coveralls
+ 
+cache: yarn
+install:
+- yarn install
+- yarn global add node-coveralls
+
+
 script:
   - npm run-script build
   - npm run-script lint
-  - npm jest --coverage --coverageReporters=text-lcov | coveralls
-  
-  
-sudo: false
+  - yarn jest --coverage --coverageReporters=text-lcov | coveralls
 
