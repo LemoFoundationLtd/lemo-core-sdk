@@ -3,12 +3,23 @@ node_js:
   - "6"
   - "8"
   - "9"
+branches:
+ only:
+ - master
+
+install:
+    - npm install
+
 before_script:
-  - npm install
+  - npm test
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
 script:
   - npm run-script build
   - npm run-script lint
+  - npm run cover
+
+after_success:
+    - npm run coveralls
 
