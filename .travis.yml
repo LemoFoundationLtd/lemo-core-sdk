@@ -9,6 +9,6 @@ install:
 script:
 - npm run-script build
 - npm run-script lint
-- npm cover
+- npm run cover
 after_success:
 - npm run coveralls
