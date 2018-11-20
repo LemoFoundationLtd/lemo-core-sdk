@@ -1,23 +1,14 @@
 language: node_js
 node_js:
-  - "10"
+- 10
 branches:
- only:
- - master
-
+  only:
+  - master
 install:
-    - npm install
-
-before_script:
-  - npm test
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - npm run cover
+- npm install
 script:
-  - npm run-script build
-  - npm run-script lint
-
-
+- npm run-script build
+- npm run-script lint
+- npm test
 after_success:
-    - npm run coveralls
-
+- npm run coveralls
