@@ -47,7 +47,8 @@
         "build": "rollup -c && rollup -c rollup-umd.config.js",
         "dev": "rollup -c -w",
         "test": "mocha",
-        "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+        "cover": "istanbul cover node_modules/mocha/bin/_mocha",
+        "coveralls": "npm run cover  --report lcovonly && cat ./coverage/lcov.info | coveralls",
         "pretest": "npm run build",
         "lint": "eslint -f node_modules/eslint-friendly-formatter lib, test --fix"
     },
