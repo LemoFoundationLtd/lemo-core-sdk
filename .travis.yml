@@ -13,4 +13,4 @@ script:
     - npm run lint
     - npm test
 after_success:
-    - npm run coveralls
+    - yarn -- --report lcovonly && cat ./coverage/lcov.info | coveralls
