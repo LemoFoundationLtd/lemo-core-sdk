@@ -312,11 +312,13 @@ Account information
 ### Constructor
 ```
 lemo = new LemoClient({
+    chainID: 1, 
     host: 'http://127.0.0.1:8001'
 })
 ```
+- `chainID` ChainID of LemoChain. Default value is `1`, it represents main net
 - `host` LemoChain node's http listening address. The default value is  `http://127.0.0.1:8001`
-> NOTE: If the cross domain issue appear. Try to use flag `--rpccorsdomain http://[domain of the web page]:[port]` to restart LemoChain node.
+    > NOTE: If the cross domain issue appear. Try to use flag `--rpccorsdomain http://[domain of the web page]:[port]` to restart LemoChain node.
 
 ---
 
@@ -817,14 +819,13 @@ Sign and send transaction
 2. `object` - Unsigned transaction
     - `type` - (number) (optional) Transaction type. Default value is `0`
     - `version` - (number) (optional) Transaction encode version. Default value is `0`
-    - `chainID` - (number) (optional) ChainID of LemoChain. Default value is `1`, it represents main net
     - `to` - (string) (optional) Recipient address. Empty `to` represents a contract creation transaction with contract code in `data` field
     - `toName` - (string) (optional) Recipient name. It will be checked with `to` for safe
     - `amount` - (number|string) (optional) Amount in `mo`. Default value is `0`
     - `gasPrice` - (number|string) (optional) Max gas limit of transaction. Default value is `3000000000`
     - `gasLimit` - (number|string) (optional) Price of every gas in `mo`. Default value is `2000000`
     - `data` - (Buffer|string) (optional) The extra data. It usually be using for calling smart contract
-    - `expirationTime` - (number) (optional) The expiration time of transaction in seconds. Default is half hour from now
+    - `expirationTime` - (number|string) (optional) The expiration time of transaction in seconds. Default is half hour from now
     - `message` - (string) (optional) Extra text message from sender
 
 ##### Returns
@@ -879,7 +880,7 @@ lemo.tx.send(signedTxInfo)
 Send a signed transaction
 
 ##### Parameters
-1. `object|string` - Signed [transaction](#data-structure-transaction) information. It could be a string which returned by [`lemo.tx.sign`](submodule-tx-sign), as well as an object like the same parameter in [`lemo.tx.sendTx`](submodule-tx-sendTx), but it these fields instead of `type`, `version`, `chainID`:
+1. `object|string` - Signed [transaction](#data-structure-transaction) information. It could be a string which returned by [`lemo.tx.sign`](submodule-tx-sign), as well as an object like the same parameter in [`lemo.tx.sendTx`](submodule-tx-sendTx), but these fields instead of `type`, `version`:
     - `r` - (Buffer|string) Signature data
     - `s` - (Buffer|string) Signature data
     - `v` - (Buffer|string) This field is combined from transaction `type`, `version`(current is 0), `signature recovery data`, `chainID`
