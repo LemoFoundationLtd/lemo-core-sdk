@@ -4,6 +4,23 @@ import Signer from '../../lib/tx/signer';
 import {parseV} from '../../lib/tx/tx_helper';
 import {testPrivate, testAddr, testTxs} from '../datas'
 
+describe('Signer_new', () => {
+    it('chainID 1', () => {
+        const signer = new Signer(1)
+        assert.equal(signer.chainID, 1)
+    })
+    it('chainID 0', () => {
+        assert.throws(() => {
+            new Signer(0)
+        }, 'ChainID should not be empty')
+    })
+    it('no chainID', () => {
+        assert.throws(() => {
+            new Signer()
+        }, 'ChainID should not be empty')
+    })
+})
+
 describe('Signer_sign', () => {
     it('chainID 1', () => {
         const signer = new Signer(1)
@@ -31,14 +48,21 @@ describe('Signer_sign', () => {
 })
 
 describe('Signer_recover', () => {
-    const signer = new Signer(1)
-
-    it('with signature', () => {
+    it('successfully recover', () => {
+        const signer = new Signer(1)
         return Promise.all(testTxs.map(async (test, i) => {
             const tx = new Tx(test.txConfig)
             signer.sign(tx, testPrivate)
             const from = signer.recover(tx)
             assert.equal(testAddr, from, `index=${i}`)
         }))
+    })
+
+    it('wrong chainID', () => {
+        const signer = new Signer(1)
+        const tx = new Tx(testTxs[0].txConfig)
+        signer.sign(tx, testPrivate)
+        const from = new Signer(200).recover(tx)
+        assert.notEqual(testAddr, from)
     })
 })

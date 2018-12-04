@@ -4,9 +4,39 @@ import HttpConn from '../lib/network/conn/http_conn'
 import errors from '../lib/errors'
 
 describe('LemoClient_new', () => {
-    it('default conn', () => {
+    it('no config', () => {
         const lemo = new LemoClient()
         assert.equal(lemo._requester.conn instanceof HttpConn, true)
+        assert.equal(lemo.config.chainID, 1)
+        assert.equal(lemo.config.conn.send, undefined)
+        assert.equal(lemo.config.conn.host, 'http://127.0.0.1:8001')
+        assert.equal(lemo.config.conn.timeout, undefined)
+        assert.equal(lemo.config.conn.username, undefined)
+        assert.equal(lemo.config.conn.password, undefined)
+        assert.equal(lemo.config.conn.headers, undefined)
+        assert.equal(lemo.config.pollDuration, 3000)
+        assert.equal(lemo.config.maxPollRetry, 5)
+    })
+    it('full config', () => {
+        const config = {
+            chainID: 1,
+            host: 'http://127.0.0.1:8002',
+            timeout: 100,
+            username: 'a',
+            password: 'b',
+            headers: {c: 'd'},
+            pollDuration: 10,
+            maxPollRetry: 10,
+        }
+        const lemo = new LemoClient(config)
+        assert.equal(lemo.config.chainID, config.chainID)
+        assert.equal(lemo.config.conn.host, config.host)
+        assert.equal(lemo.config.conn.timeout, config.timeout)
+        assert.equal(lemo.config.conn.username, config.username)
+        assert.equal(lemo.config.conn.password, config.password)
+        assert.equal(lemo.config.conn.headers, config.headers)
+        assert.equal(lemo.config.pollDuration, config.pollDuration)
+        assert.equal(lemo.config.maxPollRetry, config.maxPollRetry)
     })
     it('http conn', () => {
         const lemo = new LemoClient({host: 'http://127.0.0.1:8002'})
@@ -45,7 +75,7 @@ describe('LemoClient_new', () => {
         ])
     })
     it('hide property', () => {
-        const hideProperties = ['_requester', '_createAPI']
+        const hideProperties = ['_requester', '_createAPI', '_signer']
         hideProperties.forEach(property => {
             const lemo = new LemoClient()
             assert.exists(lemo._requester)
