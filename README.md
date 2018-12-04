@@ -222,6 +222,7 @@ transaction type | description
 chainID | description
 ---|---
 1 | LemoChain main net
+100 | LemoChain test net
 
 <a name="data-structure-changeLog"></a>
 #### changeLog
@@ -816,7 +817,7 @@ Sign and send transaction
 2. `object` - Unsigned transaction
     - `type` - (number) (optional) Transaction type. Default value is `0`
     - `version` - (number) (optional) Transaction encode version. Default value is `0`
-    - `chainId` - (number) (optional) ChainID of LemoChain. Default value is `1`, it represents main net
+    - `chainID` - (number) (optional) ChainID of LemoChain. Default value is `1`, it represents main net
     - `to` - (string) (optional) Recipient address. Empty `to` represents a contract creation transaction with contract code in `data` field
     - `toName` - (string) (optional) Recipient name. It will be checked with `to` for safe
     - `amount` - (number|string) (optional) Amount in `mo`. Default value is `0`
@@ -878,7 +879,7 @@ lemo.tx.send(signedTxInfo)
 Send a signed transaction
 
 ##### Parameters
-1. `object|string` - Signed [transaction](#data-structure-transaction) information. It could be a string which returned by [`lemo.tx.sign`](submodule-tx-sign), as well as an object like the same parameter in [`lemo.tx.sendTx`](submodule-tx-sendTx), but it these fields instead of `type`, `version`, `chainId`:
+1. `object|string` - Signed [transaction](#data-structure-transaction) information. It could be a string which returned by [`lemo.tx.sign`](submodule-tx-sign), as well as an object like the same parameter in [`lemo.tx.sendTx`](submodule-tx-sendTx), but it these fields instead of `type`, `version`, `chainID`:
     - `r` - (Buffer|string) Signature data
     - `s` - (Buffer|string) Signature data
     - `v` - (Buffer|string) This field is combined from transaction `type`, `version`(current is 0), `signature recovery data`, `chainID`

@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
-import {testTx, currentBlock, oneChangeLogsBlock, txsBlock, block0, currentHeight} from '../datas'
+import {testTx, chainID, currentBlock, oneChangeLogsBlock, txsBlock, block0, currentHeight} from '../datas'
 import '../mock'
 
 describe('chain_getCurrentBlock', () => {
@@ -65,7 +65,7 @@ describe('chain_getChainID', () => {
     it('getChainID', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getChainID()
-        assert.strictEqual(result, 1)
+        assert.strictEqual(result, chainID)
     })
 })
 
@@ -88,7 +88,8 @@ describe('chain_getNodeVersion', () => {
 })
 
 describe('chain_watchBlock', () => {
-    const callback = () => {}
+    const callback = () => {
+    }
     it('watchBlock false', async () => {
         const lemo = new LemoClient()
         const result = lemo.watchBlock(false, callback)
@@ -107,6 +108,7 @@ describe('chain_watchBlock', () => {
             lemo.stopWatch(id, callback)
             return id
         }
+
         const lemo = new LemoClient()
         for (let i = 0; i < 3; i++) {
             getId()

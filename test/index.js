@@ -33,7 +33,7 @@ describe('LemoClient_new', () => {
         }
 
         const lemo = new LemoClient(conn)
-        assert.equal(lemo._requester.conn, conn)
+        assert.equal(lemo._requester.conn.send, conn.send)
         await lemo.getCurrentBlock()
         assert.deepEqual(sendRecord, [
             {
@@ -59,7 +59,8 @@ describe('LemoClient_new', () => {
 
 describe('LemoClient__createAPI', () => {
     const testConn = {
-        send: () => {},
+        send: () => {
+        },
     }
 
     it('lemo.test.setData', () => {

@@ -240,6 +240,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | chainID | 说明           |
 | ------- | -------------- |
 | 1       | LemoChain 主网 |
+| 100     | LemoChain 测试网 |
 
 <a name="data-structure-changeLog"></a>
 
@@ -980,7 +981,7 @@ lemo.tx.sendTx(privateKey, txInfo)
 2. `object` - 签名前的交易信息
     - `type` - (number) (选填) 交易类型，默认值为`0`
     - `version` - (number) (选填) 交易编码版本号，默认值为`0`
-    - `chainId` - (number) (选填) 区块链的 chainID，默认值为`1`，即 LemoChain 主链
+    - `chainID` - (number) (选填) 区块链的 chainID，默认值为`1`，即 LemoChain 主链
     - `to` - (string) (选填) 交易接收者的账户地址。为空表示这是创建智能合约的交易，必须携带`data`
     - `toName` - (string) (选填) 交易接收者的账户名，会与账户地址进行比对校验。类似银行转账时填写的姓名与卡号的关系
     - `amount` - (number|string) (选填) 交易金额，单位`mo`，默认值为`0`
@@ -1054,10 +1055,10 @@ lemo.tx.send(signedTxInfo)
 ##### Parameters
 
 1. `object|string` - 签名后的[交易](#data-structure-transaction)信息，可以是对象形式也可以是[`lemo.tx.sign`](submodule-tx-sign)返回的字符串形式  
-   相对于[`lemo.tx.sendTx`](submodule-tx-sendTx)中的交易信息少了`type`、`version`、`chainId`字段，并多出了以下字段
+   相对于[`lemo.tx.sendTx`](submodule-tx-sendTx)中的交易信息少了`type`、`version`、`chainID`字段，并多出了以下字段
     - `r` - (Buffer|string) 交易签名字段
     - `s` - (Buffer|string) 交易签名字段
-    - `v` - (Buffer|string) `type`、`version`、交易签名字段、`chainId`这 4 个字段组合而成的数据
+    - `v` - (Buffer|string) `type`、`version`、交易签名字段、`chainID`这 4 个字段组合而成的数据
 
 ##### Returns
 

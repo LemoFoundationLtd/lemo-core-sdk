@@ -1,5 +1,5 @@
 import nock from 'nock'
-import Tx from '../lib/tx'
+import Tx from '../lib/tx/tx'
 import {DEFAULT_HTTP_HOST} from '../lib/config'
 import {
     miner,
