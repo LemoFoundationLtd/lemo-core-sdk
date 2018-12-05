@@ -1,11 +1,12 @@
 import {assert} from 'chai';
 import HttpConn from '../../../lib/network/conn/http_conn'
+import errors from '../../../lib/errors';
 
 describe('HttpConn_new', () => {
     it('empty host', () => {
         assert.throws(() => {
             new HttpConn()
-        }, 'Http host should not be empty')
+        }, errors.InvalidHTTPHost())
     });
     it('default conn', () => {
         const host = 'http://127.0.0.1:8001'

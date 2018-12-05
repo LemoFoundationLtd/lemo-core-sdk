@@ -50,13 +50,13 @@ export const formatedMiner = {
         },
     },
 }
-export const formatedSpecialLemoBase = {
+export const formattedSpecialLemoBase = {
     ...miner,
     address: '0x015780F8456F9c1532645087a19DcF9a7e0c7F97',
     balance: new BigNumber('0'),
     records: {},
 }
-export const formatedNoexistLemoBase = {
+export const formattedNotExistLemoBase = {
     ...miner,
     address: '0x1234567890123456789012345678901234567890',
     balance: new BigNumber('0'),
@@ -158,10 +158,25 @@ export const currentBlock = {
         transactionRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
         versionRoot: '0x8117e9b6e78c6182a504aee2141e44dccd93fa0e8a0defbf77237b3c7fc79536',
     },
-    transactions: null,
+    transactions: [
+        {
+            to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
+            toName: '',
+            gasPrice: '3000000000',
+            gasLimit: '2000000',
+            amount: '101',
+            data: '0x',
+            expirationTime: '1541649536',
+            message: '',
+            v: '0x30001',
+            r: '0x1111111111111111111111111111111111111111111111111111111111111111',
+            s: '0x1111111111111111111111111111111111111111111111111111111111111111',
+            hash: '0x1111111111111111111111111111111111111111111111111111111111111111',
+        },
+    ],
 }
 
-export const txsBlock = {
+export const block1 = {
     header: {
         parentHash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
         miner: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
@@ -295,12 +310,3 @@ export const oneChangeLogsBlock = {
 
 export const testTxs = [testEmptyTx, testTx, testBigTx]
 export const withLemoAddrTestTxs = [testEmptyTx, testTx, widthLemoAddrTestBigTx]
-export default {
-    testPrivate,
-    testAddr,
-    miner,
-    testEmptyTx,
-    testTx,
-    testBigTx,
-    testTxs,
-}

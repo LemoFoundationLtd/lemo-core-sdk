@@ -1,42 +1,63 @@
 import {assert} from 'chai'
 import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
-import {testTx, chainID, currentBlock, oneChangeLogsBlock, txsBlock, block0, currentHeight} from '../datas'
+import {chainID, currentBlock, oneChangeLogsBlock, block1, block0, currentHeight} from '../datas'
 import '../mock'
+import {POLL_DURATION} from '../../lib/config';
 
 describe('chain_getCurrentBlock', () => {
-    it('latestStableBlock', async () => {
+    it('latestStableBlock with body', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.getCurrentBlock(true)
+        const result = await lemo.getCurrentBlock(true, true)
         assert.deepEqual(result, currentBlock)
     })
-    it('currentBlock', async () => {
+    it('latestStableBlock without body', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.getCurrentBlock(false)
+        const result = await lemo.getCurrentBlock(true, false)
+        assert.deepEqual(result, {...currentBlock, transactions: null})
+    })
+    it('currentBlock with body', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.getCurrentBlock(false, true)
         assert.deepEqual(result, currentBlock)
+    })
+    it('currentBlock without body', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.getCurrentBlock(false, false)
+        assert.deepEqual(result, {...currentBlock, transactions: null})
     })
 })
 
 describe('chain_getBlock', () => {
-    it('getBlockByHeight', async () => {
+    it('getBlockByHeight with body', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getBlock(1, true)
-        assert.deepEqual(result, txsBlock)
+        assert.deepEqual(result, block1)
+    })
+    it('getBlockByHeight without body', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.getBlock(1)
+        assert.deepEqual(result, {...block1, transactions: null})
     })
     it('getBlockByHeight(0)', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getBlock(0)
         assert.deepEqual(result, block0)
     })
-    it('getBlockByHash_noValue', async () => {
+    it('getBlockByHash with body', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.getBlock(testTx.hash)
-        assert.equal(result, null)
+        const result = await lemo.getBlock(block1.header.hash, true)
+        assert.deepEqual(result, block1)
     })
-    it('getBlockByHash_Value', async () => {
+    it('getBlockByHash without body', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.getBlock(txsBlock.header.hash, true)
-        assert.deepEqual(result, txsBlock)
+        const result = await lemo.getBlock(block1.header.hash, false)
+        assert.deepEqual(result, {...block1, transactions: null})
+    })
+    it('getBlockByHash not exist', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.getBlock('0x1234')
+        assert.equal(result, null)
     })
 })
 
@@ -88,33 +109,32 @@ describe('chain_getNodeVersion', () => {
 })
 
 describe('chain_watchBlock', () => {
-    const callback = () => {
-    }
-    it('watchBlock false', async () => {
-        const lemo = new LemoClient()
-        const result = lemo.watchBlock(false, callback)
-        assert.equal(result, 1)
-        lemo.stopWatch(result, callback)
-    })
-    it('watchBlock true', () => {
-        const lemo = new LemoClient()
-        const result = lemo.watchBlock(true, callback)
-        assert.equal(result, 1)
-        lemo.stopWatch(result, callback)
-    })
-    it('watchBlock id++', () => {
-        function getId() {
-            const id = lemo.watchBlock(true, callback)
-            lemo.stopWatch(id, callback)
-            return id
-        }
+    it('watchBlock without body', function itFunc(done) {
+        this.timeout(POLL_DURATION + 50)
 
         const lemo = new LemoClient()
-        for (let i = 0; i < 3; i++) {
-            getId()
-            if (i === 2) {
-                assert.equal(getId(), 4)
+        lemo.watchBlock(false, (block) => {
+            try {
+                assert.deepEqual(block, {...currentBlock, transactions: null})
+                done()
+            } catch (e) {
+                done(e)
             }
-        }
+            lemo.stopWatch()
+        })
+    })
+    it('watchBlock with body', function itFunc(done) {
+        this.timeout(POLL_DURATION + 50)
+
+        const lemo = new LemoClient()
+        lemo.watchBlock(true, (block) => {
+            try {
+                assert.deepEqual(block, currentBlock)
+                done()
+            } catch (e) {
+                done(e)
+            }
+            lemo.stopWatch()
+        })
     })
 })

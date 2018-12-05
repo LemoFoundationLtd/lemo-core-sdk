@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
-import {miner, formatedMiner, formatedSpecialLemoBase, formatedNoexistLemoBase} from '../datas'
+import {miner, formatedMiner, formattedSpecialLemoBase, formattedNotExistLemoBase} from '../datas'
 
 import '../mock'
 
@@ -15,13 +15,13 @@ describe('account_getAccount', () => {
     it('account with special balance', async () => {
         const lemo = new LemoClient()
         const result = await lemo.account.getAccount('0x015780F8456F9c1532645087a19DcF9a7e0c7F97')
-        assert.deepEqual(result, formatedSpecialLemoBase)
+        assert.deepEqual(result, formattedSpecialLemoBase)
     })
 
     it('not exist account', async () => {
         const lemo = new LemoClient()
         const result = await lemo.account.getAccount('0x1234567890123456789012345678901234567890')
-        assert.deepEqual(result, formatedNoexistLemoBase)
+        assert.deepEqual(result, formattedNotExistLemoBase)
     })
 })
 

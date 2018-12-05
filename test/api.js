@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import Api from '../lib/api'
 import errors from '../lib/errors';
-import Signer from "../lib/tx/signer";
+import Signer from '../lib/tx/signer';
 
 describe('Api_new', () => {
     const testRequester = {

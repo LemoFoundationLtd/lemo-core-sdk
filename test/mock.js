@@ -5,9 +5,8 @@ import {
     miner,
     emptyAccount,
     currentBlock,
-    txsBlock,
+    block1,
     block0,
-    testTx,
     currentHeight,
     oneChangeLogsBlock,
     chainID,
@@ -22,44 +21,46 @@ const mockInfos = [
     {
         method: 'account_getAccount',
         paramsCount: 1,
-        reply(args) {
-            const result = args[0] === miner.address ? miner : emptyAccount
-            result.address = args[0]
-            return result
+        reply([address]) {
+            const result = address === miner.address ? miner : emptyAccount
+            return {...result, address}
         },
     },
     {
         method: 'account_getBalance',
         paramsCount: 1,
-        reply(args) {
-            const result = args[0] === miner.address ? miner.balance : emptyAccount.balance
-
-            return result
+        reply([address]) {
+            return address === miner.address ? miner.balance : emptyAccount.balance
         },
     },
     {
         method: 'chain_latestStableBlock',
         paramsCount: 1,
-        reply() {
-            return currentBlock
+        reply([withBody]) {
+            return withBody ? currentBlock : {...currentBlock, transactions: null}
         },
     },
     {
         method: 'chain_currentBlock',
         paramsCount: 1,
-        reply() {
-            return currentBlock
+        reply([withBody]) {
+            return withBody ? currentBlock : {...currentBlock, transactions: null}
         },
     },
     {
         method: 'chain_getBlockByHeight',
         paramsCount: 2,
-        reply(args) {
-            let result
-            if (args[0] === 1 && args[1] === true) {
-                result = txsBlock
-            } else if (args[0] === 0) {
+        reply([height, withBody]) {
+            let result = null
+            if (height === 2) {
+                result = currentBlock
+            } else if (height === 1) {
+                result = block1
+            } else if (height === 0) {
                 result = block0
+            }
+            if (result && !withBody) {
+                result = {...result, transactions: null}
             }
             return result
         },
@@ -67,12 +68,17 @@ const mockInfos = [
     {
         method: 'chain_getBlockByHash',
         paramsCount: 2,
-        reply(args) {
-            let result
-            if (args[0] === txsBlock.header.hash && args[1] === true) {
-                result = txsBlock
-            } else if (args[0] === testTx.hash) {
-                result = null
+        reply([hash, withBody]) {
+            let result = null
+            if (hash === currentBlock.header.hash) {
+                result = currentBlock
+            } else if (hash === block1.header.hash) {
+                result = block1
+            } else if (hash === block0.header.hash) {
+                result = block0
+            }
+            if (result && !withBody) {
+                result = {...result, transactions: null}
             }
             return result
         },
@@ -150,8 +156,8 @@ const mockInfos = [
     {
         method: 'tx_sendTx',
         paramsCount: 1,
-        reply(args) {
-            const tx = new Tx(args[0])
+        reply([txConfig]) {
+            const tx = new Tx(txConfig)
             return `0x${tx.hash().toString('hex')}`
         },
     },
@@ -159,7 +165,7 @@ const mockInfos = [
 
 function startMock() {
     nock(DEFAULT_HTTP_HOST)
-        // .log(console.log)
+    // .log(console.log)
         .post('/', body => {
             const mockInfo = mockInfos.find(info => info.method === body.method)
             return (
