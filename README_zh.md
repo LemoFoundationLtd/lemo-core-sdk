@@ -349,10 +349,12 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 
 ```
 lemo = new LemoClient({
+    chainID: 1, 
     host: 'http://127.0.0.1:8001'
 })
 ```
 
+-   `chainID` 区块链的 chainID，默认值为`1`，即 LemoChain 主链
 -   `host` LemoChain 节点的 HTTP 连接地址。默认值`http://127.0.0.1:8001`
     > 注意: 如果连接后出现跨域问题，则需要用参数`--rpccorsdomain http://sdk所在web的域名:端口号`的方式启动 LemoChain 节点
 
@@ -981,14 +983,13 @@ lemo.tx.sendTx(privateKey, txInfo)
 2. `object` - 签名前的交易信息
     - `type` - (number) (选填) 交易类型，默认值为`0`
     - `version` - (number) (选填) 交易编码版本号，默认值为`0`
-    - `chainID` - (number) (选填) 区块链的 chainID，默认值为`1`，即 LemoChain 主链
     - `to` - (string) (选填) 交易接收者的账户地址。为空表示这是创建智能合约的交易，必须携带`data`
     - `toName` - (string) (选填) 交易接收者的账户名，会与账户地址进行比对校验。类似银行转账时填写的姓名与卡号的关系
     - `amount` - (number|string) (选填) 交易金额，单位`mo`，默认值为`0`
     - `gasPrice` - (number|string) (选填) 交易消耗的 gas 上限，默认值为`3000000000`
     - `gasLimit` - (number|string) (选填) 交易消耗 gas 的单价，单位为`mo`，默认值为`2000000`
     - `data` - (Buffer|string) (选填) 交易附带的数据，可用于调用智能合约，默认为空
-    - `expirationTime` - (number) (选填)交易过期时间戳，单位为秒，默认值为半小时后
+    - `expirationTime` - (number|string) (选填)交易过期时间戳，单位为秒，默认值为半小时后
     - `message` - (string) (选填)交易附带的文本消息，默认为空
 
 ##### Returns
@@ -1055,7 +1056,7 @@ lemo.tx.send(signedTxInfo)
 ##### Parameters
 
 1. `object|string` - 签名后的[交易](#data-structure-transaction)信息，可以是对象形式也可以是[`lemo.tx.sign`](submodule-tx-sign)返回的字符串形式  
-   相对于[`lemo.tx.sendTx`](submodule-tx-sendTx)中的交易信息少了`type`、`version`、`chainID`字段，并多出了以下字段
+   相对于[`lemo.tx.sendTx`](submodule-tx-sendTx)中的交易信息少了`type`、`version`字段，并多出了以下字段
     - `r` - (Buffer|string) 交易签名字段
     - `s` - (Buffer|string) 交易签名字段
     - `v` - (Buffer|string) `type`、`version`、交易签名字段、`chainID`这 4 个字段组合而成的数据

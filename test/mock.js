@@ -1,6 +1,5 @@
 import nock from 'nock'
 import Tx from '../lib/tx/tx'
-import {DEFAULT_HTTP_HOST} from '../lib/config'
 import {
     miner,
     emptyAccount,
@@ -164,8 +163,8 @@ const mockInfos = [
 ]
 
 function startMock() {
-    nock(DEFAULT_HTTP_HOST)
-    // .log(console.log)
+    nock('http://127.0.0.1:8001')
+        // .log(console.log)
         .post('/', body => {
             const mockInfo = mockInfos.find(info => info.method === body.method)
             return (
