@@ -632,7 +632,7 @@ lemo.net.connect(nodeAddr)
 
 ##### Parameters
 
-1. `string` - ip 地址
+1. `string` - 节点 ID 和 IP 地址
 
 ##### Returns
 
@@ -641,7 +641,7 @@ lemo.net.connect(nodeAddr)
 ##### Example
 
 ```js
-lemo.net.connect('127.0.0.1:60002')
+lemo.net.connect('5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0@127.0.0.1:60002')
 ```
 
 ---
