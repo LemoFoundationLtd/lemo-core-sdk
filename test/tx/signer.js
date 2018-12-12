@@ -54,7 +54,7 @@ describe('Signer_recover', () => {
             const tx = new Tx(test.txConfig)
             signer.sign(tx, testPrivate)
             const from = signer.recover(tx)
-            assert.equal(testAddr, from, `index=${i}`)
+            assert.equal(from, testAddr, `index=${i}`)
         }))
     })
 
@@ -63,6 +63,6 @@ describe('Signer_recover', () => {
         const tx = new Tx(testTxs[0].txConfig)
         signer.sign(tx, testPrivate)
         const from = new Signer(200).recover(tx)
-        assert.notEqual(testAddr, from)
+        assert.notEqual(from, testAddr)
     })
 })

@@ -73,3 +73,4 @@ modules.xml
 
 /.reify-cache/
 /.nyc_output/
+/coverage/

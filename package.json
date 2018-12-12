@@ -46,9 +46,9 @@
     "scripts": {
         "build": "rollup -c && rollup -c rollup-umd.config.js",
         "dev": "rollup -c -w",
-        "test": "mocha",
-        "cover": "istanbul cover node_modules/mocha/bin/_mocha",
-        "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
+        "test": "mocha --recursive",
+        "cover": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --recursive",
+        "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls",
         "pretest": "npm run build",
         "lint": "eslint -f node_modules/eslint-friendly-formatter lib, test --fix"
     },
