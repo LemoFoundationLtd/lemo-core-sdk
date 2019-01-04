@@ -205,6 +205,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 
 ```json
 {
+    "from": "Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D",
     "to": "Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY",
     "toName": "",
     "amount": "100",
@@ -220,6 +221,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 }
 ```
 
+-   `from` 交易发送者的账户地址。由签名字段解析得到
 -   `to` 交易接收者的账户地址
 -   `toName` (可选) 交易接收者的账户名，会与账户地址进行比对校验。类似银行转账时填写的姓名与卡号的关系
 -   `amount` 交易金额，单位`mo`。1`LEMO`=1000000000000000000`mo`=1e18`mo`
