@@ -160,6 +160,7 @@ export const currentBlock = {
     },
     transactions: [
         {
+            from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D',
             to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
             toName: 'aa',
             gasPrice: '3000000000',
@@ -198,6 +199,7 @@ export const block1 = {
     },
     transactions: [
         {
+            from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
             toName: '',
             gasPrice: '3000000000',
@@ -214,21 +216,21 @@ export const block1 = {
     ],
     changeLogs: [
         {
-            type: '1',
+            type: undefined,
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '2',
             newValue: '0x8c052b7d2dcc8093e1eb610f9c',
             extra: '',
         },
         {
-            type: '1',
+            type: undefined,
             address: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
             version: '1',
             newValue: '0x64',
             extra: '',
         },
         {
-            type: '1',
+            type: undefined,
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '3',
             newValue: '0x8c052b7d2dcc80cd2e3fffff9c',
@@ -286,7 +288,7 @@ export const oneChangeLogsBlock = {
     transactions: [],
     changeLogs: [
         {
-            type: '1',
+            type: undefined,
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '1',
             newValue: '0x8c052b7d2dcc80cd2e40000000',
@@ -307,6 +309,33 @@ export const oneChangeLogsBlock = {
         },
     ],
 }
+export const formatBlock = {
+    ...block1,
+    changeLogs: [
+        {
+            type: undefined,
+            address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
+            version: '2',
+            newValue: '0x8c052b7d2dcc8093e1eb610f9c',
+            extra: '',
+        },
+        {
+            type: undefined,
+            address: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
+            version: '1',
+            newValue: '0x64',
+            extra: '',
+        },
+        {
+            type: undefined,
+            address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
+            version: '3',
+            newValue: '0x8c052b7d2dcc80cd2e3fffff9c',
+            extra: '',
+        },
+    ],
+}
+
 
 export const testTxs = [testEmptyTx, testTx, testBigTx]
 export const withLemoAddrTestTxs = [testEmptyTx, testTx, widthLemoAddrTestBigTx]
