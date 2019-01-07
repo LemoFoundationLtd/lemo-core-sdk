@@ -176,6 +176,9 @@ export const currentBlock = {
         },
     ],
 }
+export const formattedCurrentBlock = {
+    ...currentBlock,
+}
 
 export const block1 = {
     header: {
@@ -241,6 +244,33 @@ export const block1 = {
     confirms: [],
     deputyNodes: [],
 }
+
+export const formattedBlock1 = {
+    ...block1,
+    changeLogs: [
+        {
+            type: 'BalanceLog',
+            address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
+            version: '2',
+            newValue: '0x8c052b7d2dcc8093e1eb610f9c',
+            extra: '',
+        },
+        {
+            type: 'BalanceLog',
+            address: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
+            version: '1',
+            newValue: '0x64',
+            extra: '',
+        },
+        {
+            type: 'BalanceLog',
+            address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
+            version: '3',
+            newValue: '0x8c052b7d2dcc80cd2e3fffff9c',
+            extra: '',
+        },
+    ],
+}
 export const block0 = {
     header: {
         parentHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
@@ -266,7 +296,11 @@ export const block0 = {
     confirms: null,
     deputyNodes: null,
 }
-export const oneChangeLogsBlock = {
+
+export const formattedBlock0 = {
+    ...block0,
+}
+export const oneChangeLogBlock = {
     header: {
         parentHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
         miner: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
@@ -285,8 +319,16 @@ export const oneChangeLogsBlock = {
         extraData: '0x',
         hash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
     },
-    transactions: null,
-    changeLogs: null,
+    transactions: [],
+    changeLogs: [
+        {
+            type: '1',
+            address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
+            version: '2',
+            newValue: '0x8c052b7d2dcc8093e1eb610f9c',
+            extra: '',
+        },
+    ],
     events: [],
     confirms: [],
     deputyNodes: [
@@ -301,28 +343,14 @@ export const oneChangeLogsBlock = {
         },
     ],
 }
-export const formatBlock = {
-    ...block1,
+export const formattedOneChangeLogBlock = {
+    ...oneChangeLogBlock,
     changeLogs: [
         {
             type: 'BalanceLog',
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '2',
             newValue: '0x8c052b7d2dcc8093e1eb610f9c',
-            extra: '',
-        },
-        {
-            type: 'BalanceLog',
-            address: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
-            version: '1',
-            newValue: '0x64',
-            extra: '',
-        },
-        {
-            type: 'BalanceLog',
-            address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
-            version: '3',
-            newValue: '0x8c052b7d2dcc80cd2e3fffff9c',
             extra: '',
         },
     ],

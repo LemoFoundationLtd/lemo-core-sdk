@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
-import {chainID, currentBlock, oneChangeLogsBlock, block0, formatBlock, currentHeight} from '../datas'
+import {chainID, formattedCurrentBlock, formattedOneChangeLogBlock, formattedBlock0, formattedBlock1, currentHeight} from '../datas'
 import '../mock'
 import {POLL_DURATION} from '../../lib/config'
 
@@ -9,22 +9,22 @@ describe('chain_getCurrentBlock', () => {
     it('latestStableBlock with body', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getCurrentBlock(true, true)
-        assert.deepEqual(result, currentBlock)
+        assert.deepEqual(result, formattedCurrentBlock)
     })
     it('latestStableBlock without body', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getCurrentBlock(true, false)
-        assert.deepEqual(result, {...currentBlock, transactions: null})
+        assert.deepEqual(result, {...formattedCurrentBlock, transactions: null})
     })
-    it('currentBlock with body', async () => {
+    it('formattedCurrentBlock with body', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getCurrentBlock(false, true)
-        assert.deepEqual(result, currentBlock)
+        assert.deepEqual(result, formattedCurrentBlock)
     })
-    it('currentBlock without body', async () => {
+    it('formattedCurrentBlock without body', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getCurrentBlock(false, false)
-        assert.deepEqual(result, {...currentBlock, transactions: null})
+        assert.deepEqual(result, {...formattedCurrentBlock, transactions: null})
     })
 })
 
@@ -32,27 +32,27 @@ describe('chain_getBlock', () => {
     it('getBlockByHeight with body', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getBlock(1, true)
-        assert.deepEqual(result, formatBlock)
+        assert.deepEqual(result, formattedBlock1)
     })
     it('getBlockByHeight without body', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getBlock(1)
-        assert.deepEqual(result, {...formatBlock, transactions: null})
+        assert.deepEqual(result, {...formattedBlock1, transactions: null})
     })
     it('getBlockByHeight(0)', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getBlock(0)
-        assert.deepEqual(result, block0)
+        assert.deepEqual(result, formattedBlock0)
     })
     it('getBlockByHash with body', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.getBlock(formatBlock.header.hash, true)
-        assert.deepEqual(result, formatBlock)
+        const result = await lemo.getBlock(formattedBlock1.header.hash, true)
+        assert.deepEqual(result, formattedBlock1)
     })
     it('getBlockByHash without body', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.getBlock(formatBlock.header.hash, false)
-        assert.deepEqual(result, {...formatBlock, transactions: null})
+        const result = await lemo.getBlock(formattedBlock1.header.hash, false)
+        assert.deepEqual(result, {...formattedBlock1, transactions: null})
     })
     it('getBlockByHash not exist', async () => {
         const lemo = new LemoClient()
@@ -78,7 +78,7 @@ describe('chain_getGenesis', () => {
     it('getGenesis', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getGenesis()
-        assert.deepEqual(result, oneChangeLogsBlock)
+        assert.deepEqual(result, formattedOneChangeLogBlock)
     })
 })
 
@@ -115,7 +115,7 @@ describe('chain_watchBlock', () => {
         const lemo = new LemoClient()
         lemo.watchBlock(false, block => {
             try {
-                assert.deepEqual(block, {...currentBlock, transactions: null})
+                assert.deepEqual(block, {...formattedCurrentBlock, transactions: null})
                 done()
             } catch (e) {
                 done(e)
@@ -129,7 +129,7 @@ describe('chain_watchBlock', () => {
         const lemo = new LemoClient()
         lemo.watchBlock(true, block => {
             try {
-                assert.deepEqual(block, currentBlock)
+                assert.deepEqual(block, formattedCurrentBlock)
                 done()
             } catch (e) {
                 done(e)
