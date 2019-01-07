@@ -7,7 +7,7 @@ import {
     block1,
     block0,
     currentHeight,
-    oneChangeLogBlock,
+    oneChangeLogsBlock,
     chainID,
     HxGasPriceAdvice,
     nodeVersion,
@@ -100,7 +100,7 @@ const mockInfos = [
         method: 'chain_genesis',
         paramsCount: 0,
         reply() {
-            return oneChangeLogBlock
+            return oneChangeLogsBlock
         },
     },
     {
