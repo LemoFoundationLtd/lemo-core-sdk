@@ -216,21 +216,21 @@ export const block1 = {
     ],
     changeLogs: [
         {
-            type: undefined,
+            type: '1',
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '2',
             newValue: '0x8c052b7d2dcc8093e1eb610f9c',
             extra: '',
         },
         {
-            type: undefined,
+            type: '1',
             address: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
             version: '1',
             newValue: '0x64',
             extra: '',
         },
         {
-            type: undefined,
+            type: '1',
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '3',
             newValue: '0x8c052b7d2dcc80cd2e3fffff9c',
@@ -285,16 +285,8 @@ export const oneChangeLogsBlock = {
         extraData: '0x',
         hash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
     },
-    transactions: [],
-    changeLogs: [
-        {
-            type: undefined,
-            address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
-            version: '1',
-            newValue: '0x8c052b7d2dcc80cd2e40000000',
-            extra: '',
-        },
-    ],
+    transactions: null,
+    changeLogs: null,
     events: [],
     confirms: [],
     deputyNodes: [
@@ -313,21 +305,21 @@ export const formatBlock = {
     ...block1,
     changeLogs: [
         {
-            type: undefined,
+            type: 'BalanceLog',
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '2',
             newValue: '0x8c052b7d2dcc8093e1eb610f9c',
             extra: '',
         },
         {
-            type: undefined,
+            type: 'BalanceLog',
             address: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
             version: '1',
             newValue: '0x64',
             extra: '',
         },
         {
-            type: undefined,
+            type: 'BalanceLog',
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '3',
             newValue: '0x8c052b7d2dcc80cd2e3fffff9c',
@@ -335,7 +327,6 @@ export const formatBlock = {
         },
     ],
 }
-
 
 export const testTxs = [testEmptyTx, testTx, testBigTx]
 export const withLemoAddrTestTxs = [testEmptyTx, testTx, widthLemoAddrTestBigTx]
