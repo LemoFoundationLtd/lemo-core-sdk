@@ -1,4 +1,5 @@
 import replace from 'rollup-plugin-replace';
+import babel from 'rollup-plugin-babel';
 import pkg from './package.json';
 
 export default [
@@ -22,6 +23,10 @@ export default [
             replace({
                 'process.browser': 'true',
                 'process.env.SDK_VERSION': JSON.stringify(pkg.version),
+            }),
+            babel({
+                exclude: 'node_modules/**',
+                runtimeHelpers: true
             }),
         ]
     }
