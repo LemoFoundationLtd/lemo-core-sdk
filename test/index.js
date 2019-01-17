@@ -129,6 +129,20 @@ describe('LemoClient__createAPI', () => {
         assert.isFunction(lemo.setData2)
     })
 
+    it('object format', () => {
+        const lemo = new LemoClient(testConn)
+        lemo._createAPI('', {
+            setData: {
+                method: 'api_name',
+            },
+            setData2: {
+                method: 'api_name2',
+            },
+        })
+        assert.isFunction(lemo.setData)
+        assert.isFunction(lemo.setData2)
+    })
+
     it('0 api', async () => {
         const lemo = new LemoClient(testConn)
         lemo._createAPI('aaa', [])
