@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 import replace from 'rollup-plugin-replace'
-import pkg from './package.json'
 import babel from 'rollup-plugin-babel'
-=======
-import replace from 'rollup-plugin-replace';
-import babel from 'rollup-plugin-babel';
-import pkg from './package.json';
->>>>>>> b1f2a6c5b02fc2306ca1c43879a0879a1f0c7c71
+import pkg from './package.json'
 
 export default [
     {
@@ -30,15 +24,8 @@ export default [
             }),
             babel({
                 exclude: 'node_modules/**',
-<<<<<<< HEAD
                 runtimeHelpers: true,
             }),
         ],
     },
-=======
-                runtimeHelpers: true
-            }),
-        ]
-    }
->>>>>>> b1f2a6c5b02fc2306ca1c43879a0879a1f0c7c71
 ]
