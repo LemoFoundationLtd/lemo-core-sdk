@@ -45,39 +45,39 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 
 ## LemoChain API
 
-> 大多数接口都返回 Promise 对象, 除了 `watchXXX`、`stopWatch` 等  
+> 所有异步接口都返回 Promise 对象  
 > 所有接口都可在 LemoChain 节点的控制台中使用，但通过远程连接（如 http、websocket）到节点时，只能使用部分接口
 
-| API                                                                        | 功能                           | 可远程使用 |
-| -------------------------------------------------------------------------- | ------------------------------ | ---------- |
-| [lemo.getBlock(heightOrHash, withBody)](#submodule-chain-getBlock)         | 根据高度或 hash 获取区块       | ✓          |
-| [lemo.getCurrentBlock(stable, withBody)](#submodule-chain-getCurrentBlock) | 获取最新的块                   | ✓          |
-| [lemo.getCurrentHeight(stable)](#submodule-chain-getCurrentHeight)         | 获取当前高度                   | ✓          |
-| [lemo.getGenesis()](#submodule-chain-getGenesis)                           | 获取创世区块                   | ✓          |
-| [lemo.getChainID()](#submodule-chain-getChainID)                           | 获取当前链 ID                  | ✓          |
-| [lemo.getGasPriceAdvice()](#submodule-chain-getGasPriceAdvice)             | 获取建议 gas 价格              | ✓          |
-| [lemo.getNodeVersion()](#submodule-chain-getNodeVersion)                   | 节点版本号                     | ✓          |
-| [lemo.getSdkVersion()](#submodule-chain-getSdkVersion)                     | js SDK 版本号                  | ✓          |
-| [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock)         | 监听新的区块                   | ✓          |
-| [lemo.net.connect(nodeAddr)](#submodule-net-connect)                       | 连接节点                       | ✖          |
-| [lemo.net.disconnect(nodeAddr)](#submodule-net-disconnect)                 | 断开连接                       | ✖          |
-| [lemo.net.getConnections()](#submodule-net-getConnections)                 | 获取已建立的连接信息           | ✖          |
-| [lemo.net.getConnectionsCount()](#submodule-net-getConnectionsCount)       | 获取已建立的连接数             | ✓          |
-| [lemo.net.getInfo()](#submodule-net-getInfo)                               | 获取本节点信息                 | ✓          |
-| [lemo.mine.start()](#submodule-mine-start)                                 | 开启挖矿                       | ✖          |
-| [lemo.mine.stop()](#submodule-mine-stop)                                   | 停止挖矿                       | ✖          |
-| [lemo.mine.getMining()](#submodule-mine-getMining)                         | 是否正在挖矿                   | ✓          |
-| [lemo.mine.getMiner()](#submodule-mine-getMiner)                           | 获取当前共识节点的记账收益地址 | ✓          |
-| [lemo.account.newKeyPair()](#submodule-account-newKeyPair)                 | 创新账户公私钥                 | ✖          |
-| [lemo.account.getBalance(addr)](#submodule-account-getBalance)             | 获取账户余额                   | ✓          |
-| [lemo.account.getAccount(addr)](#submodule-account-getAccount)             | 获取账户信息                   | ✓          |
-| [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx)                 | 签名并发送交易                 | ✓          |
-| [lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign)                     | 签名交易                       | ✓          |
-| [lemo.tx.send(signedTxInfo)](#submodule-tx-send)                           | 发送已签名的交易               | ✓          |
-| [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx)           | 监听新的 pending 交易          | ✖          |
-| [lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress)             | LemoChain地址校验             | ✓          |
-| [lemo.stopWatch(watchId)](#submodule-stopWatch)                            | 停止指定的轮询或所有轮询       | ✓          |
-| [lemo.isWatching()](#submodule-isWatching)                                 | 是否正在轮询                   | ✓          |
+| API                                                                        | 功能                           | 异步 | 可远程使用 |
+| -------------------------------------------------------------------------- | ------------------------------ | ----- | ---------- |
+| [lemo.getBlock(heightOrHash, withBody)](#submodule-chain-getBlock)         | 根据高度或 hash 获取区块       | ✓    | ✓          |
+| [lemo.getCurrentBlock(stable, withBody)](#submodule-chain-getCurrentBlock) | 获取最新的块                   | ✓    | ✓          |
+| [lemo.getCurrentHeight(stable)](#submodule-chain-getCurrentHeight)         | 获取当前高度                   | ✓    | ✓          |
+| [lemo.getGenesis()](#submodule-chain-getGenesis)                           | 获取创世区块                   | ✓    | ✓          |
+| [lemo.getChainID()](#submodule-chain-getChainID)                           | 获取当前链 ID                  | ✓    | ✓          |
+| [lemo.getGasPriceAdvice()](#submodule-chain-getGasPriceAdvice)             | 获取建议 gas 价格              | ✓    | ✓          |
+| [lemo.getNodeVersion()](#submodule-chain-getNodeVersion)                   | 节点版本号                     | ✓    | ✓          |
+| [lemo.getSdkVersion()](#submodule-chain-getSdkVersion)                     | js SDK 版本号                  | ✖    | ✓          |
+| [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock)         | 监听新的区块                   | ✖    | ✓          |
+| [lemo.net.connect(nodeAddr)](#submodule-net-connect)                       | 连接节点                       | ✓    | ✖          |
+| [lemo.net.disconnect(nodeAddr)](#submodule-net-disconnect)                 | 断开连接                       | ✓    | ✖          |
+| [lemo.net.getConnections()](#submodule-net-getConnections)                 | 获取已建立的连接信息           | ✓    | ✖          |
+| [lemo.net.getConnectionsCount()](#submodule-net-getConnectionsCount)       | 获取已建立的连接数             | ✓    | ✓          |
+| [lemo.net.getInfo()](#submodule-net-getInfo)                               | 获取本节点信息                 | ✓    | ✓          |
+| [lemo.mine.start()](#submodule-mine-start)                                 | 开启挖矿                       | ✓    | ✖          |
+| [lemo.mine.stop()](#submodule-mine-stop)                                   | 停止挖矿                       | ✓    | ✖          |
+| [lemo.mine.getMining()](#submodule-mine-getMining)                         | 是否正在挖矿                   | ✓    | ✓          |
+| [lemo.mine.getMiner()](#submodule-mine-getMiner)                           | 获取当前共识节点的记账收益地址 | ✓    | ✓          |
+| [lemo.account.newKeyPair()](#submodule-account-newKeyPair)                 | 创新账户公私钥                 | ✓    | ✖          |
+| [lemo.account.getBalance(addr)](#submodule-account-getBalance)             | 获取账户余额                   | ✓    | ✓          |
+| [lemo.account.getAccount(addr)](#submodule-account-getAccount)             | 获取账户信息                   | ✓    | ✓          |
+| [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx)                 | 签名并发送交易                 | ✓    | ✓          |
+| [lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign)                     | 签名交易                       | ✖    | ✓          |
+| [lemo.tx.send(signedTxInfo)](#submodule-tx-send)                           | 发送已签名的交易               | ✓    | ✓          |
+| [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx)           | 监听新的 pending 交易          | ✖    | ✖          |
+| [lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress)             | LemoChain地址校验             | ✖    | ✓          |
+| [lemo.stopWatch(watchId)](#submodule-stopWatch)                            | 停止指定的轮询或所有轮询       | ✖    | ✓          |
+| [lemo.isWatching()](#submodule-isWatching)                                 | 是否正在轮询                   | ✖    | ✓          |
 
 ---
 
@@ -579,14 +579,12 @@ lemo.getSdkVersion()
 
 ##### Returns
 
-`Promise` - 通过`then`可以获取到 SDK 版本号
+`string` - SDK 版本号字符串
 
 ##### Example
 
 ```js
-lemo.getSdkVersion().then(function(version) {
-    console.log(version) // "1.0.0"
-})
+console.log(lemo.getSdkVersion()) // "1.0.0"
 ```
 
 ---
@@ -1032,16 +1030,15 @@ lemo.tx.sign(privateKey, txInfo)
 
 ##### Returns
 
-`Promise` - 通过`then`可以获取到签名后的[交易](#data-structure-transaction)信息字符串
+`string` - 签名后的[交易](#data-structure-transaction)信息字符串
 
 ##### Example
 
 ```js
 const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
-lemo.tx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', txInfo).then(function(signedTx) {
-    console.log(signedTx)
-    // {"amount":"100","expirationTime":"1535632200","gasLimit":"2000000","gasPrice":"3000000000","r":"0xdefbd406e0aed8a01ac33877a0267ca720e8231b7660d790386ae45686cf8781","s":"0x3de9fea170ec8fba0cd2574878554558616733c45ea03975bb41104bab3bd312","to":"Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34","v":"0x030001"}
-})
+const signedTx = lemo.tx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', txInfo)
+console.log(signedTx)
+// {"amount":"100","expirationTime":"1535632200","gasLimit":"2000000","gasPrice":"3000000000","r":"0xdefbd406e0aed8a01ac33877a0267ca720e8231b7660d790386ae45686cf8781","s":"0x3de9fea170ec8fba0cd2574878554558616733c45ea03975bb41104bab3bd312","to":"Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34","v":"0x030001"}
 ```
 
 ---

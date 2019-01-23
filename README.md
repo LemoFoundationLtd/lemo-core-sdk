@@ -48,36 +48,36 @@ lemo.chain.getBlockByNumber(0)
 > Almost every API returns a promise object, except `watchXXX`, `stopWatch` and so on  
 > All API available in the console of LemoChain node. But some APIs are not available over remote connection such as http, websocket
 
-API | description | available for remote
----|---|---
-[lemo.getBlock(heightOrHash, withBody)](#submodule-chain-getBlock) | Get block by height or block hash | ✓
-[lemo.getCurrentBlock(stable, withBody)](#submodule-chain-getCurrentBlock) | Get the newest block | ✓
-[lemo.getCurrentHeight(stable)](#submodule-chain-getCurrentHeight) | Get the newest block height | ✓
-[lemo.getGenesis()](#submodule-chain-getGenesis) | Get the first block | ✓
-[lemo.getChainID()](#submodule-chain-getChainID) | Get the chain ID | ✓
-[lemo.getGasPriceAdvice()](#submodule-chain-getGasPriceAdvice) | Get transaction gas price advice | ✓
-[lemo.getNodeVersion()](#submodule-chain-getNodeVersion) | Get the version of LemoChain node | ✓
-[lemo.getSdkVersion()](#submodule-chain-getSdkVersion) | Get the version of lemo-client | ✓
-[lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock) | Listen for new block | ✓
-[lemo.net.connect(nodeAddr)](#submodule-net-connect) | Connect to a LemoChain node | ✖
-[lemo.net.disconnect(nodeAddr)](#submodule-net-disconnect) | Disconnect to a LemoChain node | ✖
-[lemo.net.getConnections()](#submodule-net-getConnections) | Get the information of connections | ✖
-[lemo.net.getConnectionsCount()](#submodule-net-getConnectionsCount) | Get the count of connections | ✓
-[lemo.net.getInfo()](#submodule-net-getInfo) | Get current node information | ✓
-[lemo.mine.start()](#submodule-mine-start) | Start mining | ✖
-[lemo.mine.stop()](#submodule-mine-stop) | Stop mining | ✖
-[lemo.mine.getMining()](#submodule-mine-getMining) | True if current LemoChain node is mining | ✓
-[lemo.mine.getMiner()](#submodule-mine-getMiner) | Get the mining benefit account address of current LemoChain node | ✓
-[lemo.account.newKeyPair()](#submodule-account-newKeyPair) | Create a private key and account address | ✖
-[lemo.account.getBalance(addr)](#submodule-account-getBalance) | Get the balance of an account  | ✓
-[lemo.account.getAccount(addr)](#submodule-account-getAccount) | Get the information of an account  | ✓
-[lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx) | Sign and send transaction | ✓
-[lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign) | Sign transaction | ✓
-[lemo.tx.send(signedTxInfo)](#submodule-tx-send) | Send a signed transaction | ✓
-[lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx) | Listening for new transactions | ✖
-[lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress) | Verify a LemoChain address | ✓
-[lemo.stopWatch(watchId)](#submodule-stopWatch) | Stop listening | ✓
-[lemo.isWatching()](#submodule-isWatching) | True if is listening | ✓
+API | description | asynchronous | available for remote
+---|---|---|---
+[lemo.getBlock(heightOrHash, withBody)](#submodule-chain-getBlock) | Get block by height or block hash | ✓ | ✓
+[lemo.getCurrentBlock(stable, withBody)](#submodule-chain-getCurrentBlock) | Get the newest block | ✓ | ✓
+[lemo.getCurrentHeight(stable)](#submodule-chain-getCurrentHeight) | Get the newest block height | ✓ | ✓
+[lemo.getGenesis()](#submodule-chain-getGenesis) | Get the first block | ✓ | ✓
+[lemo.getChainID()](#submodule-chain-getChainID) | Get the chain ID | ✓ | ✓
+[lemo.getGasPriceAdvice()](#submodule-chain-getGasPriceAdvice) | Get transaction gas price advice | ✓ | ✓
+[lemo.getNodeVersion()](#submodule-chain-getNodeVersion) | Get the version of LemoChain node | ✓ | ✓
+[lemo.getSdkVersion()](#submodule-chain-getSdkVersion) | Get the version of lemo-client | ✖ | ✓
+[lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock) | Listen for new block | ✖ | ✓
+[lemo.net.connect(nodeAddr)](#submodule-net-connect) | Connect to a LemoChain node | ✓ | ✖
+[lemo.net.disconnect(nodeAddr)](#submodule-net-disconnect) | Disconnect to a LemoChain node | ✓ | ✖
+[lemo.net.getConnections()](#submodule-net-getConnections) | Get the information of connections | ✓ | ✖
+[lemo.net.getConnectionsCount()](#submodule-net-getConnectionsCount) | Get the count of connections | ✓ | ✓
+[lemo.net.getInfo()](#submodule-net-getInfo) | Get current node information | ✓ | ✓
+[lemo.mine.start()](#submodule-mine-start) | Start mining | ✓ | ✖
+[lemo.mine.stop()](#submodule-mine-stop) | Stop mining | ✓ | ✖
+[lemo.mine.getMining()](#submodule-mine-getMining) | True if current LemoChain node is mining | ✓ | ✓
+[lemo.mine.getMiner()](#submodule-mine-getMiner) | Get the mining benefit account address of current LemoChain node | ✓ | ✓
+[lemo.account.newKeyPair()](#submodule-account-newKeyPair) | Create a private key and account address | ✓ | ✖
+[lemo.account.getBalance(addr)](#submodule-account-getBalance) | Get the balance of an account | ✓ | ✓
+[lemo.account.getAccount(addr)](#submodule-account-getAccount) | Get the information of an account | ✓ | ✓
+[lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx) | Sign and send transaction | ✓ | ✓
+[lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign) | Sign transaction | ✖ | ✓
+[lemo.tx.send(signedTxInfo)](#submodule-tx-send) | Send a signed transaction | ✓ | ✓
+[lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx) | Listening for new transactions | ✖ | ✖
+[lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress) | Verify a LemoChain address | ✖ | ✓
+[lemo.stopWatch(watchId)](#submodule-stopWatch) | Stop listening | ✖ | ✓
+[lemo.isWatching()](#submodule-isWatching) | True if is listening | ✖ | ✓
 
 ---
 
@@ -494,13 +494,11 @@ Get the version of lemo-client
 None
 
 ##### Returns
-`Promise` - Call `then` method to get version string
+`string` - The version string of SDK
 
 ##### Example
 ```js
-lemo.getSdkVersion().then(function(version) {
-    console.log(version); // "1.0.0"
-})
+console.log(lemo.getSdkVersion()) // "1.0.0"
 ```
 
 ---
@@ -861,16 +859,14 @@ The API is used for implement safety offline transaction:
 2. `object` - Unsigned transaction like the same parameter in [`lemo.tx.sendTx`](submodule-tx-sendTx)
 
 ##### Returns
-`Promise` - Call `then` method to get signed [transaction](#data-structure-transaction) information string
+`string` - The string of signed [transaction](#data-structure-transaction) information
 
 ##### Example
 ```js
 const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
-lemo.tx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', txInfo)
-    .then(function(signedTx) {
-        console.log(signedTx);
-        // {"amount":"100","expirationTime":"1535632200","gasLimit":"2000000","gasPrice":"3000000000","r":"0xdefbd406e0aed8a01ac33877a0267ca720e8231b7660d790386ae45686cf8781","s":"0x3de9fea170ec8fba0cd2574878554558616733c45ea03975bb41104bab3bd312","to":"Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34","v":"0x030001"}
-    })
+const signedTx = lemo.tx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', txInfo)
+console.log(signedTx)
+// {"amount":"100","expirationTime":"1535632200","gasLimit":"2000000","gasPrice":"3000000000","r":"0xdefbd406e0aed8a01ac33877a0267ca720e8231b7660d790386ae45686cf8781","s":"0x3de9fea170ec8fba0cd2574878554558616733c45ea03975bb41104bab3bd312","to":"Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34","v":"0x030001"}
 ```
 
 ---
