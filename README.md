@@ -75,6 +75,7 @@ API | description | available for remote
 [lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign) | Sign transaction | ✓
 [lemo.tx.send(signedTxInfo)](#submodule-tx-send) | Send a signed transaction | ✓
 [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx) | Listening for new transactions | ✖
+[lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress) | Verify a LemoChain address | ✓
 [lemo.stopWatch(watchId)](#submodule-stopWatch) | Stop listening | ✓
 [lemo.isWatching()](#submodule-isWatching) | True if is listening | ✓
 
@@ -926,6 +927,29 @@ lemo.watchPendingTx(true, function(transactions) {
 ---
 
 ### other API
+
+<a name="submodule-tool-verifyAddress"></a>
+#### lemo.tool.verifyAddress
+```
+lemo.tool.verifyAddress(addr)
+```
+Verify LemoChain address
+
+##### Parameters
+1. `string` - LemoChain address
+
+##### Returns
+`string` - Verify error message. If the address is valid, then return empty string
+
+##### Example
+```js
+const errMsg = lemo.tool.verifyAddress('LEMObw')
+if (errMsg) {
+    console.error(errMsg);
+}
+```
+
+---
 
 <a name="submodule-stopWatch"></a>
 #### lemo.stopWatch

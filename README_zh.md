@@ -75,6 +75,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign)                     | 签名交易                       | ✓          |
 | [lemo.tx.send(signedTxInfo)](#submodule-tx-send)                           | 发送已签名的交易               | ✓          |
 | [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx)           | 监听新的 pending 交易          | ✖          |
+| [lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress)             | LemoChain地址校验             | ✓          |
 | [lemo.stopWatch(watchId)](#submodule-stopWatch)                            | 停止指定的轮询或所有轮询       | ✓          |
 | [lemo.isWatching()](#submodule-isWatching)                                 | 是否正在轮询                   | ✓          |
 
@@ -1112,6 +1113,29 @@ lemo.watchPendingTx(true, function(transactions) {
 ---
 
 ### 其它 API
+
+<a name="submodule-tool-verifyAddress"></a>
+#### lemo.tool.verifyAddress
+```
+lemo.tool.verifyAddress(addr)
+```
+校验LemoChain地址
+
+##### Parameters
+1. `string` - LemoChain地址
+
+##### Returns
+`string` - 错误字符串。如果是合法的地址，则返回空字符串
+
+##### Example
+```js
+const errMsg = lemo.tool.verifyAddress('LEMObw')
+if (errMsg) {
+    console.error(errMsg);
+}
+```
+
+---
 
 <a name="submodule-stopWatch"></a>
 
