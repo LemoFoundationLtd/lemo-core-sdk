@@ -1,5 +1,6 @@
-import replace from 'rollup-plugin-replace';
-import pkg from './package.json';
+import replace from 'rollup-plugin-replace'
+import pkg from './package.json'
+import babel from 'rollup-plugin-babel'
 
 export default [
     {
@@ -8,9 +9,7 @@ export default [
         output: [
             {file: pkg.main, format: 'cjs'}, // CommonJS (for Node) build
         ],
-        plugins: [
-            replace({'process.env.SDK_VERSION': JSON.stringify(pkg.version)}),
-        ]
+        plugins: [replace({'process.env.SDK_VERSION': JSON.stringify(pkg.version)})],
     },
     {
         input: 'lib/index.js',
@@ -23,6 +22,10 @@ export default [
                 'process.browser': 'true',
                 'process.env.SDK_VERSION': JSON.stringify(pkg.version),
             }),
-        ]
-    }
+            babel({
+                exclude: 'node_modules/**',
+                runtimeHelpers: true,
+            }),
+        ],
+    },
 ]
