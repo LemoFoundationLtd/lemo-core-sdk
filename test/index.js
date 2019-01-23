@@ -79,7 +79,7 @@ describe('LemoClient_new', () => {
                 jsonrpc: '2.0',
                 id: 1,
                 method: 'chain_latestStableBlock',
-                params: [undefined],
+                params: [false],
             },
         ])
     })
@@ -125,6 +125,20 @@ describe('LemoClient__createAPI', () => {
                 method: 'api_name2',
             },
         ])
+        assert.isFunction(lemo.setData)
+        assert.isFunction(lemo.setData2)
+    })
+
+    it('object format', () => {
+        const lemo = new LemoClient(testConn)
+        lemo._createAPI('', {
+            setData: {
+                method: 'api_name',
+            },
+            setData2: {
+                method: 'api_name2',
+            },
+        })
         assert.isFunction(lemo.setData)
         assert.isFunction(lemo.setData2)
     })
