@@ -73,6 +73,8 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.account.getAccount(addr)](#submodule-account-getAccount)             | 获取账户信息                   | ✓    | ✓          |
 | [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx)                 | 签名并发送交易                 | ✓    | ✓          |
 | [lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign)                     | 签名交易                       | ✖    | ✓          |
+| [lemo.tx.signVote(privateKey, txInfo)](#submodule-tx-signVote)             | 签名投票的特殊交易                       | ✖    | ✓          |
+| [lemo.tx.signCandidate(privateKey, txInfo, candidateInfo)](#submodule-tx-signCandidate)   | 签名注册/编辑候选节点的特殊交易   | ✖    | ✓          |
 | [lemo.tx.send(signedTxInfo)](#submodule-tx-send)                           | 发送已签名的交易               | ✓    | ✓          |
 | [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx)           | 监听新的 pending 交易          | ✖    | ✖          |
 | [lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress)             | LemoChain地址校验             | ✖    | ✓          |
@@ -224,14 +226,14 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 
 -   `from` 交易发送者的账户地址。由签名字段解析得到
 -   `to` 交易接收者的账户地址
--   `toName` (可选) 交易接收者的账户名，会与账户地址进行比对校验。类似银行转账时填写的姓名与卡号的关系
+-   `toName` (可选) 交易接收者的账户名，会与账户地址进行比对校验。类似银行转账时填写的姓名与卡号的关系。最大长度为100字符
 -   `amount` 交易金额，单位`mo`。1`LEMO`=1000000000000000000`mo`=1e18`mo`
 -   `data` (可选) 交易附带的数据，可用于调用智能合约。根据交易类型也会有不同的作用
 -   `expirationTime` 交易过期时间戳，单位为秒。如果交易过期时间在半小时以后，则可能不会被打包，这取决于节点交易池的配置
 -   `gasLimit` 交易消耗的 gas 上限。如果超过这个限制还没运行结束，则交易失败，并且 gas 费用不退还
 -   `gasPrice` 交易消耗 gas 的单价，单位为`mo`。单价越高越优先被打包
 -   `hash` 交易 hash
--   `message` (可选) 交易附带的文本消息
+-   `message` (可选) 交易附带的文本消息。最大长度为1024字符
 -   `r` 交易签名字段
 -   `s` 交易签名字段
 -   `v` 交易类型、交易编码版本号(当前为 0)、交易签名字段、chainID 这 4 个字段组合而成的数据
@@ -303,20 +305,18 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 
 ```json
 {
-    "ip": "127.0.0.1",
     "minerAddress": "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG",
-    "nodeID": "0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0",
+    "nodeID": "5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0",
+    "host": "127.0.0.1",
     "port": "7001",
-    "rank": "0",
     "votes": "50000"
 }
 ```
 
--   `ip` 节点的 IP 地址
 -   `minerAddress` 节点的挖矿收益账号地址
--   `nodeID` 节点的 ID，即节点对区块签名时的私钥对应的公钥
+-   `nodeID` 节点的 ID，即节点对区块签名时的私钥对应的公钥。长度为128个字符，不要加`0x`
+-   `host` 节点的 IP 地址或域名。最大长度为128字符
 -   `port` 与其它节点连接用的端口号
--   `rank` 节点的排名
 -   `votes` 节点的总票数
 
 <a name="data-structure-account"></a>
@@ -1016,17 +1016,17 @@ lemo.tx.sendTx('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee
 lemo.tx.sign(privateKey, txInfo)
 ```
 
-签名交易并返回出签名后的交易信息字符串  
+签名交易并返回签名后的交易信息字符串  
 该方法用于实现安全的离线交易
 
 1. 在离线电脑上签名
 2. 将签名后的数据拷贝到联网电脑上
-3. 通过[`lemo.tx.send`](submodule-tx-send)方法发送到 LemoChain
+3. 通过[`lemo.tx.send`](#submodule-tx-send)方法发送到 LemoChain
 
 ##### Parameters
 
 1. `string` - 账户私钥
-2. `object` - 签名前的交易信息，细节参考[`lemo.tx.sendTx`](submodule-tx-sendTx)
+2. `object` - 签名前的交易信息，细节参考[`lemo.tx.sendTx`](#submodule-tx-sendTx)
 
 ##### Returns
 
@@ -1036,9 +1036,79 @@ lemo.tx.sign(privateKey, txInfo)
 
 ```js
 const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
-const signedTx = lemo.tx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', txInfo)
-console.log(signedTx)
+const signedTxStr = lemo.tx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', txInfo)
+console.log(signedTxStr)
 // {"amount":"100","expirationTime":"1535632200","gasLimit":"2000000","gasPrice":"3000000000","r":"0xdefbd406e0aed8a01ac33877a0267ca720e8231b7660d790386ae45686cf8781","s":"0x3de9fea170ec8fba0cd2574878554558616733c45ea03975bb41104bab3bd312","to":"Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34","v":"0x030001"}
+```
+
+---
+
+<a name="submodule-tx-signVote"></a>
+
+#### lemo.tx.signVote
+
+```
+lemo.tx.signVote(privateKey, txInfo)
+```
+
+签名用于投票的特殊交易并返回签名后的交易信息字符串  
+与[`lemo.tx.sign`](#submodule-tx-sign)用法相同，只是在交易中填充了特殊的数据  
+
+##### Parameters
+
+1. `string` - 账户私钥
+2. `object` - 签名前的交易信息，细节参考[`lemo.tx.sendTx`](#submodule-tx-sendTx)。在投票特殊交易中的`to`表示投票对象的账户地址，`amount`、`data`字段会被忽略
+
+##### Returns
+
+`string` - 签名后的[交易](#data-structure-transaction)信息字符串
+
+##### Example
+
+```js
+const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34'}
+const signedTxStr = lemo.tx.signVote('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', txInfo)
+console.log(signedTxStr)
+// {"gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1548337992","v":"0x010300c8","r":"0xc9230ed3a37b85603cd0ac690994d6f207d0744e9d451f9ff02ae0ef5c83ba21","s":"0x61848625fea8a18c0648d6c0f21407a4c347a5815bc01956842c91aec053fd38","to":"Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34"}
+```
+
+---
+
+<a name="submodule-tx-signCandidate"></a>
+
+#### lemo.tx.signCandidate
+
+```
+lemo.tx.signCandidate(privateKey, txInfo, candidateInfo)
+```
+
+签名用于注册或编辑候选人信息的特殊交易并返回签名后的交易信息字符串  
+与[`lemo.tx.sign`](#submodule-tx-sign)用法相同，只是在交易中填充了特殊的数据  
+
+##### Parameters
+
+1. `string` - 账户私钥
+2. `object` - 签名前的交易信息，细节参考[`lemo.tx.sendTx`](#submodule-tx-sendTx)。这里的`to`、`toName`、`amount`、`data`字段会被忽略
+3. `object` - 候选人信息，基本与[共识节点信息](#data-structure-deputyNode)相同。只是候选人信息里无需填写`votes`字段，同时多了`isCandidate`字段，表示注册或取消候选人身份
+
+##### Returns
+
+`string` - 签名后的[交易](#data-structure-transaction)信息字符串
+
+##### Example
+
+```js
+const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34'}
+const candidateInfo = {
+    isCandidate: true,
+    minerAddress: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
+    nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+    host: '127.0.0.1',
+    port: '7001'
+}
+const signedTxStr = lemo.tx.signCandidate('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', txInfo, candidateInfo)
+console.log(signedTxStr)
+// {"gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1548337908","v":"0x020300c8","r":"0x3a3bfc3c82c3f712b25917d9aa347474f3b1842f05c0d54c84442a7eea7cccde","s":"0x2a9bbf04db371dd11846ee46a0ffeafe6b4955b929fcda9391c3a026a984763b","data":"0x7b22697343616e646964617465223a747275652c226d696e657241646472657373223a224c656d6f3833474e3732475948324e5a3842413732395a39544354374b5135464333435236444a47222c226e6f64654944223a223565333630303735356639623531326136353630336233386533303838356339386362616337303235396333323335633962336634326565353633623438306564656133353162613066663537343861363338666530616566663564383435626633376133623433373833313837316234386664333266333363643961336330222c22686f7374223a223132372e302e302e31222c22706f7274223a2237303031227d"}
 ```
 
 ---
@@ -1055,8 +1125,8 @@ lemo.tx.send(signedTxInfo)
 
 ##### Parameters
 
-1. `object|string` - 签名后的[交易](#data-structure-transaction)信息，可以是对象形式也可以是[`lemo.tx.sign`](submodule-tx-sign)返回的字符串形式  
-   相对于[`lemo.tx.sendTx`](submodule-tx-sendTx)中的交易信息少了`type`、`version`字段，并多出了以下字段
+1. `object|string` - 签名后的[交易](#data-structure-transaction)信息，可以是对象形式也可以是[`lemo.tx.sign`](#submodule-tx-sign)返回的字符串形式  
+   相对于[`lemo.tx.sendTx`](#submodule-tx-sendTx)中的交易信息少了`type`、`version`字段，并多出了以下字段
     - `r` - (Buffer|string) 交易签名字段
     - `s` - (Buffer|string) 交易签名字段
     - `v` - (Buffer|string) `type`、`version`、交易签名字段、`chainID`这 4 个字段组合而成的数据

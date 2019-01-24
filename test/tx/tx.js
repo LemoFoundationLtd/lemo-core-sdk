@@ -6,11 +6,12 @@ import Signer from '../../lib/tx/signer';
 import errors from '../../lib/errors';
 import {toBuffer} from '../../lib/utils'
 import {testPrivate, testTxs, chainID} from '../datas'
+import {TxType, MAX_TX_TO_NAME_LENGTH, NODE_ID_LENGTH, MAX_DEPUTY_HOST_LENGTH} from '../../lib/const'
 
 describe('Tx_new', () => {
     it('empty config', () => {
         const tx = new Tx({})
-        assert.equal(tx.type, 0)
+        assert.equal(tx.type, TxType.ORDINARY)
         assert.equal(tx.version, TX_VERSION)
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
@@ -29,7 +30,7 @@ describe('Tx_new', () => {
         const config = {
             type: 100,
             version: 101,
-            to: '102',
+            to: '0x102',
             toName: '103',
             gasPrice: 104,
             gasLimit: 105,
@@ -97,7 +98,7 @@ describe('Tx_new', () => {
         {field: 'type', configData: 1},
         {field: 'type', configData: 0xff},
         {field: 'type', configData: '', result: 0},
-        {field: 'type', configData: '1', error: errors.TXInvalidType('type', '1', ['number'])},
+        {field: 'type', configData: '1', result: 1},
         {field: 'type', configData: -1, error: errors.TXInvalidRange('type', -1, 0, 0xff)},
         {field: 'type', configData: 0x100, error: errors.TXInvalidRange('type', 0x100, 0, 0xff)},
         {field: 'version', configData: 0, result: TX_VERSION},
@@ -107,6 +108,16 @@ describe('Tx_new', () => {
         {field: 'version', configData: '1', error: errors.TXInvalidType('version', '1', ['number'])},
         {field: 'version', configData: -1, error: errors.TXInvalidRange('version', -1, 0, 0x7f)},
         {field: 'version', configData: 0x80, error: errors.TXInvalidRange('version', 0x80, 0, 0x7f)},
+        {field: 'to', configData: 0x1, error: errors.TXInvalidType('to', 0x1, ['string'])},
+        {field: 'to', configData: '0x1'},
+        {field: 'to', configData: 'lemobw'},
+        {field: 'to', configData: 'lemob', error: errors.InvalidAddressCheckSum('lemob')},
+        {field: 'toName', configData: 'lemo'},
+        {
+            field: 'toName',
+            configData: '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789',
+            error: errors.TXInvalidMaxLength('toName', '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789', MAX_TX_TO_NAME_LENGTH),
+        },
     ]
     tests.forEach(test => {
         it(`set ${test.field} to ${JSON.stringify(test.configData)}`, () => {
@@ -172,5 +183,126 @@ describe('Tx_expirationTime', () => {
         const after = Math.floor(Date.now() / 1000)
         assert.isAtLeast(tx.expirationTime, before + TTTL)
         assert.isAtMost(tx.expirationTime, after + TTTL)
+    })
+})
+
+describe('Tx_createVoteTx', () => {
+    it('empty config', () => {
+        const tx = Tx.createVoteTx({})
+        assert.equal(tx.type, TxType.VOTE)
+        assert.equal(tx.amount, 0)
+        assert.equal(tx.data, '')
+    })
+    it('useless config', () => {
+        const tx = Tx.createVoteTx({
+            type: 100,
+            amount: 101,
+            data: '102',
+        })
+        assert.equal(tx.type, TxType.VOTE)
+        assert.equal(tx.amount, 0)
+        assert.equal(tx.data, '')
+    })
+    it('useful config', () => {
+        const tx = Tx.createVoteTx({
+            type: TxType.VOTE,
+            to: 'lemobw',
+        })
+        assert.equal(tx.type, TxType.VOTE)
+        assert.equal(tx.to, 'lemobw')
+    })
+})
+
+describe('Tx_createCandidateTx', () => {
+    const minCandidateInfo = {
+        minerAddress: 'lemobw',
+        nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+        host: 'a.com',
+        port: 7001,
+    }
+    it('min config', () => {
+        const tx = Tx.createCandidateTx({}, minCandidateInfo)
+        assert.equal(tx.type, TxType.CANDIDATE)
+        assert.equal(tx.to, '')
+        assert.equal(tx.toName, '')
+        assert.equal(tx.amount, 0)
+        assert.equal(tx.data.toString(), JSON.stringify({isCandidate: true, ...minCandidateInfo}))
+    })
+    it('useless config', () => {
+        const tx = Tx.createCandidateTx({
+            type: 100,
+            to: 'lemobw',
+            toName: 'alice',
+            amount: 101,
+            data: '102',
+        }, minCandidateInfo)
+        assert.equal(tx.type, TxType.CANDIDATE)
+        assert.equal(tx.to, '')
+        assert.equal(tx.toName, '')
+        assert.equal(tx.amount, 0)
+        assert.equal(tx.data.toString(), JSON.stringify({isCandidate: true, ...minCandidateInfo}))
+    })
+    it('useful config', () => {
+        const candidateInfo = {
+            isCandidate: false,
+            ...minCandidateInfo,
+        }
+        const tx = Tx.createCandidateTx({
+            type: TxType.CANDIDATE,
+            message: 'abc',
+        }, candidateInfo)
+        assert.equal(tx.type, TxType.CANDIDATE)
+        assert.equal(tx.message, 'abc')
+        assert.equal(tx.data.toString(), JSON.stringify(candidateInfo))
+    })
+
+    // test fields
+    const tests = [
+        {field: 'isCandidate', configData: false},
+        {field: 'isCandidate', configData: true},
+        {field: 'isCandidate', configData: 'true', error: errors.TXInvalidType('isCandidate', 'true', ['undefined', 'boolean'])},
+        {field: 'minerAddress', configData: 0x1, error: errors.TXInvalidType('minerAddress', 0x1, ['string'])},
+        {field: 'minerAddress', configData: '', error: errors.InvalidAddress('')},
+        {field: 'minerAddress', configData: '123', error: errors.InvalidAddress('')},
+        {field: 'minerAddress', configData: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG'},
+        {field: 'minerAddress', configData: '0x1'},
+        {field: 'nodeID', configData: '123', error: errors.TXInvalidLength('nodeID', '123', NODE_ID_LENGTH)},
+        {
+            field: 'nodeID',
+            configData: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+        },
+        {field: 'host', configData: 'aaa'},
+        {
+            field: 'host',
+            configData: 'aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+            error: errors.TXInvalidMaxLength('host', 'aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0', MAX_DEPUTY_HOST_LENGTH),
+        },
+        {field: 'port', configData: '1'},
+        {field: 'port', configData: 0, error: errors.TXInvalidRange('port', 0, 1, 0xffff)},
+        {field: 'port', configData: '0xfffff', error: errors.TXInvalidRange('port', '0xfffff', 1, 0xffff)},
+        {field: 'port', configData: ['0xff'], error: errors.TXInvalidType('port', ['0xff'], ['string', 'number'])},
+    ]
+    tests.forEach(test => {
+        it(`set candidateInfo.${test.field} to ${JSON.stringify(test.configData)}`, () => {
+            const candidateInfo = {
+                ...minCandidateInfo,
+                [test.field]: test.configData,
+            }
+            if (test.error) {
+                assert.throws(() => {
+                    Tx.createCandidateTx({}, candidateInfo)
+                }, test.error)
+            } else {
+                assert.doesNotThrow(() => {
+                    const tx = Tx.createCandidateTx({}, candidateInfo)
+                    const targetField = JSON.parse(tx.data.toString())[test.field]
+                    if (typeof test.result !== 'undefined') {
+                        assert.strictEqual(targetField, test.result)
+                    } else {
+                        assert.strictEqual(targetField, test.configData)
+                    }
+                })
+            }
+        })
     })
 })
