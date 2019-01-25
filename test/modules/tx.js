@@ -1,8 +1,29 @@
 import {assert} from 'chai'
 import LemoClient from '../../lib/index'
-import {testTxs, chainID, testPrivate, withLemoAddrTestTxs} from '../datas'
+import {testTxs, chainID, testPrivate, withLemoAddrTestTxs, formattedTx1} from '../datas'
 import '../mock'
 import {toBuffer} from '../../lib/utils'
+
+describe('module_tx_getTx', () => {
+    it('getTx', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.tx.getTx('0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2de')
+        assert.equal(result.from, formattedTx1.from)
+        assert.equal(result.to, formattedTx1.to)
+        assert.equal(result.toName, formattedTx1.toName)
+        assert.equal(result.amount.toMoney(), formattedTx1.amount)
+        assert.equal(result.data, formattedTx1.data)
+        assert.equal(result.expirationTime, formattedTx1.expirationTime)
+        assert.equal(result.gasLimit, formattedTx1.gasLimit)
+        assert.equal(result.gasPrice, formattedTx1.gasPrice)
+        assert.equal(result.message, formattedTx1.message)
+    })
+    it('getTx not exist', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.tx.getTx('0x28ee2b4622946e35c3e761e826d18d95c319452efe23ce6844f14de3ece95b5e')
+        assert.equal(result, null)
+    })
+})
 
 describe('module_tx_sendTx', () => {
     it('sendTx_with_hex_address', () => {

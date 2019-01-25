@@ -432,3 +432,25 @@ export const formattedOneChangeLogsBlock = {
 
 export const testTxs = [testEmptyTx, testTx, testBigTx]
 export const withLemoAddrTestTxs = [testEmptyTx, testTx, widthLemoAddrTestBigTx]
+
+export const tx1 = {
+    to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
+    toName: '',
+    gasPrice: '3000000000',
+    gasLimit: '2000000',
+    amount: '100',
+    data: '0x',
+    expirationTime: '1541649535',
+    message: '',
+    v: '0x30001',
+    r: '0x800be6a0cf31ab9e86d547fb8cf964339276233a2b260ad8a4b4c93b39a48d6b',
+    s: '0x1761e125f601bc6953e30eaad3e698c12add332a5740f1618915c12432dc6106',
+}
+
+export const formattedTx1 = {
+    ...tx1,
+    from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
+    gasLimit: 2000000,
+    expirationTime: 1541649535,
+    amount: '100 mo',
+}

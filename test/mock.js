@@ -14,6 +14,7 @@ import {
     isMining,
     peersCount,
     infos,
+    tx1,
 } from './datas'
 
 const mockInfos = [
@@ -153,6 +154,13 @@ const mockInfos = [
         },
     },
     {
+        method: 'tx_getTxByHash',
+        paramsCount: 1,
+        reply([hash]) {
+            return hash === '0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2de' ? tx1 : null
+        },
+    },
+    {
         method: 'tx_sendTx',
         paramsCount: 1,
         reply([txConfig]) {
@@ -164,7 +172,7 @@ const mockInfos = [
 
 function startMock() {
     nock('http://127.0.0.1:8001')
-        // .log(console.log)
+    // .log(console.log)
         .post('/', body => {
             const mockInfo = mockInfos.find(info => info.method === body.method)
             return (

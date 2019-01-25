@@ -71,6 +71,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.account.newKeyPair()](#submodule-account-newKeyPair)                 | 创新账户公私钥                 | ✓    | ✖          |
 | [lemo.account.getBalance(addr)](#submodule-account-getBalance)             | 获取账户余额                   | ✓    | ✓          |
 | [lemo.account.getAccount(addr)](#submodule-account-getAccount)             | 获取账户信息                   | ✓    | ✓          |
+| [lemo.tx.getTx(txHash)](#submodule-tx-getTx)                               | 根据交易hash获取交易            | ✓    | ✓          |
 | [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx)                 | 签名并发送交易                 | ✓    | ✓          |
 | [lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign)                     | 签名交易                       | ✖    | ✓          |
 | [lemo.tx.signVote(privateKey, txInfo)](#submodule-tx-signVote)             | 签名投票的特殊交易                       | ✖    | ✓          |
@@ -961,6 +962,40 @@ lemo.account.getAccount(address)
 ```js
 lemo.account.getBalance('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34').then(function(account) {
     console.log(account.balance.toMoney()) // "1600000000 LEMO"
+})
+```
+
+---
+
+<a name="submodule-tx-getTx"></a>
+
+#### lemo.tx.getTx
+
+```
+lemo.tx.getTx(txHash)
+```
+
+根据交易hash获取交易
+
+##### Parameters
+
+1. `string` - 交易hash
+
+##### Returns
+
+`Promise` - 通过`then`可以获取到[交易](#data-structure-transaction)信息
+
+##### Example
+
+```js
+lemo.tx.getTx('0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2de').then(function(tx) {
+    console.log(tx.from) // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
+    console.log(tx.to) // "Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY"
+    console.log(tx.amount) // "100"
+    console.log(tx.gasPrice) // "3000000000"
+    console.log(tx.gasLimit) // 2000000
+    console.log(tx.expirationTime) // 1541649535
+    console.log(tx.message) // ''
 })
 ```
 

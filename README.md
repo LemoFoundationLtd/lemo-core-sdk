@@ -71,6 +71,7 @@ API | description | asynchronous | available for remote
 [lemo.account.newKeyPair()](#submodule-account-newKeyPair) | Create a private key and account address | ✓ | ✖
 [lemo.account.getBalance(addr)](#submodule-account-getBalance) | Get the balance of an account | ✓ | ✓
 [lemo.account.getAccount(addr)](#submodule-account-getAccount) | Get the information of an account | ✓ | ✓
+[lemo.tx.getTx(txHash)](#submodule-tx-getTx) | Get transaction by the its hash | ✓    | ✓
 [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx) | Sign and send transaction | ✓ | ✓
 [lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign) | Sign transaction | ✖ | ✓
 [lemo.tx.signVote(privateKey, txInfo)](#submodule-tx-signVote) | Sign a special transaction for vote | ✖ | ✓ 
@@ -802,6 +803,40 @@ lemo.account.getBalance('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
     .then(function(account) {
         console.log(account.balance.toMoney()); // "1600000000 LEMO"
     })
+```
+
+---
+
+<a name="submodule-tx-getTx"></a>
+
+#### lemo.tx.getTx
+
+```
+lemo.tx.getTx(txHash)
+```
+
+Get transaction by the its hash
+
+##### Parameters
+
+1. `string` - transaction's hash
+
+##### Returns
+
+`Promise` - Call `then` method to get [transaction](#data-structure-transaction)
+
+##### Example
+
+```js
+lemo.tx.getTx('0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2de').then(function(tx) {
+    console.log(tx.from) // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
+    console.log(tx.to) // "Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY"
+    console.log(tx.amount) // "100"
+    console.log(tx.gasPrice) // "3000000000"
+    console.log(tx.gasLimit) // 2000000
+    console.log(tx.expirationTime) // 1541649535
+    console.log(tx.message) // ''
+})
 ```
 
 ---
