@@ -24,7 +24,7 @@ describe('module_tool_verifyAddress', () => {
         const lemo = new LemoClient({chainID})
         it(`address ${JSON.stringify(input)}`, async () => {
             const errMsg = await lemo.tool.verifyAddress(input)
-            return assert.equal(errMsg, output)
+            return assert.equal(errMsg, output, `index=${i}`)
         })
     })
 })

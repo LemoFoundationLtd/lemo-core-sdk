@@ -2,7 +2,7 @@ import {assert} from 'chai'
 import {resetRPC} from '../../lib/network/jsonrpc'
 import {currentBlock} from '../datas'
 import {wait} from '../../lib/utils'
-import {POLL_DURATION} from '../../lib/config';
+import {DEFAULT_POLL_DURATION} from '../../lib/config';
 import Requester from '../../lib/network/requester';
 import errors from '../../lib/errors';
 import HttpConn from '../../lib/network/conn/http_conn';
@@ -97,7 +97,7 @@ describe('Requester_watch_stopWatch_isWatching', () => {
         assert.equal(requester.isWatching(), false)
     })
     it('stop after callback', function itFunc(done) {
-        this.timeout(POLL_DURATION + 1000)
+        this.timeout(DEFAULT_POLL_DURATION + 1000)
 
         const requester = new Requester(conn)
         requester.watch('m', ['p'], (result) => {

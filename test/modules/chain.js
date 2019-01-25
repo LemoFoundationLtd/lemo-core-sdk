@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
 import {chainID, formattedCurrentBlock, formattedOneChangeLogsBlock, formattedBlock0, formattedBlock1, currentHeight} from '../datas'
 import '../mock'
-import {POLL_DURATION} from '../../lib/config'
+import {DEFAULT_POLL_DURATION} from '../../lib/config'
 
 describe('chain_getCurrentBlock', () => {
     it('latestStableBlock with body', async () => {
@@ -110,7 +110,7 @@ describe('chain_getNodeVersion', () => {
 
 describe('chain_watchBlock', () => {
     it('watchBlock without body', function itFunc(done) {
-        this.timeout(POLL_DURATION + 50)
+        this.timeout(DEFAULT_POLL_DURATION + 50)
 
         const lemo = new LemoClient()
         lemo.watchBlock(false, block => {
@@ -124,7 +124,7 @@ describe('chain_watchBlock', () => {
         })
     })
     it('watchBlock with body', function itFunc(done) {
-        this.timeout(POLL_DURATION + 50)
+        this.timeout(DEFAULT_POLL_DURATION + 50)
 
         const lemo = new LemoClient()
         lemo.watchBlock(true, block => {

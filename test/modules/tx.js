@@ -44,17 +44,6 @@ describe('module_tx_vote', () => {
     it('sign_vote', () => {
         return Promise.all(testTxs.map(async (test, i) => {
             const lemo = new LemoClient({chainID})
-            const json = await lemo.tx.signVote(testPrivate, test.txConfig)
-            console.log(11, json)
-            // assert.equal(result, test.hashAfterSign, `index=${i}`)
-        }))
-    })
-})
-
-describe('module_tx_vote', () => {
-    it('sign_vote', () => {
-        return Promise.all(testTxs.map(async (test, i) => {
-            const lemo = new LemoClient({chainID})
             let json = lemo.tx.signVote(testPrivate, test.txConfig)
             json = JSON.parse(json)
             assert.equal(parseInt(json.v, 16) & 0x1000000, 0x1000000, `index=${i}`)

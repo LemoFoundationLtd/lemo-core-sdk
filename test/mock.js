@@ -168,11 +168,11 @@ function startMock() {
         .post('/', body => {
             const mockInfo = mockInfos.find(info => info.method === body.method)
             return (
-                body.jsonrpc === '2.0' &&
-                typeof body.id === 'number' &&
-                Array.isArray(body.params) &&
-                mockInfo &&
-                body.params.length === mockInfo.paramsCount
+                body.jsonrpc === '2.0'
+                && typeof body.id === 'number'
+                && Array.isArray(body.params)
+                && mockInfo
+                && body.params.length === mockInfo.paramsCount
             )
         })
         .times(10000000000)
