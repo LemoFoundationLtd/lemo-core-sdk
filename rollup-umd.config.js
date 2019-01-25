@@ -50,8 +50,7 @@ const umdVersion = umdConfig('lemo-client.js')
 umdVersion.plugins.unshift(eslint({formatter}))
 
 const umdMinVersion = umdConfig('lemo-client.min.js')
-umdMinVersion.output.sourcemap = true
-umdMinVersion.plugins.push(uglify({sourcemap: true}))
+umdMinVersion.plugins.push(uglify())
 
 export default [
     umdVersion,
