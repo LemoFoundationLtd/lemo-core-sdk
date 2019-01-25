@@ -226,7 +226,7 @@ describe('Tx_createCandidateTx', () => {
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
         assert.equal(tx.amount, 0)
-        assert.equal(tx.data.toString(), JSON.stringify({isCandidate: true, ...minCandidateInfo}))
+        assert.equal(tx.data.toString(), JSON.stringify({isCandidate: 'true', ...minCandidateInfo}))
     })
     it('useless config', () => {
         const tx = Tx.createCandidateTx({
@@ -240,7 +240,7 @@ describe('Tx_createCandidateTx', () => {
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
         assert.equal(tx.amount, 0)
-        assert.equal(tx.data.toString(), JSON.stringify({isCandidate: true, ...minCandidateInfo}))
+        assert.equal(tx.data.toString(), JSON.stringify({isCandidate: 'true', ...minCandidateInfo}))
     })
     it('useful config', () => {
         const candidateInfo = {
@@ -253,13 +253,14 @@ describe('Tx_createCandidateTx', () => {
         }, candidateInfo)
         assert.equal(tx.type, TxType.CANDIDATE)
         assert.equal(tx.message, 'abc')
-        assert.equal(tx.data.toString(), JSON.stringify(candidateInfo))
+        const result = JSON.stringify({...candidateInfo, isCandidate: String(candidateInfo.isCandidate)})
+        assert.equal(tx.data.toString(), result)
     })
 
     // test fields
     const tests = [
-        {field: 'isCandidate', configData: false},
-        {field: 'isCandidate', configData: true},
+        {field: 'isCandidate', configData: false, result: 'false'},
+        {field: 'isCandidate', configData: true, result: 'true'},
         {field: 'isCandidate', configData: 'true', error: errors.TXInvalidType('isCandidate', 'true', ['undefined', 'boolean'])},
         {field: 'minerAddress', configData: 0x1, error: errors.TXInvalidType('minerAddress', 0x1, ['string'])},
         {field: 'minerAddress', configData: '', error: errors.InvalidAddress('')},
