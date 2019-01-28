@@ -25,6 +25,20 @@ describe('account_getAccount', () => {
     })
 })
 
+describe('account_getCandidateInfo', () => {
+    it('candidate', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.account.getCandidateInfo(miner.address)
+
+        assert.deepEqual(result, formatedMiner.candidate)
+    })
+    it('not candidate', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.account.getCandidateInfo('0x015780F8456F9c1532645087a19DcF9a7e0c7F97')
+        assert.equal(result, undefined)
+    })
+})
+
 describe('account_getBalance', () => {
     it('no-balance', async () => {
         const lemo = new LemoClient()
