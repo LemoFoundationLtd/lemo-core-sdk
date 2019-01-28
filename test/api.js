@@ -10,7 +10,7 @@ describe('Api_new', () => {
     }
 
     it('correct config', () => {
-        new Api({name: 'func', method: 'func'}, testRequester)
+        new Api({name: 'func', call: () => 1}, testRequester)
     })
     it('empty config', () => {
         assert.throws(() => {
@@ -22,68 +22,23 @@ describe('Api_new', () => {
             new Api({}, testRequester)
         }, errors.InvalidAPIDefinition({}))
     })
-    it('both call and method', () => {
-        const apiConfig = {
-            name: 'func',
-            method: 'func',
-            call: () => 1,
-        }
-        assert.throws(() => {
-            new Api(apiConfig, testRequester)
-        }, errors.InvalidAPIMethod(apiConfig))
-    })
 })
 
 describe('Api_attachTo', () => {
-    const REQUESTER_RESULT = 1122
-    let sendRecord = null
     const testRequester = {
-        send(...args) {
-            sendRecord = args
-            return Promise.resolve(REQUESTER_RESULT)
+        send() {
         },
     }
     const testSigner = new Signer(1)
     const apiHolder = {}
-
-    it('correct attach', async () => {
-        const apiConfig = {
-            name: 'func',
-            method: 'func',
-        }
-        new Api(apiConfig, testRequester).attachTo(apiHolder)
-        const result = await apiHolder.func(100, {a: 'input'})
-
-        assert.deepEqual(sendRecord, [apiConfig.method, [100, {a: 'input'}]])
-        assert.equal(result, REQUESTER_RESULT)
-    })
-
-    it('correct attach with formatter', async () => {
-        const apiConfig = {
-            name: 'funcWithFormatter',
-            method: 'funcWithFormatter',
-            inputFormatter: (num, obj) => {
-                assert.equal(num, 100)
-                assert.deepEqual(obj, {a: 'input'})
-                return [101, {a: 'formatted input'}]
-            },
-            outputFormatter: (result) => {
-                assert.equal(result, REQUESTER_RESULT)
-                return {a: 'formatted output'}
-            },
-        }
-        new Api(apiConfig, testRequester).attachTo(apiHolder)
-        const result = await apiHolder.funcWithFormatter(100, {a: 'input'})
-
-        assert.deepEqual(sendRecord, [apiConfig.method, [101, {a: 'formatted input'}]])
-        assert.deepEqual(result, {a: 'formatted output'})
-    })
 
     it('custom call', async () => {
         const apiConfig = {
             name: 'callMyFunc',
             call(...args) {
                 assert.equal(this, api)
+                assert.equal(this.requester, testRequester)
+                assert.equal(this.signer, testSigner)
                 assert.deepEqual(args, [123, {a: '8293'}])
                 return 100
             },

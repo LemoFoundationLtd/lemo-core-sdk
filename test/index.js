@@ -104,60 +104,29 @@ describe('LemoClient__createAPI', () => {
 
     it('lemo.test.setData', () => {
         const lemo = new LemoClient(testConn)
-        lemo._createAPI('test', [
-            {
-                name: 'setData',
-                method: 'api_name',
-            },
-        ])
+        lemo._createAPI('test', 'setData', 'api_name')
         assert.isFunction(lemo.test.setData)
     })
 
     it('2 apis without module name', async () => {
         const lemo = new LemoClient(testConn)
-        lemo._createAPI('', [
-            {
-                name: 'setData',
-                method: 'api_name',
-            },
-            {
-                name: 'setData2',
-                method: 'api_name2',
-            },
-        ])
+        lemo._createAPI('', 'setData', 'api_name')
+        lemo._createAPI('', 'setData2', () => 1)
         assert.isFunction(lemo.setData)
         assert.isFunction(lemo.setData2)
     })
 
-    it('object format', () => {
+    it('incorrect method name', async () => {
         const lemo = new LemoClient(testConn)
-        lemo._createAPI('', {
-            setData: {
-                method: 'api_name',
-            },
-            setData2: {
-                method: 'api_name2',
-            },
-        })
-        assert.isFunction(lemo.setData)
-        assert.isFunction(lemo.setData2)
-    })
-
-    it('0 api', async () => {
-        const lemo = new LemoClient(testConn)
-        lemo._createAPI('aaa', [])
-        assert.exists(lemo.aaa)
+        assert.throws(() => {
+            lemo._createAPI('stopWatch', 'setData')
+        }, errors.InvalidAPIName(undefined))
     })
 
     it('moduleName is unavailable', async () => {
         const lemo = new LemoClient(testConn)
         assert.throws(() => {
-            lemo._createAPI('stopWatch', [
-                {
-                    name: 'setData',
-                    method: 'api_name',
-                },
-            ])
+            lemo._createAPI('stopWatch', 'setData', 'api_name')
         }, errors.UnavailableAPIModule('stopWatch'))
     })
 })
