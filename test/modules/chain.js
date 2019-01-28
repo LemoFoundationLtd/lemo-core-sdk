@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
-import {chainID, formattedCurrentBlock, formattedOneChangeLogsBlock, formattedBlock0, formattedBlock1, currentHeight} from '../datas'
+import {chainID, formattedCurrentBlock, formattedOneChangeLogBlock, formattedBlock0, formattedBlock1, currentHeight} from '../datas'
 import '../mock'
 import {DEFAULT_POLL_DURATION} from '../../lib/config'
 
@@ -78,7 +78,7 @@ describe('chain_getGenesis', () => {
     it('getGenesis', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getGenesis()
-        assert.deepEqual(result, formattedOneChangeLogsBlock)
+        assert.deepEqual(result, formattedOneChangeLogBlock)
     })
 })
 

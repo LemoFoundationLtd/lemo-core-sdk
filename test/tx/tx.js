@@ -5,7 +5,7 @@ import {TX_VERSION, TTTL, TX_DEFAULT_GAS_LIMIT, TX_DEFAULT_GAS_PRICE} from '../.
 import Signer from '../../lib/tx/signer';
 import errors from '../../lib/errors';
 import {toBuffer} from '../../lib/utils'
-import {testPrivate, testTxs, chainID} from '../datas'
+import {testPrivate, txInfos, chainID} from '../datas'
 import {TxType, MAX_TX_TO_NAME_LENGTH, NODE_ID_LENGTH, MAX_DEPUTY_HOST_LENGTH} from '../../lib/const'
 
 describe('Tx_new', () => {
@@ -144,13 +144,13 @@ describe('Tx_serialize', () => {
     const signer = new Signer(200)
 
     it('without signature', () => {
-        return Promise.all(testTxs.map(async (test, i) => {
+        return Promise.all(txInfos.map(async (test, i) => {
             const tx = new Tx(test.txConfig)
             assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlp, `index=${i}`)
         }))
     })
     it('with signature', () => {
-        return Promise.all(testTxs.map(async (test, i) => {
+        return Promise.all(txInfos.map(async (test, i) => {
             const tx = new Tx(test.txConfig)
             signer.sign(tx, testPrivate)
             assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlpAfterSign, `index=${i}`)
@@ -162,13 +162,13 @@ describe('Tx_hash', () => {
     const signer = new Signer(chainID)
 
     it('without signature', () => {
-        return Promise.all(testTxs.map(async (test, i) => {
+        return Promise.all(txInfos.map(async (test, i) => {
             const tx = new Tx(test.txConfig)
             assert.equal(`0x${tx.hash().toString('hex')}`, test.hash, `index=${i}`)
         }))
     })
     it('with signature', () => {
-        return Promise.all(testTxs.map(async (test, i) => {
+        return Promise.all(txInfos.map(async (test, i) => {
             const tx = new Tx(test.txConfig)
             signer.sign(tx, testPrivate)
             assert.equal(`0x${tx.hash().toString('hex')}`, test.hashAfterSign, `index=${i}`)

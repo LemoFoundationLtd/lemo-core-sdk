@@ -38,6 +38,6 @@ describe('account_getBalance', () => {
         const result = await lemo.account.getBalance('Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG')
         assert.strictEqual(result instanceof BigNumber, true)
         assert.exists(result.toMoney)
-        assert.strictEqual(result.toMoney(), '1599999999999999999999999900 mo')
+        assert.strictEqual(result.toMoney(), '1599999999.9999999999999999 LEMO')
     })
 })

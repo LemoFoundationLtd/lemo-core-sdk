@@ -2,7 +2,7 @@ import {assert} from 'chai'
 import Tx from '../../lib/tx/tx'
 import Signer from '../../lib/tx/signer';
 import {parseV} from '../../lib/tx/tx_helper';
-import {testPrivate, testAddr, testTxs} from '../datas'
+import {testPrivate, testAddr, txInfos} from '../datas'
 
 describe('Signer_new', () => {
     it('chainID 1', () => {
@@ -24,7 +24,7 @@ describe('Signer_new', () => {
 describe('Signer_sign', () => {
     it('chainID 1', () => {
         const signer = new Signer(1)
-        return Promise.all(testTxs.map(async (test, i) => {
+        return Promise.all(txInfos.map(async (test, i) => {
             const tx = new Tx(test.txConfig)
             signer.sign(tx, testPrivate)
             const parsed = parseV(tx.v)
@@ -36,7 +36,7 @@ describe('Signer_sign', () => {
 
     it('chainID 100', () => {
         const signer = new Signer(100)
-        return Promise.all(testTxs.map(async (test, i) => {
+        return Promise.all(txInfos.map(async (test, i) => {
             const tx = new Tx(test.txConfig)
             signer.sign(tx, testPrivate)
             const parsed = parseV(tx.v)
@@ -50,7 +50,7 @@ describe('Signer_sign', () => {
 describe('Signer_recover', () => {
     it('successfully recover', () => {
         const signer = new Signer(1)
-        return Promise.all(testTxs.map(async (test, i) => {
+        return Promise.all(txInfos.map(async (test, i) => {
             const tx = new Tx(test.txConfig)
             signer.sign(tx, testPrivate)
             const from = signer.recover(tx)
@@ -60,7 +60,7 @@ describe('Signer_recover', () => {
 
     it('wrong chainID', () => {
         const signer = new Signer(1)
-        const tx = new Tx(testTxs[0].txConfig)
+        const tx = new Tx(txInfos[0].txConfig)
         signer.sign(tx, testPrivate)
         const from = new Signer(200).recover(tx)
         assert.notEqual(from, testAddr)

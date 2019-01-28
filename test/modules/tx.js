@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 import LemoClient from '../../lib/index'
-import {testTxs, chainID, testPrivate, withLemoAddrTestTxs, formattedTx1} from '../datas'
+import {txInfos, chainID, testPrivate, bigTxInfoWithLemoAddr, formattedTx1} from '../datas'
 import '../mock'
 import {toBuffer} from '../../lib/utils'
 
@@ -27,43 +27,39 @@ describe('module_tx_getTx', () => {
 
 describe('module_tx_sendTx', () => {
     it('sendTx_with_hex_address', () => {
-        return Promise.all(testTxs.map(async (test, i) => {
+        return Promise.all(txInfos.map(async (test, i) => {
             const lemo = new LemoClient({chainID})
             const result = await lemo.tx.sendTx(testPrivate, test.txConfig)
             return assert.equal(result, test.hashAfterSign, `index=${i}`)
         }))
     })
-    it('sendTx_with_lemo_address', () => {
-        return Promise.all(withLemoAddrTestTxs.map(async (test, i) => {
-            const lemo = new LemoClient({chainID})
-            const result = await lemo.tx.sendTx(testPrivate, test.txConfig)
-            assert.equal(result, test.hashAfterSign, `index=${i}`)
-        }))
+    it('sendTx_with_lemo_address', async () => {
+        const lemo = new LemoClient({chainID})
+        const result = await lemo.tx.sendTx(testPrivate, bigTxInfoWithLemoAddr.txConfig)
+        assert.equal(result, bigTxInfoWithLemoAddr.hashAfterSign)
     })
 })
 
 describe('module_tx_sign_send', () => {
     it('sign_send_with_hex_address', () => {
-        return Promise.all(testTxs.map(async (test, i) => {
+        return Promise.all(txInfos.map(async (test, i) => {
             const lemo = new LemoClient({chainID})
             const json = await lemo.tx.sign(testPrivate, test.txConfig)
             const result = await lemo.tx.send(json)
             assert.equal(result, test.hashAfterSign, `index=${i}`)
         }))
     })
-    it('sign_send_with_lemo_address', () => {
-        return Promise.all(withLemoAddrTestTxs.map(async (test, i) => {
-            const lemo = new LemoClient({chainID})
-            const json = await lemo.tx.sign(testPrivate, test.txConfig)
-            const result = await lemo.tx.send(json)
-            assert.equal(result, test.hashAfterSign, `index=${i}`)
-        }))
+    it('sign_send_with_lemo_address', async () => {
+        const lemo = new LemoClient({chainID})
+        const json = await lemo.tx.sign(testPrivate, bigTxInfoWithLemoAddr.txConfig)
+        const result = await lemo.tx.send(json)
+        assert.equal(result, bigTxInfoWithLemoAddr.hashAfterSign)
     })
 })
 
 describe('module_tx_vote', () => {
     it('sign_vote', () => {
-        return Promise.all(testTxs.map(async (test, i) => {
+        return Promise.all(txInfos.map(async (test, i) => {
             const lemo = new LemoClient({chainID})
             let json = lemo.tx.signVote(testPrivate, test.txConfig)
             json = JSON.parse(json)
@@ -76,7 +72,7 @@ describe('module_tx_vote', () => {
 
 describe('module_tx_candidate', () => {
     it('sign_candidate', () => {
-        return Promise.all(testTxs.map(async (test, i) => {
+        return Promise.all(txInfos.map(async (test, i) => {
             const lemo = new LemoClient({chainID})
             const candidateInfo = {
                 isCandidate: true,

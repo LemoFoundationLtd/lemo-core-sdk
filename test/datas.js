@@ -41,7 +41,6 @@ export const miner = {
 }
 export const formatedMiner = {
     ...miner,
-    address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
     balance: new BigNumber('1599999999999999999999999900'),
     records: {
         BalanceLog: {
@@ -51,20 +50,18 @@ export const formatedMiner = {
     },
 }
 export const formattedSpecialLemoBase = {
-    ...miner,
+    ...emptyAccount,
     address: '0x015780F8456F9c1532645087a19DcF9a7e0c7F97',
     balance: new BigNumber('0'),
-    records: {},
 }
 export const formattedNotExistLemoBase = {
-    ...miner,
+    ...emptyAccount,
     address: '0x1234567890123456789012345678901234567890',
     balance: new BigNumber('0'),
-    records: {},
 }
 
 // empty tx
-export const testEmptyTx = {
+export const emptyTxInfo = {
     txConfig: {
         expirationTime: 1544584596,
     },
@@ -76,7 +73,7 @@ export const testEmptyTx = {
 }
 
 // normal tx
-export const testTx = {
+export const txInfo = {
     txConfig: {
         to: '0x000000000000000000000001',
         toName: 'aa',
@@ -95,7 +92,7 @@ export const testTx = {
 }
 
 // big tx
-export const testBigTx = {
+export const bigTxInfo = {
     txConfig: {
         to: '0x1000000000000000000000000000000000000000',
         toName: bigString,
@@ -114,16 +111,10 @@ export const testBigTx = {
     hashAfterSign: '0xa53514e7207eaec136fb36879c19a0b5ff5ab2e4288666e17f9adf91cecbf723',
 }
 
-const widthLemoAddrTestBigTx = {
+export const bigTxInfoWithLemoAddr = {
     txConfig: {
+        ...bigTxInfo.txConfig,
         to: testAddr,
-        toName: bigString,
-        gasPrice: bigNum,
-        gasLimit: 100,
-        amount: bigNum,
-        data: bigData,
-        expirationTime: 1544584596,
-        message: bigString,
     },
     rlp:
         '0xf8e4941000000000000000000000000000000000000000b83c3838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838389e111111111111111111111111111111111111111111111111111111111111649e111111111111111111111111111111111111111111111111111111111111884949494949494949845c107d94b83c383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838383838830200c88080',
@@ -179,24 +170,18 @@ export const currentBlock = {
 export const formattedCurrentBlock = {
     ...currentBlock,
     header: {
-        changeLogRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
-        deputyRoot: '0x',
-        eventBloom:
-            '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-        eventRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
-        extraData: '0x',
-        gasLimit: '104795055',
-        gasUsed: '0',
-        hash: '0xba07c7cbdcfc86b18600f019b2da2b69873292e7ed84e3cf9e23065114d5d1df',
+        ...currentBlock.header,
         height: 2,
-        lemoBase: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
-        parentHash: '0x47a9fa99e6132d330449b563fcd50fe6680082ddba6f7cc7c7586b393e52a8d8',
-        signData:
-            '0x96b5d799eb886dbb945e62249e0452df40c2b8b22c88642c38e6f8849dbb46f078dcc074a75c1b82cf1227aa57a71e5374b1e6ddff1ce60fb0994c88fe2ce0bc01',
+        gasLimit: 104795055,
+        gasUsed: 0,
         timestamp: 1541642355,
-        transactionRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
-        versionRoot: '0x8117e9b6e78c6182a504aee2141e44dccd93fa0e8a0defbf77237b3c7fc79536',
     },
+    transactions: [{
+        ...currentBlock.transactions[0],
+        gasLimit: 2000000,
+        amount: new BigNumber('101'),
+        expirationTime: 1541649536,
+    }],
 }
 
 export const block1 = {
@@ -212,7 +197,7 @@ export const block1 = {
         height: '1',
         gasLimit: '104897462',
         gasUsed: '21000',
-        timestamp: 1541642352,
+        timestamp: '1541642352',
         signData:
             '0x3086eaf0bb4823423d99bda2f7ded2eeeb3287f6521931ff154b30840ed91ca35371b661e37fe20067c39dfa9ce6042c82b90c46b1418961922bc7e79affa3d800',
         deputyRoot: '0x',
@@ -267,45 +252,33 @@ export const block1 = {
 export const formattedBlock1 = {
     ...block1,
     header: {
-        parentHash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
-        miner: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
-        versionRoot: '0x8117e9b6e78c6182a504aee2141e44dccd93fa0e8a0defbf77237b3c7fc79536',
-        transactionRoot: '0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2de',
-        changeLogRoot: '0x28f0c4c240375ff1c4cd4e8d6a47a351df4f2aca7447d7c836b15e7808383fe2',
-        eventRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
-        eventBloom:
-            '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+        ...block1.header,
         height: 1,
-        gasLimit: '104897462',
-        gasUsed: '21000',
+        gasLimit: 104897462,
+        gasUsed: 21000,
         timestamp: 1541642352,
-        signData:
-            '0x3086eaf0bb4823423d99bda2f7ded2eeeb3287f6521931ff154b30840ed91ca35371b661e37fe20067c39dfa9ce6042c82b90c46b1418961922bc7e79affa3d800',
-        deputyRoot: '0x',
-        extraData: '0x',
-        hash: '0x47a9fa99e6132d330449b563fcd50fe6680082ddba6f7cc7c7586b393e52a8d8',
     },
+    transactions: [{
+        ...block1.transactions[0],
+        gasLimit: 2000000,
+        amount: new BigNumber('100'),
+        expirationTime: 1541649535,
+    }],
     changeLogs: [
         {
+            ...block1.changeLogs[0],
             type: 'BalanceLog',
-            address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
-            version: '2',
-            newValue: '0x8c052b7d2dcc8093e1eb610f9c',
-            extra: '',
+            version: 2,
         },
         {
+            ...block1.changeLogs[1],
             type: 'BalanceLog',
-            address: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
-            version: '1',
-            newValue: '0x64',
-            extra: '',
+            version: 1,
         },
         {
+            ...block1.changeLogs[2],
             type: 'BalanceLog',
-            address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
-            version: '3',
-            newValue: '0x8c052b7d2dcc80cd2e3fffff9c',
-            extra: '',
+            version: 3,
         },
     ],
 }
@@ -322,7 +295,7 @@ export const block0 = {
         height: '0',
         gasLimit: '105000000',
         gasUsed: '0',
-        timestamp: 1535630400,
+        timestamp: '1535630400',
         signData: '0x',
         deputyRoot: '0xd448943c5cf120118a5b2337b661ff1bc578d6bd89400287fbb82de62ae13933',
         extraData: '0x',
@@ -338,25 +311,14 @@ export const block0 = {
 export const formattedBlock0 = {
     ...block0,
     header: {
-        parentHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
-        miner: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
-        versionRoot: '0x1e78c4779248d3d8d3cd9b77bf7b67b4c759ec87d45d52a3e79c928290773f4c',
-        transactionRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
-        changeLogRoot: '0x93273cebb4f0728991811d5d7c57ae8f88a83524eedb0af48b3061ed2e8017b8',
-        eventRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
-        eventBloom:
-            '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+        ...block0.header,
         height: 0,
-        gasLimit: '105000000',
-        gasUsed: '0',
+        gasLimit: 105000000,
+        gasUsed: 0,
         timestamp: 1535630400,
-        signData: '0x',
-        deputyRoot: '0xd448943c5cf120118a5b2337b661ff1bc578d6bd89400287fbb82de62ae13933',
-        extraData: '0x',
-        hash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
     },
 }
-export const oneChangeLogsBlock = {
+export const oneChangeLogBlock = {
     header: {
         parentHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
         miner: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
@@ -369,7 +331,7 @@ export const oneChangeLogsBlock = {
         height: '0',
         gasLimit: '105000000',
         gasUsed: '0',
-        timestamp: 1535630400,
+        timestamp: '1535630400',
         signData: '0x',
         deputyRoot: '0xd448943c5cf120118a5b2337b661ff1bc578d6bd89400287fbb82de62ae13933',
         extraData: '0x',
@@ -399,39 +361,25 @@ export const oneChangeLogsBlock = {
         },
     ],
 }
-export const formattedOneChangeLogsBlock = {
-    ...oneChangeLogsBlock,
+export const formattedOneChangeLogBlock = {
+    ...oneChangeLogBlock,
     header: {
-        parentHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
-        miner: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
-        versionRoot: '0x1e78c4779248d3d8d3cd9b77bf7b67b4c759ec87d45d52a3e79c928290773f4c',
-        transactionRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
-        changeLogRoot: '0x93273cebb4f0728991811d5d7c57ae8f88a83524eedb0af48b3061ed2e8017b8',
-        eventRoot: '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470',
-        eventBloom:
-            '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+        ...oneChangeLogBlock.header,
         height: 0,
-        gasLimit: '105000000',
-        gasUsed: '0',
+        gasLimit: 105000000,
+        gasUsed: 0,
         timestamp: 1535630400,
-        signData: '0x',
-        deputyRoot: '0xd448943c5cf120118a5b2337b661ff1bc578d6bd89400287fbb82de62ae13933',
-        extraData: '0x',
-        hash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
     },
     changeLogs: [
         {
+            ...oneChangeLogBlock.changeLogs[0],
             type: 'BalanceLog',
-            address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
-            version: '2',
-            newValue: '0x8c052b7d2dcc8093e1eb610f9c',
-            extra: '',
+            version: 2,
         },
     ],
 }
 
-export const testTxs = [testEmptyTx, testTx, testBigTx]
-export const withLemoAddrTestTxs = [testEmptyTx, testTx, widthLemoAddrTestBigTx]
+export const txInfos = [emptyTxInfo, txInfo, bigTxInfo]
 
 export const tx1 = {
     to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
