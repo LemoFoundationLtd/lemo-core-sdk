@@ -381,6 +381,7 @@ export const formattedOneChangeLogBlock = {
 
 export const txInfos = [emptyTxInfo, txInfo, bigTxInfo]
 
+export const txMinedTime = 1541649535
 export const tx1 = {
     to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
     toName: '',
@@ -400,5 +401,6 @@ export const formattedTx1 = {
     from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
     gasLimit: 2000000,
     expirationTime: 1541649535,
-    amount: '100 mo',
+    amount: new BigNumber('100'),
+    minedTime: txMinedTime,
 }
