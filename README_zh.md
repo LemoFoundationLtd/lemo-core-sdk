@@ -72,6 +72,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.account.getBalance(addr)](#submodule-account-getBalance)             | 获取账户余额                   | ✓    | ✓          |
 | [lemo.account.getAccount(addr)](#submodule-account-getAccount)             | 获取账户信息                   | ✓    | ✓          |
 | [lemo.tx.getTx(txHash)](#submodule-tx-getTx)                               | 根据交易hash获取交易            | ✓    | ✓          |
+| [lemo.tx.getTxListByAddress(address, start, limit)](#submodule-tx-getTxListByAddress)     | 根据账户地址分页拉取交易列表      | ✓    | ✓          |
 | [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx)                 | 签名并发送交易                 | ✓    | ✓          |
 | [lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign)                     | 签名交易                       | ✖    | ✓          |
 | [lemo.tx.signVote(privateKey, txInfo)](#submodule-tx-signVote)             | 签名投票的特殊交易                       | ✖    | ✓          |
@@ -1008,7 +1009,10 @@ lemo.tx.getTx(txHash)
 
 ##### Returns
 
-`Promise` - 通过`then`可以获取到[交易](#data-structure-transaction)信息
+`Promise` - 通过`then`可以获取到[交易](#data-structure-transaction)信息。这个对象中增加了以下属性：
+    - `blockHash` 交易所在区块的hash
+    - `blockHeight` 交易所在区块的高度
+    - `minedTime` 交易所在区块的出块时间
 
 ##### Example
 
@@ -1021,6 +1025,43 @@ lemo.tx.getTx('0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2d
     console.log(tx.gasLimit) // 2000000
     console.log(tx.expirationTime) // 1541649535
     console.log(tx.message) // ''
+    console.log(tx.blockHeight) // 100
+    console.log(tx.minedTime) // 1541649535
+    console.log(tx.blockHash) // '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab'
+})
+```
+
+---
+
+<a name="submodule-tx-getTxListByAddress"></a>
+
+#### lemo.tx.getTxListByAddress
+
+```
+lemo.tx.getTxListByAddress(address, start, limit)
+```
+
+根据账户地址分页拉取交易列表
+
+##### Parameters
+
+1. `string` - 账户地址
+2. `number` - 要获取的第一条交易的序号
+3. `number` - 获取交易的最大条数
+
+##### Returns
+
+`Promise` - 通过`then`可以获取到一个`{txList:Array, total:number}`对象。其中
+    - `txList` [交易](#data-structure-transaction)的数组，其中增加了`minedTime`属性，表示所在区块的出块时间
+    - `total` 该账户下的交易总数
+
+##### Example
+
+```js
+lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).then(function(result) {
+    console.log(JSON.stringify(result.txList)) // [{"to":"Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY","toName":"","gasPrice":"3000000000","gasLimit":2000000,"amount":"1.0000000000000000000000001e+25","data":"0x","expirationTime":1541649535,"message":"","v":"0x020001","r":"0x1aebf7c6141dc54b3f181e56d287785f2ce501c70466016f96d8b7171d80555c","s":"0x584179c208ad9bc9488b969b9d06635dda05b932b1966d43b6255ca63288903c","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","minedTime":1541649535}]
+    console.log(result.txList[0].minedTime) // 1541649535
+    console.log(result.total) // 1
 })
 ```
 

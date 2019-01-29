@@ -169,7 +169,7 @@ const mockInfos = [
             if (address === 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D') {
                 txList = txListRes.txList.slice(start, start + size)
             }
-            return {txList, next: txListRes.next}
+            return {txList, total: txListRes.total}
         },
     },
     {

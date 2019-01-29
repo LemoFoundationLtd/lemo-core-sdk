@@ -474,7 +474,7 @@ export const txListRes = {
         tx: tx2,
         time: '1541649536',
     }],
-    next: '2',
+    total: '2',
 }
 
 export const formattedTxListRes = {
@@ -485,5 +485,5 @@ export const formattedTxListRes = {
         ...formattedTx2,
         minedTime: 1541649536,
     }],
-    next: 2,
+    total: 2,
 }

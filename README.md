@@ -72,6 +72,7 @@ API | description | asynchronous | available for remote
 [lemo.account.getBalance(addr)](#submodule-account-getBalance) | Get the balance of an account | ✓ | ✓
 [lemo.account.getAccount(addr)](#submodule-account-getAccount) | Get the information of an account | ✓ | ✓
 [lemo.tx.getTx(txHash)](#submodule-tx-getTx) | Get transaction by the its hash | ✓    | ✓
+[lemo.tx.getTxListByAddress(address, start, limit)](#submodule-tx-getTxListByAddress)  | Get paged transactions by account address | ✓ | ✓
 [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx) | Sign and send transaction | ✓ | ✓
 [lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign) | Sign transaction | ✖ | ✓
 [lemo.tx.signVote(privateKey, txInfo)](#submodule-tx-signVote) | Sign a special transaction for vote | ✖ | ✓ 
@@ -848,7 +849,10 @@ Get transaction by the its hash
 
 ##### Returns
 
-`Promise` - Call `then` method to get [transaction](#data-structure-transaction)
+`Promise` - Call `then` method to get [transaction](#data-structure-transaction). There are some new fields in this object:
+    - `blockHash` Hash of the block which contains the transaction
+    - `blockHeight` Height of the block which contains the transaction
+    - `minedTime` Mined time seconds of the block which contains the transaction
 
 ##### Example
 
@@ -861,6 +865,43 @@ lemo.tx.getTx('0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2d
     console.log(tx.gasLimit) // 2000000
     console.log(tx.expirationTime) // 1541649535
     console.log(tx.message) // ''
+    console.log(tx.blockHeight) // 100
+    console.log(tx.minedTime) // 1541649535
+    console.log(tx.blockHash) // '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab'
+})
+```
+
+---
+
+<a name="submodule-tx-getTxListByAddress"></a>
+
+#### lemo.tx.getTxListByAddress
+
+```
+lemo.tx.getTxListByAddress(address, start, limit)
+```
+
+Get paged transactions by account address
+
+##### Parameters
+
+1. `string` - Account address
+2. `number` - Index of the first transaction
+3. `number` - The max transactions count
+
+##### Returns
+
+`Promise` - Call `then` method to get a `{txList:Array, total:number}` object
+    - `txList` [Transaction](#data-structure-transaction) array. There is a `minedTime` field in every item to record the mined time of the block which contains the transaction
+    - `total` Transaction's count in this account
+
+##### Example
+
+```js
+lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).then(function(result) {
+    console.log(JSON.stringify(result.txList)) // [{"to":"Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY","toName":"","gasPrice":"3000000000","gasLimit":2000000,"amount":"1.0000000000000000000000001e+25","data":"0x","expirationTime":1541649535,"message":"","v":"0x020001","r":"0x1aebf7c6141dc54b3f181e56d287785f2ce501c70466016f96d8b7171d80555c","s":"0x584179c208ad9bc9488b969b9d06635dda05b932b1966d43b6255ca63288903c","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","minedTime":1541649535}]
+    console.log(result.txList[0].minedTime) // 1541649535
+    console.log(result.total) // 1
 })
 ```
 
