@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 import LemoClient from '../../lib/index'
-import {txInfos, chainID, testPrivate, bigTxInfoWithLemoAddr, formattedTxRes1} from '../datas'
+import {txInfos, chainID, testPrivate, bigTxInfoWithLemoAddr, formattedTxRes1, formattedTxListRes} from '../datas'
 import '../mock'
 import {toBuffer} from '../../lib/utils'
 
@@ -14,6 +14,29 @@ describe('module_tx_getTx', () => {
         const lemo = new LemoClient()
         const result = await lemo.tx.getTx('0x28ee2b4622946e35c3e761e826d18d95c319452efe23ce6844f14de3ece95b5e')
         assert.equal(result, null)
+    })
+})
+
+describe('module_tx_getTxListByAddress', () => {
+    it('got 2 txs', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10)
+        assert.deepEqual(result, formattedTxListRes)
+    })
+    it('got 1 tx', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 1)
+        assert.equal(result.txList.length, 1)
+    })
+    it('got 0 tx', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 0)
+        assert.equal(result.txList.length, 0)
+    })
+    it('get from empty account', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.tx.getTxListByAddress('Lemobw', 0, 10)
+        assert.equal(result.txList.length, 0)
     })
 })
 

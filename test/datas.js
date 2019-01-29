@@ -406,33 +406,84 @@ export const formattedOneChangeLogBlock = {
 
 export const txInfos = [emptyTxInfo, txInfo, bigTxInfo]
 
+const tx1 = {
+    to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
+    toName: '',
+    gasPrice: '3000000000',
+    gasLimit: '2000000',
+    amount: '10000000000000000000000001',
+    data: '0x',
+    expirationTime: '1541649535',
+    message: '',
+    v: '0x020001',
+    r: '0x1aebf7c6141dc54b3f181e56d287785f2ce501c70466016f96d8b7171d80555c',
+    s: '0x584179c208ad9bc9488b969b9d06635dda05b932b1966d43b6255ca63288903c',
+}
+
+const formattedTx1 = {
+    ...tx1,
+    from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D',
+    gasPrice: new BigNumber('3000000000'),
+    gasLimit: 2000000,
+    expirationTime: 1541649535,
+    amount: new BigNumber('10000000000000000000000001'),
+}
+
+const tx2 = {
+    to: 'Lemobw',
+    toName: 'aaa',
+    gasPrice: '1000000000',
+    gasLimit: '21000',
+    amount: '0',
+    data: '0xbbbb',
+    expirationTime: '1541649535',
+    message: 'ccc',
+    v: '0x01030001',
+    r: '0x0f3e7f456029e62bcfe8f27d6a3fe689916a1ea76730259a9aa051611d01fa63',
+    s: '0x58e9668fbbeeacc4f4803d8b2725e8afc21c131504ce9ecd96dcffe3bf06b35f',
+}
+
+const formattedTx2 = {
+    ...tx2,
+    from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D',
+    gasPrice: new BigNumber('1000000000'),
+    gasLimit: 21000,
+    expirationTime: 1541649535,
+    amount: new BigNumber('0'),
+}
+
 export const txRes1 = {
     blockHash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
     height: '100',
     time: '1541649535',
-    tx: {
-        to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
-        toName: '',
-        gasPrice: '3000000000',
-        gasLimit: '2000000',
-        amount: '100',
-        data: '0x',
-        expirationTime: '1541649535',
-        message: '',
-        v: '0x30001',
-        r: '0x800be6a0cf31ab9e86d547fb8cf964339276233a2b260ad8a4b4c93b39a48d6b',
-        s: '0x1761e125f601bc6953e30eaad3e698c12add332a5740f1618915c12432dc6106',
-    },
+    tx: tx1,
 }
 
 export const formattedTxRes1 = {
-    ...txRes1.tx,
+    ...formattedTx1,
     blockHeight: 100,
     minedTime: 1541649535,
     blockHash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
-    from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
-    gasPrice: new BigNumber('3000000000'),
-    gasLimit: 2000000,
-    expirationTime: 1541649535,
-    amount: new BigNumber('100'),
+}
+
+export const txListRes = {
+    txList: [{
+        tx: tx1,
+        time: '1541649535',
+    }, {
+        tx: tx2,
+        time: '1541649536',
+    }],
+    next: '2',
+}
+
+export const formattedTxListRes = {
+    txList: [{
+        ...formattedTx1,
+        minedTime: 1541649535,
+    }, {
+        ...formattedTx2,
+        minedTime: 1541649536,
+    }],
+    next: 2,
 }

@@ -15,6 +15,7 @@ import {
     peersCount,
     infos,
     txRes1,
+    txListRes,
 } from './datas'
 
 const mockInfos = [
@@ -158,6 +159,17 @@ const mockInfos = [
         paramsCount: 1,
         reply([hash]) {
             return hash === '0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2de' ? txRes1 : null
+        },
+    },
+    {
+        method: 'tx_getTxListByAddress',
+        paramsCount: 3,
+        reply([address, start, size]) {
+            let txList = []
+            if (address === 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D') {
+                txList = txListRes.txList.slice(start, start + size)
+            }
+            return {txList, next: txListRes.next}
         },
     },
     {
