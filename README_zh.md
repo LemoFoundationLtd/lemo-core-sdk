@@ -214,8 +214,8 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
     "toName": "",
     "amount": "100",
     "data": "0x",
-    "expirationTime": "1541566996",
-    "gasLimit": "2000000",
+    "expirationTime": 1541566996,
+    "gasLimit": 2000000,
     "gasPrice": "3000000000",
     "hash": "0x6d3062a9f5d4400b2002b436bc69485449891c83e23bf9e27229234da5b25dcf",
     "message": "",
@@ -228,11 +228,11 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 -   `from` 交易发送者的账户地址。由签名字段解析得到
 -   `to` 交易接收者的账户地址
 -   `toName` (可选) 交易接收者的账户名，会与账户地址进行比对校验。类似银行转账时填写的姓名与卡号的关系。最大长度为100字符
--   `amount` 交易金额，单位`mo`。1`LEMO`=1000000000000000000`mo`=1e18`mo`
+-   `amount` 交易金额，`BigNumber`对象，单位`mo`。1`LEMO`=1000000000000000000`mo`=1e18`mo`
 -   `data` (可选) 交易附带的数据，可用于调用智能合约。根据交易类型也会有不同的作用
 -   `expirationTime` 交易过期时间戳，单位为秒。如果交易过期时间在半小时以后，则可能不会被打包，这取决于节点交易池的配置
 -   `gasLimit` 交易消耗的 gas 上限。如果超过这个限制还没运行结束，则交易失败，并且 gas 费用不退还
--   `gasPrice` 交易消耗 gas 的单价，单位为`mo`。单价越高越优先被打包
+-   `gasPrice` 交易消耗 gas 的单价，`BigNumber`对象，单位为`mo`。单价越高越优先被打包
 -   `hash` 交易 hash
 -   `message` (可选) 交易附带的文本消息。最大长度为1024字符
 -   `r` 交易签名字段
@@ -260,7 +260,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
     "extra": "",
     "newValue": "0x8c052b7d2dcc80cd2e40000000",
     "type": "BalanceLog",
-    "version": "1"
+    "version": 1
 }
 ```
 
@@ -275,6 +275,9 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | CodeLog     | 合约账户创建         | 合约 code | -     |
 | AddEventLog | 产生一条合约日志     | 合约日志  | -     |
 | SuicideLog  | 合约账户销毁         | -         | -     |
+| VoteForLog | 修改投票对象账号地址 | 新的投票对象地址 | - |
+| VotesLog | 候选者收到的票数变化 | 新的票数 | - |
+| CandidateProfileLog | 候选者修改自己的节点信息 | 节点信息对象 | - |
 
 <a name="data-structure-confirm"></a>
 
@@ -332,12 +335,24 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
     "balance": "1599999999999999999999999900",
     "records": {
         "BalanceLog": {
-            "version": "3",
-            "height": "1"
+            "version": 3,
+            "height": 1
         }
     },
     "codeHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-    "root": "0x0000000000000000000000000000000000000000000000000000000000000000"
+    "root": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "txCount": 0,
+    "voteFor": "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG",
+    "candidate": {
+        "votes": "1599999000000000000000000000",
+        "profile": {
+            "host": "www.lemochain.com",
+            "isCandidate": "true",
+            "minerAddress": "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG",
+            "nodeID": "5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0",
+            "port": "7001"
+        }
+    }
 }
 ```
 
@@ -346,6 +361,16 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 -   `records` 账户数据的修改记录对象。其中 key 是[ChangeLog](data-structure-changeLog)的类型，value 是该类型对应最新的那一条`ChangeLog`的版本号和所在的区块高度
 -   `codeHash` 合约账户的代码 hash
 -   `root` 合约账户的存储树根节点 hash
+-   `txCount` 账户收到或发送的交易数量
+-   `voteFor` 投票对象的账户地址
+-   `candidate` 如果是候选者账户，则该字段不为空
+    - `votes` 候选者收到的总票数
+    - `profile` 候选者信息
+        - `host` 候选者的节点服务器连接地址，可以是IP或域名
+        - `isCandidate` 该账户是否是候选者。用来取消候选者身份
+        - `minerAddress` 节点的挖矿收益账号地址
+        - `nodeID` 节点的 ID，即节点对区块签名时的私钥对应的公钥。长度为128个字符，不要加`0x`
+        - `port` 候选者的节点服务器端口号
 
 ---
 
@@ -1124,7 +1149,7 @@ lemo.tx.signCandidate(privateKey, txInfo, candidateInfo)
 
 1. `string` - 账户私钥
 2. `object` - 签名前的交易信息，细节参考[`lemo.tx.sendTx`](#submodule-tx-sendTx)。这里的`to`、`toName`、`amount`、`data`字段会被忽略
-3. `object` - 候选人信息，基本与[共识节点信息](#data-structure-deputyNode)相同。只是候选人信息里无需填写`votes`字段，同时多了`isCandidate`字段，表示注册或取消候选人身份
+3. `object` - 候选人信息，即[账户](#data-structure-account)中的`candidate.profile`字段
 
 ##### Returns
 
