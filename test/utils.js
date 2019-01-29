@@ -4,7 +4,7 @@ import utils from '../lib/utils'
 
 describe('formatMoney', () => {
     const tests = {
-        0: '0 mo',
+        0: '0 LEMO',
         1: '1 mo',
         100: '100 mo',
         1000: '1K mo',

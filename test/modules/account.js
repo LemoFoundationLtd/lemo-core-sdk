@@ -45,7 +45,7 @@ describe('account_getBalance', () => {
         const result = await lemo.account.getBalance('0x1234567890123456789012345678901234567890')
         assert.strictEqual(result instanceof BigNumber, true)
         assert.exists(result.toMoney)
-        assert.strictEqual(result.toMoney(), '0 mo')
+        assert.strictEqual(result.toMoney(), '0 LEMO')
     })
     it('balance', async () => {
         const lemo = new LemoClient()
