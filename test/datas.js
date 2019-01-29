@@ -38,7 +38,7 @@ export const miner = {
         },
     },
     root: '0x0000000000000000000000000000000000000000000000000000000000000000',
-    txCount: 0,
+    txCount: '0',
     candidate: {
         profile: {
             host: '127.0.0.1',
@@ -68,16 +68,19 @@ export const formatedMiner = {
         },
         votes: '1599999000000000000000000000',
     },
+    txCount: 0,
 }
 export const formattedSpecialLemoBase = {
     ...emptyAccount,
     address: '0x015780F8456F9c1532645087a19DcF9a7e0c7F97',
     balance: new BigNumber('0'),
+    txCount: 0,
 }
 export const formattedNotExistLemoBase = {
     ...emptyAccount,
     address: '0x1234567890123456789012345678901234567890',
     balance: new BigNumber('0'),
+    txCount: 0,
 }
 
 // empty tx
@@ -403,27 +406,33 @@ export const formattedOneChangeLogBlock = {
 
 export const txInfos = [emptyTxInfo, txInfo, bigTxInfo]
 
-export const txMinedTime = 1541649535
-export const tx1 = {
-    to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
-    toName: '',
-    gasPrice: '3000000000',
-    gasLimit: '2000000',
-    amount: '100',
-    data: '0x',
-    expirationTime: '1541649535',
-    message: '',
-    v: '0x30001',
-    r: '0x800be6a0cf31ab9e86d547fb8cf964339276233a2b260ad8a4b4c93b39a48d6b',
-    s: '0x1761e125f601bc6953e30eaad3e698c12add332a5740f1618915c12432dc6106',
+export const txRes1 = {
+    blockHash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
+    height: '100',
+    time: '1541649535',
+    tx: {
+        to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
+        toName: '',
+        gasPrice: '3000000000',
+        gasLimit: '2000000',
+        amount: '100',
+        data: '0x',
+        expirationTime: '1541649535',
+        message: '',
+        v: '0x30001',
+        r: '0x800be6a0cf31ab9e86d547fb8cf964339276233a2b260ad8a4b4c93b39a48d6b',
+        s: '0x1761e125f601bc6953e30eaad3e698c12add332a5740f1618915c12432dc6106',
+    },
 }
 
-export const formattedTx1 = {
-    ...tx1,
+export const formattedTxRes1 = {
+    ...txRes1.tx,
+    blockHeight: 100,
+    minedTime: 1541649535,
+    blockHash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
     from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
     gasPrice: new BigNumber('3000000000'),
     gasLimit: 2000000,
     expirationTime: 1541649535,
     amount: new BigNumber('100'),
-    minedTime: txMinedTime,
 }

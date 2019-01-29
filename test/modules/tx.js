@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 import LemoClient from '../../lib/index'
-import {txInfos, chainID, testPrivate, bigTxInfoWithLemoAddr, formattedTx1} from '../datas'
+import {txInfos, chainID, testPrivate, bigTxInfoWithLemoAddr, formattedTxRes1} from '../datas'
 import '../mock'
 import {toBuffer} from '../../lib/utils'
 
@@ -8,7 +8,7 @@ describe('module_tx_getTx', () => {
     it('getTx', async () => {
         const lemo = new LemoClient()
         const result = await lemo.tx.getTx('0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2de')
-        assert.deepEqual(result, formattedTx1)
+        assert.deepEqual(result, formattedTxRes1)
     })
     it('getTx not exist', async () => {
         const lemo = new LemoClient()

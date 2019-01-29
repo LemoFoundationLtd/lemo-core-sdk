@@ -14,8 +14,7 @@ import {
     isMining,
     peersCount,
     infos,
-    txMinedTime,
-    tx1,
+    txRes1,
 } from './datas'
 
 const mockInfos = [
@@ -158,7 +157,7 @@ const mockInfos = [
         method: 'tx_getTxByHash',
         paramsCount: 1,
         reply([hash]) {
-            return hash === '0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2de' ? {time: txMinedTime, tx: tx1} : null
+            return hash === '0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2de' ? txRes1 : null
         },
     },
     {
