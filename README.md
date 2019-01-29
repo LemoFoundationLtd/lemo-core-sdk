@@ -849,10 +849,10 @@ Get transaction by the its hash
 
 ##### Returns
 
-`Promise` - Call `then` method to get [transaction](#data-structure-transaction). There are some new fields in this object:
-    - `blockHash` Hash of the block which contains the transaction
-    - `blockHeight` Height of the block which contains the transaction
-    - `minedTime` Mined time seconds of the block which contains the transaction
+`Promise` - Call `then` method to get [transaction](#data-structure-transaction). There are some new fields in this object:  
+    - `blockHash` Hash of the block which contains the transaction  
+    - `blockHeight` Height of the block which contains the transaction  
+    - `minedTime` Mined time seconds of the block which contains the transaction  
 
 ##### Example
 
@@ -891,9 +891,9 @@ Get paged transactions by account address
 
 ##### Returns
 
-`Promise` - Call `then` method to get a `{txList:Array, total:number}` object
-    - `txList` [Transaction](#data-structure-transaction) array. There is a `minedTime` field in every item to record the mined time of the block which contains the transaction
-    - `total` Transaction's count in this account
+`Promise` - Call `then` method to get a `{txList:Array, total:number}` object  
+    - `txList` [Transaction](#data-structure-transaction) array. There is a `minedTime` field in every item to record the mined time of the block which contains the transaction  
+    - `total` Transaction's count in this account  
 
 ##### Example
 

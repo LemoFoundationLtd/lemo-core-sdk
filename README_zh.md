@@ -1009,10 +1009,10 @@ lemo.tx.getTx(txHash)
 
 ##### Returns
 
-`Promise` - 通过`then`可以获取到[交易](#data-structure-transaction)信息。这个对象中增加了以下属性：
-    - `blockHash` 交易所在区块的hash
-    - `blockHeight` 交易所在区块的高度
-    - `minedTime` 交易所在区块的出块时间
+`Promise` - 通过`then`可以获取到[交易](#data-structure-transaction)信息。这个对象中增加了以下属性：  
+    - `blockHash` 交易所在区块的hash  
+    - `blockHeight` 交易所在区块的高度  
+    - `minedTime` 交易所在区块的出块时间  
 
 ##### Example
 
@@ -1051,9 +1051,9 @@ lemo.tx.getTxListByAddress(address, start, limit)
 
 ##### Returns
 
-`Promise` - 通过`then`可以获取到一个`{txList:Array, total:number}`对象。其中
-    - `txList` [交易](#data-structure-transaction)的数组，其中增加了`minedTime`属性，表示所在区块的出块时间
-    - `total` 该账户下的交易总数
+`Promise` - 通过`then`可以获取到一个`{txList:Array, total:number}`对象。其中  
+    - `txList` [交易](#data-structure-transaction)的数组，其中增加了`minedTime`属性，表示所在区块的出块时间  
+    - `total` 该账户下的交易总数  
 
 ##### Example
 
