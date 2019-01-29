@@ -198,6 +198,7 @@ export const formattedCurrentBlock = {
     },
     transactions: [{
         ...currentBlock.transactions[0],
+        gasPrice: new BigNumber('3000000000'),
         gasLimit: 2000000,
         amount: new BigNumber('101'),
         expirationTime: 1541649536,
@@ -280,6 +281,7 @@ export const formattedBlock1 = {
     },
     transactions: [{
         ...block1.transactions[0],
+        gasPrice: new BigNumber('3000000000'),
         gasLimit: 2000000,
         amount: new BigNumber('100'),
         expirationTime: 1541649535,
@@ -419,6 +421,7 @@ export const tx1 = {
 export const formattedTx1 = {
     ...tx1,
     from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
+    gasPrice: new BigNumber('3000000000'),
     gasLimit: 2000000,
     expirationTime: 1541649535,
     amount: new BigNumber('100'),
