@@ -66,7 +66,7 @@ export const formatedMiner = {
             isCandidate: true,
             port: 7001,
         },
-        votes: '1599999000000000000000000000',
+        votes: '1599999000',
     },
     txCount: 0,
 }
@@ -505,6 +505,7 @@ const formattedCandidate1 = {
         isCandidate: true,
         port: 7001,
     },
+    votes: '1599999000.000000000000000001'
 }
 
 const candidate2 = {
