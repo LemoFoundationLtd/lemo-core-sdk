@@ -5,7 +5,7 @@ import {miner, formatedMiner, formattedSpecialLemoBase, formattedNotExistLemoBas
 
 import '../mock'
 
-describe('account_getAccount', () => {
+describe('module_account_getAccount', () => {
     it('account with miner balance', async () => {
         const lemo = new LemoClient()
         const result = await lemo.account.getAccount(miner.address)
@@ -25,7 +25,7 @@ describe('account_getAccount', () => {
     })
 })
 
-describe('account_getCandidateInfo', () => {
+describe('module_account_getCandidateInfo', () => {
     it('candidate', async () => {
         const lemo = new LemoClient()
         const result = await lemo.account.getCandidateInfo(miner.address)
@@ -39,7 +39,7 @@ describe('account_getCandidateInfo', () => {
     })
 })
 
-describe('account_getBalance', () => {
+describe('module_account_getBalance', () => {
     it('no-balance', async () => {
         const lemo = new LemoClient()
         const result = await lemo.account.getBalance('0x1234567890123456789012345678901234567890')

@@ -56,6 +56,8 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.getGenesis()](#submodule-chain-getGenesis)                           | 获取创世区块                   | ✓    | ✓          |
 | [lemo.getChainID()](#submodule-chain-getChainID)                           | 获取当前链 ID                  | ✓    | ✓          |
 | [lemo.getGasPriceAdvice()](#submodule-chain-getGasPriceAdvice)             | 获取建议 gas 价格              | ✓    | ✓          |
+| [lemo.getCandidateList()](#submodule-chain-getCandidateList)               | 分页获取候选节点列表            | ✓    | ✓          |
+| [lemo.getCandidateTop30()](#submodule-chain-getCandidateTop30)             | 获取排名前30的候选节点列表       | ✓    | ✓          |
 | [lemo.getNodeVersion()](#submodule-chain-getNodeVersion)                   | 节点版本号                     | ✓    | ✓          |
 | [lemo.getSdkVersion()](#submodule-chain-getSdkVersion)                     | js SDK 版本号                  | ✖    | ✓          |
 | [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock)         | 监听新的区块                   | ✖    | ✓          |
@@ -72,7 +74,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.account.getBalance(addr)](#submodule-account-getBalance)             | 获取账户余额                   | ✓    | ✓          |
 | [lemo.account.getAccount(addr)](#submodule-account-getAccount)             | 获取账户信息                   | ✓    | ✓          |
 | [lemo.tx.getTx(txHash)](#submodule-tx-getTx)                               | 根据交易hash获取交易            | ✓    | ✓          |
-| [lemo.tx.getTxListByAddress(address, start, limit)](#submodule-tx-getTxListByAddress)     | 根据账户地址分页拉取交易列表      | ✓    | ✓          |
+| [lemo.tx.getTxListByAddress(address, index, limit)](#submodule-tx-getTxListByAddress)     | 根据账户地址分页拉取交易列表      | ✓    | ✓          |
 | [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx)                 | 签名并发送交易                 | ✓    | ✓          |
 | [lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign)                     | 签名交易                       | ✖    | ✓          |
 | [lemo.tx.signVote(privateKey, txInfo)](#submodule-tx-signVote)             | 签名投票的特殊交易                       | ✖    | ✓          |
@@ -562,6 +564,57 @@ lemo.getGasPriceAdvice().then(function(gasPrice) {
 
 ---
 
+<a name="submodule-chain-getCandidateList"></a>
+#### lemo.getCandidateList
+```
+lemo.getCandidateList(index, limit)
+```
+分页获取候选节点列表
+
+##### Parameters
+1. `number` - 要获取的候选人信息起始序号
+2. `number` - 获取候选人信息的最大条数
+
+##### Returns
+`Promise` - 通过`then`可以获取到一个`{candidateList:Array, total:number}`对象  
+    - `candidateList` 候选人信息数组。与[账户信息](#data-structure-account)中的`candidate`对象一致，只是在这个候选人信息中增加了一个`address`字段，表示账户地址  
+    - `total` 候选人的总数  
+
+##### Example
+```js
+lemo.getCandidateList(0, 10).then(function(result) {
+    console.log(result.total) // 1
+    console.log(result.candidateList[0].address) // Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG
+    console.log(JSON.stringify(result.candidateList)) // [{"address":"Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG","profile":{"host":"127.0.0.1","isCandidate":true,"minerAddress":"Lemobw","nodeID":"5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0","port":7001},"votes":"1599999000000000000000000000"}]
+})
+```
+
+---
+
+<a name="submodule-chain-getCandidateTop30"></a>
+#### lemo.getCandidateTop30
+```
+lemo.getCandidateTop30()
+```
+获取排名前30的候选节点列表
+
+##### Parameters
+无
+
+##### Returns
+`Promise` - 通过`then`可以获取到候选人信息对象的数组。这里的候选人信息与[账户信息](#data-structure-account)中的`candidate`对象一致，只是在这个候选人信息中增加了一个`address`字段，表示账户地址  
+
+##### Example
+```js
+lemo.getCandidateTop30().then(function(candidateList) {
+    console.log(candidateList.length) // 1
+    console.log(candidateList[0].address) // Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG
+    console.log(JSON.stringify(candidateList)) // [{"address":"Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG","profile":{"host":"127.0.0.1","isCandidate":true,"minerAddress":"Lemobw","nodeID":"5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0","port":7001},"votes":"1599999000000000000000000000"}]
+})
+```
+
+---
+
 <a name="submodule-chain-getNodeVersion"></a>
 
 #### lemo.getNodeVersion
@@ -1038,7 +1091,7 @@ lemo.tx.getTx('0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2d
 #### lemo.tx.getTxListByAddress
 
 ```
-lemo.tx.getTxListByAddress(address, start, limit)
+lemo.tx.getTxListByAddress(address, index, limit)
 ```
 
 根据账户地址分页拉取交易列表
@@ -1058,10 +1111,10 @@ lemo.tx.getTxListByAddress(address, start, limit)
 ##### Example
 
 ```js
+    console.log(result.total) // 1
+    console.log(result.txList[0].minedTime) // 1541649535
 lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).then(function(result) {
     console.log(JSON.stringify(result.txList)) // [{"to":"Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY","toName":"","gasPrice":"3000000000","gasLimit":2000000,"amount":"1.0000000000000000000000001e+25","data":"0x","expirationTime":1541649535,"message":"","v":"0x020001","r":"0x1aebf7c6141dc54b3f181e56d287785f2ce501c70466016f96d8b7171d80555c","s":"0x584179c208ad9bc9488b969b9d06635dda05b932b1966d43b6255ca63288903c","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","minedTime":1541649535}]
-    console.log(result.txList[0].minedTime) // 1541649535
-    console.log(result.total) // 1
 })
 ```
 

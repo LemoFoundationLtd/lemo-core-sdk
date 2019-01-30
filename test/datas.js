@@ -192,6 +192,7 @@ export const currentBlock = {
 }
 export const formattedCurrentBlock = {
     ...currentBlock,
+    changeLogs: [],
     header: {
         ...currentBlock.header,
         height: 2,
@@ -466,16 +467,13 @@ export const formattedTxRes1 = {
     blockHash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
 }
 
-export const txListRes = {
-    txList: [{
-        tx: tx1,
-        time: '1541649535',
-    }, {
-        tx: tx2,
-        time: '1541649536',
-    }],
-    total: '2',
-}
+export const txList = [{
+    tx: tx1,
+    time: '1541649535',
+}, {
+    tx: tx2,
+    time: '1541649536',
+}]
 
 export const formattedTxListRes = {
     txList: [{
@@ -485,5 +483,53 @@ export const formattedTxListRes = {
         ...formattedTx2,
         minedTime: 1541649536,
     }],
+    total: 2,
+}
+
+const candidate1 = {
+    address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
+    profile: {
+        host: '127.0.0.1',
+        isCandidate: 'true',
+        minerAddress: 'Lemobw',
+        nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+        port: '7001',
+    },
+    votes: '1599999000000000000000000001',
+}
+
+const formattedCandidate1 = {
+    ...candidate1,
+    profile: {
+        ...candidate1.profile,
+        isCandidate: true,
+        port: 7001,
+    },
+}
+
+const candidate2 = {
+    address: 'Lemobw',
+    profile: {
+        host: 'www.lemochain.com',
+        isCandidate: 'true',
+        minerAddress: 'Lemobw',
+        nodeID: '6e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+        port: '8080',
+    },
+    votes: '0',
+}
+
+const formattedCandidate2 = {
+    ...candidate2,
+    profile: {
+        ...candidate2.profile,
+        isCandidate: true,
+        port: 8080,
+    },
+}
+
+export const candidateList = [candidate1, candidate2]
+export const formattedCandidateListRes = {
+    candidateList: [formattedCandidate1, formattedCandidate2],
     total: 2,
 }

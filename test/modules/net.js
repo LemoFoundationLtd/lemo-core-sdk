@@ -2,7 +2,7 @@ import {assert} from 'chai'
 import LemoClient from '../../lib/index'
 import '../mock'
 
-describe('getPeersCount', () => {
+describe('module_net_getPeersCount', () => {
     it('getPeersCount', async () => {
         const lemo = new LemoClient()
         const result = await lemo.net.getPeersCount()
@@ -10,7 +10,7 @@ describe('getPeersCount', () => {
     })
 })
 
-describe('getInfo', () => {
+describe('module_net_getInfo', () => {
     it('getInfo', async () => {
         const lemo = new LemoClient()
         const result = await lemo.net.getInfo()

@@ -56,6 +56,8 @@ API | description | asynchronous | available for remote
 [lemo.getGenesis()](#submodule-chain-getGenesis) | Get the first block | ✓ | ✓
 [lemo.getChainID()](#submodule-chain-getChainID) | Get the chain ID | ✓ | ✓
 [lemo.getGasPriceAdvice()](#submodule-chain-getGasPriceAdvice) | Get transaction gas price advice | ✓ | ✓
+[lemo.getCandidateList()](#submodule-chain-getCandidateList) | Get paged candidates information | ✓ | ✓
+[lemo.getCandidateTop30()](#submodule-chain-getCandidateTop30) | Get top 30 candidates information | ✓ | ✓
 [lemo.getNodeVersion()](#submodule-chain-getNodeVersion) | Get the version of LemoChain node | ✓ | ✓
 [lemo.getSdkVersion()](#submodule-chain-getSdkVersion) | Get the version of lemo-client | ✖ | ✓
 [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock) | Listen for new block | ✖ | ✓
@@ -72,7 +74,7 @@ API | description | asynchronous | available for remote
 [lemo.account.getBalance(addr)](#submodule-account-getBalance) | Get the balance of an account | ✓ | ✓
 [lemo.account.getAccount(addr)](#submodule-account-getAccount) | Get the information of an account | ✓ | ✓
 [lemo.tx.getTx(txHash)](#submodule-tx-getTx) | Get transaction by the its hash | ✓    | ✓
-[lemo.tx.getTxListByAddress(address, start, limit)](#submodule-tx-getTxListByAddress)  | Get paged transactions by account address | ✓ | ✓
+[lemo.tx.getTxListByAddress(address, index, limit)](#submodule-tx-getTxListByAddress)  | Get paged transactions by account address | ✓ | ✓
 [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx) | Sign and send transaction | ✓ | ✓
 [lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign) | Sign transaction | ✖ | ✓
 [lemo.tx.signVote(privateKey, txInfo)](#submodule-tx-signVote) | Sign a special transaction for vote | ✖ | ✓ 
@@ -488,6 +490,57 @@ lemo.getGasPriceAdvice().then(function(gasPrice) {
 
 ---
 
+<a name="submodule-chain-getCandidateList"></a>
+#### lemo.getCandidateList
+```
+lemo.getCandidateList(index, limit)
+```
+Get paged candidates information
+
+##### Parameters
+1. `number` - Index of the first required candidates
+2. `number` - Max count of required candidates
+
+##### Returns
+`Promise` - Call `then` method to get a `{candidateList:Array, total:number}` object  
+    - `candidateList` Candidate information list. It is very similar with `candidate` in [account](#data-structure-account). There is an account `address` field in every candidate item  
+    - `total` Candidate's count  
+
+##### Example
+```js
+lemo.getCandidateList(0, 10).then(function(result) {
+    console.log(result.total) // 1
+    console.log(result.candidateList[0].address) // Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG
+    console.log(JSON.stringify(result.candidateList)) // [{"address":"Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG","profile":{"host":"127.0.0.1","isCandidate":true,"minerAddress":"Lemobw","nodeID":"5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0","port":7001},"votes":"1599999000000000000000000000"}]
+})
+```
+
+---
+
+<a name="submodule-chain-getCandidateTop30"></a>
+#### lemo.getCandidateTop30
+```
+lemo.getCandidateTop30()
+```
+Get top 30 candidates information
+
+##### Parameters
+None
+
+##### Returns
+`Promise` - Call `then` method to get a candidate information list. The item in list is very similar with `candidate` in [account](#data-structure-account). There is an account `address` field in every candidate item  
+
+##### Example
+```js
+lemo.getCandidateTop30().then(function(candidateList) {
+    console.log(candidateList.length) // 1
+    console.log(candidateList[0].address) // Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG
+    console.log(JSON.stringify(candidateList)) // [{"address":"Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG","profile":{"host":"127.0.0.1","isCandidate":true,"minerAddress":"Lemobw","nodeID":"5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0","port":7001},"votes":"1599999000000000000000000000"}]
+})
+```
+
+---
+
 <a name="submodule-chain-getNodeVersion"></a>
 #### lemo.getNodeVersion
 ```
@@ -878,7 +931,7 @@ lemo.tx.getTx('0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2d
 #### lemo.tx.getTxListByAddress
 
 ```
-lemo.tx.getTxListByAddress(address, start, limit)
+lemo.tx.getTxListByAddress(address, index, limit)
 ```
 
 Get paged transactions by account address
@@ -886,8 +939,8 @@ Get paged transactions by account address
 ##### Parameters
 
 1. `string` - Account address
-2. `number` - Index of the first transaction
-3. `number` - The max transactions count
+2. `number` - Index of the first required transaction
+3. `number` - Max count of required transactions
 
 ##### Returns
 
@@ -899,9 +952,9 @@ Get paged transactions by account address
 
 ```js
 lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).then(function(result) {
-    console.log(JSON.stringify(result.txList)) // [{"to":"Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY","toName":"","gasPrice":"3000000000","gasLimit":2000000,"amount":"1.0000000000000000000000001e+25","data":"0x","expirationTime":1541649535,"message":"","v":"0x020001","r":"0x1aebf7c6141dc54b3f181e56d287785f2ce501c70466016f96d8b7171d80555c","s":"0x584179c208ad9bc9488b969b9d06635dda05b932b1966d43b6255ca63288903c","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","minedTime":1541649535}]
-    console.log(result.txList[0].minedTime) // 1541649535
     console.log(result.total) // 1
+    console.log(result.txList[0].minedTime) // 1541649535
+    console.log(JSON.stringify(result.txList)) // [{"to":"Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY","toName":"","gasPrice":"3000000000","gasLimit":2000000,"amount":"1.0000000000000000000000001e+25","data":"0x","expirationTime":1541649535,"message":"","v":"0x020001","r":"0x1aebf7c6141dc54b3f181e56d287785f2ce501c70466016f96d8b7171d80555c","s":"0x584179c208ad9bc9488b969b9d06635dda05b932b1966d43b6255ca63288903c","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","minedTime":1541649535}]
 })
 ```
 

@@ -2,7 +2,7 @@ import {assert} from 'chai'
 import LemoClient from '../../lib/index'
 import '../mock'
 
-describe('getMining', () => {
+describe('module_mine_getMining', () => {
     it('getMining', async () => {
         const lemo = new LemoClient()
         const result = await lemo.mine.getMining()
@@ -10,7 +10,7 @@ describe('getMining', () => {
     })
 })
 
-describe('getMiner', () => {
+describe('module_mine_getMiner', () => {
     it('getMiner', async () => {
         const lemo = new LemoClient()
         const result = await lemo.mine.getMiner()

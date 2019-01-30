@@ -15,7 +15,8 @@ import {
     peersCount,
     infos,
     txRes1,
-    txListRes,
+    txList,
+    candidateList,
 } from './datas'
 
 const mockInfos = [
@@ -127,6 +128,23 @@ const mockInfos = [
         },
     },
     {
+        method: 'chain_getCandidateList',
+        paramsCount: 2,
+        reply([index, limit]) {
+            return {
+                candidateList: candidateList.slice(index, index + limit),
+                total: candidateList.length,
+            }
+        },
+    },
+    {
+        method: 'chain_getCandidateTop30',
+        paramsCount: 0,
+        reply() {
+            return candidateList
+        },
+    },
+    {
         method: 'mine_isMining',
         paramsCount: 0,
         reply() {
@@ -164,12 +182,12 @@ const mockInfos = [
     {
         method: 'tx_getTxListByAddress',
         paramsCount: 3,
-        reply([address, start, size]) {
-            let txList = []
+        reply([address, index, limit]) {
+            let list = []
             if (address === 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D') {
-                txList = txListRes.txList.slice(start, start + size)
+                list = txList.slice(index, index + limit)
             }
-            return {txList, total: txListRes.total}
+            return {txList: list, total: String(list.length)}
         },
     },
     {
