@@ -505,7 +505,7 @@ const formattedCandidate1 = {
         isCandidate: true,
         port: 7001,
     },
-    votes: '1599999000.000000000000000001'
+    votes: '1599999000.000000000000000001',
 }
 
 const candidate2 = {

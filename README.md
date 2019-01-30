@@ -82,9 +82,14 @@ API | description | asynchronous | available for remote
 [lemo.tx.signCandidate(privateKey, txInfo, candidateInfo)](#submodule-tx-signCandidate) | Sign a special transaction for register/edit candidate | ✖ | ✓ 
 [lemo.tx.send(signedTxInfo)](#submodule-tx-send) | Send a signed transaction | ✓ | ✓
 [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx) | Listening for new transactions | ✖ | ✖
+[lemo.stopWatch(watchId)](#submodule-global-stopWatch) | Stop listening | ✖ | ✓
+[lemo.isWatching()](#submodule-global-isWatching) | True if is listening | ✖ | ✓
 [lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress) | Verify a LemoChain address | ✖ | ✓
-[lemo.stopWatch(watchId)](#submodule-stopWatch) | Stop listening | ✖ | ✓
-[lemo.isWatching()](#submodule-isWatching) | True if is listening | ✖ | ✓
+
+| constant | description |
+| --- | --- |
+| [lemo.SDK_VERSION](#submodule-global-SDK_VERSION) | The version of js SDK |
+| [lemo.TxType](#submodule-global-TxType) | Enum of transaction type |
 
 ---
 
@@ -225,9 +230,12 @@ Signed transaction
 - `s` Signature data
 - `v` This field is combined from transaction `type`, `version`(current is 0), `signature recovery data`, `chainID`
 
-transaction type | description
----|---
-0 | Normal transaction or smart contract execution transaction
+<a name="data-transaction-type"></a>
+transaction type | number value | description
+---|---|---
+lemo.TxType.ORDINARY | 0 | Normal transaction or smart contract execution transaction
+lemo.TxType.VOTE | 1 | Set vote target
+lemo.TxType.CANDIDATE | 2 | Register or modify candidate information
 
 chainID | description
 ---|---
@@ -560,26 +568,6 @@ None
 lemo.getNodeVersion().then(function(version) {
     console.log(version); // "1.0.0"
 })
-```
-
----
-
-<a name="submodule-chain-getSdkVersion"></a>
-#### lemo.getSdkVersion
-```
-lemo.getSdkVersion()
-```
-Get the version of lemo-client
-
-##### Parameters
-None
-
-##### Returns
-`string` - The version string of SDK
-
-##### Example
-```js
-console.log(lemo.getSdkVersion()) // "1.0.0"
 ```
 
 ---
@@ -1160,30 +1148,43 @@ lemo.watchPendingTx(true, function(transactions) {
 
 ### other API
 
-<a name="submodule-tool-verifyAddress"></a>
-#### lemo.tool.verifyAddress
-```
-lemo.tool.verifyAddress(addr)
-```
-Verify LemoChain address
+<a name="submodule-global-SDK_VERSION"></a>
 
-##### Parameters
-1. `string` - LemoChain address
+#### lemo.SDK_VERSION
 
-##### Returns
-`string` - Verify error message. If the address is valid, then return empty string
+```
+lemo.SDK_VERSION
+```
+
+`string` - The version of SDK
 
 ##### Example
+
 ```js
-const errMsg = lemo.tool.verifyAddress('LEMObw')
-if (errMsg) {
-    console.error(errMsg);
-}
+console.log(lemo.SDK_VERSION) // "1.0.0"
 ```
 
 ---
 
-<a name="submodule-stopWatch"></a>
+<a name="submodule-global-TxType"></a>
+
+#### lemo.TxType
+
+```
+lemo.TxType
+```
+
+Enum of [transaction type](#data-transaction-type), the value is `number` type
+
+##### Example
+
+```js
+console.log(lemo.TxType.VOTE) // 1
+```
+
+---
+
+<a name="submodule-global-stopWatch"></a>
 #### lemo.stopWatch
 ```
 lemo.tx.stopWatch(watchId)
@@ -1203,7 +1204,7 @@ lemo.stopWatch()
 
 ---
 
-<a name="submodule-isWatching"></a>
+<a name="submodule-global-isWatching"></a>
 #### lemo.isWatching
 ```
 lemo.tx.isWatching()
@@ -1219,6 +1220,29 @@ None
 ##### Example
 ```js
 console.log(lemo.isWatching() ? 'watching' : 'not watching')
+```
+
+---
+
+<a name="submodule-tool-verifyAddress"></a>
+#### lemo.tool.verifyAddress
+```
+lemo.tool.verifyAddress(addr)
+```
+Verify LemoChain address
+
+##### Parameters
+1. `string` - LemoChain address
+
+##### Returns
+`string` - Verify error message. If the address is valid, then return empty string
+
+##### Example
+```js
+const errMsg = lemo.tool.verifyAddress('LEMObw')
+if (errMsg) {
+    console.error(errMsg);
+}
 ```
 
 ---

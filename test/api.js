@@ -22,6 +22,16 @@ describe('Api_new', () => {
             new Api({}, testRequester)
         }, errors.InvalidAPIDefinition({}))
     })
+    it('both call and value', () => {
+        const apiConfig = {
+            name: 'func',
+            value: 'func value',
+            call: () => 1,
+        }
+        assert.throws(() => {
+            new Api(apiConfig, testRequester)
+        }, errors.InvalidAPIMethod(apiConfig))
+    })
 })
 
 describe('Api_attachTo', () => {
@@ -31,6 +41,17 @@ describe('Api_attachTo', () => {
     }
     const testSigner = new Signer(1)
     const apiHolder = {}
+
+    it('custom value', async () => {
+        const apiConfig = {
+            name: 'myValue',
+            value: 'value 1',
+        }
+        const api = new Api(apiConfig, testRequester, testSigner)
+        api.attachTo(apiHolder)
+        const result = apiHolder.myValue
+        assert.equal(result, 'value 1')
+    })
 
     it('custom call', async () => {
         const apiConfig = {

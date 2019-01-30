@@ -59,7 +59,6 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.getCandidateList()](#submodule-chain-getCandidateList)               | 分页获取候选节点列表            | ✓    | ✓          |
 | [lemo.getCandidateTop30()](#submodule-chain-getCandidateTop30)             | 获取排名前30的候选节点列表       | ✓    | ✓          |
 | [lemo.getNodeVersion()](#submodule-chain-getNodeVersion)                   | 节点版本号                     | ✓    | ✓          |
-| [lemo.getSdkVersion()](#submodule-chain-getSdkVersion)                     | js SDK 版本号                  | ✖    | ✓          |
 | [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock)         | 监听新的区块                   | ✖    | ✓          |
 | [lemo.net.connect(nodeAddr)](#submodule-net-connect)                       | 连接节点                       | ✓    | ✖          |
 | [lemo.net.disconnect(nodeAddr)](#submodule-net-disconnect)                 | 断开连接                       | ✓    | ✖          |
@@ -78,13 +77,18 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.tx.getTxListByAddress(address, index, limit)](#submodule-tx-getTxListByAddress)     | 根据账户地址分页拉取交易列表      | ✓    | ✓          |
 | [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx)                 | 签名并发送交易                 | ✓    | ✓          |
 | [lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign)                     | 签名交易                       | ✖    | ✓          |
-| [lemo.tx.signVote(privateKey, txInfo)](#submodule-tx-signVote)             | 签名投票的特殊交易                       | ✖    | ✓          |
+| [lemo.tx.signVote(privateKey, txInfo)](#submodule-tx-signVote)             | 签名投票的特殊交易              | ✖    | ✓          |
 | [lemo.tx.signCandidate(privateKey, txInfo, candidateInfo)](#submodule-tx-signCandidate)   | 签名注册/编辑候选节点的特殊交易   | ✖    | ✓          |
 | [lemo.tx.send(signedTxInfo)](#submodule-tx-send)                           | 发送已签名的交易               | ✓    | ✓          |
 | [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx)           | 监听新的 pending 交易          | ✖    | ✖          |
+| [lemo.stopWatch(watchId)](#submodule-global-stopWatch)                            | 停止指定的轮询或所有轮询       | ✖    | ✓          |
+| [lemo.isWatching()](#submodule-global-isWatching)                                 | 是否正在轮询                   | ✖    | ✓          |
 | [lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress)             | LemoChain地址校验             | ✖    | ✓          |
-| [lemo.stopWatch(watchId)](#submodule-stopWatch)                            | 停止指定的轮询或所有轮询       | ✖    | ✓          |
-| [lemo.isWatching()](#submodule-isWatching)                                 | 是否正在轮询                   | ✖    | ✓          |
+
+| 常量                                                                        | 功能                           |
+| -------------------------------------------------------------------------- | ------------------------------ |
+| [lemo.SDK_VERSION](#submodule-global-SDK_VERSION)                          | js SDK 版本号                  |
+| [lemo.TxType](#submodule-global-TxType)                                    | 交易类型枚举                  |
 
 ---
 
@@ -243,9 +247,12 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 -   `s` 交易签名字段
 -   `v` 交易类型、交易编码版本号(当前为 0)、交易签名字段、chainID 这 4 个字段组合而成的数据
 
-| 交易类型 | 说明                       |
-| -------- | -------------------------- |
-| 0        | 普通转账交易或合约执行交易 |
+<a name="data-transaction-type"></a>
+| 交易类型                 | 数值 | 说明                       |
+| ----------------------- | --- | -------------------------- |
+| lemo.TxType.ORDINARY    | 0   | 普通转账交易或合约执行交易    |
+| lemo.TxType.VOTE        | 1   | 设置投票对象                |
+| lemo.TxType.CANDIDATE   | 2   | 注册或修改候选人信息         |
 
 | chainID | 说明           |
 | ------- | -------------- |
@@ -640,32 +647,6 @@ lemo.getNodeVersion()
 lemo.getNodeVersion().then(function(version) {
     console.log(version) // "1.0.0"
 })
-```
-
----
-
-<a name="submodule-chain-getSdkVersion"></a>
-
-#### lemo.getSdkVersion
-
-```
-lemo.getSdkVersion()
-```
-
-获取 SDK 版本号
-
-##### Parameters
-
-无
-
-##### Returns
-
-`string` - SDK 版本号字符串
-
-##### Example
-
-```js
-console.log(lemo.getSdkVersion()) // "1.0.0"
 ```
 
 ---
@@ -1359,30 +1340,43 @@ lemo.watchPendingTx(true, function(transactions) {
 
 ### 其它 API
 
-<a name="submodule-tool-verifyAddress"></a>
-#### lemo.tool.verifyAddress
-```
-lemo.tool.verifyAddress(addr)
-```
-校验LemoChain地址
+<a name="submodule-global-SDK_VERSION"></a>
 
-##### Parameters
-1. `string` - LemoChain地址
+#### lemo.SDK_VERSION
 
-##### Returns
-`string` - 错误字符串。如果是合法的地址，则返回空字符串
+```
+lemo.SDK_VERSION
+```
+
+`string` - SDK 版本号字符串
 
 ##### Example
+
 ```js
-const errMsg = lemo.tool.verifyAddress('LEMObw')
-if (errMsg) {
-    console.error(errMsg);
-}
+console.log(lemo.SDK_VERSION) // "1.0.0"
 ```
 
 ---
 
-<a name="submodule-stopWatch"></a>
+<a name="submodule-global-TxType"></a>
+
+#### lemo.TxType
+
+```
+lemo.TxType
+```
+
+[交易类型](#data-transaction-type)枚举类型，其中的值都是`number`类型
+
+##### Example
+
+```js
+console.log(lemo.TxType.VOTE) // 1
+```
+
+---
+
+<a name="submodule-global-stopWatch"></a>
 
 #### lemo.stopWatch
 
@@ -1408,7 +1402,7 @@ lemo.stopWatch()
 
 ---
 
-<a name="submodule-isWatching"></a>
+<a name="submodule-global-isWatching"></a>
 
 #### lemo.isWatching
 
@@ -1430,6 +1424,29 @@ lemo.tx.isWatching()
 
 ```js
 console.log(lemo.isWatching() ? 'watching' : 'not watching')
+```
+
+---
+
+<a name="submodule-tool-verifyAddress"></a>
+#### lemo.tool.verifyAddress
+```
+lemo.tool.verifyAddress(addr)
+```
+校验LemoChain地址
+
+##### Parameters
+1. `string` - LemoChain地址
+
+##### Returns
+`string` - 错误字符串。如果是合法的地址，则返回空字符串
+
+##### Example
+```js
+const errMsg = lemo.tool.verifyAddress('LEMObw')
+if (errMsg) {
+    console.error(errMsg);
+}
 ```
 
 ---
