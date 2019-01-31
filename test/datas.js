@@ -206,6 +206,9 @@ export const formattedCurrentBlock = {
         gasLimit: 2000000,
         amount: new BigNumber('101'),
         expirationTime: 1541649536,
+        type: 0,
+        typeText: 'ORDINARY',
+        version: 1,
     }],
 }
 
@@ -289,6 +292,9 @@ export const formattedBlock1 = {
         gasLimit: 2000000,
         amount: new BigNumber('100'),
         expirationTime: 1541649535,
+        type: 0,
+        typeText: 'ORDINARY',
+        version: 1,
     }],
     changeLogs: [
         {
@@ -428,6 +434,9 @@ const formattedTx1 = {
     gasLimit: 2000000,
     expirationTime: 1541649535,
     amount: new BigNumber('10000000000000000000000001'),
+    type: 0,
+    typeText: 'ORDINARY',
+    version: 1,
 }
 
 const tx2 = {
@@ -451,6 +460,9 @@ const formattedTx2 = {
     gasLimit: 21000,
     expirationTime: 1541649535,
     amount: new BigNumber('0'),
+    type: 1,
+    typeText: 'VOTE',
+    version: 1,
 }
 
 export const txRes1 = {
