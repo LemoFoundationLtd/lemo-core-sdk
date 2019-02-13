@@ -2,10 +2,10 @@ import {assert} from 'chai'
 import LemoClient from '../../lib/index'
 import '../mock'
 
-describe('module_net_getPeersCount', () => {
-    it('getPeersCount', async () => {
+describe('module_net_getConnectionsCount', () => {
+    it('getConnectionsCount', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.net.getPeersCount()
+        const result = await lemo.net.getConnectionsCount()
         assert.strictEqual(result, '0')
     })
 })
