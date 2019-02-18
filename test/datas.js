@@ -546,3 +546,7 @@ export const formattedCandidateListRes = {
     candidateList: [formattedCandidate1, formattedCandidate2],
     total: 2,
 }
+
+export const deputyNodes = [
+    '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0@149.28.68.93:7003',
+]

@@ -58,6 +58,7 @@ API | description | asynchronous | available for remote
 [lemo.getGasPriceAdvice()](#submodule-chain-getGasPriceAdvice) | Get transaction gas price advice | ✓ | ✓
 [lemo.getCandidateList()](#submodule-chain-getCandidateList) | Get paged candidates information | ✓ | ✓
 [lemo.getCandidateTop30()](#submodule-chain-getCandidateTop30) | Get top 30 candidates information | ✓ | ✓
+[lemo.getDeputyNodeList()](#submodule-chain-getDeputyNodeList) | Get the address list of current deputy nodes | ✓ | ✓
 [lemo.getNodeVersion()](#submodule-chain-getNodeVersion) | Get the version of LemoChain node | ✓ | ✓
 [lemo.getSdkVersion()](#submodule-chain-getSdkVersion) | Get the version of lemo-client | ✖ | ✓
 [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock) | Listen for new block | ✖ | ✓
@@ -545,6 +546,30 @@ lemo.getCandidateTop30().then(function(candidateList) {
     console.log(candidateList.length) // 1
     console.log(candidateList[0].address) // Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG
     console.log(JSON.stringify(candidateList)) // [{"address":"Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG","profile":{"host":"127.0.0.1","isCandidate":true,"minerAddress":"Lemobw","nodeID":"5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0","port":7001},"votes":"1599999000"}]
+})
+```
+
+---
+
+<a name="submodule-chain-getDeputyNodeList"></a>
+#### lemo.getDeputyNodeList
+```
+lemo.getDeputyNodeList()
+```
+Get the address list of current deputy nodes
+
+##### Parameters
+None
+
+##### Returns
+`Promise` - Call `then` method to get the address list of current deputy nodes. The address can be used to [connect](#submodule-net-connect) LemoChain node.  
+
+##### Example
+```js
+lemo.getDeputyNodeList().then(function(nodeList) {
+    console.log(nodeList.length) // 1
+    console.log(nodeList[0]) // "5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0@149.28.68.93:7003"
+    lemo.net.connect(nodeList[0])
 })
 ```
 

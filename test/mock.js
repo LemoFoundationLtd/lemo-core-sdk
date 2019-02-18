@@ -17,6 +17,7 @@ import {
     txRes1,
     txList,
     candidateList,
+    deputyNodes,
 } from './datas'
 
 const mockInfos = [
@@ -142,6 +143,13 @@ const mockInfos = [
         paramsCount: 0,
         reply() {
             return candidateList
+        },
+    },
+    {
+        method: 'chain_getDeputyNodeList',
+        paramsCount: 0,
+        reply() {
+            return deputyNodes
         },
     },
     {

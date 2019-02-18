@@ -9,6 +9,7 @@ import {
     formattedBlock1,
     currentHeight,
     formattedCandidateListRes,
+    deputyNodes,
 } from '../datas'
 import '../mock'
 import {DEFAULT_POLL_DURATION} from '../../lib/config'
@@ -170,5 +171,13 @@ describe('module_chain_getCandidateTop30', () => {
         const lemo = new LemoClient()
         const result = await lemo.getCandidateTop30()
         assert.deepEqual(result, formattedCandidateListRes.candidateList)
+    })
+})
+
+describe('module_chain_getDeputyNodeList', () => {
+    it('got 1 deputy nodes', async () => {
+        const lemo = new LemoClient()
+        const result = await lemo.getDeputyNodeList()
+        assert.deepEqual(result, deputyNodes)
     })
 })
