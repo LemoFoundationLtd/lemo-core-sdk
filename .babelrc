@@ -6,6 +6,5 @@
                 "targets": "node 6, > 0.25%, not dead"
             }
         ]
-    ],
-    "plugins": ["@babel/plugin-transform-runtime"]
+    ]
 }
