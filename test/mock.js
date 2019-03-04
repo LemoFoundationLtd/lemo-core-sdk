@@ -15,6 +15,9 @@ import {
     peersCount,
     infos,
     txRes1,
+    txRes2,
+    txRes3,
+    txInfos,
     txList,
     candidateList,
     deputyNodes,
@@ -184,7 +187,23 @@ const mockInfos = [
         method: 'tx_getTxByHash',
         paramsCount: 1,
         reply([hash]) {
-            return hash === '0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2de' ? txRes1 : null
+            const txIndex = txInfos.findIndex(item => {
+                return item.hash === hash
+            })
+
+            console.log('txIndex', txIndex)
+            switch (txIndex) {
+                case 0:
+                    return txRes1
+
+                case 1:
+                    return txRes2
+
+                case 2:
+                    return txRes3
+                default:
+                    return null
+            }
         },
     },
     {
@@ -210,15 +229,15 @@ const mockInfos = [
 
 function startMock() {
     nock('http://127.0.0.1:8001')
-    // .log(console.log)
+        // .log(console.log)
         .post('/', body => {
             const mockInfo = mockInfos.find(info => info.method === body.method)
             return (
-                body.jsonrpc === '2.0'
-                && typeof body.id === 'number'
-                && Array.isArray(body.params)
-                && mockInfo
-                && body.params.length === mockInfo.paramsCount
+                body.jsonrpc === '2.0' &&
+                typeof body.id === 'number' &&
+                Array.isArray(body.params) &&
+                mockInfo &&
+                body.params.length === mockInfo.paramsCount
             )
         })
         .times(10000000000)

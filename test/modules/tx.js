@@ -7,7 +7,7 @@ import {toBuffer} from '../../lib/utils'
 describe('module_tx_getTx', () => {
     it('getTx', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.tx.getTx('0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2de')
+        const result = await lemo.tx.getTx('0xfc4e1eccdc7e199336503ae67da0ee66eb46e1f953f65f22c8b62b53db76a103')
         assert.deepEqual(result, formattedTxRes1)
     })
     it('getTx not exist', async () => {
@@ -56,7 +56,7 @@ describe('module_tx_sendTx', () => {
                 const lemo = new LemoClient({chainID})
                 try {
                     const result = await lemo.tx.sendTx(testPrivate, test.txConfig, true)
-                    return assert.deepEqual(result, null)
+                    return assert.deepEqual(result.tx.hash, test.hash)
                 } catch (error) {
                     console.error(error)
                 }
