@@ -54,8 +54,12 @@ describe('module_tx_sendTx', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
                 const lemo = new LemoClient({chainID})
-                const result = await lemo.tx.sendTx(testPrivate, test.txConfig, true)
-                return assert.equal(result, undefined)
+                try {
+                    const result = await lemo.tx.sendTx(testPrivate, test.txConfig, true)
+                    return assert.deepEqual(result, null)
+                } catch (error) {
+                    console.error(error)
+                }
             }),
         )
     })
