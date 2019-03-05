@@ -87,6 +87,7 @@ export const formattedNotExistLemoBase = {
 // empty tx
 export const emptyTxInfo = {
     txConfig: {
+        chainID,
         expirationTime: 1544584596,
     },
     rlp: '0xd6808084b2d05e00831e84808080845c107d9480808080',
@@ -99,6 +100,7 @@ export const emptyTxInfo = {
 // normal tx
 export const txInfo = {
     txConfig: {
+        chainID,
         to: '0x000000000000000000000001',
         toName: 'aa',
         gasPrice: 2,
@@ -118,6 +120,7 @@ export const txInfo = {
 // big tx
 export const bigTxInfo = {
     txConfig: {
+        chainID,
         to: '0x1000000000000000000000000000000000000000',
         toName: bigString,
         gasPrice: bigNum,
@@ -491,14 +494,8 @@ const formattedTx3 = {
 }
 
 export const tx4 = {
-    txConfig: {
-        expirationTime: 1544584597,
-    },
-    rlp: '0xd6808084b2d05e00831e84808080845c107d9480808080',
-    hash: '0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2de',
-    rlpAfterSign:
-        '0xf859808084b2d05e00831e84808080845c107d9480830300c8a0f642fbc4588fbab945a6db57381fb756221607c96f5519c5f5092ca212b454e7a0529b1c78da1927bc99d07f0b0f3e18442b6d911ce71a45a6f0da101e84b88e3c',
-    hashAfterSign: '0xcf9980d6f08763686d30d05afa50ac696397de5e41ae41c890ec8cd3426ed157',
+    chainID,
+    expirationTime: 1544584597,
 }
 
 export const txRes1 = {

@@ -62,7 +62,7 @@ describe('module_tx_sendTx', () => {
     })
     it('sendTx_with_hex_address_timeOut', () => {
         const lemo = new LemoClient({chainID})
-        lemo.tx.sendTx(testPrivate, tx4.txConfig, true).catch(e => {
+        lemo.tx.sendTx(testPrivate, tx4, true).catch(e => {
             return assert.equal(e, errors.InvalidPollTxTimeOut())
         })
     })
