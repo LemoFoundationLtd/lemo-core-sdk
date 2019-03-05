@@ -20,7 +20,7 @@ import {
     txInfos,
     txList,
     candidateList,
-    deputyNodes,
+    deputyNodes
 } from './datas'
 
 const mockInfos = [
@@ -30,28 +30,28 @@ const mockInfos = [
         reply([address]) {
             const result = address === miner.address ? miner : emptyAccount
             return {...result, address}
-        },
+        }
     },
     {
         method: 'account_getBalance',
         paramsCount: 1,
         reply([address]) {
             return address === miner.address ? miner.balance : emptyAccount.balance
-        },
+        }
     },
     {
         method: 'chain_latestStableBlock',
         paramsCount: 1,
         reply([withBody]) {
             return withBody ? currentBlock : {...currentBlock, transactions: null}
-        },
+        }
     },
     {
         method: 'chain_currentBlock',
         paramsCount: 1,
         reply([withBody]) {
             return withBody ? currentBlock : {...currentBlock, transactions: null}
-        },
+        }
     },
     {
         method: 'chain_getBlockByHeight',
@@ -69,7 +69,7 @@ const mockInfos = [
                 result = {...result, transactions: null}
             }
             return result
-        },
+        }
     },
     {
         method: 'chain_getBlockByHash',
@@ -87,49 +87,49 @@ const mockInfos = [
                 result = {...result, transactions: null}
             }
             return result
-        },
+        }
     },
     {
         method: 'chain_latestStableHeight',
         paramsCount: 0,
         reply() {
             return currentHeight
-        },
+        }
     },
     {
         method: 'chain_currentHeight',
         paramsCount: 0,
         reply() {
             return currentHeight
-        },
+        }
     },
     {
         method: 'chain_genesis',
         paramsCount: 0,
         reply() {
             return oneChangeLogBlock
-        },
+        }
     },
     {
         method: 'chain_chainID',
         paramsCount: 0,
         reply() {
             return chainID
-        },
+        }
     },
     {
         method: 'chain_gasPriceAdvice',
         paramsCount: 0,
         reply() {
             return HxGasPriceAdvice
-        },
+        }
     },
     {
         method: 'chain_nodeVersion',
         paramsCount: 0,
         reply() {
             return nodeVersion
-        },
+        }
     },
     {
         method: 'chain_getCandidateList',
@@ -137,51 +137,51 @@ const mockInfos = [
         reply([index, limit]) {
             return {
                 candidateList: candidateList.slice(index, index + limit),
-                total: candidateList.length,
+                total: candidateList.length
             }
-        },
+        }
     },
     {
         method: 'chain_getCandidateTop30',
         paramsCount: 0,
         reply() {
             return candidateList
-        },
+        }
     },
     {
         method: 'chain_getDeputyNodeList',
         paramsCount: 0,
         reply() {
             return deputyNodes
-        },
+        }
     },
     {
         method: 'mine_isMining',
         paramsCount: 0,
         reply() {
             return isMining
-        },
+        }
     },
     {
         method: 'mine_miner',
         paramsCount: 0,
         reply() {
             return miner.address
-        },
+        }
     },
     {
         method: 'net_peersCount',
         paramsCount: 0,
         reply() {
             return peersCount
-        },
+        }
     },
     {
         method: 'net_info',
         paramsCount: 0,
         reply() {
             return infos
-        },
+        }
     },
     {
         method: 'tx_getTxByHash',
@@ -190,21 +190,9 @@ const mockInfos = [
             const txIndex = txInfos.findIndex(item => {
                 return item.hash === hash
             })
-
-            console.log('txIndex', txIndex)
-            switch (txIndex) {
-                case 0:
-                    return txRes1
-
-                case 1:
-                    return txRes2
-
-                case 2:
-                    return txRes3
-                default:
-                    return null
-            }
-        },
+            const arr = [txRes1, txRes2, txRes3]
+            return txIndex !== -1 ? arr[txIndex] : null
+        }
     },
     {
         method: 'tx_getTxListByAddress',
@@ -215,7 +203,7 @@ const mockInfos = [
                 list = txList.slice(index, index + limit)
             }
             return {txList: list, total: String(list.length)}
-        },
+        }
     },
     {
         method: 'tx_sendTx',
@@ -223,8 +211,8 @@ const mockInfos = [
         reply([txConfig]) {
             const tx = new Tx(txConfig)
             return `0x${tx.hash().toString('hex')}`
-        },
-    },
+        }
+    }
 ]
 
 function startMock() {
@@ -249,8 +237,8 @@ function startMock() {
                 {
                     jsonrpc: '2.0',
                     id: 123,
-                    result,
-                },
+                    result
+                }
             ]
         })
 }
