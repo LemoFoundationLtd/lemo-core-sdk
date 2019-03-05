@@ -188,7 +188,7 @@ const mockInfos = [
         paramsCount: 1,
         reply([hash]) {
             const txIndex = txInfos.findIndex(item => {
-                return item.hash === hash
+                return item.hashAfterSign === hash
             })
             const arr = [txRes1, txRes2, txRes3]
             return txIndex !== -1 ? arr[txIndex] : null

@@ -8,7 +8,7 @@ import errors from '../../lib/errors'
 describe('module_tx_getTx', () => {
     it('getTx', async () => {
         const lemo = new LemoClient({chainID})
-        const result = await lemo.tx.getTx('0xfc4e1eccdc7e199336503ae67da0ee66eb46e1f953f65f22c8b62b53db76a103')
+        const result = await lemo.tx.getTx('0xcf9980d6f08763686d30d05afa50ac696397de5e41ae41c890ec8cd3426ed157')
         assert.deepEqual(result, formattedTxRes1)
     })
     it('getTx not exist', async () => {
@@ -42,7 +42,7 @@ describe('module_tx_getTxListByAddress', () => {
 })
 
 describe('module_tx_sendTx', () => {
-    it('sendTx_with_hex_address_withOut_waitConfirm', () => {
+    it('sendTx_with_hex_address_without_waitConfirm', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
                 const lemo = new LemoClient({chainID})
@@ -56,7 +56,7 @@ describe('module_tx_sendTx', () => {
             txInfos.map(async (test, i) => {
                 const lemo = new LemoClient({chainID})
                 const result = await lemo.tx.sendTx(testPrivate, test.txConfig, true)
-                return assert.equal(result.tx.hash, test.hash)
+                return assert.equal(result, test.hashAfterSign, `index=${i}`)
             }),
         )
     })
@@ -66,7 +66,7 @@ describe('module_tx_sendTx', () => {
             return assert.equal(e, errors.InvalidPollTxTimeOut())
         })
     })
-    it('sendTx_with_lemo_address_withOut_waitConfirm', async () => {
+    it('sendTx_with_lemo_address_without_waitConfirm', async () => {
         const lemo = new LemoClient({chainID})
         const result = await lemo.tx.sendTx(testPrivate, bigTxInfoWithLemoAddr.txConfig, false)
         assert.equal(result, bigTxInfoWithLemoAddr.hashAfterSign)
