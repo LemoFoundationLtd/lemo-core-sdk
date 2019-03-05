@@ -1,9 +1,9 @@
 import {assert} from 'chai'
-import {Buffer} from 'safe-buffer';
+import {Buffer} from 'safe-buffer'
 import Tx from '../../lib/tx/tx'
 import {TX_VERSION, TTTL, TX_DEFAULT_GAS_LIMIT, TX_DEFAULT_GAS_PRICE} from '../../lib/config'
-import Signer from '../../lib/tx/signer';
-import errors from '../../lib/errors';
+import Signer from '../../lib/tx/signer'
+import errors from '../../lib/errors'
 import {toBuffer} from '../../lib/utils'
 import {testPrivate, txInfos, chainID} from '../datas'
 import {TxType, MAX_TX_TO_NAME_LENGTH, NODE_ID_LENGTH, MAX_DEPUTY_HOST_LENGTH} from '../../lib/const'
@@ -39,7 +39,7 @@ describe('Tx_new', () => {
             expirationTime: 108,
             message: '109',
             r: '110',
-            s: '111',
+            s: '111'
         }
         const tx = new Tx(config)
         assert.equal(tx.type, config.type)
@@ -60,7 +60,7 @@ describe('Tx_new', () => {
     it('set v and type at same time', () => {
         const config = {
             type: 100,
-            v: '112',
+            v: '112'
         }
         assert.throws(() => {
             new Tx(config)
@@ -70,7 +70,7 @@ describe('Tx_new', () => {
     it('set v and version at same time', () => {
         const config = {
             version: 101,
-            v: '112',
+            v: '112'
         }
         assert.throws(() => {
             new Tx(config)
@@ -116,8 +116,12 @@ describe('Tx_new', () => {
         {
             field: 'toName',
             configData: '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789',
-            error: errors.TXInvalidMaxLength('toName', '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789', MAX_TX_TO_NAME_LENGTH),
-        },
+            error: errors.TXInvalidMaxLength(
+                'toName',
+                '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789',
+                MAX_TX_TO_NAME_LENGTH
+            )
+        }
     ]
     tests.forEach(test => {
         it(`set ${test.field} to ${JSON.stringify(test.configData)}`, () => {
@@ -141,20 +145,24 @@ describe('Tx_new', () => {
 })
 
 describe('Tx_serialize', () => {
-    const signer = new Signer(200)
+    const signer = new Signer(chainID)
 
     it('without signature', () => {
-        return Promise.all(txInfos.map(async (test, i) => {
-            const tx = new Tx(test.txConfig)
-            assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlp, `index=${i}`)
-        }))
+        return Promise.all(
+            txInfos.map(async (test, i) => {
+                const tx = new Tx(test.txConfig)
+                assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlp, `index=${i}`)
+            })
+        )
     })
     it('with signature', () => {
-        return Promise.all(txInfos.map(async (test, i) => {
-            const tx = new Tx(test.txConfig)
-            signer.sign(tx, testPrivate)
-            assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlpAfterSign, `index=${i}`)
-        }))
+        return Promise.all(
+            txInfos.map(async (test, i) => {
+                const tx = new Tx(test.txConfig)
+                signer.sign(tx, testPrivate)
+                assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlpAfterSign, `index=${i}`)
+            })
+        )
     })
 })
 
@@ -162,17 +170,21 @@ describe('Tx_hash', () => {
     const signer = new Signer(chainID)
 
     it('without signature', () => {
-        return Promise.all(txInfos.map(async (test, i) => {
-            const tx = new Tx(test.txConfig)
-            assert.equal(`0x${tx.hash().toString('hex')}`, test.hash, `index=${i}`)
-        }))
+        return Promise.all(
+            txInfos.map(async (test, i) => {
+                const tx = new Tx(test.txConfig)
+                assert.equal(`0x${tx.hash().toString('hex')}`, test.hash, `index=${i}`)
+            })
+        )
     })
     it('with signature', () => {
-        return Promise.all(txInfos.map(async (test, i) => {
-            const tx = new Tx(test.txConfig)
-            signer.sign(tx, testPrivate)
-            assert.equal(`0x${tx.hash().toString('hex')}`, test.hashAfterSign, `index=${i}`)
-        }))
+        return Promise.all(
+            txInfos.map(async (test, i) => {
+                const tx = new Tx(test.txConfig)
+                signer.sign(tx, testPrivate)
+                assert.equal(`0x${tx.hash().toString('hex')}`, test.hashAfterSign, `index=${i}`)
+            })
+        )
     })
 })
 
@@ -197,7 +209,7 @@ describe('Tx_createVoteTx', () => {
         const tx = Tx.createVoteTx({
             type: 100,
             amount: 101,
-            data: '102',
+            data: '102'
         })
         assert.equal(tx.type, TxType.VOTE)
         assert.equal(tx.amount, 0)
@@ -206,7 +218,7 @@ describe('Tx_createVoteTx', () => {
     it('useful config', () => {
         const tx = Tx.createVoteTx({
             type: TxType.VOTE,
-            to: 'lemobw',
+            to: 'lemobw'
         })
         assert.equal(tx.type, TxType.VOTE)
         assert.equal(tx.to, 'lemobw')
@@ -218,7 +230,7 @@ describe('Tx_createCandidateTx', () => {
         minerAddress: 'lemobw',
         nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
         host: 'a.com',
-        port: 7001,
+        port: 7001
     }
     it('min config', () => {
         const tx = Tx.createCandidateTx({}, minCandidateInfo)
@@ -229,13 +241,16 @@ describe('Tx_createCandidateTx', () => {
         assert.equal(tx.data.toString(), JSON.stringify({isCandidate: 'true', ...minCandidateInfo}))
     })
     it('useless config', () => {
-        const tx = Tx.createCandidateTx({
-            type: 100,
-            to: 'lemobw',
-            toName: 'alice',
-            amount: 101,
-            data: '102',
-        }, minCandidateInfo)
+        const tx = Tx.createCandidateTx(
+            {
+                type: 100,
+                to: 'lemobw',
+                toName: 'alice',
+                amount: 101,
+                data: '102'
+            },
+            minCandidateInfo
+        )
         assert.equal(tx.type, TxType.CANDIDATE)
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
@@ -245,12 +260,15 @@ describe('Tx_createCandidateTx', () => {
     it('useful config', () => {
         const candidateInfo = {
             isCandidate: false,
-            ...minCandidateInfo,
+            ...minCandidateInfo
         }
-        const tx = Tx.createCandidateTx({
-            type: TxType.CANDIDATE,
-            message: 'abc',
-        }, candidateInfo)
+        const tx = Tx.createCandidateTx(
+            {
+                type: TxType.CANDIDATE,
+                message: 'abc'
+            },
+            candidateInfo
+        )
         assert.equal(tx.type, TxType.CANDIDATE)
         assert.equal(tx.message, 'abc')
         const result = JSON.stringify({...candidateInfo, isCandidate: String(candidateInfo.isCandidate)})
@@ -270,24 +288,30 @@ describe('Tx_createCandidateTx', () => {
         {field: 'nodeID', configData: '123', error: errors.TXInvalidLength('nodeID', '123', NODE_ID_LENGTH)},
         {
             field: 'nodeID',
-            configData: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+            configData:
+                '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0'
         },
         {field: 'host', configData: 'aaa'},
         {
             field: 'host',
-            configData: 'aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
-            error: errors.TXInvalidMaxLength('host', 'aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0', MAX_DEPUTY_HOST_LENGTH),
+            configData:
+                'aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+            error: errors.TXInvalidMaxLength(
+                'host',
+                'aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+                MAX_DEPUTY_HOST_LENGTH
+            )
         },
         {field: 'port', configData: '1'},
         {field: 'port', configData: 0, error: errors.TXInvalidRange('port', 0, 1, 0xffff)},
         {field: 'port', configData: '0xfffff', error: errors.TXInvalidRange('port', '0xfffff', 1, 0xffff)},
-        {field: 'port', configData: ['0xff'], error: errors.TXInvalidType('port', ['0xff'], ['string', 'number'])},
+        {field: 'port', configData: ['0xff'], error: errors.TXInvalidType('port', ['0xff'], ['string', 'number'])}
     ]
     tests.forEach(test => {
         it(`set candidateInfo.${test.field} to ${JSON.stringify(test.configData)}`, () => {
             const candidateInfo = {
                 ...minCandidateInfo,
-                [test.field]: test.configData,
+                [test.field]: test.configData
             }
             if (test.error) {
                 assert.throws(() => {

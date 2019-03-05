@@ -7,12 +7,12 @@ import errors from '../../lib/errors'
 
 describe('module_tx_getTx', () => {
     it('getTx', async () => {
-        const lemo = new LemoClient()
+        const lemo = new LemoClient({chainID})
         const result = await lemo.tx.getTx('0xfc4e1eccdc7e199336503ae67da0ee66eb46e1f953f65f22c8b62b53db76a103')
         assert.deepEqual(result, formattedTxRes1)
     })
     it('getTx not exist', async () => {
-        const lemo = new LemoClient()
+        const lemo = new LemoClient({chainID})
         const result = await lemo.tx.getTx('0x28ee2b4622946e35c3e761e826d18d95c319452efe23ce6844f14de3ece95b5e')
         assert.equal(result, null)
     })
@@ -20,22 +20,22 @@ describe('module_tx_getTx', () => {
 
 describe('module_tx_getTxListByAddress', () => {
     it('got 3 txs', async () => {
-        const lemo = new LemoClient()
+        const lemo = new LemoClient({chainID})
         const result = await lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10)
-        assert.deepEqual(result.txList[0], formattedTxListRes.txList[0])
+        assert.deepEqual(result, formattedTxListRes)
     })
     it('got 1 tx', async () => {
-        const lemo = new LemoClient()
+        const lemo = new LemoClient({chainID})
         const result = await lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 1)
         assert.equal(result.txList.length, 1)
     })
     it('got 0 tx', async () => {
-        const lemo = new LemoClient()
+        const lemo = new LemoClient({chainID})
         const result = await lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 0)
         assert.equal(result.txList.length, 0)
     })
     it('get from empty account', async () => {
-        const lemo = new LemoClient()
+        const lemo = new LemoClient({chainID})
         const result = await lemo.tx.getTxListByAddress('Lemobw', 0, 10)
         assert.equal(result.txList.length, 0)
     })
@@ -62,16 +62,15 @@ describe('module_tx_sendTx', () => {
     })
     it('sendTx_with_hex_address_timeOut', () => {
         const lemo = new LemoClient({chainID})
-        assert.throws(async () => {
-            await lemo.tx.sendTx(testPrivate, tx4.txConfig, true)
-        }, errors.InvalidPollTxTimeOut())
+        lemo.tx.sendTx(testPrivate, tx4.txConfig, true).catch(e => {
+            return assert.equal(e, errors.InvalidPollTxTimeOut())
+        })
     })
-
-    // it('sendTx_with_lemo_address', async () => {
-    //     const lemo = new LemoClient({chainID})
-    //     const result = await lemo.tx.sendTx(testPrivate, bigTxInfoWithLemoAddr.txConfig)
-    //     assert.equal(result, bigTxInfoWithLemoAddr.hashAfterSign)
-    // })
+    it('sendTx_with_lemo_address_withOut_waitConfirm', async () => {
+        const lemo = new LemoClient({chainID})
+        const result = await lemo.tx.sendTx(testPrivate, bigTxInfoWithLemoAddr.txConfig, false)
+        assert.equal(result, bigTxInfoWithLemoAddr.hashAfterSign)
+    })
 })
 
 describe('module_tx_sign_send', () => {
@@ -87,7 +86,7 @@ describe('module_tx_sign_send', () => {
     })
     it('sign_send_with_lemo_address', async () => {
         const lemo = new LemoClient({chainID})
-        const json = await lemo.tx.sign(testPrivate, bigTxInfoWithLemoAddr.txConfig)
+        const json = await lemo.tx.sign(testPrivate, bigTxInfoWithLemoAddr.txConfig, false)
         const result = await lemo.tx.send(json)
         assert.equal(result, bigTxInfoWithLemoAddr.hashAfterSign)
     })
