@@ -48,7 +48,7 @@ describe('module_tx_sendTx', () => {
                 const lemo = new LemoClient({chainID})
                 const result = await lemo.tx.sendTx(testPrivate, test.txConfig, false)
                 return assert.equal(result, test.hashAfterSign, `index=${i}`)
-            })
+            }),
         )
     })
     it('sendTx_with_hex_address_waitConfirm', () => {
@@ -57,7 +57,7 @@ describe('module_tx_sendTx', () => {
                 const lemo = new LemoClient({chainID})
                 const result = await lemo.tx.sendTx(testPrivate, test.txConfig, true)
                 return assert.equal(result.tx.hash, test.hash)
-            })
+            }),
         )
     })
     it('sendTx_with_hex_address_timeOut', () => {
@@ -81,7 +81,7 @@ describe('module_tx_sign_send', () => {
                 const json = await lemo.tx.sign(testPrivate, test.txConfig)
                 const result = await lemo.tx.send(json)
                 assert.equal(result, test.hashAfterSign, `index=${i}`)
-            })
+            }),
         )
     })
     it('sign_send_with_lemo_address', async () => {
@@ -102,7 +102,7 @@ describe('module_tx_vote', () => {
                 assert.equal(parseInt(json.v, 16) & 0x1000000, 0x1000000, `index=${i}`)
                 assert.equal(json.amount, 0, `index=${i}`)
                 assert.equal(json.data, undefined, `index=${i}`)
-            })
+            }),
         )
     })
 })
@@ -118,7 +118,7 @@ describe('module_tx_candidate', () => {
                     nodeID:
                         '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
                     host: '127.0.0.1',
-                    port: '7001'
+                    port: '7001',
                 }
                 let json = lemo.tx.signCandidate(testPrivate, test.txConfig, candidateInfo)
                 json = JSON.parse(json)
@@ -128,7 +128,7 @@ describe('module_tx_candidate', () => {
                 assert.equal(json.to, undefined, `index=${i}`)
                 assert.equal(json.toName, undefined, `index=${i}`)
                 assert.equal(json.amount, 0, `index=${i}`)
-            })
+            }),
         )
     })
 })
