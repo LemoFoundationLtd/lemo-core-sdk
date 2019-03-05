@@ -13,6 +13,7 @@
         "crypto-js": "3.1.9-1",
         "elliptic": "github:LemoFoundationLtd/elliptic#fit_rollup",
         "keccak": "2.0.0",
+        "lodash": "^4.17.11",
         "rollup-plugin-node-globals": "1.4.0",
         "safe-buffer": "5.1.2"
     },
