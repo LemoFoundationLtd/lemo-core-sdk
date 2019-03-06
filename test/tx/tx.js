@@ -87,8 +87,10 @@ describe('Tx_new', () => {
     const tests = [
         {field: 'chainID', configData: 1},
         {field: 'chainID', configData: 100},
+        {field: 'chainID', configData: '10000', result: 10000},
         {field: 'chainID', configData: '', error: errors.TXInvalidChainID()},
         {field: 'chainID', configData: 0, error: errors.TXInvalidChainID()},
+        {field: 'chainID', configData: '0x10000', error: errors.TXInvalidRange('chainID', '0x10000', 1, 0xffff)},
         {field: 'v', configData: 0, result: ''},
         {field: 'v', configData: 0, result: ''},
         {field: 'v', configData: ''},
@@ -143,22 +145,18 @@ describe('Tx_new', () => {
                     new Tx(config)
                 }, test.error)
             } else {
-                assert.doesNotThrow(() => {
-                    const tx = new Tx(config)
-                    if (typeof test.result !== 'undefined') {
-                        assert.strictEqual(tx[test.field], test.result)
-                    } else {
-                        assert.strictEqual(tx[test.field], test.configData)
-                    }
-                })
+                const tx = new Tx(config)
+                if (typeof test.result !== 'undefined') {
+                    assert.strictEqual(tx[test.field], test.result)
+                } else {
+                    assert.strictEqual(tx[test.field], test.configData)
+                }
             }
         })
     })
 })
 
 describe('Tx_serialize', () => {
-    const signer = new Signer()
-
     it('without signature', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
@@ -179,8 +177,6 @@ describe('Tx_serialize', () => {
 })
 
 describe('Tx_hash', () => {
-    const signer = new Signer()
-
     it('without signature', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
