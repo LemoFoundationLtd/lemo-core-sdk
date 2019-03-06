@@ -1,8 +1,9 @@
 import {assert} from 'chai'
 import {Buffer} from 'safe-buffer'
 import Tx from '../../lib/tx/tx'
+import VoteTx from '../../lib/tx/vote_tx'
+import CandidateTx from '../../lib/tx/candidate_tx'
 import {TX_VERSION, TTTL, TX_DEFAULT_GAS_LIMIT, TX_DEFAULT_GAS_PRICE} from '../../lib/config'
-import Signer from '../../lib/tx/signer'
 import errors from '../../lib/errors'
 import {toBuffer} from '../../lib/utils'
 import {testPrivate, txInfos, chainID} from '../datas'
@@ -206,15 +207,15 @@ describe('Tx_expirationTime', () => {
     })
 })
 
-describe('Tx_createVoteTx', () => {
+describe('VoteTx_new', () => {
     it('empty config', () => {
-        const tx = Tx.createVoteTx({chainID})
+        const tx = new VoteTx({chainID})
         assert.equal(tx.type, TxType.VOTE)
         assert.equal(tx.amount, 0)
         assert.equal(tx.data, '')
     })
     it('useless config', () => {
-        const tx = Tx.createVoteTx({
+        const tx = new VoteTx({
             chainID,
             type: 100,
             amount: 101,
@@ -225,7 +226,7 @@ describe('Tx_createVoteTx', () => {
         assert.equal(tx.data, '')
     })
     it('useful config', () => {
-        const tx = Tx.createVoteTx({
+        const tx = new VoteTx({
             chainID,
             type: TxType.VOTE,
             to: 'lemobw',
@@ -235,7 +236,7 @@ describe('Tx_createVoteTx', () => {
     })
 })
 
-describe('Tx_createCandidateTx', () => {
+describe('CandidateTx_new', () => {
     const minCandidateInfo = {
         minerAddress: 'lemobw',
         nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
@@ -243,7 +244,7 @@ describe('Tx_createCandidateTx', () => {
         port: 7001,
     }
     it('min config', () => {
-        const tx = Tx.createCandidateTx({chainID}, minCandidateInfo)
+        const tx = new CandidateTx({chainID}, minCandidateInfo)
         assert.equal(tx.type, TxType.CANDIDATE)
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
@@ -251,7 +252,7 @@ describe('Tx_createCandidateTx', () => {
         assert.equal(tx.data.toString(), JSON.stringify({isCandidate: 'true', ...minCandidateInfo}))
     })
     it('useless config', () => {
-        const tx = Tx.createCandidateTx(
+        const tx = new CandidateTx(
             {
                 chainID,
                 type: 100,
@@ -273,7 +274,7 @@ describe('Tx_createCandidateTx', () => {
             isCandidate: false,
             ...minCandidateInfo,
         }
-        const tx = Tx.createCandidateTx(
+        const tx = new CandidateTx(
             {
                 chainID,
                 type: TxType.CANDIDATE,
@@ -327,10 +328,10 @@ describe('Tx_createCandidateTx', () => {
             }
             if (test.error) {
                 assert.throws(() => {
-                    Tx.createCandidateTx({chainID}, candidateInfo)
+                    new CandidateTx({chainID}, candidateInfo)
                 }, test.error)
             } else {
-                const tx = Tx.createCandidateTx({chainID}, candidateInfo)
+                const tx = new CandidateTx({chainID}, candidateInfo)
                 const targetField = JSON.parse(tx.data.toString())[test.field]
                 if (typeof test.result !== 'undefined') {
                     assert.strictEqual(targetField, test.result)
