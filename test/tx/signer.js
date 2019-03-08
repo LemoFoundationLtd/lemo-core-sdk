@@ -45,7 +45,7 @@ describe('GenerateAccount', () => {
         const account = generateAccount()
         return Promise.all(txInfos.map(async (test, i) => {
             const tx = new Tx(test.txConfig)
-            tx.signWith(`0x${account.privateKey}`)
+            tx.signWith(account.privateKey)
             const from = signer.recover(tx)
             assert.equal(from, account.address, `index=${i}`)
         }))

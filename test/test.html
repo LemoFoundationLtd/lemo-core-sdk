@@ -12,7 +12,7 @@
         .then(d => console.log(d))
     lemo.getNodeVersion()
         .then(d => console.log(d))
-    lemo.tx.sendTx('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb',{expirationTime: 1544584596})
+    lemo.tx.sendTx('432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb',{expirationTime: 1544584596})
         .then(d => console.log(d))
     var watchId = lemo.watchBlock(false, newBlock => console.log(newBlock))
     setTimeout(() => {
