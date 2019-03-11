@@ -1,8 +1,9 @@
 import {assert} from 'chai'
 import Tx from '../../lib/tx/tx'
 import Signer from '../../lib/tx/signer';
-import { parseV} from '../../lib/tx/tx_helper';
+import {parseV} from '../../lib/tx/tx_helper';
 import {testPrivate, testAddr, txInfos} from '../datas'
+import {generateAccount} from '../../lib/crypto';
 
 describe('Signer_new', () => {
     it('chainID', () => {
@@ -34,6 +35,19 @@ describe('Signer_recover', () => {
             tx.signWith(testPrivate)
             const from = signer.recover(tx)
             assert.equal(from, testAddr, `index=${i}`)
+        }))
+    })
+})
+
+describe('GenerateAccount', () => {
+    it('check account', () => {
+        const signer = new Signer()
+        const account = generateAccount()
+        return Promise.all(txInfos.map(async (test, i) => {
+            const tx = new Tx(test.txConfig)
+            tx.signWith(account.privateKey)
+            const from = signer.recover(tx)
+            assert.equal(from, account.address, `index=${i}`)
         }))
     })
 })
