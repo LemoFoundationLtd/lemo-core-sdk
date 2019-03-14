@@ -1,8 +1,9 @@
 import {assert} from 'chai'
 import {Buffer} from 'safe-buffer'
 import Tx from '../../lib/tx/tx'
+import VoteTx from '../../lib/tx/vote_tx'
+import CandidateTx from '../../lib/tx/candidate_tx'
 import {TX_VERSION, TTTL, TX_DEFAULT_GAS_LIMIT, TX_DEFAULT_GAS_PRICE} from '../../lib/config'
-import Signer from '../../lib/tx/signer'
 import errors from '../../lib/errors'
 import {toBuffer} from '../../lib/utils'
 import {testPrivate, txInfos, chainID} from '../datas'
@@ -10,7 +11,13 @@ import {TxType, MAX_TX_TO_NAME_LENGTH, NODE_ID_LENGTH, MAX_DEPUTY_HOST_LENGTH} f
 
 describe('Tx_new', () => {
     it('empty config', () => {
-        const tx = new Tx({})
+        assert.throws(() => {
+            new Tx({})
+        }, errors.TXInvalidChainID())
+    })
+
+    it('minimal config', () => {
+        const tx = new Tx({chainID})
         assert.equal(tx.type, TxType.ORDINARY)
         assert.equal(tx.version, TX_VERSION)
         assert.equal(tx.to, '')
@@ -28,6 +35,7 @@ describe('Tx_new', () => {
 
     it('full config', () => {
         const config = {
+            chainID,
             type: 100,
             version: 101,
             to: '0x102',
@@ -78,6 +86,13 @@ describe('Tx_new', () => {
     })
 
     const tests = [
+        {field: 'chainID', configData: 1},
+        {field: 'chainID', configData: 100},
+        {field: 'chainID', configData: '10000', result: 10000},
+        {field: 'chainID', configData: '', error: errors.TXInvalidChainID()},
+        {field: 'chainID', configData: 0, error: errors.TXInvalidChainID()},
+        {field: 'chainID', configData: '0x10000', error: errors.TXInvalidRange('chainID', '0x10000', 1, 0xffff)},
+        {field: 'v', configData: 0, result: ''},
         {field: 'v', configData: 0, result: ''},
         {field: 'v', configData: ''},
         {field: 'v', configData: '0'},
@@ -125,28 +140,24 @@ describe('Tx_new', () => {
     ]
     tests.forEach(test => {
         it(`set ${test.field} to ${JSON.stringify(test.configData)}`, () => {
-            const config = {[test.field]: test.configData}
+            const config = {chainID, [test.field]: test.configData}
             if (test.error) {
                 assert.throws(() => {
                     new Tx(config)
                 }, test.error)
             } else {
-                assert.doesNotThrow(() => {
-                    const tx = new Tx(config)
-                    if (typeof test.result !== 'undefined') {
-                        assert.strictEqual(tx[test.field], test.result)
-                    } else {
-                        assert.strictEqual(tx[test.field], test.configData)
-                    }
-                })
+                const tx = new Tx(config)
+                if (typeof test.result !== 'undefined') {
+                    assert.strictEqual(tx[test.field], test.result)
+                } else {
+                    assert.strictEqual(tx[test.field], test.configData)
+                }
             }
         })
     })
 })
 
 describe('Tx_serialize', () => {
-    const signer = new Signer(chainID)
-
     it('without signature', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
@@ -159,7 +170,7 @@ describe('Tx_serialize', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
                 const tx = new Tx(test.txConfig)
-                signer.sign(tx, testPrivate)
+                tx.signWith(testPrivate)
                 assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlpAfterSign, `index=${i}`)
             }),
         )
@@ -167,8 +178,6 @@ describe('Tx_serialize', () => {
 })
 
 describe('Tx_hash', () => {
-    const signer = new Signer(chainID)
-
     it('without signature', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
@@ -181,7 +190,7 @@ describe('Tx_hash', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
                 const tx = new Tx(test.txConfig)
-                signer.sign(tx, testPrivate)
+                tx.signWith(testPrivate)
                 assert.equal(`0x${tx.hash().toString('hex')}`, test.hashAfterSign, `index=${i}`)
             }),
         )
@@ -191,22 +200,23 @@ describe('Tx_hash', () => {
 describe('Tx_expirationTime', () => {
     it('default expiration', () => {
         const before = Math.floor(Date.now() / 1000)
-        const tx = new Tx({})
+        const tx = new Tx({chainID})
         const after = Math.floor(Date.now() / 1000)
         assert.isAtLeast(tx.expirationTime, before + TTTL)
         assert.isAtMost(tx.expirationTime, after + TTTL)
     })
 })
 
-describe('Tx_createVoteTx', () => {
+describe('VoteTx_new', () => {
     it('empty config', () => {
-        const tx = Tx.createVoteTx({})
+        const tx = new VoteTx({chainID})
         assert.equal(tx.type, TxType.VOTE)
         assert.equal(tx.amount, 0)
         assert.equal(tx.data, '')
     })
     it('useless config', () => {
-        const tx = Tx.createVoteTx({
+        const tx = new VoteTx({
+            chainID,
             type: 100,
             amount: 101,
             data: '102',
@@ -216,7 +226,8 @@ describe('Tx_createVoteTx', () => {
         assert.equal(tx.data, '')
     })
     it('useful config', () => {
-        const tx = Tx.createVoteTx({
+        const tx = new VoteTx({
+            chainID,
             type: TxType.VOTE,
             to: 'lemobw',
         })
@@ -225,7 +236,7 @@ describe('Tx_createVoteTx', () => {
     })
 })
 
-describe('Tx_createCandidateTx', () => {
+describe('CandidateTx_new', () => {
     const minCandidateInfo = {
         minerAddress: 'lemobw',
         nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
@@ -233,7 +244,7 @@ describe('Tx_createCandidateTx', () => {
         port: 7001,
     }
     it('min config', () => {
-        const tx = Tx.createCandidateTx({}, minCandidateInfo)
+        const tx = new CandidateTx({chainID}, minCandidateInfo)
         assert.equal(tx.type, TxType.CANDIDATE)
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
@@ -241,8 +252,9 @@ describe('Tx_createCandidateTx', () => {
         assert.equal(tx.data.toString(), JSON.stringify({isCandidate: 'true', ...minCandidateInfo}))
     })
     it('useless config', () => {
-        const tx = Tx.createCandidateTx(
+        const tx = new CandidateTx(
             {
+                chainID,
                 type: 100,
                 to: 'lemobw',
                 toName: 'alice',
@@ -262,8 +274,9 @@ describe('Tx_createCandidateTx', () => {
             isCandidate: false,
             ...minCandidateInfo,
         }
-        const tx = Tx.createCandidateTx(
+        const tx = new CandidateTx(
             {
+                chainID,
                 type: TxType.CANDIDATE,
                 message: 'abc',
             },
@@ -315,18 +328,16 @@ describe('Tx_createCandidateTx', () => {
             }
             if (test.error) {
                 assert.throws(() => {
-                    Tx.createCandidateTx({}, candidateInfo)
+                    new CandidateTx({chainID}, candidateInfo)
                 }, test.error)
             } else {
-                assert.doesNotThrow(() => {
-                    const tx = Tx.createCandidateTx({}, candidateInfo)
-                    const targetField = JSON.parse(tx.data.toString())[test.field]
-                    if (typeof test.result !== 'undefined') {
-                        assert.strictEqual(targetField, test.result)
-                    } else {
-                        assert.strictEqual(targetField, test.configData)
-                    }
-                })
+                const tx = new CandidateTx({chainID}, candidateInfo)
+                const targetField = JSON.parse(tx.data.toString())[test.field]
+                if (typeof test.result !== 'undefined') {
+                    assert.strictEqual(targetField, test.result)
+                } else {
+                    assert.strictEqual(targetField, test.configData)
+                }
             }
         })
     })

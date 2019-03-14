@@ -1,7 +1,6 @@
 import {assert} from 'chai'
 import Api from '../lib/api'
 import errors from '../lib/errors';
-import Signer from '../lib/tx/signer';
 
 describe('Api_new', () => {
     const testRequester = {
@@ -39,7 +38,7 @@ describe('Api_attachTo', () => {
         send() {
         },
     }
-    const testSigner = new Signer(1)
+    const chainID = 1
     const apiHolder = {}
 
     it('custom value', async () => {
@@ -47,7 +46,7 @@ describe('Api_attachTo', () => {
             name: 'myValue',
             value: 'value 1',
         }
-        const api = new Api(apiConfig, testRequester, testSigner)
+        const api = new Api(apiConfig, testRequester, chainID)
         api.attachTo(apiHolder)
         const result = apiHolder.myValue
         assert.equal(result, 'value 1')
@@ -59,12 +58,12 @@ describe('Api_attachTo', () => {
             call(...args) {
                 assert.equal(this, api)
                 assert.equal(this.requester, testRequester)
-                assert.equal(this.signer, testSigner)
+                assert.equal(this.chainID, chainID)
                 assert.deepEqual(args, [123, {a: '8293'}])
                 return 100
             },
         }
-        const api = new Api(apiConfig, testRequester, testSigner)
+        const api = new Api(apiConfig, testRequester, chainID)
         api.attachTo(apiHolder)
         const result = apiHolder.callMyFunc(123, {a: '8293'})
         assert.equal(result, 100)
@@ -75,7 +74,7 @@ describe('Api_attachTo', () => {
             name: 'callMyFuncAsync',
             call: () => Promise.resolve(200),
         }
-        new Api(apiConfig, testRequester, testSigner).attachTo(apiHolder)
+        new Api(apiConfig, testRequester, chainID).attachTo(apiHolder)
         const result = await apiHolder.callMyFuncAsync()
         assert.equal(result, 200)
     })
@@ -85,9 +84,9 @@ describe('Api_attachTo', () => {
             name: 'callTwice',
             call: () => Promise.resolve(200),
         }
-        new Api(apiConfig, testRequester, testSigner).attachTo(apiHolder)
+        new Api(apiConfig, testRequester, chainID).attachTo(apiHolder)
         assert.throws(() => {
-            new Api(apiConfig, testRequester, testSigner).attachTo(apiHolder)
+            new Api(apiConfig, testRequester, chainID).attachTo(apiHolder)
         }, errors.UnavailableAPIName('callTwice'))
     })
 })
