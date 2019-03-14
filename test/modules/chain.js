@@ -164,11 +164,11 @@ describe('module_chain_watchBlock', () => {
                 },
             }
         }
-        const lastBlock = {header: {height: 0}}
+        let lastBlockHeight = 0
         testArr.forEach((item) => {
             processBlock(testFetch, item, (block) => {
-                lastBlock.header.height +=  1
-                assert.deepEqual(lastBlock, block)
+                lastBlockHeight +=  1
+                assert.deepEqual(lastBlockHeight, block.header.height)
             })
         })
     })
