@@ -13,6 +13,7 @@ import {
 } from '../datas'
 import '../mock'
 import {DEFAULT_POLL_DURATION} from '../../lib/config'
+import {clearTestParams, processBlock} from '../../lib/modules/blocks_processor'
 
 describe('module_chain_getCurrentBlock', () => {
     it('latestStableBlock with body', async () => {
@@ -136,6 +137,7 @@ describe('module_chain_watchBlock', () => {
         this.timeout(DEFAULT_POLL_DURATION + 50)
 
         const lemo = new LemoClient()
+        clearTestParams()
         lemo.watchBlock(true, block => {
             try {
                 assert.deepEqual(block, formattedCurrentBlock)
@@ -144,6 +146,45 @@ describe('module_chain_watchBlock', () => {
                 done(e)
             }
             lemo.stopWatch()
+        })
+    })
+    it('processBlock', () => {
+        clearTestParams()
+        const testArr = [1, 3, 4, 6, 8].map((item) => {
+            return {
+                header: {
+                    height: item,
+                },
+            }
+        })
+        const testFun = async (i) => {
+            if (i === 2) {
+                return {
+                    header: {
+                        height: 2,
+                    },
+                }
+            } else if (i === 5) {
+                return {
+                    header: {
+                        height: 5,
+                    },
+                }
+            } else if (i === 7) {
+                return {
+                    header: {
+                        height: 7,
+                    },
+                }
+            } else {
+                return testArr[i]
+            }
+        }
+
+        testArr.forEach((item) => {
+            processBlock(testFun, item, (block) => {
+                console.log('block', block)
+            })
         })
     })
 })
