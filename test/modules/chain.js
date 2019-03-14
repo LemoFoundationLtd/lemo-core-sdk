@@ -13,7 +13,7 @@ import {
 } from '../datas'
 import '../mock'
 import {DEFAULT_POLL_DURATION} from '../../lib/config'
-import {clearHistory} from '../../lib/network/blocks_processor'
+import {clearHistory} from '../../lib/block/blocks_watcher'
 
 describe('module_chain_getCurrentBlock', () => {
     it('latestStableBlock with body', async () => {
@@ -123,6 +123,7 @@ describe('module_chain_watchBlock', () => {
         this.timeout(DEFAULT_POLL_DURATION + 50)
 
         const lemo = new LemoClient()
+        clearHistory()
         lemo.watchBlock(false, block => {
             try {
                 assert.deepEqual(block, {header: formattedCurrentBlock.header})

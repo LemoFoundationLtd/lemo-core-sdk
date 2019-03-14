@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import {clearHistory, processBlock} from '../../lib/network/blocks_processor'
+import {clearHistory, processBlock} from '../../lib/block/blocks_watcher'
 
 describe('network_blocks_processor', () => {
     it('processBlock', () => {
