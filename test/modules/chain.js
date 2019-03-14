@@ -180,7 +180,7 @@ describe('module_chain_watchBlock', () => {
                 return testArr[i]
             }
         }
-
+        const lastBlock = {}
         testArr.forEach((item) => {
             processBlock(testFun, item, (block) => {
                 console.log('block', block)
