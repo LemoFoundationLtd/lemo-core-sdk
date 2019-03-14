@@ -157,7 +157,7 @@ describe('module_chain_watchBlock', () => {
                 },
             }
         })
-        const testFun = async (i) => {
+        const testFetch = async (i) => {
             return {
                 header: {
                     height: i,
@@ -166,7 +166,7 @@ describe('module_chain_watchBlock', () => {
         }
         const lastBlock = {header: {height: 0}}
         testArr.forEach((item) => {
-            processBlock(testFun, item, (block) => {
+            processBlock(testFetch, item, (block) => {
                 lastBlock.header.height +=  1
                 assert.deepEqual(lastBlock, block)
             })
