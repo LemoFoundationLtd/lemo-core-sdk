@@ -13,7 +13,7 @@ import {
 } from '../datas'
 import '../mock'
 import {DEFAULT_POLL_DURATION} from '../../lib/config'
-import {clearHistory} from '../../lib/block/blocks_watcher'
+import {clearHistory} from '../../lib/watchers/blocks_watcher'
 
 describe('module_chain_getCurrentBlock', () => {
     it('latestStableBlock with body', async () => {
