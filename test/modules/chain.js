@@ -148,19 +148,16 @@ describe('module_chain_watchBlock', () => {
     it('multiple_watchBlock', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 50)
         const lemo = new LemoClient()
-        let watchId = lemo.watchBlock(true, block => {
-            try {
-                done()
-            } catch (e) {
-                done(e)
-            }
-            lemo.stopWatchBlock(watchId)
+        const watchId1 = lemo.watchBlock(true, block => {
+            const e =  new Error('make multiple requests at once')
+            done(e)
         })
-        watchId = lemo.watchBlock(true, block => {
-            console.log(watchId)
-            lemo.stopWatchBlock(watchId)
+        lemo.stopWatchBlock(watchId1)
+        const watchId2 = lemo.watchBlock(true, block => {
+            lemo.stopWatchBlock(watchId2)
+            done()
         })
-        assert.equal(watchId, 2)
+        assert.equal(watchId1 + 1, watchId2)
     })
 })
 
