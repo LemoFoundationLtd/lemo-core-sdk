@@ -15,6 +15,7 @@ import '../mock'
 import {DEFAULT_POLL_DURATION} from '../../lib/config'
 import Watcher from '../../lib/watchers/blocks_watcher'
 
+const watcher = new Watcher()
 
 describe('module_chain_getCurrentBlock', () => {
     it('latestStableBlock with body', async () => {
@@ -123,7 +124,7 @@ describe('module_chain_watchBlock', () => {
     it('watchBlock without body', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 50)
         const lemo = new LemoClient()
-        const watcher = new Watcher()
+
         watcher.clearHistory()
         lemo.watchBlock(false, block => {
             try {
@@ -138,7 +139,7 @@ describe('module_chain_watchBlock', () => {
     it('watchBlock with body', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 50)
         const lemo = new LemoClient()
-        const watcher = new Watcher()
+
         watcher.clearHistory()
         lemo.watchBlock(true, block => {
             try {
