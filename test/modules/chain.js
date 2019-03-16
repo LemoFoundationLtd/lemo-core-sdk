@@ -13,9 +13,7 @@ import {
 } from '../datas'
 import '../mock'
 import {DEFAULT_POLL_DURATION} from '../../lib/config'
-import Watcher from '../../lib/watchers/blocks_watcher'
 
-const watcher = new Watcher()
 
 describe('module_chain_getCurrentBlock', () => {
     it('latestStableBlock with body', async () => {
@@ -124,32 +122,45 @@ describe('module_chain_watchBlock', () => {
     it('watchBlock without body', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 50)
         const lemo = new LemoClient()
-
-        watcher.clearHistory()
-        lemo.stopWatchBlock(
-            lemo.watchBlock(false, block => {
-                try {
-                    assert.deepEqual(block, {header: formattedCurrentBlock.header})
-                    done()
-                } catch (e) {
-                    done(e)
-                }
-            }),
-        )
+        const watchId =  lemo.watchBlock(false, block => {
+            try {
+                assert.deepEqual(block, {header: formattedCurrentBlock.header})
+                done()
+            } catch (e) {
+                done(e)
+            }
+            lemo.stopWatchBlock(watchId)
+        })
     })
     it('watchBlock with body', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 50)
         const lemo = new LemoClient()
-
-        watcher.clearHistory()
-        lemo.stopWatchBlock(lemo.watchBlock(true, block => {
+        const watchId = lemo.watchBlock(true, block => {
             try {
                 assert.deepEqual(block, formattedCurrentBlock)
                 done()
             } catch (e) {
                 done(e)
             }
-        }))
+            lemo.stopWatchBlock(watchId)
+        })
+    })
+    it('multiple_watchBlock', function itFunc(done) {
+        this.timeout(DEFAULT_POLL_DURATION + 50)
+        const lemo = new LemoClient()
+        let watchId = lemo.watchBlock(true, block => {
+            try {
+                done()
+            } catch (e) {
+                done(e)
+            }
+            lemo.stopWatchBlock(watchId)
+        })
+        watchId = lemo.watchBlock(true, block => {
+            console.log(watchId)
+            lemo.stopWatchBlock(watchId)
+        })
+        assert.equal(watchId, 2)
     })
 })
 

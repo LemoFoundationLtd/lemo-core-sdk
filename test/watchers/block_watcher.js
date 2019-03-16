@@ -1,10 +1,9 @@
 import {assert} from 'chai'
-import Watcher from '../../lib/watchers/blocks_watcher'
+import BlockWatcher from '../../lib/watchers/block_watcher'
 
-const watcher = new Watcher()
-describe('watchers_processor', () => {
+const blockWatcher = new BlockWatcher()
+describe('watchers', () => {
     it('processBlock', () => {
-        watcher.clearHistory()
         const testArr = [1, 3, 4, 6, 8].map((item) => {
             return {
                 header: {
@@ -21,10 +20,11 @@ describe('watchers_processor', () => {
         }
         let lastBlockHeight = 0
         testArr.forEach((item) => {
-            watcher.processBlock(testFetch, item, (block) => {
+            blockWatcher.processBlock(testFetch, item, (block) => {
                 lastBlockHeight++
                 assert.deepEqual(lastBlockHeight, block.header.height)
             })
         })
     })
 })
+
