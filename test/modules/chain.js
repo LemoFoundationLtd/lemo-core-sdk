@@ -13,7 +13,7 @@ import {
 } from '../datas'
 import '../mock'
 import {DEFAULT_POLL_DURATION} from '../../lib/config'
-import {clearHistory} from '../../lib/watchers/blocks_watcher'
+
 
 describe('module_chain_getCurrentBlock', () => {
     it('latestStableBlock with body', async () => {
@@ -121,33 +121,43 @@ describe('module_chain_getNodeVersion', () => {
 describe('module_chain_watchBlock', () => {
     it('watchBlock without body', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 50)
-
         const lemo = new LemoClient()
-        clearHistory()
-        lemo.watchBlock(false, block => {
+        const watchId =  lemo.watchBlock(false, block => {
             try {
                 assert.deepEqual(block, {header: formattedCurrentBlock.header})
                 done()
             } catch (e) {
                 done(e)
             }
-            lemo.stopWatch()
+            lemo.stopWatchBlock(watchId)
         })
     })
     it('watchBlock with body', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 50)
-
         const lemo = new LemoClient()
-        clearHistory()
-        lemo.watchBlock(true, block => {
+        const watchId = lemo.watchBlock(true, block => {
             try {
                 assert.deepEqual(block, formattedCurrentBlock)
                 done()
             } catch (e) {
                 done(e)
             }
-            lemo.stopWatch()
+            lemo.stopWatchBlock(watchId)
         })
+    })
+    it('multiple_watchBlock', function itFunc(done) {
+        this.timeout(DEFAULT_POLL_DURATION + 50)
+        const lemo = new LemoClient()
+        const watchId1 = lemo.watchBlock(true, () => {
+            const e =  new Error('make multiple requests at once')
+            done(e)
+        })
+        const watchId2 = lemo.watchBlock(true, () => {
+            lemo.stopWatchBlock(watchId2)
+            done()
+        })
+        lemo.stopWatchBlock(watchId1)
+        assert.equal(watchId1 + 1, watchId2)
     })
 })
 

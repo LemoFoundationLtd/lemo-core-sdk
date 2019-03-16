@@ -63,7 +63,7 @@ describe('Api_attachTo', () => {
                 return 100
             },
         }
-        const api = new Api(apiConfig, testRequester, chainID)
+        const api = new Api(apiConfig, {requester: testRequester, chainID})
         api.attachTo(apiHolder)
         const result = apiHolder.callMyFunc(123, {a: '8293'})
         assert.equal(result, 100)
