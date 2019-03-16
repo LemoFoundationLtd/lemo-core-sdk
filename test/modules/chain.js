@@ -126,30 +126,30 @@ describe('module_chain_watchBlock', () => {
         const lemo = new LemoClient()
 
         watcher.clearHistory()
-        lemo.watchBlock(false, block => {
-            try {
-                assert.deepEqual(block, {header: formattedCurrentBlock.header})
-                done()
-            } catch (e) {
-                done(e)
-            }
-            lemo.stopWatchBlock(1)
-        })
+        lemo.stopWatchBlock(
+            lemo.watchBlock(false, block => {
+                try {
+                    assert.deepEqual(block, {header: formattedCurrentBlock.header})
+                    done()
+                } catch (e) {
+                    done(e)
+                }
+            }),
+        )
     })
     it('watchBlock with body', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 50)
         const lemo = new LemoClient()
 
         watcher.clearHistory()
-        lemo.watchBlock(true, block => {
+        lemo.stopWatchBlock(lemo.watchBlock(true, block => {
             try {
                 assert.deepEqual(block, formattedCurrentBlock)
                 done()
             } catch (e) {
                 done(e)
             }
-            lemo.stopWatchBlock(1)
-        })
+        }))
     })
 })
 
