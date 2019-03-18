@@ -4,7 +4,7 @@ import BlockWatcher from '../../lib/watchers/block_watcher'
 const blockWatcher = new BlockWatcher()
 describe('watchers', () => {
     it('processBlock', () => {
-        const testArr = [1, 3, 4, 6, 8].map((item) => {
+        const testArr = [1, 1, 3, 4, 6, 8].map((item) => {
             return {
                 header: {
                     height: item,
