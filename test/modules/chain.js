@@ -159,6 +159,19 @@ describe('module_chain_watchBlock', () => {
         lemo.stopWatchBlock(watchId1)
         assert.equal(watchId1 + 1, watchId2)
     })
+    it('multiple_watchBlock(false)_watchBlock(true)', function itFunc(done) {
+        this.timeout(DEFAULT_POLL_DURATION + 50)
+        const lemo = new LemoClient()
+        const watchId1 = lemo.watchBlock(false, (block) => {
+            assert.deepEqual(block, {header: formattedCurrentBlock.header})
+            lemo.stopWatchBlock(watchId1)
+        })
+        const watchId2 = lemo.watchBlock(true, (block) => {
+            assert.deepEqual(block, formattedCurrentBlock)
+            lemo.stopWatchBlock(watchId2)
+            done()
+        })
+    })
 })
 
 describe('module_chain_getCandidateList', () => {
