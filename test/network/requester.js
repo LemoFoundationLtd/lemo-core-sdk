@@ -131,7 +131,7 @@ describe('Requester_watch_error', () => {
                 throw  watchError
             },
         }
-        const requester = new Requester(conn, {maxPollRetry: '0'})
+        const requester = new Requester(conn, {maxPollRetry: 0})
         const watchId = requester.watch('123', [], (block, newWatchId, error) => {
             if (error) {
                 assert.equal(watchError, error)
