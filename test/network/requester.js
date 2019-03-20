@@ -103,11 +103,12 @@ describe('Requester_watch_stopWatch_isWatching', () => {
         requester.watch('m', ['p'], (result) => {
             try {
                 assert.equal(result, response.result)
+                requester.stopWatch()
                 done()
             } catch (e) {
+                requester.stopWatch()
                 done(e)
             }
-            requester.stopWatch()
         })
     })
     it('id++', () => {
@@ -118,5 +119,23 @@ describe('Requester_watch_stopWatch_isWatching', () => {
             assert.equal(id, i)
         }
         requester.stopWatch()
+    })
+})
+
+describe('Requester_watch_error', () => {
+    it('watch_error', function itFunc(done) {
+        this.timeout(DEFAULT_POLL_DURATION + 1000)
+        const watchError = new Error('watchError')
+        const conn = {
+            async send() {
+                throw  watchError
+            },
+        }
+        const requester = new Requester(conn, {maxPollRetry: 0})
+        const watchId = requester.watch('123', [], (block, newWatchId, error) => {
+            assert.equal(watchError, error)
+            requester.stopWatch(watchId)
+            done()
+        })
     })
 })
