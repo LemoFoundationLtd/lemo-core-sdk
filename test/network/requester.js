@@ -120,3 +120,24 @@ describe('Requester_watch_stopWatch_isWatching', () => {
         requester.stopWatch()
     })
 })
+
+describe('Requester_watch_error', () => {
+    it('watch_error', function itFunc(done) {
+        this.timeout(DEFAULT_POLL_DURATION + 1000)
+        const response = {jsonrpc: '2.0', id: 1, result: 123}
+        const conn = {
+            async send() {
+                await wait(10)
+                return response
+            },
+        }
+        const requester = new Requester(conn)
+        const watchId = requester.watch(undefined, (block, newWatchId, error) => {
+            if (error) {
+                console.error(error)
+            }
+            requester.stopWatch(watchId)
+        })
+        done()
+    })
+})
