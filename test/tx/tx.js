@@ -7,7 +7,7 @@ import {TX_VERSION, TTTL, TX_DEFAULT_GAS_LIMIT, TX_DEFAULT_GAS_PRICE} from '../.
 import errors from '../../lib/errors'
 import {toBuffer} from '../../lib/utils'
 import {testPrivate, txInfos, chainID} from '../datas'
-import {TxType, MAX_TX_TO_NAME_LENGTH, NODE_ID_LENGTH, MAX_DEPUTY_HOST_LENGTH} from '../../lib/const'
+import {TxType, MAX_TX_TO_NAME_LENGTH, TX_SIG_BYTE_LENGTH, NODE_ID_LENGTH, MAX_DEPUTY_HOST_LENGTH} from '../../lib/const'
 
 describe('Tx_new', () => {
     it('empty config', () => {
@@ -20,6 +20,7 @@ describe('Tx_new', () => {
         const tx = new Tx({chainID})
         assert.equal(tx.type, TxType.ORDINARY)
         assert.equal(tx.version, TX_VERSION)
+        assert.equal(tx.chainID, chainID)
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
         assert.equal(tx.gasPrice, TX_DEFAULT_GAS_PRICE)
@@ -28,8 +29,7 @@ describe('Tx_new', () => {
         assert.equal(tx.data, '')
         assert.equal(tx.expirationTime, Math.floor(Date.now() / 1000) + TTTL)
         assert.equal(tx.message, '')
-        assert.equal(tx.r, '')
-        assert.equal(tx.s, '')
+        assert.equal(tx.sig, '')
         assert.equal(tx.from, '')
     })
 
@@ -46,10 +46,10 @@ describe('Tx_new', () => {
             data: '107',
             expirationTime: 108,
             message: '109',
-            r: '110',
-            s: '111',
+            sig: '0x0110',
         }
         const tx = new Tx(config)
+        assert.equal(tx.chainID, config.chainID)
         assert.equal(tx.type, config.type)
         assert.equal(tx.version, config.version)
         assert.equal(tx.to, config.to)
@@ -60,69 +60,36 @@ describe('Tx_new', () => {
         assert.equal(tx.data, config.data)
         assert.equal(tx.expirationTime, config.expirationTime)
         assert.equal(tx.message, config.message)
-        assert.equal(tx.r, config.r)
-        assert.equal(tx.s, config.s)
-        assert.equal(tx.from, '')
-    })
-
-    it('set v and type at same time', () => {
-        const config = {
-            type: 100,
-            v: '112',
-        }
+        assert.equal(tx.sig, config.sig)
         assert.throws(() => {
-            new Tx(config)
-        }, errors.TXVTypeConflict(config))
-    })
-
-    it('set v and version at same time', () => {
-        const config = {
-            version: 101,
-            v: '112',
-        }
-        assert.throws(() => {
-            new Tx(config)
-        }, errors.TXVVersionConflict(config))
+            console.log(tx.from)
+        }, 'invalid signature')
     })
 
     const tests = [
         {field: 'chainID', configData: 1},
         {field: 'chainID', configData: 100},
         {field: 'chainID', configData: '10000', result: 10000},
+        {field: 'chainID', configData: 'abc', error: errors.TXMustBeNumber('chainID', 'abc')},
         {field: 'chainID', configData: '', error: errors.TXInvalidChainID()},
         {field: 'chainID', configData: 0, error: errors.TXInvalidChainID()},
         {field: 'chainID', configData: '0x10000', error: errors.TXInvalidRange('chainID', '0x10000', 1, 0xffff)},
-        {field: 'v', configData: 0, result: ''},
-        {field: 'v', configData: 0, result: ''},
-        {field: 'v', configData: ''},
-        {field: 'v', configData: '0'},
-        {field: 'v', configData: '1'},
-        {field: 'v', configData: '4294967295'},
-        {field: 'v', configData: '0x'},
-        {field: 'v', configData: '0x0'},
-        {field: 'v', configData: '0x1'},
-        {field: 'v', configData: '0xffffffff'},
-        {field: 'v', configData: toBuffer('1')},
-        {field: 'v', configData: toBuffer('0xffffffff')},
-        {field: 'v', configData: 1, error: errors.TXInvalidType('v', 1, ['string', Buffer])},
-        {field: 'v', configData: 'abc', error: errors.TXMustBeNumber('v', 'abc')},
-        {field: 'v', configData: '0xxyz', error: errors.TXMustBeNumber('v', '0xxyz')},
-        {field: 'v', configData: '-1', error: errors.TXMustBeNumber('v', '-1')},
-        {field: 'v', configData: '0x100000000', error: errors.TXInvalidRange('v', '0x100000000', 0, 0xffffffff)},
         {field: 'type', configData: 0},
         {field: 'type', configData: 1},
         {field: 'type', configData: 0xff},
         {field: 'type', configData: '', result: 0},
         {field: 'type', configData: '1', result: 1},
-        {field: 'type', configData: -1, error: errors.TXInvalidRange('type', -1, 0, 0xff)},
-        {field: 'type', configData: 0x100, error: errors.TXInvalidRange('type', 0x100, 0, 0xff)},
+        {field: 'type', configData: 'abc', error: errors.TXMustBeNumber('type', 'abc')},
+        {field: 'type', configData: -1, error: errors.TXInvalidRange('type', -1, 0, 0xffff)},
+        {field: 'type', configData: 0x10000, error: errors.TXInvalidRange('type', 0x10000, 0, 0xffff)},
         {field: 'version', configData: 0, result: TX_VERSION},
         {field: 'version', configData: 1},
-        {field: 'version', configData: 0x7f},
+        {field: 'version', configData: 0xff},
         {field: 'version', configData: '', result: TX_VERSION},
-        {field: 'version', configData: '1', error: errors.TXInvalidType('version', '1', ['number'])},
-        {field: 'version', configData: -1, error: errors.TXInvalidRange('version', -1, 0, 0x7f)},
-        {field: 'version', configData: 0x80, error: errors.TXInvalidRange('version', 0x80, 0, 0x7f)},
+        {field: 'version', configData: '1', result: 1},
+        {field: 'version', configData: 'abc', error: errors.TXMustBeNumber('version', 'abc')},
+        {field: 'version', configData: -1, error: errors.TXInvalidRange('version', -1, 0, 0xff)},
+        {field: 'version', configData: 0x100, error: errors.TXInvalidRange('version', 0x100, 0, 0xff)},
         {field: 'to', configData: 0x1, error: errors.TXInvalidType('to', 0x1, ['string'])},
         {field: 'to', configData: '0x1'},
         {field: 'to', configData: 'lemobw'},
@@ -136,6 +103,30 @@ describe('Tx_new', () => {
                 '01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789',
                 MAX_TX_TO_NAME_LENGTH,
             ),
+        },
+        {field: 'sig', configData: 0, result: ''},
+        {field: 'sig', configData: ''},
+        {field: 'sig', configData: '0'},
+        {field: 'sig', configData: '1'},
+        {field: 'sig', configData: '4294967295'},
+        {field: 'sig', configData: '0x'},
+        {field: 'sig', configData: '0x0'},
+        {field: 'sig', configData: '0x1'},
+        {field: 'sig', configData: '0xffffffff'},
+        {field: 'sig', configData: toBuffer('1')},
+        {field: 'sig', configData: toBuffer('0xffffffff')},
+        {field: 'sig', configData: 1, error: errors.TXInvalidType('sig', 1, ['string', Buffer])},
+        {field: 'sig', configData: 'abc', error: errors.TXMustBeNumber('sig', 'abc')},
+        {field: 'sig', configData: '0xxyz', error: errors.TXMustBeNumber('sig', '0xxyz')},
+        {field: 'sig', configData: '-1', error: errors.TXMustBeNumber('sig', '-1')},
+        {
+            field: 'sig',
+            configData: '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+            error: errors.TXInvalidMaxBytes('sig', '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001', TX_SIG_BYTE_LENGTH, 66),
+        }, {
+            field: 'sig',
+            configData: Buffer.from('100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001', 'hex'),
+            error: errors.TXInvalidMaxBytes('sig', Buffer.from('100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001', 'hex'), TX_SIG_BYTE_LENGTH, 66),
         },
     ]
     tests.forEach(test => {
