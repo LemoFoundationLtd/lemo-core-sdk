@@ -94,6 +94,11 @@ describe('Tx_new', () => {
         {field: 'to', configData: '0x1'},
         {field: 'to', configData: 'lemobw'},
         {field: 'to', configData: 'lemob', error: errors.InvalidAddressCheckSum('lemob')},
+        {
+            field: 'to',
+            configData: 'Lemo9A9JGWQT74H37PSB24RTH6YYHG6W3GCH3CJ8S',
+            error: errors.InvalidAddressLength('Lemo9A9JGWQT74H37PSB24RTH6YYHG6W3GCH3CJ8S'),
+        },
         {field: 'toName', configData: 'lemo'},
         {
             field: 'toName',
