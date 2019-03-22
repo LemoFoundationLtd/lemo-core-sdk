@@ -173,7 +173,7 @@ describe('Tx_hash', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
                 const tx = new Tx(test.txConfig)
-                assert.equal(`0x${tx.hash().toString('hex')}`, test.hash, `index=${i}`)
+                assert.equal(tx.hash(), test.hash, `index=${i}`)
             }),
         )
     })
@@ -182,7 +182,7 @@ describe('Tx_hash', () => {
             txInfos.map(async (test, i) => {
                 const tx = new Tx(test.txConfig)
                 tx.signWith(testPrivate)
-                assert.equal(`0x${tx.hash().toString('hex')}`, test.hashAfterSign, `index=${i}`)
+                assert.equal(tx.hash(), test.hashAfterSign, `index=${i}`)
             }),
         )
     })
