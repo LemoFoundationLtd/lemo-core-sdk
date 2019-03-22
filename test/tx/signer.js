@@ -1,9 +1,9 @@
 import {assert} from 'chai'
 import Tx from '../../lib/tx/tx'
 import Signer from '../../lib/tx/signer';
-import {parseV} from '../../lib/tx/tx_helper';
 import {testPrivate, testAddr, txInfos} from '../datas'
 import {generateAccount} from '../../lib/crypto';
+import {TX_SIG_BYTE_LENGTH} from '../../lib/const';
 
 describe('Signer_new', () => {
     it('chainID', () => {
@@ -17,12 +17,8 @@ describe('Signer_sign', () => {
         return Promise.all(txInfos.map(async (test, i) => {
             const tx = new Tx(test.txConfig)
             const sig = signer.sign(tx, testPrivate)
-            assert.exists(sig.r, `index=${i}`)
-            assert.exists(sig.s, `index=${i}`)
-            const parsed = parseV(sig.v)
-            assert.equal(parsed.type, tx.type, `index=${i}`)
-            assert.equal(parsed.version, tx.version, `index=${i}`)
-            assert.equal(parsed.chainID, tx.chainID, `index=${i}`)
+            assert.exists(sig, `index=${i}`)
+            assert.equal(sig.length, TX_SIG_BYTE_LENGTH * 2 + 2, `index=${i}`)
         }))
     })
 })

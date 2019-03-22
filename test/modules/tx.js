@@ -4,11 +4,13 @@ import {txInfos, chainID, testPrivate, bigTxInfoWithLemoAddr, formattedTxRes1, f
 import '../mock'
 import {toBuffer} from '../../lib/utils'
 import errors from '../../lib/errors'
+import {TxType} from '../../lib/const'
+import Tx from '../../lib/tx/tx'
 
 describe('module_tx_getTx', () => {
     it('getTx', async () => {
         const lemo = new LemoClient({chainID})
-        const result = await lemo.tx.getTx('0xcf9980d6f08763686d30d05afa50ac696397de5e41ae41c890ec8cd3426ed157')
+        const result = await lemo.tx.getTx('0x6a8bdc73a46dd8cff224ffd7bbf1f237c7721b81f923edd5864f38bedecd2787')
         assert.deepEqual(result, formattedTxRes1)
     })
     it('getTx not exist', async () => {
@@ -86,9 +88,18 @@ describe('module_tx_sign_send', () => {
     })
     it('sign_send_with_lemo_address', async () => {
         const lemo = new LemoClient({chainID})
-        const json = await lemo.tx.sign(testPrivate, bigTxInfoWithLemoAddr.txConfig, false)
+        const json = await lemo.tx.sign(testPrivate, bigTxInfoWithLemoAddr.txConfig)
         const result = await lemo.tx.send(json)
         assert.equal(result, bigTxInfoWithLemoAddr.hashAfterSign)
+    })
+    it('sign_without_chainID', async () => {
+        const lemo = new LemoClient({chainID})
+        const txConfigCopy = {...txInfos[1].txConfig}
+        delete txConfigCopy.chainID
+        let json = await lemo.tx.sign(testPrivate, txConfigCopy)
+        json = JSON.parse(json)
+        assert.equal(json.chainID, chainID)
+        assert.equal(new Tx(json).hash(), txInfos[1].hashAfterSign)
     })
 })
 
@@ -99,7 +110,7 @@ describe('module_tx_vote', () => {
                 const lemo = new LemoClient({chainID})
                 let json = lemo.tx.signVote(testPrivate, test.txConfig)
                 json = JSON.parse(json)
-                assert.equal(parseInt(json.v, 16) & 0x1000000, 0x1000000, `index=${i}`)
+                assert.equal(json.type, TxType.VOTE, `index=${i}`)
                 assert.equal(json.amount, 0, `index=${i}`)
                 assert.equal(json.data, undefined, `index=${i}`)
             }),
@@ -122,7 +133,7 @@ describe('module_tx_candidate', () => {
                 }
                 let json = lemo.tx.signCandidate(testPrivate, test.txConfig, candidateInfo)
                 json = JSON.parse(json)
-                assert.equal(parseInt(json.v, 16) & 0x2000000, 0x2000000, `index=${i}`)
+                assert.equal(json.type, TxType.CANDIDATE, `index=${i}`)
                 const result = JSON.stringify({...candidateInfo, isCandidate: String(candidateInfo.isCandidate)})
                 assert.equal(toBuffer(json.data).toString(), result, `index=${i}`)
                 assert.equal(json.to, undefined, `index=${i}`)

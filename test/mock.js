@@ -209,8 +209,7 @@ const mockInfos = [
         method: 'tx_sendTx',
         paramsCount: 1,
         reply([txConfig]) {
-            const tx = new Tx(txConfig)
-            return `0x${tx.hash().toString('hex')}`
+            return new Tx(txConfig).hash()
         },
     },
 ]
