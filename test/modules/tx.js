@@ -5,6 +5,7 @@ import '../mock'
 import {toBuffer} from '../../lib/utils'
 import errors from '../../lib/errors'
 import {TxType} from '../../lib/const'
+import Tx from '../../lib/tx/tx'
 
 describe('module_tx_getTx', () => {
     it('getTx', async () => {
@@ -87,9 +88,18 @@ describe('module_tx_sign_send', () => {
     })
     it('sign_send_with_lemo_address', async () => {
         const lemo = new LemoClient({chainID})
-        const json = await lemo.tx.sign(testPrivate, bigTxInfoWithLemoAddr.txConfig, false)
+        const json = await lemo.tx.sign(testPrivate, bigTxInfoWithLemoAddr.txConfig)
         const result = await lemo.tx.send(json)
         assert.equal(result, bigTxInfoWithLemoAddr.hashAfterSign)
+    })
+    it('sign_without_chainID', async () => {
+        const lemo = new LemoClient({chainID})
+        const txConfigCopy = {...txInfos[1].txConfig}
+        delete txConfigCopy.chainID
+        let json = await lemo.tx.sign(testPrivate, txConfigCopy)
+        json = JSON.parse(json)
+        assert.equal(json.chainID, chainID)
+        assert.equal(new Tx(json).hash(), txInfos[1].hashAfterSign)
     })
 })
 

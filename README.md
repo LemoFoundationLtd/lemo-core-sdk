@@ -358,7 +358,7 @@ lemo = new LemoClient({
     host: 'http://127.0.0.1:8001'
 })
 ```
-- `chainID` ChainID of LemoChain. Default value is `1`, it represents main net
+- `chainID` The ID of LemoChain. Default value is `1`, it represents main net
 - `host` LemoChain node's http listening address. The default value is  `http://127.0.0.1:8001`
     > NOTE: If the cross domain issue appear. Try to use flag `--rpccorsdomain http://[domain of the web page]:[port]` to restart LemoChain node.
 
