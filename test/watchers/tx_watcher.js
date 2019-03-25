@@ -5,13 +5,14 @@ import {DEFAULT_POLL_DURATION} from '../../lib/config'
 import Requester from '../../lib/network/requester'
 import HttpConn from '../../lib/network/conn/http_conn'
 import errors from '../../lib/errors'
+import {currentBlock, formattedCurrentBlock, txInfo, txRes2} from '../datas'
 import '../mock'
 
 describe('module_tx_watcher', () => {
     it('tx_watcher', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 1000)
-        const responses = [{jsonrpc: '2.0', id: 1, result: null}, {jsonrpc: '2.0', id: 2, result: 'hash'}]
-        const testTxHash = '0xfc4e1eccdc7e199336503ae67da0ee66eb46e1f953f65f22c8b62b53db76a103'
+        const responses = [{jsonrpc: '2.0', id: 1, result: null}, {jsonrpc: '2.0', id: 2, result: {hash: 'hash'}}]
+        const testTx =  {hash: 'hash'}
         const error = new Error('waitTx too many times')
         const conn = {
             async send() {
@@ -23,26 +24,43 @@ describe('module_tx_watcher', () => {
         }
         const requester = new Requester(conn, {maxPollRetry: 0})
         const txWatcher = new TxWatcher(requester)
-        txWatcher.waitTx(testTxHash).then(txHash => {
-            assert.equal(txHash, testTxHash)
+        txWatcher.waitTx('hash').then(tx => {
+            assert.deepEqual(tx, testTx)
             done()
         })
     })
-    it('server_mode_has_hash', async () => {
-        const requester = new Requester(new HttpConn('http://127.0.0.1:8001'), {maxPollRetry: 0})
+    it('server_mode_true_has_tx', async () => {
+        const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
         const blockWatcher = new BlockWatcher(requester)
         const txWatcher = new TxWatcher(requester, blockWatcher, true)
-        const hash = '0x314f1b9c8585e53446983e68fdbf6642e00e5b58cfde9165fdec051cfb21d157'
-        const txHash = await txWatcher.waitTx(hash)
-        return  assert.equal(hash, txHash)
+        const hash = currentBlock.transactions[0].hash
+        const testTx = formattedCurrentBlock.transactions[0]
+        const tx = await txWatcher.waitTx(hash)
+        return  assert.deepEqual(tx, testTx)
     })
-    it('server_mode_timeOut', async () => {
-        const requester = new Requester(new HttpConn('http://127.0.0.1:8001'), {maxPollRetry: 0})
+    it('server_mode_true_timeOut',  () => {
+        const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
         const blockWatcher = new BlockWatcher(requester)
         const txWatcher = new TxWatcher(requester, blockWatcher, true)
         const hash = ''
         txWatcher.waitTx(hash).catch(e => {
-            return assert.equal(e, errors.InvalidPollTxTimeOut())
+            assert.equal(e, errors.InvalidPollTxTimeOut())
+        })
+    })
+    it('server_mode_false_has_tx', async () => {
+        const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
+        const blockWatcher = new BlockWatcher(requester)
+        const txWatcher = new TxWatcher(requester, blockWatcher, false)
+        const tx = await txWatcher.waitTx(txInfo.hashAfterSign)
+        return assert.deepEqual(tx, txRes2)
+    })
+    it('server_mode_false_timeOut',  () => {
+        const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
+        const blockWatcher = new BlockWatcher(requester)
+        const txWatcher = new TxWatcher(requester, blockWatcher, false)
+        const hash = ''
+        txWatcher.waitTx(hash).catch(e => {
+            assert.equal(e, errors.InvalidPollTxTimeOut())
         })
     })
 })
