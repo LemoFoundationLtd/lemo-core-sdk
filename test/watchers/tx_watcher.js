@@ -29,6 +29,8 @@ describe('module_tx_watcher', () => {
             done()
         })
     })
+})
+describe('module_tx_watcher_server_mode', () => {
     it('server_mode_true_has_tx', async () => {
         const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
         const blockWatcher = new BlockWatcher(requester)
@@ -68,3 +70,16 @@ describe('module_tx_watcher', () => {
         })
     })
 })
+
+describe('module_tx_watcher', () => {
+    it('watchTx_suceess', async () => {
+        const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
+        const blockWatcher = new BlockWatcher(requester)
+        const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: false, txPollTimeout: 1000})
+        const resArr = await txWatcher.watchTx(currentBlock.transactions[0])
+        resArr.forEach(item => {
+            return assert.deepEqual(item, currentBlock.transactions[0])
+        })
+    })
+})
+
