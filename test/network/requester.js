@@ -123,17 +123,12 @@ describe('Requester_watch_stopWatch_isWatching', () => {
 })
 
 describe('Requester_watch_error', () => {
-    it('watch_error', function itFunc(done) {
+    it('watch_error',  function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 1000)
-        const watchError = new Error('watchError')
-        const conn = {
-            async send() {
-                throw  watchError
-            },
-        }
+        const conn = new HttpConn('http://127.0.0.1:8001')
         const requester = new Requester(conn, {maxPollRetry: 0})
-        const watchId = requester.watch('123', [], (block, newWatchId, error) => {
-            assert.equal(watchError, error)
+        const watchId = requester.watch('13', [true], (block, newWatchId, error) => {
+            assert.equal(error.message, errors.InvalidConnection('http://127.0.0.1:8001'))
             requester.stopWatch(watchId)
             done()
         })

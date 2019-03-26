@@ -1,13 +1,18 @@
 import {assert} from 'chai'
 import TxWatcher from '../../lib/watchers/tx_watcher'
+import BlockWatcher from '../../lib/watchers/block_watcher'
 import {DEFAULT_POLL_DURATION} from '../../lib/config'
 import Requester from '../../lib/network/requester'
+import HttpConn from '../../lib/network/conn/http_conn'
+import errors from '../../lib/errors'
+import {currentBlock, formattedCurrentBlock, txInfo, txRes2} from '../datas'
+import '../mock'
 
-describe('Requester_tx_watcher', () => {
-    it('tx_watcher',   function itFunc(done) {
+describe('module_tx_watcher', () => {
+    it('tx_watcher', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 1000)
-        const responses = [{jsonrpc: '2.0', id: 1, result: null}, {jsonrpc: '2.0', id: 2, result: 'hash'}]
-        const testTxHash = '0xfc4e1eccdc7e199336503ae67da0ee66eb46e1f953f65f22c8b62b53db76a103'
+        const responses = [{jsonrpc: '2.0', id: 1, result: null}, {jsonrpc: '2.0', id: 2, result: {hash: 'hash'}}]
+        const testTx =  {hash: 'hash'}
         const error = new Error('waitTx too many times')
         const conn = {
             async send() {
@@ -18,10 +23,48 @@ describe('Requester_tx_watcher', () => {
             },
         }
         const requester = new Requester(conn, {maxPollRetry: 0})
-        const txWatcher = new TxWatcher(requester)
-        txWatcher.waitTx(testTxHash).then(txHash => {
-            assert.equal(txHash, testTxHash)
+        const txWatcher = new TxWatcher(requester, undefined, {serverMode: false})
+        txWatcher.waitTx('hash').then(tx => {
+            assert.deepEqual(tx, testTx)
             done()
+        })
+    })
+    it('server_mode_true_has_tx', async () => {
+        const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
+        const blockWatcher = new BlockWatcher(requester)
+        const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: true, txPollTimeout: 1000})
+        const hash = currentBlock.transactions[0].hash
+        const testTx = formattedCurrentBlock.transactions[0]
+        const tx = await txWatcher.waitTx(hash)
+        return  assert.deepEqual(tx, testTx)
+    })
+    it('server_mode_true_timeOut',  () => {
+        const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
+        const blockWatcher = new BlockWatcher(requester)
+        const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: true, txPollTimeout: 1000})
+        const hash = ''
+        return txWatcher.waitTx(hash).then(() => {
+            assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
+        }, (e) => {
+            assert.equal(e, errors.InvalidPollTxTimeOut())
+        })
+    })
+    it('server_mode_false_has_tx', async () => {
+        const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
+        const blockWatcher = new BlockWatcher(requester)
+        const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: false, txPollTimeout: 1000})
+        const tx = await txWatcher.waitTx(txInfo.hashAfterSign)
+        return assert.deepEqual(tx, txRes2)
+    })
+    it('server_mode_false_timeOut',  () => {
+        const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
+        const blockWatcher = new BlockWatcher(requester)
+        const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: false, txPollTimeout: 1000})
+        const hash = ''
+        return txWatcher.waitTx(hash).then(() => {
+            assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
+        }, (e) => {
+            assert.equal(e, errors.InvalidPollTxTimeOut())
         })
     })
 })
