@@ -29,6 +29,9 @@ describe('module_tx_watcher', () => {
             done()
         })
     })
+})
+
+describe('module_tx_watcher_server_mode', () => {
     it('server_mode_true_has_tx', async () => {
         const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
         const blockWatcher = new BlockWatcher(requester)
@@ -36,9 +39,9 @@ describe('module_tx_watcher', () => {
         const hash = currentBlock.transactions[0].hash
         const testTx = formattedCurrentBlock.transactions[0]
         const tx = await txWatcher.waitTx(hash)
-        return  assert.deepEqual(tx, testTx)
+        return assert.deepEqual(tx, testTx)
     })
-    it('server_mode_true_timeOut',  () => {
+    it('server_mode_true_timeOut', () => {
         const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
         const blockWatcher = new BlockWatcher(requester)
         const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: true, txPollTimeout: 1000})
@@ -56,7 +59,7 @@ describe('module_tx_watcher', () => {
         const tx = await txWatcher.waitTx(txInfo.hashAfterSign)
         return assert.deepEqual(tx, txRes2)
     })
-    it('server_mode_false_timeOut',  () => {
+    it('server_mode_false_timeOut', () => {
         const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
         const blockWatcher = new BlockWatcher(requester)
         const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: false, txPollTimeout: 1000})
@@ -68,3 +71,17 @@ describe('module_tx_watcher', () => {
         })
     })
 })
+
+describe('module_tx_watcher_watchTx', () => {
+    it('watchTx_suceess', () => {
+        const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
+        const blockWatcher = new BlockWatcher(requester)
+        const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: false, txPollTimeout: 1000})
+        txWatcher.watchTx(currentBlock.transactions[0], (txArr => {
+            txArr.forEach(item => {
+                return assert.deepEqual(item, currentBlock.transactions[0])
+            })
+        }))
+    })
+})
+
