@@ -44,7 +44,7 @@ describe('module_tx_watcher', () => {
         const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: true, txPollTimeout: 1000})
         const hash = ''
         return txWatcher.waitTx(hash).then(() => {
-            assert.fail('expect error')
+            assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
         }, (e) => {
             assert.equal(e, errors.InvalidPollTxTimeOut())
         })
@@ -62,7 +62,7 @@ describe('module_tx_watcher', () => {
         const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: false, txPollTimeout: 1000})
         const hash = ''
         return txWatcher.waitTx(hash).then(() => {
-            assert.fail('expect error')
+            assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
         }, (e) => {
             assert.equal(e, errors.InvalidPollTxTimeOut())
         })
