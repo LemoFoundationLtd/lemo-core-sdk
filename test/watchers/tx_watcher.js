@@ -111,7 +111,7 @@ describe('module_tx_watcher_server_mode', () => {
 })
 
 describe('module_tx_watcher_watchTx', () => {
-    it('watchTx_suceess', function itFunc(done) {
+    it('watchTx_multiple_params', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 1000)
         const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
         const blockWatcher = new BlockWatcher(requester)
@@ -124,14 +124,13 @@ describe('module_tx_watcher_watchTx', () => {
             message: 'aaa',
         }
         const watchTxId = txWatcher.watchTx(testConfig, (txArr => {
-            txArr.forEach(item => {
-                assert.deepEqual(item,  formattedCurrentBlock.transactions[0])
-                txWatcher.stopWatchTx(watchTxId)
-                done()
-            })
+            assert.equal(txArr.length, 1)
+            assert.deepEqual(txArr[0], formattedCurrentBlock.transactions[0])
+            txWatcher.stopWatchTx(watchTxId)
+            done()
         }))
     })
-    it('watchTx_null', function itFunc(done) {
+    it('watchTx_one_param', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 1000)
         const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
         const blockWatcher = new BlockWatcher(requester)
@@ -140,6 +139,22 @@ describe('module_tx_watcher_watchTx', () => {
             type: 0,
         }
         const watchTxId = txWatcher.watchTx(testConfig, (txArr => {
+            assert.equal(txArr.length, 1)
+            assert.deepEqual(txArr[0], formattedCurrentBlock.transactions[0])
+            txWatcher.stopWatchTx(watchTxId)
+            done()
+        }))
+    })
+    it('watchTx_result_null', function itFunc(done) {
+        this.timeout(DEFAULT_POLL_DURATION + 1000)
+        const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
+        const blockWatcher = new BlockWatcher(requester)
+        const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: false, txPollTimeout: 1000})
+        const testConfig = {
+            type: 100,
+        }
+        const watchTxId = txWatcher.watchTx(testConfig, (() => {
+            done(new Error('not expect to execute callback'))
         }))
         txWatcher.stopWatchTx(watchTxId)
         done()
