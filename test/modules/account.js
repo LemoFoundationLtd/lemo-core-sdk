@@ -59,7 +59,9 @@ describe('module_account_getBalance', () => {
 describe('module_account_newKeyPair', () => {
     it('newKeyPair', () => {
         const lemo = new LemoClient()
-        lemo.account.newKeyPair()
+        const account = lemo.account.newKeyPair()
+        assert.exists(account.privateKey)
+        assert.exists(account.address)
     })
 })
 
