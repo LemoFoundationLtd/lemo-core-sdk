@@ -143,3 +143,19 @@ describe('module_tx_candidate', () => {
         )
     })
 })
+
+describe('module_tx_watchTx', () => {
+    it('watchTx', () => {
+        const lemo = new LemoClient({chainID})
+        const testConfig = {
+            type: 0,
+            version: 1,
+            to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
+            toName: 'aa',
+            message: 'aaa',
+        }
+        lemo.tx.watchTx(testConfig, (txArr => {
+            assert.equal(txArr.length, 1)
+        }))
+    })
+})
