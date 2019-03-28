@@ -154,8 +154,8 @@ describe('module_tx_watchTx', () => {
             toName: 'aa',
             message: 'aaa',
         }
-        lemo.tx.watchTx(testConfig, (txArr => {
-            assert.equal(txArr.length, 1)
+        const watchTxId =  lemo.tx.watchTx(testConfig, (() => {
+            lemo.tx.stopWatchTx(watchTxId)
         }))
     })
 })
