@@ -6,6 +6,7 @@ import {toBuffer} from '../../lib/utils'
 import errors from '../../lib/errors'
 import {TxType} from '../../lib/const'
 import Tx from '../../lib/tx/tx'
+import {DEFAULT_POLL_DURATION} from '../../lib/config'
 
 describe('module_tx_getTx', () => {
     it('getTx', async () => {
@@ -141,5 +142,23 @@ describe('module_tx_candidate', () => {
                 assert.equal(json.amount, 0, `index=${i}`)
             }),
         )
+    })
+})
+
+describe('module_tx_watchTx', () => {
+    it('watchTx', function itFunc(done) {
+        this.timeout(DEFAULT_POLL_DURATION + 1000)
+        const lemo = new LemoClient({chainID})
+        const testConfig = {
+            type: 0,
+            version: 1,
+            to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
+            toName: 'aa',
+            message: 'aaa',
+        }
+        const watchTxId =  lemo.tx.watchTx(testConfig, (() => {
+            lemo.tx.stopWatchTx(watchTxId)
+            done()
+        }))
     })
 })

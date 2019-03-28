@@ -55,3 +55,13 @@ describe('module_account_getBalance', () => {
         assert.strictEqual(result.toMoney(), '1599999999.9999999999999999 LEMO')
     })
 })
+
+describe('module_account_newKeyPair', () => {
+    it('newKeyPair', () => {
+        const lemo = new LemoClient()
+        const account = lemo.account.newKeyPair()
+        assert.exists(account.privateKey)
+        assert.exists(account.address)
+    })
+})
+
