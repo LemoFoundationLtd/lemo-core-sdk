@@ -11,7 +11,7 @@ import {DEFAULT_POLL_DURATION} from '../../lib/config'
 describe('module_tx_getTx', () => {
     it('getTx', async () => {
         const lemo = new LemoClient({chainID})
-        const result = await lemo.tx.getTx('0x6a8bdc73a46dd8cff224ffd7bbf1f237c7721b81f923edd5864f38bedecd2787')
+        const result = await lemo.tx.getTx('0x37e2548baa166815431afc470fc65dfc5a399959fb179d3d33ebc8d561697ae6')
         assert.deepEqual(result, formattedTxRes1)
     })
     it('getTx not exist', async () => {
