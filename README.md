@@ -71,7 +71,7 @@ API | description | asynchronous | available for remote
 [lemo.mine.stop()](#submodule-mine-stop) | Stop mining | ✓ | ✖
 [lemo.mine.getMining()](#submodule-mine-getMining) | True if current LemoChain node is mining | ✓ | ✓
 [lemo.mine.getMiner()](#submodule-mine-getMiner) | Get the mining benefit account address of current LemoChain node | ✓ | ✓
-[lemo.account.newKeyPair()](#submodule-account-newKeyPair) | Create a private key and account address | ✓ | ✖
+[lemo.account.newKeyPair()](#submodule-account-newKeyPair) | Create a private key and account address | ✓ | ✓
 [lemo.account.getBalance(addr)](#submodule-account-getBalance) | Get the balance of an account | ✓ | ✓
 [lemo.account.getAccount(addr)](#submodule-account-getAccount) | Get the information of an account | ✓ | ✓
 [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | Get the information of an candidate | ✓ | ✓
@@ -892,7 +892,7 @@ Get the information of an account
 
 ##### Example
 ```js
-lemo.account.getBalance('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
+lemo.account.getAccount('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
     .then(function(account) {
         console.log(account.balance.toMoney()); // "1600000000 LEMO"
     })
@@ -1002,7 +1002,7 @@ lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).th
 <a name="submodule-tx-sendTx"></a>
 #### lemo.tx.sendTx
 ```
-lemo.tx.sendTx(privateKey, txInfo)
+lemo.tx.sendTx(privateKey, txconfig, waitConfirm)
 ```
 Sign and send transaction
 
@@ -1019,6 +1019,7 @@ Sign and send transaction
     - `data` - (Buffer|string) (optional) The extra data. It usually be using for calling smart contract
     - `expirationTime` - (number|string) (optional) The expiration time of transaction in seconds. Default is half hour from now
     - `message` - (string) (optional) Extra text message from sender
+3. `boolean` - (optional) Waiting for [transaction](#data-structure-transaction) consensus.default value is `true`
 
 ##### Returns
 `Promise` - Call `then` method to get transaction hash
@@ -1123,7 +1124,7 @@ console.log(signedTxStr)
 <a name="submodule-tx-send"></a>
 #### lemo.tx.send
 ```
-lemo.tx.send(signedTxInfo)
+lemo.tx.send(txConfig, waitConfirm)
 ```
 Send a signed transaction
 
@@ -1132,6 +1133,7 @@ Send a signed transaction
     - `r` - (Buffer|string) Signature data
     - `s` - (Buffer|string) Signature data
     - `v` - (Buffer|string) This field is combined from transaction `type`, `version`(current is 0), `signature recovery data`, `chainID`
+2. `boolean` - (optional) Waiting for [transaction](#data-structure-transaction) consensus.default value is `true`
 
 ##### Returns
 `Promise` - Call `then` method to get transaction hash

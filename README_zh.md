@@ -70,7 +70,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.mine.stop()](#submodule-mine-stop)                                   | 停止挖矿                       | ✓    | ✖          |
 | [lemo.mine.getMining()](#submodule-mine-getMining)                         | 是否正在挖矿                   | ✓    | ✓          |
 | [lemo.mine.getMiner()](#submodule-mine-getMiner)                           | 获取当前共识节点的记账收益地址   | ✓    | ✓          |
-| [lemo.account.newKeyPair()](#submodule-account-newKeyPair)                 | 创新账户公私钥                 | ✓    | ✖          |
+| [lemo.account.newKeyPair()](#submodule-account-newKeyPair)                 | 创新账户公私钥                 | ✓    | ✓          |
 | [lemo.account.getBalance(addr)](#submodule-account-getBalance)             | 获取账户余额                   | ✓    | ✓          |
 | [lemo.account.getAccount(addr)](#submodule-account-getAccount)             | 获取账户信息                   | ✓    | ✓          |
 | [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | 获取候选人信息                 | ✓    | ✓          |
@@ -1046,7 +1046,7 @@ lemo.account.getAccount(address)
 ##### Example
 
 ```js
-lemo.account.getBalance('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34').then(function(account) {
+lemo.account.getAccount('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34').then(function(account) {
     console.log(account.balance.toMoney()) // "1600000000 LEMO"
 })
 ```
@@ -1141,9 +1141,9 @@ lemo.tx.getTxListByAddress(address, index, limit)
 ##### Example
 
 ```js
+lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).then(function(result) {
     console.log(result.total) // 1
     console.log(result.txList[0].minedTime) // 1541649535
-lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).then(function(result) {
     console.log(JSON.stringify(result.txList)) // [{"to":"Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY","toName":"","gasPrice":"3000000000","gasLimit":2000000,"amount":"1.0000000000000000000000001e+25","data":"0x","expirationTime":1541649535,"message":"","v":"0x020001","r":"0x1aebf7c6141dc54b3f181e56d287785f2ce501c70466016f96d8b7171d80555c","s":"0x584179c208ad9bc9488b969b9d06635dda05b932b1966d43b6255ca63288903c","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","minedTime":1541649535}]
 })
 ```
@@ -1157,7 +1157,7 @@ lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).th
 #### lemo.tx.sendTx
 
 ```
-lemo.tx.sendTx(privateKey, txInfo)
+lemo.tx.sendTx(privateKey, txconfig, waitConfirm)
 ```
 
 签名并发送交易
@@ -1176,6 +1176,7 @@ lemo.tx.sendTx(privateKey, txInfo)
     - `data` - (Buffer|string) (选填) 交易附带的数据，可用于调用智能合约，默认为空
     - `expirationTime` - (number|string) (选填)交易过期时间戳，单位为秒，默认值为半小时后
     - `message` - (string) (选填)交易附带的文本消息，默认为空
+3. `boolean` - (选填)等待[交易](#data-structure-transaction)共识，默认为`true`
 
 ##### Returns
 
@@ -1302,7 +1303,7 @@ console.log(signedTxStr)
 #### lemo.tx.send
 
 ```
-lemo.tx.send(signedTxInfo)
+lemo.tx.send(txConfig, waitConfirm)
 ```
 
 发送已签名的交易
@@ -1314,6 +1315,7 @@ lemo.tx.send(signedTxInfo)
     - `r` - (Buffer|string) 交易签名字段
     - `s` - (Buffer|string) 交易签名字段
     - `v` - (Buffer|string) `type`、`version`、交易签名字段、`chainID`这 4 个字段组合而成的数据
+2. `boolean` - (选填)等待[交易](#data-structure-transaction)共识，默认为`true`
 
 ##### Returns
 
