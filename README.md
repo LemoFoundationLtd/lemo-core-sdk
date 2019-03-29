@@ -75,7 +75,7 @@ API | description | asynchronous | available for remote
 [lemo.account.getBalance(addr)](#submodule-account-getBalance) | Get the balance of an account | ✓ | ✓
 [lemo.account.getAccount(addr)](#submodule-account-getAccount) | Get the information of an account | ✓ | ✓
 [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | Get the information of an candidate | ✓ | ✓
-| [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx)                               | Listen  and filter for transaction of block             | ✖    | ✓          |
+[lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx)                               | Listen  and filter for transaction of block             | ✖    | ✓          |
 [lemo.tx.getTx(txHash)](#submodule-tx-getTx) | Get transaction by the its hash | ✓    | ✓
 [lemo.tx.getTxListByAddress(address, index, limit)](#submodule-tx-getTxListByAddress)  | Get paged transactions by account address | ✓ | ✓
 [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx) | Sign and send transaction | ✓ | ✓
