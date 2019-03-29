@@ -75,6 +75,7 @@ API | description | asynchronous | available for remote
 [lemo.account.getBalance(addr)](#submodule-account-getBalance) | Get the balance of an account | ✓ | ✓
 [lemo.account.getAccount(addr)](#submodule-account-getAccount) | Get the information of an account | ✓ | ✓
 [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | Get the information of an candidate | ✓ | ✓
+| [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx)                               | Listen  and filter for transaction of block             | ✓    | ✓          |
 [lemo.tx.getTx(txHash)](#submodule-tx-getTx) | Get transaction by the its hash | ✓    | ✓
 [lemo.tx.getTxListByAddress(address, index, limit)](#submodule-tx-getTxListByAddress)  | Get paged transactions by account address | ✓ | ✓
 [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx) | Sign and send transaction | ✓ | ✓
@@ -923,6 +924,31 @@ lemo.account.getCandidateInfo('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
 
 ---
 
+### tx API
+
+<a name="submodule-tx-watchT"></a>
+#### lemo.tx.watchTx
+```
+lemo.tx.watchTx(filterTxConfig, callback)
+```
+Listen for transaction of block.Returns an array with transaction from block information, and the resulting value is watchId
+
+##### Parameters
+1. `object` - Unsigned transaction like the same parameter in `lemo.tx.sendTx`，Used to filter transaction fields in blocks
+2. `function` - Used to receive transaction list
+
+##### Returns
+`Promise` - Returns the value of a watchID，Used to cancel the monitor
+
+##### Example
+```js
+lemo.tx.watchTx({ to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY'},function(watch){
+        console.log(watch.version)
+    }); //"1"
+```
+
+---
+
 <a name="submodule-tx-getTx"></a>
 
 #### lemo.tx.getTx
@@ -996,8 +1022,6 @@ lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).th
 ```
 
 ---
-
-### tx API
 
 <a name="submodule-tx-sendTx"></a>
 #### lemo.tx.sendTx

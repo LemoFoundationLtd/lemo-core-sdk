@@ -74,6 +74,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.account.getBalance(addr)](#submodule-account-getBalance)             | 获取账户余额                   | ✓    | ✓          |
 | [lemo.account.getAccount(addr)](#submodule-account-getAccount)             | 获取账户信息                   | ✓    | ✓          |
 | [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | 获取候选人信息                 | ✓    | ✓          |
+| [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx)                               | 监听过滤区块的交易            | ✓    | ✓          |
 | [lemo.tx.getTx(txHash)](#submodule-tx-getTx)                               | 根据交易hash获取交易            | ✓    | ✓          |
 | [lemo.tx.getTxListByAddress(address, index, limit)](#submodule-tx-getTxListByAddress)     | 根据账户地址分页拉取交易列表      | ✓    | ✓          |
 | [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx)                 | 签名并发送交易                 | ✓    | ✓          |
@@ -1076,6 +1077,31 @@ lemo.account.getCandidateInfo('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
 
 ---
 
+### tx 模块 API
+
+<a name="submodule-tx-watchTx"></a>
+#### lemo.tx.watchTx
+```
+lemo.tx.watchTx(filterTxConfig, callback)
+```
+监听过滤区块中的交易，返回一个带有此信息的一个数组对象，最后得到的值为watchId的值
+
+##### Parameters
+1. `object` - 签名前的交易信息，用于过滤区块中的交易字段，具体细节参考[`lemo.tx.sendTx`](#submodule-tx-sendTx),
+2. `function` - 每次回调会传入过滤出来的区块交易数组
+
+##### Returns
+`number` - 返回一个watchId的值,可用于取消监听
+
+##### Example
+```js
+lemo.tx.watchTx({ to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY'},function(watch){
+        console.log(watch.version)
+    }); //"1"
+```
+
+---
+
 <a name="submodule-tx-getTx"></a>
 
 #### lemo.tx.getTx
@@ -1149,8 +1175,6 @@ lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).th
 ```
 
 ---
-
-### tx 模块 API
 
 <a name="submodule-tx-sendTx"></a>
 
