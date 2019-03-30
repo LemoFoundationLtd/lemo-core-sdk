@@ -6,7 +6,7 @@ import CandidateTx from '../../lib/tx/candidate_tx'
 import {TX_VERSION, TTTL, TX_DEFAULT_GAS_LIMIT, TX_DEFAULT_GAS_PRICE} from '../../lib/config'
 import errors from '../../lib/errors'
 import {toBuffer} from '../../lib/utils'
-import {testPrivate, txInfos, chainID} from '../datas'
+import {testPrivate, txInfos, chainID, currentBlock} from '../datas'
 import {TxType, MAX_TX_TO_NAME_LENGTH, TX_SIG_BYTE_LENGTH, NODE_ID_LENGTH, MAX_DEPUTY_HOST_LENGTH} from '../../lib/const'
 
 describe('Tx_new', () => {
@@ -151,6 +151,32 @@ describe('Tx_new', () => {
             }
         })
     })
+
+
+    it('Tx_from', () => {
+        const obj = {
+            chainID: '1',
+            version: '1',
+            type: '0',
+            to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
+            toName: 'aa',
+            gasPrice: '3000000000',
+            gasLimit: '2000000',
+            amount: '101',
+            data: '0x0c',
+            expirationTime: '1541649536',
+            message: 'aaa',
+            sig: '0xd9a9f9f41ea020185a6480fe6938d776f0a675d89057c071fc890e09742a4dd96edb9d48c9978c2f12fbde0d0445f2ff5f08a448b91469511c663567d0b015f601',
+            hash: '0x314f1b9c8585e53446983e68fdbf6642e00e5b58cfde9165fdec051cfb21d157',
+        }
+        const tx = new Tx(obj)
+        assert.equal(tx.from, currentBlock.transactions[0].from)
+        assert.equal(typeof tx.from, 'string')
+        assert.throws(() => {
+            tx.from = 'sdafaca'
+            console.log(tx.from)
+        }, 'Change of account address is not allowed')
+    });
 })
 
 describe('Tx_serialize', () => {
