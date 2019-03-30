@@ -173,7 +173,7 @@ describe('Tx_new', () => {
         assert.equal(tx.from, currentBlock.transactions[0].from)
         assert.equal(typeof tx.from, 'string')
         assert.throws(() => {
-            tx.from = 'sdafaca'
+            tx.from = 'sdafacaggg'
             console.log(tx.from)
         }, 'Change of account address is not allowed')
     });
