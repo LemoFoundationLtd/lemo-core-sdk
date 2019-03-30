@@ -1214,7 +1214,7 @@ lemo.tx.stopWatchTx(subscribeId)
 Stop watching and filtering transactions of block
 
 ##### Parameters
-1. `number` - Get the subscribeId, used to stop watching
+1. `number` - Get the subscribeId, it used to stop watching
 
 ##### Returns
 None
