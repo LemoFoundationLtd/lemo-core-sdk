@@ -157,11 +157,10 @@ describe('Tx_new', () => {
         const obj = {
             chainID: '1',
             expirationTime: '1541649536',
-            sig: '0xd9a9f9f41ea020185a6480fe6938d776f0a675d89057c071fc890e09742a4dd96edb9d48c9978c2f12fbde0d0445f2ff5f08a448b91469511c663567d0b015f601',
-            hash: '0x314f1b9c8585e53446983e68fdbf6642e00e5b58cfde9165fdec051cfb21d157',
+            sig: '0xd9a9f9f41ea020185a6480fe6938d776f0a675d89057c078c2f12fbde0d0445f2f15f601',
         }
         const tx = new Tx(obj)
-        assert.equal(tx.from, 'Lemo83KSJQYTFYD5Q4CKNZNTAK3ND9DG4NFK9HJ6')
+        assert.equal(tx.from, 'Lemo83N49K4KQS2N6AK8CG4TZZ3TQBZ769SRH6WD')
         assert.equal(typeof tx.from, 'string')
         assert.throws(() => {
             tx.from = 'sdafacaggg'
