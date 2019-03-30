@@ -61,6 +61,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.getDeputyNodeList()](#submodule-chain-getDeputyNodeList)             | 获取当前所有共识节点的地址列表    | ✓    | ✓          |
 | [lemo.getNodeVersion()](#submodule-chain-getNodeVersion)                   | 节点版本号                     | ✓    | ✓          |
 | [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock)         | 监听新的区块                   | ✖    | ✓          |
+| [lemo.stopWatchBlock(subscribeId)](#submodule-chain-stopWatchBlock)            | 停止监听区块                   | ✖    | ✓          |
 | [lemo.net.connect(nodeAddr)](#submodule-net-connect)                       | 连接节点                       | ✓    | ✖          |
 | [lemo.net.disconnect(nodeAddr)](#submodule-net-disconnect)                 | 断开连接                       | ✓    | ✖          |
 | [lemo.net.getConnections()](#submodule-net-getConnections)                 | 获取已建立的连接信息           | ✓    | ✖          |
@@ -70,7 +71,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.mine.stop()](#submodule-mine-stop)                                   | 停止挖矿                       | ✓    | ✖          |
 | [lemo.mine.getMining()](#submodule-mine-getMining)                         | 是否正在挖矿                   | ✓    | ✓          |
 | [lemo.mine.getMiner()](#submodule-mine-getMiner)                           | 获取当前共识节点的记账收益地址   | ✓    | ✓          |
-| [lemo.account.newKeyPair()](#submodule-account-newKeyPair)                 | 创新账户公私钥                 | ✓    | ✖          |
+| [lemo.account.newKeyPair()](#submodule-account-newKeyPair)                 | 创新账户公私钥                 | ✓    | ✓          |
 | [lemo.account.getBalance(addr)](#submodule-account-getBalance)             | 获取账户余额                   | ✓    | ✓          |
 | [lemo.account.getAccount(addr)](#submodule-account-getAccount)             | 获取账户信息                   | ✓    | ✓          |
 | [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | 获取候选人信息                 | ✓    | ✓          |
@@ -81,9 +82,11 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.tx.signVote(privateKey, txInfo)](#submodule-tx-signVote)             | 签名投票的特殊交易              | ✖    | ✓          |
 | [lemo.tx.signCandidate(privateKey, txInfo, candidateInfo)](#submodule-tx-signCandidate)   | 签名注册/编辑候选节点的特殊交易   | ✖    | ✓          |
 | [lemo.tx.send(signedTxInfo)](#submodule-tx-send)                           | 发送已签名的交易               | ✓    | ✓          |
+| [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx)         | 监听过滤区块的交易            | ✖    | ✓          |
+| [lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx)                | 停止指定交易            | ✖    | ✓          |
 | [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx)           | 监听新的 pending 交易          | ✖    | ✖          |
-| [lemo.stopWatch(watchId)](#submodule-global-stopWatch)                            | 停止指定的轮询或所有轮询       | ✖    | ✓          |
-| [lemo.isWatching()](#submodule-global-isWatching)                                 | 是否正在轮询                   | ✖    | ✓          |
+| [lemo.stopWatch(watchId)](#submodule-global-stopWatch)                     | 停止指定的轮询或所有轮询       | ✖    | ✓          |
+| [lemo.isWatching()](#submodule-global-isWatching)                          | 是否正在轮询                   | ✖    | ✓          |
 | [lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress)             | LemoChain地址校验             | ✖    | ✓          |
 
 | 常量                                                                        | 功能                           |
@@ -706,6 +709,35 @@ lemo.watchBlock(true, function(block) {
 
 ---
 
+<a name="submodule-chain-stopWatchBlock"></a>
+
+#### lemo.stopWatchBlock
+
+```
+lemo.stopWatchBlock(subscribeId)
+```
+
+停止监听区块
+
+##### Parameters
+
+1. `number` - 获取subscribeId，用于停止监听
+
+##### Returns
+
+无
+
+##### Example
+
+```js
+const watchBlockId = lemo.watchBlock(false, function(newBlock) {
+    console.log(newBlock)
+})
+lemo.stopWatchBlock(watchBlockId)
+```
+
+---
+
 ### net 模块 API
 
 <a name="submodule-net-connect"></a>
@@ -1046,7 +1078,7 @@ lemo.account.getAccount(address)
 ##### Example
 
 ```js
-lemo.account.getBalance('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34').then(function(account) {
+lemo.account.getAccount('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34').then(function(account) {
     console.log(account.balance.toMoney()) // "1600000000 LEMO"
 })
 ```
@@ -1075,6 +1107,8 @@ lemo.account.getCandidateInfo('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
 ```
 
 ---
+
+### tx 模块 API
 
 <a name="submodule-tx-getTx"></a>
 
@@ -1141,23 +1175,21 @@ lemo.tx.getTxListByAddress(address, index, limit)
 ##### Example
 
 ```js
+lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).then(function(result) {
     console.log(result.total) // 1
     console.log(result.txList[0].minedTime) // 1541649535
-lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).then(function(result) {
     console.log(JSON.stringify(result.txList)) // [{"to":"Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY","toName":"","gasPrice":"3000000000","gasLimit":2000000,"amount":"1.0000000000000000000000001e+25","data":"0x","expirationTime":1541649535,"message":"","v":"0x020001","r":"0x1aebf7c6141dc54b3f181e56d287785f2ce501c70466016f96d8b7171d80555c","s":"0x584179c208ad9bc9488b969b9d06635dda05b932b1966d43b6255ca63288903c","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","minedTime":1541649535}]
 })
 ```
 
 ---
 
-### tx 模块 API
-
 <a name="submodule-tx-sendTx"></a>
 
 #### lemo.tx.sendTx
 
 ```
-lemo.tx.sendTx(privateKey, txInfo)
+lemo.tx.sendTx(privateKey, txconfig, waitConfirm)
 ```
 
 签名并发送交易
@@ -1176,6 +1208,7 @@ lemo.tx.sendTx(privateKey, txInfo)
     - `data` - (Buffer|string) (选填) 交易附带的数据，可用于调用智能合约，默认为空
     - `expirationTime` - (number|string) (选填)交易过期时间戳，单位为秒，默认值为半小时后
     - `message` - (string) (选填)交易附带的文本消息，默认为空
+3. `boolean` - (选填)等待[交易](#data-structure-transaction)共识，默认为`true`
 
 ##### Returns
 
@@ -1302,7 +1335,7 @@ console.log(signedTxStr)
 #### lemo.tx.send
 
 ```
-lemo.tx.send(signedTxInfo)
+lemo.tx.send(txConfig, waitConfirm)
 ```
 
 发送已签名的交易
@@ -1314,6 +1347,7 @@ lemo.tx.send(signedTxInfo)
     - `r` - (Buffer|string) 交易签名字段
     - `s` - (Buffer|string) 交易签名字段
     - `v` - (Buffer|string) `type`、`version`、交易签名字段、`chainID`这 4 个字段组合而成的数据
+2. `boolean` - (选填)等待[交易](#data-structure-transaction)共识，默认为`true`
 
 ##### Returns
 
@@ -1331,6 +1365,56 @@ lemo.tx
     .then(function(txHash) {
         console.log(txHash)
     })
+```
+
+---
+
+<a name="submodule-tx-watchTx"></a>
+#### lemo.tx.watchTx
+```
+lemo.tx.watchTx(filterTxConfig, callback)
+```
+监听过滤区块中的交易，返回一个带有此信息的一个数组对象，得到subscribeId
+
+##### Parameters
+1. `object` - 交易筛选条件，可输入多个属性
+2. `function` - 每次回调会传入过滤出来的交易数组
+
+##### Returns
+`number` - 返回subscribeId的值,可用于取消监听
+
+##### Example
+```js
+lemo.tx.watchTx({to:'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY'}, function(transactions) {
+    console.log(transactions[0].version)
+}); //"1"
+
+lemo.tx.watchTx({to:'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY', from:'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'}, function(transactions) {
+    console.log(transactions[0].version)
+}); //"1"
+```
+
+---
+
+<a name="submodule-tx-stopWatchTx"></a>
+#### lemo.tx.stopWatchTx
+```
+lemo.tx.stopWatchTx(subscribeId)
+```
+停止监听过滤区块中的交易
+
+##### Parameters
+1. `number` - 得到subscribeId，用于取消监听
+
+##### Returns
+无
+
+##### Example
+```js
+const watchTxId = lemo.tx.watchTx({to:'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY'}, function(transaction) {
+    console.log(transaction[0].version)
+}); 
+lemo.tx.stopWatchTx(watchTxId)
 ```
 
 ---
