@@ -62,6 +62,7 @@ API | description | asynchronous | available for remote
 [lemo.getNodeVersion()](#submodule-chain-getNodeVersion) | Get the version of LemoChain node | ✓ | ✓
 [lemo.getSdkVersion()](#submodule-chain-getSdkVersion) | Get the version of lemo-client | ✖ | ✓
 [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock) | Listen for new block | ✖ | ✓
+[lemo.stopWatchBlock(subscribeId)](#submodule-chain-watchBlock) | Stop listening block | ✖ | ✓
 [lemo.net.connect(nodeAddr)](#submodule-net-connect) | Connect to a LemoChain node | ✓ | ✖
 [lemo.net.disconnect(nodeAddr)](#submodule-net-disconnect) | Disconnect to a LemoChain node | ✓ | ✖
 [lemo.net.getConnections()](#submodule-net-getConnections) | Get the information of connections | ✓ | ✖
@@ -82,7 +83,8 @@ API | description | asynchronous | available for remote
 [lemo.tx.signVote(privateKey, txInfo)](#submodule-tx-signVote) | Sign a special transaction for vote | ✖ | ✓ 
 [lemo.tx.signCandidate(privateKey, txInfo, candidateInfo)](#submodule-tx-signCandidate) | Sign a special transaction for register/edit candidate | ✖ | ✓ 
 [lemo.tx.send(signedTxInfo)](#submodule-tx-send) | Send a signed transaction | ✓ | ✓
-[lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx) | watch and filter for transaction of block | ✖ | ✓ |
+[lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx) | listen and filter for transaction of block | ✖ | ✓ |
+[lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx) | Stop listening transaction | ✖ | ✓ |
 [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx) | Listening for new transactions | ✖ | ✖
 [lemo.stopWatch(watchId)](#submodule-global-stopWatch) | Stop listening | ✖ | ✓
 [lemo.isWatching()](#submodule-global-isWatching) | True if is listening | ✖ | ✓
@@ -618,6 +620,29 @@ lemo.watchBlock(true, function(block) {
     const d = new Date(1000 * parseInt(block.header.timestamp, 10))
     console.log(d.toUTCString()); // "Thu, 30 Aug 2018 12:00:00 GMT"
 })
+```
+
+---
+
+<a name="submodule-stopWatchBlock"></a>
+#### lemo.stopWatchBlock 
+```
+lemo.stopWatchBlock(subscribeId) 
+```
+Stop watching and filtering transactions of block
+
+##### Parameters
+1. `number` - Get the subscribeId, used to stop watching
+
+##### Returns
+None
+
+##### Example
+```js
+const watchBlockId = lemo.watchBlock(false, function(newBlock) {
+    console.log(newBlock)
+})
+lemo.stopWatchBlock(watchBlockId)
 ```
 
 ---
@@ -1159,20 +1184,47 @@ lemo.tx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52
 ```
 lemo.tx.watchTx(filterTxConfig, callback)
 ```
-Listen for transaction of block. Returns an array with transaction from block body, and the value of the ID of each call to watchBlock
+Listen for transactions of block. Returns an array with transactions from block body, and the value of the subscribeId
 
 ##### Parameters
-1. `object` - Ordinary object, Used to filter transaction fields in blocks
+1. `object` - This is the condition used to filter the transactions, can enter multiple attributes
 2. `function` - Used to receive transaction list
 
 ##### Returns
-`Promise` - Returns the value of the ID of each call to watchBlock, used to cancel the monitor
+`Promise` - Returns the value of the subscribeId, used to stop watching
 
 ##### Example
 ```js
 lemo.tx.watchTx({to:'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY'}, function(transaction) {
     console.log(transaction[0].version)
 }); //"1"
+
+lemo.tx.watchTx({to:'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY', from:'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'}, function(transactions) {
+    console.log(transactions[0].version)
+}); //"1"
+```
+
+---
+
+<a name="submodule-tx-stopWatchTx"></a>
+#### lemo.tx.stopWatchTx
+```
+lemo.tx.stopWatchTx(subscribeId)
+```
+Stop watching and filtering transactions of block
+
+##### Parameters
+1. `number` - Get the subscribeId, used to stop watching
+
+##### Returns
+None
+
+##### Example
+```js
+const watchTxId = lemo.tx.watchTx({to:'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY'}, function(transaction) {
+    console.log(transaction[0].version)
+}); 
+lemo.tx.stopWatchTx(watchTxId)
 ```
 
 ---
