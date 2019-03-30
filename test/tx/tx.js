@@ -6,8 +6,9 @@ import CandidateTx from '../../lib/tx/candidate_tx'
 import {TX_VERSION, TTTL, TX_DEFAULT_GAS_LIMIT, TX_DEFAULT_GAS_PRICE} from '../../lib/config'
 import errors from '../../lib/errors'
 import {toBuffer} from '../../lib/utils'
-import {testPrivate, txInfos, chainID} from '../datas'
+import {testPrivate, txInfos, chainID, testAddr} from '../datas'
 import {TxType, MAX_TX_TO_NAME_LENGTH, TX_SIG_BYTE_LENGTH, NODE_ID_LENGTH, MAX_DEPUTY_HOST_LENGTH} from '../../lib/const'
+import Signer from '../../lib/tx/signer';
 
 describe('Tx_new', () => {
     it('empty config', () => {
@@ -157,10 +158,10 @@ describe('Tx_new', () => {
         const obj = {
             chainID: '1',
             expirationTime: '1541649536',
-            sig: '0xd9a9f9f41ea020185a6480fe6938d776f0a675d89057c078c2f12fbde0d0445f2f15f601',
         }
         const tx = new Tx(obj)
-        assert.equal(tx.from, 'Lemo83N49K4KQS2N6AK8CG4TZZ3TQBZ769SRH6WD')
+        tx.sig = new Signer().sign(tx, testPrivate)
+        assert.equal(tx.from, testAddr)
         assert.equal(typeof tx.from, 'string')
         assert.throws(() => {
             tx.from = 'sdafacaggg'
