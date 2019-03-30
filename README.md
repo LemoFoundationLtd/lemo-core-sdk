@@ -62,6 +62,7 @@ API | description | asynchronous | available for remote
 [lemo.getNodeVersion()](#submodule-chain-getNodeVersion) | Get the version of LemoChain node | ✓ | ✓
 [lemo.getSdkVersion()](#submodule-chain-getSdkVersion) | Get the version of lemo-client | ✖ | ✓
 [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock) | Listen for new block | ✖ | ✓
+[lemo.stopWatchBlock(subscribeId)](#submodule-chain-stopWatchBlock) | Stop listening block | ✖ | ✓
 [lemo.net.connect(nodeAddr)](#submodule-net-connect) | Connect to a LemoChain node | ✓ | ✖
 [lemo.net.disconnect(nodeAddr)](#submodule-net-disconnect) | Disconnect to a LemoChain node | ✓ | ✖
 [lemo.net.getConnections()](#submodule-net-getConnections) | Get the information of connections | ✓ | ✖
@@ -71,7 +72,7 @@ API | description | asynchronous | available for remote
 [lemo.mine.stop()](#submodule-mine-stop) | Stop mining | ✓ | ✖
 [lemo.mine.getMining()](#submodule-mine-getMining) | True if current LemoChain node is mining | ✓ | ✓
 [lemo.mine.getMiner()](#submodule-mine-getMiner) | Get the mining benefit account address of current LemoChain node | ✓ | ✓
-[lemo.account.newKeyPair()](#submodule-account-newKeyPair) | Create a private key and account address | ✓ | ✖
+[lemo.account.newKeyPair()](#submodule-account-newKeyPair) | Create a private key and account address | ✓ | ✓
 [lemo.account.getBalance(addr)](#submodule-account-getBalance) | Get the balance of an account | ✓ | ✓
 [lemo.account.getAccount(addr)](#submodule-account-getAccount) | Get the information of an account | ✓ | ✓
 [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | Get the information of an candidate | ✓ | ✓
@@ -82,6 +83,8 @@ API | description | asynchronous | available for remote
 [lemo.tx.signVote(privateKey, txInfo)](#submodule-tx-signVote) | Sign a special transaction for vote | ✖ | ✓ 
 [lemo.tx.signCandidate(privateKey, txInfo, candidateInfo)](#submodule-tx-signCandidate) | Sign a special transaction for register/edit candidate | ✖ | ✓ 
 [lemo.tx.send(signedTxInfo)](#submodule-tx-send) | Send a signed transaction | ✓ | ✓
+[lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx) | listen and filter for transaction of block | ✖ | ✓ |
+[lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx) | Stop listening transaction | ✖ | ✓ |
 [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx) | Listening for new transactions | ✖ | ✖
 [lemo.stopWatch(watchId)](#submodule-global-stopWatch) | Stop listening | ✖ | ✓
 [lemo.isWatching()](#submodule-global-isWatching) | True if is listening | ✖ | ✓
@@ -621,6 +624,29 @@ lemo.watchBlock(true, function(block) {
 
 ---
 
+<a name="submodule-chain-stopWatchBlock"></a>
+#### lemo.stopWatchBlock 
+```
+lemo.stopWatchBlock(subscribeId) 
+```
+Stop watching and filtering transactions of block
+
+##### Parameters
+1. `number` - Get the subscribeId, it is used to stop watching
+
+##### Returns
+None
+
+##### Example
+```js
+const watchBlockId = lemo.watchBlock(false, function(newBlock) {
+    console.log(newBlock)
+})
+lemo.stopWatchBlock(watchBlockId)
+```
+
+---
+
 ### net API
 
 <a name="submodule-net-connect"></a>
@@ -892,7 +918,7 @@ Get the information of an account
 
 ##### Example
 ```js
-lemo.account.getBalance('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
+lemo.account.getAccount('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
     .then(function(account) {
         console.log(account.balance.toMoney()); // "1600000000 LEMO"
     })
@@ -920,6 +946,10 @@ lemo.account.getCandidateInfo('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
         console.log(candidate.votes); // "1599999000"
     })
 ```
+
+---
+
+### tx API
 
 ---
 
@@ -997,12 +1027,10 @@ lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).th
 
 ---
 
-### tx API
-
 <a name="submodule-tx-sendTx"></a>
 #### lemo.tx.sendTx
 ```
-lemo.tx.sendTx(privateKey, txInfo)
+lemo.tx.sendTx(privateKey, txconfig, waitConfirm)
 ```
 Sign and send transaction
 
@@ -1019,6 +1047,7 @@ Sign and send transaction
     - `data` - (Buffer|string) (optional) The extra data. It usually be using for calling smart contract
     - `expirationTime` - (number|string) (optional) The expiration time of transaction in seconds. Default is half hour from now
     - `message` - (string) (optional) Extra text message from sender
+3. `boolean` - (optional) Waiting for [transaction](#data-structure-transaction) consensus.default value is `true`
 
 ##### Returns
 `Promise` - Call `then` method to get transaction hash
@@ -1123,7 +1152,7 @@ console.log(signedTxStr)
 <a name="submodule-tx-send"></a>
 #### lemo.tx.send
 ```
-lemo.tx.send(signedTxInfo)
+lemo.tx.send(txConfig, waitConfirm)
 ```
 Send a signed transaction
 
@@ -1132,6 +1161,7 @@ Send a signed transaction
     - `r` - (Buffer|string) Signature data
     - `s` - (Buffer|string) Signature data
     - `v` - (Buffer|string) This field is combined from transaction `type`, `version`(current is 0), `signature recovery data`, `chainID`
+2. `boolean` - (optional) Waiting for [transaction](#data-structure-transaction) consensus.default value is `true`
 
 ##### Returns
 `Promise` - Call `then` method to get transaction hash
@@ -1145,6 +1175,56 @@ lemo.tx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52
     }).then(function(txHash) {
         console.log(txHash);
     })
+```
+
+---
+
+<a name="submodule-tx-watchTx"></a>
+#### lemo.tx.watchTx
+```
+lemo.tx.watchTx(filterTxConfig, callback)
+```
+Listen for transactions of block. Returns an array with transactions from block body, and the value of the subscribeId
+
+##### Parameters
+1. `object` - This is the condition used to filter the transactions, can enter multiple attributes
+2. `function` - Used to receive transaction list
+
+##### Returns
+`Promise` - Returns the value of the subscribeId, it is used to stop watching
+
+##### Example
+```js
+lemo.tx.watchTx({to:'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY'}, function(transaction) {
+    console.log(transaction[0].version)
+}); //"1"
+
+lemo.tx.watchTx({to:'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY', from:'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'}, function(transactions) {
+    console.log(transactions[0].version)
+}); //"1"
+```
+
+---
+
+<a name="submodule-tx-stopWatchTx"></a>
+#### lemo.tx.stopWatchTx
+```
+lemo.tx.stopWatchTx(subscribeId)
+```
+Stop watching and filtering transactions of block
+
+##### Parameters
+1. `number` - Get the subscribeId, it is used to stop watching
+
+##### Returns
+None
+
+##### Example
+```js
+const watchTxId = lemo.tx.watchTx({to:'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY'}, function(transaction) {
+    console.log(transaction[0].version)
+}); 
+lemo.tx.stopWatchTx(watchTxId)
 ```
 
 ---
