@@ -62,7 +62,7 @@ API | description | asynchronous | available for remote
 [lemo.getNodeVersion()](#submodule-chain-getNodeVersion) | Get the version of LemoChain node | ✓ | ✓
 [lemo.getSdkVersion()](#submodule-chain-getSdkVersion) | Get the version of lemo-client | ✖ | ✓
 [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock) | Listen for new block | ✖ | ✓
-[lemo.stopWatchBlock(subscribeId)](#submodule-chain-watchBlock) | Stop listening block | ✖ | ✓
+[lemo.stopWatchBlock(subscribeId)](#submodule-chain-stopWatchBlock) | Stop listening block | ✖ | ✓
 [lemo.net.connect(nodeAddr)](#submodule-net-connect) | Connect to a LemoChain node | ✓ | ✖
 [lemo.net.disconnect(nodeAddr)](#submodule-net-disconnect) | Disconnect to a LemoChain node | ✓ | ✖
 [lemo.net.getConnections()](#submodule-net-getConnections) | Get the information of connections | ✓ | ✖
@@ -624,7 +624,7 @@ lemo.watchBlock(true, function(block) {
 
 ---
 
-<a name="submodule-stopWatchBlock"></a>
+<a name="submodule-chain-stopWatchBlock"></a>
 #### lemo.stopWatchBlock 
 ```
 lemo.stopWatchBlock(subscribeId) 

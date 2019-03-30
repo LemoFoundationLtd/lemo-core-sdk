@@ -61,7 +61,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.getDeputyNodeList()](#submodule-chain-getDeputyNodeList)             | 获取当前所有共识节点的地址列表    | ✓    | ✓          |
 | [lemo.getNodeVersion()](#submodule-chain-getNodeVersion)                   | 节点版本号                     | ✓    | ✓          |
 | [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock)         | 监听新的区块                   | ✖    | ✓          |
-| [lemo.stopWatchBlock(subscribeId)](#submodule-chain-watchBlock)            | 停止监听区块                   | ✖    | ✓          |
+| [lemo.stopWatchBlock(subscribeId)](#submodule-chain-stopWatchBlock)            | 停止监听区块                   | ✖    | ✓          |
 | [lemo.net.connect(nodeAddr)](#submodule-net-connect)                       | 连接节点                       | ✓    | ✖          |
 | [lemo.net.disconnect(nodeAddr)](#submodule-net-disconnect)                 | 断开连接                       | ✓    | ✖          |
 | [lemo.net.getConnections()](#submodule-net-getConnections)                 | 获取已建立的连接信息           | ✓    | ✖          |
@@ -709,7 +709,7 @@ lemo.watchBlock(true, function(block) {
 
 ---
 
-<a name="submodule-stopWatchBlock"></a>
+<a name="submodule-chain-stopWatchBlock"></a>
 
 #### lemo.stopWatchBlock
 
