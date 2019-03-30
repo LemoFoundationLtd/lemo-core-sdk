@@ -156,26 +156,17 @@ describe('Tx_new', () => {
     it('Tx_from', () => {
         const obj = {
             chainID: '1',
-            version: '1',
-            type: '0',
-            to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
-            toName: 'aa',
-            gasPrice: '3000000000',
-            gasLimit: '2000000',
-            amount: '101',
-            data: '0x0c',
             expirationTime: '1541649536',
-            message: 'aaa',
             sig: '0xd9a9f9f41ea020185a6480fe6938d776f0a675d89057c071fc890e09742a4dd96edb9d48c9978c2f12fbde0d0445f2ff5f08a448b91469511c663567d0b015f601',
             hash: '0x314f1b9c8585e53446983e68fdbf6642e00e5b58cfde9165fdec051cfb21d157',
         }
         const tx = new Tx(obj)
-        assert.equal(tx.from, currentBlock.transactions[0].from)
+        assert.equal(tx.from, 'Lemo83KSJQYTFYD5Q4CKNZNTAK3ND9DG4NFK9HJ6')
         assert.equal(typeof tx.from, 'string')
         assert.throws(() => {
             tx.from = 'sdafacaggg'
             console.log(tx.from)
-        }, 'Change of account address is not allowed')
+        }, errors.TXCanNotChangeFrom())
     });
 })
 
