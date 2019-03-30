@@ -6,7 +6,7 @@ import CandidateTx from '../../lib/tx/candidate_tx'
 import {TX_VERSION, TTTL, TX_DEFAULT_GAS_LIMIT, TX_DEFAULT_GAS_PRICE} from '../../lib/config'
 import errors from '../../lib/errors'
 import {toBuffer} from '../../lib/utils'
-import {testPrivate, txInfos, chainID, currentBlock} from '../datas'
+import {testPrivate, txInfos, chainID} from '../datas'
 import {TxType, MAX_TX_TO_NAME_LENGTH, TX_SIG_BYTE_LENGTH, NODE_ID_LENGTH, MAX_DEPUTY_HOST_LENGTH} from '../../lib/const'
 
 describe('Tx_new', () => {
