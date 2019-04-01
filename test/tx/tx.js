@@ -1,14 +1,14 @@
 import {assert} from 'chai'
 import {Buffer} from 'safe-buffer'
 import Tx from '../../lib/tx/tx'
-import VoteTx from '../../lib/tx/vote_tx'
-import CandidateTx from '../../lib/tx/candidate_tx'
+import VoteTx from '../../lib/tx/special_tx/vote_tx'
+import CandidateTx from '../../lib/tx/special_tx/candidate_tx'
 import {TX_VERSION, TTTL, TX_DEFAULT_GAS_LIMIT, TX_DEFAULT_GAS_PRICE} from '../../lib/config'
 import errors from '../../lib/errors'
 import {toBuffer} from '../../lib/utils'
 import {testPrivate, txInfos, chainID, testAddr} from '../datas'
 import {TxType, MAX_TX_TO_NAME_LENGTH, TX_SIG_BYTE_LENGTH, NODE_ID_LENGTH, MAX_DEPUTY_HOST_LENGTH} from '../../lib/const'
-import Signer from '../../lib/tx/signer';
+import Signer from '../../lib/tx/signer'
 
 describe('Tx_new', () => {
     it('empty config', () => {
@@ -127,12 +127,30 @@ describe('Tx_new', () => {
         {field: 'sig', configData: '-1', error: errors.TXMustBeNumber('sig', '-1')},
         {
             field: 'sig',
-            configData: '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
-            error: errors.TXInvalidMaxBytes('sig', '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001', TX_SIG_BYTE_LENGTH, 66),
-        }, {
+            configData:
+                '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+            error: errors.TXInvalidMaxBytes(
+                'sig',
+                '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+                TX_SIG_BYTE_LENGTH,
+                66,
+            ),
+        },
+        {
             field: 'sig',
-            configData: Buffer.from('100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001', 'hex'),
-            error: errors.TXInvalidMaxBytes('sig', Buffer.from('100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001', 'hex'), TX_SIG_BYTE_LENGTH, 66),
+            configData: Buffer.from(
+                '100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+                'hex',
+            ),
+            error: errors.TXInvalidMaxBytes(
+                'sig',
+                Buffer.from(
+                    '100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+                    'hex',
+                ),
+                TX_SIG_BYTE_LENGTH,
+                66,
+            ),
         },
     ]
     tests.forEach(test => {
@@ -153,7 +171,6 @@ describe('Tx_new', () => {
         })
     })
 
-
     it('Tx_from', () => {
         const obj = {
             chainID: '1',
@@ -167,7 +184,7 @@ describe('Tx_new', () => {
             tx.from = 'sdafacaggg'
             console.log(tx.from)
         }, errors.TXCanNotChangeFrom())
-    });
+    })
 })
 
 describe('Tx_serialize', () => {
