@@ -15,25 +15,20 @@ import '../mock'
 import {DEFAULT_POLL_DURATION} from '../../lib/config'
 
 
-describe('module_chain_getCurrentBlock', () => {
+describe('module_chain_getNewestBlock', () => {
     it('latestStableBlock with body', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.getCurrentBlock(true, true)
+        const result = await lemo.getNewestBlock(true)
         assert.deepEqual(result, formattedCurrentBlock)
     })
     it('latestStableBlock without body', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.getCurrentBlock(true, false)
+        const result = await lemo.getNewestBlock(false)
         assert.deepEqual(result, {header: formattedCurrentBlock.header})
     })
-    it('formattedCurrentBlock with body', async () => {
+    it('Parameter default', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.getCurrentBlock(false, true)
-        assert.deepEqual(result, formattedCurrentBlock)
-    })
-    it('formattedCurrentBlock without body', async () => {
-        const lemo = new LemoClient()
-        const result = await lemo.getCurrentBlock(false, false)
+        const result = await lemo.getNewestBlock()
         assert.deepEqual(result, {header: formattedCurrentBlock.header})
     })
 })
@@ -71,15 +66,10 @@ describe('module_chain_getBlock', () => {
     })
 })
 
-describe('module_chain_getCurrentHeight', () => {
-    it('latestStableHeight', async () => {
+describe('module_chain_getNewestHeight', () => {
+    it('default for getNewestHeight', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.getCurrentHeight(true)
-        assert.strictEqual(result, currentHeight)
-    })
-    it('currentHeight', async () => {
-        const lemo = new LemoClient()
-        const result = await lemo.getCurrentHeight(false)
+        const result = await lemo.getNewestHeight()
         assert.strictEqual(result, currentHeight)
     })
 })
