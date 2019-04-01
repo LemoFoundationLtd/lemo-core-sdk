@@ -53,7 +53,8 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.getBlock(heightOrHash, withBody)](#submodule-chain-getBlock)         | 根据高度或 hash 获取区块       | ✓    | ✓          |
 | [lemo.getNewestBlock(withBody)](#submodule-chain-getNewestBlock)          | 获取最新的块                   | ✓    | ✓          |
 | [lemo.getNewestUnstableBlock()](#submodule-chain-getNewestUnstableBlock)          | 获取最新的不稳定块               | ✓    | ✖          |
-| [lemo.getCurrentHeight(stable)](#submodule-chain-getCurrentHeight)         | 获取当前高度                   | ✓    | ✓          |
+| [lemo.getNewestHeight()](#submodule-chain-getNewestHeight)         | 获取最新高度                   | ✓    | ✓          |
+| [lemo.getNewestUnstableHeight()](#submodule-chain-getNewestUnstableHeight)         | 获取最新不稳定块高度                   | ✓    | ✖          |
 | [lemo.getGenesis()](#submodule-chain-getGenesis)                           | 获取创世区块                   | ✓    | ✓          |
 | [lemo.getChainID()](#submodule-chain-getChainID)                           | 获取当前链 ID                  | ✓    | ✓          |
 | [lemo.getGasPriceAdvice()](#submodule-chain-getGasPriceAdvice)             | 获取建议 gas 价格              | ✓    | ✓          |
@@ -492,19 +493,19 @@ lemo.getNewestUnstableBlock().then(function(block) {
 
 ---
 
-<a name="submodule-chain-getCurrentHeight"></a>
+<a name="submodule-chain-getNewestHeight"></a>
 
-#### lemo.getCurrentHeight
+#### lemo.getNewestHeight
 
 ```
-lemo.getCurrentHeight([stable])
+lemo.getNewestHeight([stable])
 ```
 
-获取当前高度
+获取最新高度
 
 ##### Parameters
 
-1. `boolean` - (可选) 是否只获取稳定块（经过多数共识节点签名确认的区块）。默认为`true`
+无
 
 ##### Returns
 
@@ -513,7 +514,35 @@ lemo.getCurrentHeight([stable])
 ##### Example
 
 ```js
-lemo.getCurrentHeight(true).then(function(height) {
+lemo.getNewestHeight().then(function(height) {
+    console.log(height) // "100"
+})
+```
+
+---
+
+<a name="submodule-chain-getNewestUnstableHeight"></a>
+
+#### lemo.getNewestUnstableHeight
+
+```
+lemo.getNewestUnstableHeight()
+```
+
+获取最新不稳定块高度
+
+##### Parameters
+
+无
+
+##### Returns
+
+`Promise` - 通过`then`可以获取到当前区块高度
+
+##### Example
+
+```js
+lemo.getNewestUnstableHeight().then(function(height) {
     console.log(height) // "100"
 })
 ```

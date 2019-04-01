@@ -66,15 +66,10 @@ describe('module_chain_getBlock', () => {
     })
 })
 
-describe('module_chain_getCurrentHeight', () => {
-    it('latestStableHeight', async () => {
+describe('module_chain_getNewestHeight', () => {
+    it('default for getNewestHeight', async () => {
         const lemo = new LemoClient()
-        const result = await lemo.getCurrentHeight(true)
-        assert.strictEqual(result, currentHeight)
-    })
-    it('currentHeight', async () => {
-        const lemo = new LemoClient()
-        const result = await lemo.getCurrentHeight(false)
+        const result = await lemo.getNewestHeight()
         assert.strictEqual(result, currentHeight)
     })
 })

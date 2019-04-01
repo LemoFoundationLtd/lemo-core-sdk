@@ -53,7 +53,8 @@ API | description | asynchronous | available for remote
 [lemo.getBlock(heightOrHash, withBody)](#submodule-chain-getBlock) | Get block by height or block hash | ✓ | ✓
 [lemo.getNewestBlock(withBody)](#submodule-chain-getNewestBlock) | Get the newest block | ✓ | ✓
 [lemo.getNewestUnstableBlock()](#submodule-chain-getNewestUnstableBlock) | Get the newest unstable block | ✓ | ✖
-[lemo.getCurrentHeight(stable)](#submodule-chain-getCurrentHeight) | Get the newest block height | ✓ | ✓
+[lemo.getNewestHeight()](#submodule-chain-getNewestHeight) | Get the newest block height | ✓ | ✓
+[lemo.getNewestUnstableHeight()](#submodule-chain-getNewestUnstableHeight) | Get the newest unstable block height | ✓ | ✖
 [lemo.getGenesis()](#submodule-chain-getGenesis) | Get the first block | ✓ | ✓
 [lemo.getChainID()](#submodule-chain-getChainID) | Get the chain ID | ✓ | ✓
 [lemo.getGasPriceAdvice()](#submodule-chain-getGasPriceAdvice) | Get transaction gas price advice | ✓ | ✓
@@ -437,22 +438,44 @@ lemo.getNewestUnstableBlock().then(function(block) {
 
 ---
 
-<a name="submodule-chain-getCurrentHeight"></a>
-#### lemo.getCurrentHeight
+<a name="submodule-chain-getNewestHeight"></a>
+#### lemo.getNewestHeight
 ```
-lemo.getCurrentHeight([stable])
+lemo.getNewestHeight()
 ```
 Get the newest block height
 
 ##### Parameters
-1. `boolean` - (optional) If it is true, only stable blocks will be retrived which confirmed by most deputy nodes. Default value is `true`
+None
 
 ##### Returns
 `Promise` - Call `then` method to get height string
 
 ##### Example
 ```js
-lemo.getCurrentHeight(true).then(function(height) {
+lemo.getNewestHeight().then(function(height) {
+    console.log(height); // "100"
+})
+```
+
+---
+
+<a name="submodule-chain-getNewestUnstableHeight"></a>
+#### lemo.getNewestUnstableHeight
+```
+lemo.getNewestUnstableHeight()
+```
+Get the newest unstable block height
+
+##### Parameters
+None
+
+##### Returns
+`Promise` - Call `then` method to get height string
+
+##### Example
+```js
+lemo.getNewestUnstableHeight().then(function(height) {
     console.log(height); // "100"
 })
 ```
