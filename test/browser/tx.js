@@ -26,6 +26,7 @@
 
     const responses = {jsonrpc: '2.0', id: 1, result: txInfo.hashAfterSign}
     const conn = {
+        chainID,
         async send() {
             return responses
         },
@@ -35,12 +36,12 @@
         it('sendTx_with_hex_address_without_waitConfirm', async () => {
             const lemo = new LemoClient(conn)
             const result = await lemo.tx.sendTx(testPrivate, txInfo.txConfig, false)
-            return assert.equal(result, '0xaa117a8ce6e605be5186d6fb1b83e6119ce035200a55c3437d0be2cd1fe27f90')
+            return assert.equal(result,  txInfo.hashAfterSign)
         })
         it('sendTx_with_hex_address_waitConfirm', async () => {
             const lemo = new LemoClient(conn)
             const result = await lemo.tx.sendTx(testPrivate, txInfo.txConfig, true)
-            return assert.equal(result, '0xaa117a8ce6e605be5186d6fb1b83e6119ce035200a55c3437d0be2cd1fe27f90')
+            return assert.equal(result,  txInfo.hashAfterSign)
         })
     })
 })()

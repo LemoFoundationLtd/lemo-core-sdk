@@ -16,6 +16,7 @@
 
     const responses = {jsonrpc: '2.0', id: 1, result: emptyTxInfo.hashAfterSign}
     const conn = {
+        chainID,
         async send() {
             return responses
         },
@@ -26,7 +27,7 @@
             const lemo = new LemoClient(conn)
             const json = await lemo.tx.sign(testPrivate, emptyTxInfo.txConfig)
             const result = await lemo.tx.send(json)
-            assert.equal(result, '0x6a8bdc73a46dd8cff224ffd7bbf1f237c7721b81f923edd5864f38bedecd2787')
+            assert.equal(result, emptyTxInfo.hashAfterSign)
         })
         it('sign_without_chainID', async () => {
             const lemo = new LemoClient(conn)
@@ -34,7 +35,7 @@
             delete txConfigCopy.chainID
             let json = await lemo.tx.sign(testPrivate, txConfigCopy)
             json = JSON.parse(json)
-            assert.equal(json.chainID, '1')
+            assert.equal(json.chainID, '200')
         })
     })
 })()
