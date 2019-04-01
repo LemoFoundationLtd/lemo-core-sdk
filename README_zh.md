@@ -52,7 +52,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | -------------------------------------------------------------------------- | ------------------------------ | ----- | ---------- |
 | [lemo.getBlock(heightOrHash, withBody)](#submodule-chain-getBlock)         | 根据高度或 hash 获取区块       | ✓    | ✓          |
 | [lemo.getNewestBlock(withBody)](#submodule-chain-getNewestBlock)          | 获取最新的块                   | ✓    | ✓          |
-| [lemo.getNewestUnstableBlock(stable)](#submodule-chain-getNewestUnstableBlock)          | 获取最新的不稳定块               | ✓    | ✖          |
+| [lemo.getNewestUnstableBlock()](#submodule-chain-getNewestUnstableBlock)          | 获取最新的不稳定块               | ✓    | ✖          |
 | [lemo.getCurrentHeight(stable)](#submodule-chain-getCurrentHeight)         | 获取当前高度                   | ✓    | ✓          |
 | [lemo.getGenesis()](#submodule-chain-getGenesis)                           | 获取创世区块                   | ✓    | ✓          |
 | [lemo.getChainID()](#submodule-chain-getChainID)                           | 获取当前链 ID                  | ✓    | ✓          |
@@ -469,18 +469,18 @@ lemo.getNewestBlock(true).then(function(block) {
 #### lemo.getNewestUnstableBlock
 
 ```
-lemo.getNewestUnstableBlock([stable])
+lemo.getNewestUnstableBlock()
 ```
 
-获取最新不稳定的块
+获取最新不稳定的块，可能没有足够的共识节点确认
 
 ##### Parameters
 
-1. `boolean` - (可选) 是否只获取稳定块（经过多数共识节点签名确认的区块）。默认为`true`
+无
 
 ##### Returns
 
-`Promise` - 通过`then`可以获取到[区块对象](#data-structure-block)
+`Promise` - 通过`then`可以获取到区块体里面的[区块对象](#data-structure-block)
 
 ##### Example
 
