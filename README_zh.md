@@ -51,7 +51,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | API                                                                        | 功能                           | 异步 | 可远程使用 |
 | -------------------------------------------------------------------------- | ------------------------------ | ----- | ---------- |
 | [lemo.getBlock(heightOrHash, withBody)](#submodule-chain-getBlock)         | 根据高度或 hash 获取区块       | ✓    | ✓          |
-| [lemo.getCurrentBlock(stable, withBody)](#submodule-chain-getCurrentBlock) | 获取最新的块                   | ✓    | ✓          |
+| [lemo.getNewestBlock(withBody)](#submodule-chain-getNewestBlock)          | 获取最新的块                   | ✓    | ✓          |
 | [lemo.getCurrentHeight(stable)](#submodule-chain-getCurrentHeight)         | 获取当前高度                   | ✓    | ✓          |
 | [lemo.getGenesis()](#submodule-chain-getGenesis)                           | 获取创世区块                   | ✓    | ✓          |
 | [lemo.getChainID()](#submodule-chain-getChainID)                           | 获取当前链 ID                  | ✓    | ✓          |
@@ -435,20 +435,19 @@ lemo.getBlock(0).then(function(block) {
 
 ---
 
-<a name="submodule-chain-getCurrentBlock"></a>
+<a name="submodule-chain-getNewestBlock"></a>
 
-#### lemo.getCurrentBlock
+#### lemo.getNewestBlock
 
 ```
-lemo.getCurrentBlock([stable [, withBody]])
+lemo.getNewestBlock([withBody])
 ```
 
 获取最新的块
 
 ##### Parameters
 
-1. `boolean` - (可选) 是否只获取稳定块（经过多数共识节点签名确认的区块）。默认为`true`
-2. `boolean` - (可选) 是否获取交易列表等区块体内容。默认为`false`
+1. `boolean` - (可选) 是否获取交易列表等区块体内容。默认为`false`
 
 ##### Returns
 
@@ -457,8 +456,8 @@ lemo.getCurrentBlock([stable [, withBody]])
 ##### Example
 
 ```js
-lemo.getCurrentBlock(true).then(function(block) {
-    console.log(block.header.miner) // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
+lemo.getNewestBlock(true).then(function(block) {
+    console.log(block.header.lemoBase) // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
 })
 ```
 
