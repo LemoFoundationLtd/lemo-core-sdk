@@ -480,7 +480,7 @@ lemo.getNewestUnstableBlock()
 
 ##### Returns
 
-`Promise` - 通过`then`可以获取到区块体里面的[区块对象](#data-structure-block)
+`Promise` - 通过`then`可以获取到[区块对象](#data-structure-block)，包括区块体
 
 ##### Example
 
