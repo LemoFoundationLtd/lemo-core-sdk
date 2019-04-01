@@ -52,6 +52,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | -------------------------------------------------------------------------- | ------------------------------ | ----- | ---------- |
 | [lemo.getBlock(heightOrHash, withBody)](#submodule-chain-getBlock)         | 根据高度或 hash 获取区块       | ✓    | ✓          |
 | [lemo.getNewestBlock(withBody)](#submodule-chain-getNewestBlock)          | 获取最新的块                   | ✓    | ✓          |
+| [lemo.getNewestUnstableBlock(stable)](#submodule-chain-getNewestUnstableBlock)          | 获取最新的不稳定块               | ✓    | ✖          |
 | [lemo.getCurrentHeight(stable)](#submodule-chain-getCurrentHeight)         | 获取当前高度                   | ✓    | ✓          |
 | [lemo.getGenesis()](#submodule-chain-getGenesis)                           | 获取创世区块                   | ✓    | ✓          |
 | [lemo.getChainID()](#submodule-chain-getChainID)                           | 获取当前链 ID                  | ✓    | ✓          |
@@ -457,7 +458,35 @@ lemo.getNewestBlock([withBody])
 
 ```js
 lemo.getNewestBlock(true).then(function(block) {
-    console.log(block.header.lemoBase) // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
+    console.log(block.header.miner) // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
+})
+```
+
+---
+
+<a name="submodule-chain-getNewestUnstableBlock"></a>
+
+#### lemo.getNewestUnstableBlock
+
+```
+lemo.getNewestUnstableBlock([stable])
+```
+
+获取最新不稳定的块
+
+##### Parameters
+
+1. `boolean` - (可选) 是否只获取稳定块（经过多数共识节点签名确认的区块）。默认为`true`
+
+##### Returns
+
+`Promise` - 通过`then`可以获取到[区块对象](#data-structure-block)
+
+##### Example
+
+```js
+lemo.getNewestUnstableBlock().then(function(block) {
+    console.log(block.header.miner) // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
 })
 ```
 
