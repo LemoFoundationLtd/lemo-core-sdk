@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mocha</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="mocha.css" />
+    </head>
+    <body>
+        <div id="mocha"></div>
+        <script src="../../node_modules/mocha/mocha.js"></script>
+        <script>
+            mocha.setup('bdd')
+        </script>
+        <script src="../../dist/lemo-client.min.js"></script>
+        <script src="../../node_modules/chai/chai.js"></script>
+        <script>
+            ;(() => {
+                const testPrivate = '0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb'
+                const assert = chai.should()
+                const chainID = 200
+                const emptyTxInfo = {
+                    txConfig: {
+                        chainID,
+                        expirationTime: 1544584596
+                    },
+                    hashAfterSign: '0x37e2548baa166815431afc470fc65dfc5a399959fb179d3d33ebc8d561697ae6'
+                }
+
+                const responses = {jsonrpc: '2.0', id: 1, result: emptyTxInfo.hashAfterSign}
+                const conn = {
+                    chainID,
+                    async send() {
+                        return responses
+                    }
+                }
+
+                describe('module_tx_sign_send', () => {
+                    it('sign_send_with_hex_address', async () => {
+                        const lemo = new LemoClient(conn)
+                        const json = await lemo.tx.sign(testPrivate, emptyTxInfo.txConfig)
+                        const result = await lemo.tx.send(json)
+                        assert.equal(result, emptyTxInfo.hashAfterSign)
+                    })
+                })
+            })()
+        </script>
+        <script>
+            mocha.run()
+        </script>
+    </body>
+</html>
