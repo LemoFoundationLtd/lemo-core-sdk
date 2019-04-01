@@ -501,7 +501,7 @@ lemo.getNewestUnstableBlock().then(function(block) {
 lemo.getNewestHeight([stable])
 ```
 
-获取最新高度
+获取最新块高度
 
 ##### Parameters
 
