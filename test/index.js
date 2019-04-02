@@ -84,10 +84,10 @@ describe('LemoClient_new', () => {
         ])
     })
     it('hide property', () => {
-        const hideProperties = ['_requester', '_createAPI', '_signer']
+        const hideProperties = ['_requester', '_blockWatcher', '_txWatcher', '_createAPI', '_parser']
         hideProperties.forEach(property => {
             const lemo = new LemoClient()
-            assert.exists(lemo._requester)
+            assert.exists(lemo[property], `property = ${property}`)
             // eslint-disable-next-line guard-for-in
             Object.keys(lemo).forEach(key => {
                 assert.notEqual(key, property)
@@ -128,5 +128,40 @@ describe('LemoClient__createAPI', () => {
         assert.throws(() => {
             lemo._createAPI('stopWatch', 'setData', 'api_name')
         }, errors.UnavailableAPIModule('stopWatch'))
+    })
+
+    it('moduleName is unavailable', async () => {
+        const lemo = new LemoClient(testConn)
+        assert.throws(() => {
+            lemo._createAPI('stopWatch', 'setData', 'api_name')
+        }, errors.UnavailableAPIModule('stopWatch'))
+    })
+
+    it('test remote method name and params', () => {
+        const methodName = 'chain_getData'
+        const params = 'abc'
+        const conn = {
+            send: (payload) => {
+                assert.equal(payload.method, methodName)
+                assert.isArray(payload.params)
+                assert.equal(payload.params.length, 1)
+                assert.equal(payload.params[0], params)
+                return {jsonrpc: '2.0', id: 1, result: {}}
+            },
+        }
+        const lemo = new LemoClient(conn)
+        lemo._createAPI('', 'setData2', methodName)
+        return lemo.setData2(params)
+    })
+
+    it('custom function', () => {
+        const testParam = 'abc'
+        const lemo = new LemoClient(testConn)
+        // eslint-disable-next-line func-names
+        lemo._createAPI('', 'setData2', function(param) {
+            assert.exists(this.requester)
+            assert.equal(param, testParam)
+        })
+        lemo.setData2(testParam)
     })
 })
