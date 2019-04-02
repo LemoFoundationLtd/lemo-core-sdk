@@ -3,6 +3,7 @@ import {Buffer} from 'safe-buffer'
 import Tx from '../../lib/tx/tx'
 import VoteTx from '../../lib/tx/special_tx/vote_tx'
 import CandidateTx from '../../lib/tx/special_tx/candidate_tx'
+import CreateAssetTx from '../../lib/tx/special_tx/create_asset_tx'
 import {TX_VERSION, TTTL, TX_DEFAULT_GAS_LIMIT, TX_DEFAULT_GAS_PRICE} from '../../lib/config'
 import errors from '../../lib/errors'
 import {toBuffer} from '../../lib/utils'
@@ -370,5 +371,58 @@ describe('CandidateTx_new', () => {
                 }
             }
         })
+    })
+})
+describe('CreateAssetTx_new', () => {
+    const minCreateAssetInfo = {
+        category: 1,
+        decimals: 18,
+        isReplenishable: true,
+        isDivisible: true,
+        profile: {
+            name: 'Demo Asset',
+            symbol: 'DT',
+            description: 'demo asset',
+            suggestedGasLimit: '60000',
+        },
+    }
+    it('min config', () => {
+        const tx = new CreateAssetTx({chainID}, minCreateAssetInfo)
+        assert.equal(tx.type, TxType.CREATE_ASSET)
+        assert.equal(tx.to, '')
+        assert.equal(tx.toName, '')
+        assert.equal(tx.amount, 0)
+        assert.equal(tx.data.toString(), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, stop: true}}))
+    })
+    it('useless config', () => {
+        const tx = new CreateAssetTx(
+            {
+                chainID,
+                type: 100,
+                to: 'lemobw',
+                toName: 'alice',
+                amount: 101,
+                data: '102',
+            },
+            minCreateAssetInfo,
+        )
+        assert.equal(tx.type, TxType.CREATE_ASSET)
+        assert.equal(tx.to, '')
+        assert.equal(tx.toName, '')
+        assert.equal(tx.amount, 0)
+        assert.equal(tx.data.toString(), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, stop: true}}))
+    })
+    it('useful config', () => {
+        const tx = new CreateAssetTx(
+            {
+                chainID,
+                type: TxType.CREATE_ASSET,
+                message: 'abc',
+            },
+            minCreateAssetInfo,
+        )
+        assert.equal(tx.type, TxType.CREATE_ASSET)
+        assert.equal(tx.message, 'abc')
+        assert.equal(tx.data.toString(), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, stop: true}}))
     })
 })
