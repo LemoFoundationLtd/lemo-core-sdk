@@ -58,8 +58,11 @@ describe('module_tx_sendTx', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
                 const lemo = new LemoClient({chainID})
-                const result = await lemo.tx.sendTx(testPrivate, test.txConfig, true)
-                return assert.equal(result, test.hashAfterSign, `index=${i}`)
+                await lemo.tx.sendTx(testPrivate, test.txConfig, true).then(result => {
+                    return assert.equal(result, test.hashAfterSign, `index=${i}`)
+                }, e => {
+                    assert.equal(e, errors.InvalidPollTxTimeOut())
+                })
             }),
         )
     })

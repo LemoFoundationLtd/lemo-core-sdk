@@ -125,11 +125,13 @@ describe('module_chain_watchBlock', () => {
     it('watchBlock with body', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 50)
         const lemo = new LemoClient()
-        const watchId = lemo.watchBlock(true, block => {
+        const err = new Error('Error: transaction query timeout')
+        const watchId = lemo.watchBlock(true, (block, error) => {
             try {
                 assert.deepEqual(block, formattedCurrentBlock)
                 done()
             } catch (e) {
+                assert.equal(error, err)
                 done(e)
             }
             lemo.stopWatchBlock(watchId)
