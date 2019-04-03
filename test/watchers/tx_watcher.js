@@ -19,7 +19,7 @@ describe('module_tx_watcher', () => {
                 if (!responses.length) {
                     throw error
                 }
-                return responses.shift()
+                return responses.pop()
             },
         }
         const requester = new Requester(conn, {maxPollRetry: 0})
@@ -46,7 +46,7 @@ describe('module_tx_watcher', () => {
         return txWatcher.waitTx(hash).then(() => {
             assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
         }, (e) => {
-            assert.equal(e, errors.InvalidPollTxTimeOut())
+            assert.equal(e.message, errors.InvalidPollTxTimeOut())
         })
     })
     it('server_mode_false_has_tx', async () => {
@@ -56,15 +56,13 @@ describe('module_tx_watcher', () => {
         const tx = await txWatcher.waitTx(txInfo.hashAfterSign)
         return assert.deepEqual(tx, txRes2)
     })
-    it('server_mode_false_timeOut',  () => {
+    it('server_mode_false_no_params',  () => {
         const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
         const blockWatcher = new BlockWatcher(requester)
         const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: false, txPollTimeout: 1000})
         const hash = ''
-        return txWatcher.waitTx(hash).then(() => {
-            assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
-        }, (e) => {
-            assert.equal(e, errors.InvalidPollTxTimeOut())
+        return txWatcher.waitTx(hash).then((result) => {
+            assert.equal(result, null)
         })
     })
 })
@@ -87,7 +85,7 @@ describe('module_tx_watcher_server_mode', () => {
         return txWatcher.waitTx(hash).then(() => {
             assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
         }, (e) => {
-            assert.equal(e, errors.InvalidPollTxTimeOut())
+            assert.equal(e.message, errors.InvalidPollTxTimeOut())
         })
     })
     it('server_mode_false_has_tx', async () => {
@@ -96,17 +94,6 @@ describe('module_tx_watcher_server_mode', () => {
         const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: false, txPollTimeout: 1000})
         const tx = await txWatcher.waitTx(txInfo.hashAfterSign)
         return assert.deepEqual(tx, txRes2)
-    })
-    it('server_mode_false_timeOut', () => {
-        const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
-        const blockWatcher = new BlockWatcher(requester)
-        const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: false, txPollTimeout: 1000})
-        const hash = ''
-        return txWatcher.waitTx(hash).then(() => {
-            assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
-        }, (e) => {
-            assert.equal(e, errors.InvalidPollTxTimeOut())
-        })
     })
 })
 
