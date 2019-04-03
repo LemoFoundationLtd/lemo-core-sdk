@@ -127,7 +127,7 @@ describe('Requester_watch_error', () => {
         this.timeout(DEFAULT_POLL_DURATION + 1000)
         const conn = new HttpConn('http://127.0.0.1:8001')
         const requester = new Requester(conn, {maxPollRetry: 0})
-        const watchId = requester.watch('13', [true], (block, newWatchId, error) => {
+        const watchId = requester.watch('13', [true], (block, error) => {
             assert.equal(error.message, errors.InvalidConnection('http://127.0.0.1:8001'))
             requester.stopWatch(watchId)
             done()
