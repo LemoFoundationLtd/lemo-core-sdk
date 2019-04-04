@@ -155,6 +155,7 @@ describe('module_chain_watchBlock', () => {
         const watchId1 = lemo.watchBlock(false, (block) => {
             assert.deepEqual(block, {header: formattedCurrentBlock.header})
             lemo.stopWatchBlock(watchId1)
+            done()
         })
         const watchId2 = lemo.watchBlock(true, (block) => {
             assert.deepEqual(block, formattedCurrentBlock)

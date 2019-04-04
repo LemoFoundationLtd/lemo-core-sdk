@@ -67,17 +67,18 @@ describe('module_tx_watcher', () => {
             assert.equal(e.message, errors.InvalidPollTxTimeOut())
         })
     })
-    it('server_mode_false_error', () => {
+    it('server_mode_false_error', async() => {
         const hash = formattedCurrentBlock.transactions[0].hash
+        const error =  new Error('Cannot get the value of result')
         const conn = {
             async send() {
-                throw new Error('Cannot get the value of result')
+                throw error
             },
         }
-        const requseter = new Requester(conn)
+        const requseter = new Requester(conn, {maxPollRetry: 0})
         const txWatcher = new TxWatcher(requseter, undefined, {serverMode: false, txPollTimeout: 1000})
-        txWatcher.waitTx(hash).then(result => {
-            assert.equal(result, errors.InvalidResult())
+        await txWatcher.waitTx(hash).catch(e => {
+            return assert(e, error)
         })
     })
 })
