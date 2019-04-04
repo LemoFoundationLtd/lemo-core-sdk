@@ -82,10 +82,7 @@ describe('Requester_watch_stopWatch_isWatching', () => {
             })
             requester.stopWatch(id)
             assert.equal(requester.isWatching(), false)
-            wait(20)
-            resolve('success')
-        }).then(success => {
-            console.log(success)
+            wait(20).then(resolve)
         })
     })
     it('suddenly stopped has response', () => {
@@ -97,10 +94,7 @@ describe('Requester_watch_stopWatch_isWatching', () => {
             })
             requester.stopWatch(id)
             assert.equal(requester.isWatching(), false)
-            wait(20)
-            resolve('success')
-        }).then(success => {
-            console.log(success)
+            wait(20).then(resolve)
         })
     })
     it('stop immediately twice', () => {
