@@ -19,7 +19,7 @@ describe('module_tx_watcher', () => {
                 if (!responses.length) {
                     throw error
                 }
-                return responses.pop()
+                return responses.shift()
             },
         }
         const requester = new Requester(conn, {maxPollRetry: 0})
@@ -55,6 +55,30 @@ describe('module_tx_watcher', () => {
         const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: false, txPollTimeout: 1000})
         const tx = await txWatcher.waitTx(txInfo.hashAfterSign)
         return assert.deepEqual(tx, txRes2)
+    })
+    it('server_mode_false_timeOut',  () => {
+        const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
+        const blockWatcher = new BlockWatcher(requester)
+        const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: false, txPollTimeout: 1000})
+        const hash = ''
+        return txWatcher.waitTx(hash).then(() => {
+            assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
+        }, (e) => {
+            assert.equal(e.message, errors.InvalidPollTxTimeOut())
+        })
+    })
+    it('server_mode_false_error', () => {
+        const hash = formattedCurrentBlock.transactions[0].hash
+        const conn = {
+            async send() {
+                throw new Error('Cannot get the value of result')
+            },
+        }
+        const requseter = new Requester(conn)
+        const txWatcher = new TxWatcher(requseter, undefined, {serverMode: false, txPollTimeout: 1000})
+        txWatcher.waitTx(hash).then(result => {
+            assert.equal(result, errors.InvalidResult())
+        })
     })
 })
 
