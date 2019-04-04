@@ -75,10 +75,10 @@ describe('module_tx_watcher', () => {
                 throw error
             },
         }
-        const requseter = new Requester(conn, {maxPollRetry: 0})
-        const txWatcher = new TxWatcher(requseter, undefined, {serverMode: false, txPollTimeout: 1000})
+        const requester = new Requester(conn, {maxPollRetry: 0})
+        const txWatcher = new TxWatcher(requester, undefined, {serverMode: false, txPollTimeout: 1000})
         await txWatcher.waitTx(hash).catch(e => {
-            return assert(e, error)
+            assert.equal(e, error)
         })
     })
 })
