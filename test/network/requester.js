@@ -67,6 +67,36 @@ describe('Requester_watch_stopWatch_isWatching', () => {
         },
     }
 
+    it('suddenly stopped error', () => {
+        const error = new Error('Current process error')
+        const errorConn = {
+            async send() {
+                await wait(10)
+                throw error
+            },
+        }
+        const requester = new Requester(errorConn, {maxPollRetry: 0})
+        return new Promise((resolve, reject) => {
+            const id = requester.watch('m', ['p'], () => {
+                reject(error)
+            })
+            requester.stopWatch(id)
+            assert.equal(requester.isWatching(), false)
+            wait(20).then(resolve)
+        })
+    })
+    it('suddenly stopped has response', () => {
+        const error = new Error('Current process error')
+        const requester = new Requester(conn, {maxPollRetry: 0})
+        return new Promise((resolve, reject) => {
+            const id = requester.watch('m', ['p'], () => {
+                reject(error)
+            })
+            requester.stopWatch(id)
+            assert.equal(requester.isWatching(), false)
+            wait(20).then(resolve)
+        })
+    })
     it('stop immediately twice', () => {
         const requester = new Requester(conn)
         assert.equal(requester.isWatching(), false)
@@ -127,7 +157,7 @@ describe('Requester_watch_error', () => {
         this.timeout(DEFAULT_POLL_DURATION + 1000)
         const conn = new HttpConn('http://127.0.0.1:8001')
         const requester = new Requester(conn, {maxPollRetry: 0})
-        const watchId = requester.watch('13', [true], (block, newWatchId, error) => {
+        const watchId = requester.watch('13', [true], (block, error) => {
             assert.equal(error.message, errors.InvalidConnection('http://127.0.0.1:8001'))
             requester.stopWatch(watchId)
             done()

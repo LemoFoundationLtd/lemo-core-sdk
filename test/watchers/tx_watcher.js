@@ -46,7 +46,7 @@ describe('module_tx_watcher', () => {
         return txWatcher.waitTx(hash).then(() => {
             assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
         }, (e) => {
-            assert.equal(e, errors.InvalidPollTxTimeOut())
+            assert.equal(e.message, errors.InvalidPollTxTimeOut())
         })
     })
     it('server_mode_false_has_tx', async () => {
@@ -64,7 +64,21 @@ describe('module_tx_watcher', () => {
         return txWatcher.waitTx(hash).then(() => {
             assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
         }, (e) => {
-            assert.equal(e, errors.InvalidPollTxTimeOut())
+            assert.equal(e.message, errors.InvalidPollTxTimeOut())
+        })
+    })
+    it('server_mode_false_error', async() => {
+        const hash = formattedCurrentBlock.transactions[0].hash
+        const error =  new Error('Cannot get the value of result')
+        const conn = {
+            async send() {
+                throw error
+            },
+        }
+        const requester = new Requester(conn, {maxPollRetry: 0})
+        const txWatcher = new TxWatcher(requester, undefined, {serverMode: false, txPollTimeout: 1000})
+        await txWatcher.waitTx(hash).catch(e => {
+            assert.equal(e, error)
         })
     })
 })
@@ -87,7 +101,7 @@ describe('module_tx_watcher_server_mode', () => {
         return txWatcher.waitTx(hash).then(() => {
             assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
         }, (e) => {
-            assert.equal(e, errors.InvalidPollTxTimeOut())
+            assert.equal(e.message, errors.InvalidPollTxTimeOut())
         })
     })
     it('server_mode_false_has_tx', async () => {
@@ -105,7 +119,7 @@ describe('module_tx_watcher_server_mode', () => {
         return txWatcher.waitTx(hash).then(() => {
             assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
         }, (e) => {
-            assert.equal(e, errors.InvalidPollTxTimeOut())
+            assert.equal(e.message, errors.InvalidPollTxTimeOut())
         })
     })
 })
