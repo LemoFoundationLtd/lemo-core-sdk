@@ -67,6 +67,42 @@ describe('Requester_watch_stopWatch_isWatching', () => {
         },
     }
 
+    it('suddenly stopped error', () => {
+        const error = new Error('Current process error')
+        const errorConn = {
+            async send() {
+                await wait(10)
+                throw error
+            },
+        }
+        const requester = new Requester(errorConn, {maxPollRetry: 0})
+        return new Promise((resolve, reject) => {
+            const id = requester.watch('m', ['p'], () => {
+                reject(error)
+            })
+            requester.stopWatch(id)
+            assert.equal(requester.isWatching(), false)
+            wait(20)
+            resolve('success')
+        }).then(success => {
+            console.log(success)
+        })
+    })
+    it('suddenly stopped has response', () => {
+        const error = new Error('Current process error')
+        const requester = new Requester(conn, {maxPollRetry: 0})
+        return new Promise((resolve, reject) => {
+            const id = requester.watch('m', ['p'], () => {
+                reject(error)
+            })
+            requester.stopWatch(id)
+            assert.equal(requester.isWatching(), false)
+            wait(20)
+            resolve('success')
+        }).then(success => {
+            console.log(success)
+        })
+    })
     it('stop immediately twice', () => {
         const requester = new Requester(conn)
         assert.equal(requester.isWatching(), false)
