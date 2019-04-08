@@ -51,8 +51,10 @@ lemo.chain.getBlockByNumber(0)
 API | description | asynchronous | available for remote
 ---|---|---|---
 [lemo.getBlock(heightOrHash, withBody)](#submodule-chain-getBlock) | Get block by height or block hash | ✓ | ✓
-[lemo.getCurrentBlock(stable, withBody)](#submodule-chain-getCurrentBlock) | Get the newest block | ✓ | ✓
-[lemo.getCurrentHeight(stable)](#submodule-chain-getCurrentHeight) | Get the newest block height | ✓ | ✓
+[lemo.getNewestBlock(withBody)](#submodule-chain-getNewestBlock) | Get the newest block | ✓ | ✓
+[lemo.getNewestUnstableBlock()](#submodule-chain-getNewestUnstableBlock) | Get the newest unstable block | ✓ | ✖
+[lemo.getNewestHeight()](#submodule-chain-getNewestHeight) | Get the newest block height | ✓ | ✓
+[lemo.getNewestUnstableHeight()](#submodule-chain-getNewestUnstableHeight) | Get the newest unstable block height | ✓ | ✖
 [lemo.getGenesis()](#submodule-chain-getGenesis) | Get the first block | ✓ | ✓
 [lemo.getChainID()](#submodule-chain-getChainID) | Get the chain ID | ✓ | ✓
 [lemo.getGasPriceAdvice()](#submodule-chain-getGasPriceAdvice) | Get transaction gas price advice | ✓ | ✓
@@ -392,45 +394,88 @@ lemo.getBlock(0).then(function(block) {
 
 ---
 
-<a name="submodule-chain-getCurrentBlock"></a>
-#### lemo.getCurrentBlock
+<a name="submodule-chain-getNewestBlock"></a>
+#### lemo.getNewestBlock
 ```
-lemo.getCurrentBlock([stable [, withBody]])
+lemo.getNewestBlock([withBody])
 ```
 Get the newest block
 
 ##### Parameters
-1. `boolean` - (optional) If it is true, only stable blocks will be retrived which confirmed by most deputy nodes. Default value is `true`
-2. `boolean` - (optional) Enable to get block body such as transactions. Default value is `false`
+1. `boolean` - (optional) Enable to get block body such as transactions. Default value is `false`
 
 ##### Returns
 `Promise` - Call `then` method to get [block](#data-structure-block) object
 
 ##### Example
 ```js
-lemo.getCurrentBlock(true).then(function(block) {
+lemo.getNewestBlock(true).then(function(block) {
     console.log(block.header.miner); // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
 })
 ```
 
 ---
 
-<a name="submodule-chain-getCurrentHeight"></a>
-#### lemo.getCurrentHeight
+<a name="submodule-chain-getNewestUnstableBlock"></a>
+#### lemo.getNewestUnstableBlock
 ```
-lemo.getCurrentHeight([stable])
+lemo.getNewestUnstableBlock()
+```
+Get the newest unstable block which may not has enough confirms by deputy nodes
+
+##### Parameters
+None
+
+##### Returns
+`Promise` - Call `then` method to get [block](#data-structure-block) object with body
+
+##### Example
+```js
+lemo.getNewestUnstableBlock().then(function(block) {
+    console.log(block.header.miner); // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
+})
+```
+
+---
+
+<a name="submodule-chain-getNewestHeight"></a>
+#### lemo.getNewestHeight
+```
+lemo.getNewestHeight()
 ```
 Get the newest block height
 
 ##### Parameters
-1. `boolean` - (optional) If it is true, only stable blocks will be retrived which confirmed by most deputy nodes. Default value is `true`
+None
 
 ##### Returns
 `Promise` - Call `then` method to get height string
 
 ##### Example
 ```js
-lemo.getCurrentHeight(true).then(function(height) {
+lemo.getNewestHeight().then(function(height) {
+    console.log(height); // "100"
+})
+```
+
+---
+
+<a name="submodule-chain-getNewestUnstableHeight"></a>
+#### lemo.getNewestUnstableHeight
+```
+lemo.getNewestUnstableHeight()
+```
+Get the newest unstable block height
+
+##### Parameters
+None
+
+##### Returns
+`Promise` - Call `then` method to get height string
+
+##### Example
+```js
+lemo.getNewestUnstableHeight().then(function(height) {
     console.log(height); // "100"
 })
 ```

@@ -73,7 +73,7 @@ describe('LemoClient_new', () => {
 
         const lemo = new LemoClient(conn)
         assert.equal(lemo._requester.conn.send, conn.send)
-        await lemo.getCurrentBlock()
+        await lemo.getNewestBlock()
         assert.deepEqual(sendRecord, [
             {
                 jsonrpc: '2.0',
