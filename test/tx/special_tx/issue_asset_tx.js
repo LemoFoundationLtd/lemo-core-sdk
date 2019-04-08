@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 import {chainID} from '../../datas'
-import {TxType} from '../../../lib/const'
+import {TxType, TX_ASSET_CODE_LENGTH} from '../../../lib/const'
 import errors from '../../../lib/errors'
 import IssueAsset from '../../../lib/tx/special_tx/issue_asset_tx'
 
@@ -11,55 +11,44 @@ describe('IssueAsset_new', () => {
         supplyAmount: '100000',
     }
     it('min config', () => {
-        const tx = new IssueAsset({chainID}, minIssueAssetInfo)
-        assert.equal(tx.type, TxType.ISSUE_ASSET)
-        assert.equal(tx.amount, 0)
-        assert.equal(tx.data.toString(), JSON.stringify({...minIssueAssetInfo}))
-    })
-    it('useless config', () => {
-        const tx = new IssueAsset(
-            {
-                chainID,
-                type: 100,
-                to: 'lemobw',
-                toName: 'alice',
-                amount: 101,
-                data: '102',
-            },
-            minIssueAssetInfo,
-        )
-        assert.equal(tx.type, TxType.ISSUE_ASSET)
-        assert.equal(tx.to, 'lemobw')
-        assert.equal(tx.toName, 'alice')
-        assert.equal(tx.amount, 0)
-        assert.equal(tx.data.toString(), JSON.stringify({...minIssueAssetInfo}))
-    })
-    it('useful config', () => {
         const issueAssetInfo = {
             ...minIssueAssetInfo,
         }
+        delete issueAssetInfo.metaData
         const tx = new IssueAsset(
             {
                 chainID,
                 type: TxType.ISSUE_ASSET,
+                to: 'lemobw',
+                toName: 'alice',
                 message: 'abc',
             },
             issueAssetInfo,
         )
         assert.equal(tx.type, TxType.ISSUE_ASSET)
         assert.equal(tx.message, 'abc')
+        assert.equal(tx.to, 'lemobw')
+        assert.equal(tx.toName, 'alice')
         const result = JSON.stringify({...issueAssetInfo})
         assert.equal(tx.data.toString(), result)
+    })
+    it('normal config', () => {
+        const tx = new IssueAsset({chainID, to: 'lemobw', toName: 'alice'}, minIssueAssetInfo)
+        assert.equal(tx.type, TxType.ISSUE_ASSET)
+        assert.equal(tx.to, 'lemobw')
+        assert.equal(tx.toName, 'alice')
+        assert.equal(tx.amount, 0)
+        assert.equal(tx.data.toString(), JSON.stringify({...minIssueAssetInfo}))
     })
 
     // test fields
     const tests = [
-        {field: 'assetCode', configData: 'Lemo83JZRYPYF97CFSZBBQBH4GW42PD8CFHT5ARN'},
+        {field: 'assetCode', configData: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884'},
         {field: 'assetCode', configData: 123, error: errors.TXInvalidType('assetCode', 123, ['string'])},
         {
             field: 'assetCode',
-            configData: 'Lemo83JZRYPYF97CFSZBBQBH4GW42PD8CFHT5ARN1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-            error: errors.TXInvalidMaxLength('assetCode', 'Lemo83JZRYPYF97CFSZBBQBH4GW42PD8CFHT5ARN1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 66),
+            configData: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884aaa',
+            error: errors.TXInvalidLength('assetCode', '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884aaa', TX_ASSET_CODE_LENGTH),
         },
         {field: 'metaData', configData: 'issue asset metaData'},
         {field: 'metaData', configData: 123, error: errors.TXInvalidType('metaData', 123, ['string'])},
