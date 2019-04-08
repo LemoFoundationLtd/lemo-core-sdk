@@ -5,16 +5,11 @@ import errors from '../../../lib/errors'
 import IssueAsset from '../../../lib/tx/special_tx/issue_asset_tx'
 
 describe('IssueAsset_new', () => {
-    const minIssueAssetInfo = {
-        assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
-        metaData: 'issue asset metaData',
-        supplyAmount: '100000',
-    }
-    it('min config', () => {
+    it('miss config.metaData', () => {
         const issueAssetInfo = {
-            ...minIssueAssetInfo,
+            assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+            supplyAmount: '100000',
         }
-        delete issueAssetInfo.metaData
         const tx = new IssueAsset(
             {
                 chainID,
@@ -32,13 +27,25 @@ describe('IssueAsset_new', () => {
         const result = JSON.stringify({...issueAssetInfo})
         assert.equal(tx.data.toString(), result)
     })
+    it('miss config.assetCode', () => {
+        const issueAssetInfo = {
+            supplyAmount: '100000',
+        }
+        assert.throws(() => {
+            new IssueAsset({chainID, to: 'lemobw', toName: 'alice'}, issueAssetInfo)
+        }, errors.TXParamMissingError('assetCode'))
+    })
     it('normal config', () => {
-        const tx = new IssueAsset({chainID, to: 'lemobw', toName: 'alice'}, minIssueAssetInfo)
-        assert.equal(tx.type, TxType.ISSUE_ASSET)
+        const issueAssetInfo = {
+            assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+            metaData: 'issue asset metaData',
+            supplyAmount: '100000',
+        }
+        const tx = new IssueAsset({chainID, to: 'lemobw', toName: 'alice'}, issueAssetInfo)
         assert.equal(tx.to, 'lemobw')
         assert.equal(tx.toName, 'alice')
         assert.equal(tx.amount, 0)
-        assert.equal(tx.data.toString(), JSON.stringify({...minIssueAssetInfo}))
+        assert.equal(tx.data.toString(), JSON.stringify({...issueAssetInfo}))
     })
 
     // test fields
@@ -71,7 +78,9 @@ describe('IssueAsset_new', () => {
     tests.forEach(test => {
         it(`set issueAssetInfo.${test.field} to ${JSON.stringify(test.configData)}`, () => {
             const issueAssetInfo = {
-                ...minIssueAssetInfo,
+                assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+                metaData: 'issue asset metaData',
+                supplyAmount: '100000',
                 [test.field]: test.configData,
             }
             if (test.error) {

@@ -5,20 +5,26 @@ import errors from '../../../lib/errors'
 import TransferAsset from '../../../lib/tx/special_tx/transfer_asset_tx'
 
 describe('TransferAsset_new', () => {
-    const minTransferAssetInfo = {
-        assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
-    }
     it('min config', () => {
-        const tx = new TransferAsset({chainID, to: 'lemobw', toName: 'alice'}, minTransferAssetInfo)
+        const transferAssetInfo = {
+            assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+        }
+        const tx = new TransferAsset({chainID, to: 'lemobw', toName: 'alice'}, transferAssetInfo)
         assert.equal(tx.type, TxType.TRANSFER_ASSET)
         assert.equal(tx.amount, 0)
         assert.equal(tx.to, 'lemobw')
         assert.equal(tx.toName, 'alice')
-        assert.equal(tx.data.toString(), JSON.stringify({...minTransferAssetInfo}))
+        assert.equal(tx.data.toString(), JSON.stringify({...transferAssetInfo}))
+    })
+    it('miss config.assetId', () => {
+        const transferAssetInfo = {}
+        assert.throws(() => {
+            new TransferAsset({chainID, to: 'lemobw', toName: 'alice'}, transferAssetInfo)
+        }, errors.TXParamMissingError('assetId'))
     })
     it('normal config', () => {
         const transferAssetInfo = {
-            ...minTransferAssetInfo,
+            assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
         }
         const tx = new TransferAsset(
             {
@@ -51,7 +57,7 @@ describe('TransferAsset_new', () => {
     tests.forEach(test => {
         it(`set transferAssetInfo.${test.field} to ${JSON.stringify(test.configData)}`, () => {
             const transferAssetInfo = {
-                ...minTransferAssetInfo,
+                assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                 [test.field]: test.configData,
             }
             if (test.error) {
