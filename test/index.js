@@ -20,6 +20,7 @@ describe('LemoClient_new', () => {
             pollDuration: 3000,
             maxPollRetry: 5,
         })
+        assert.equal(lemo.config.httpTimeOut, 120000)
     })
     it('full config', () => {
         const config = {
