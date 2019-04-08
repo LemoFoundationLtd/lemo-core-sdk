@@ -20,6 +20,7 @@ describe('LemoClient_new', () => {
             pollDuration: 3000,
             maxPollRetry: 5,
         })
+        assert.equal(lemo.config.httpTimeOut, 120000)
     })
     it('full config', () => {
         const config = {
@@ -31,6 +32,7 @@ describe('LemoClient_new', () => {
             headers: {c: 'd'},
             pollDuration: 10,
             maxPollRetry: 10,
+            httpTimeOut: 1000,
         }
         const lemo = new LemoClient(config)
         assert.equal(lemo.config.chainID, config.chainID)
@@ -46,6 +48,7 @@ describe('LemoClient_new', () => {
             pollDuration: config.pollDuration,
             maxPollRetry: config.maxPollRetry,
         })
+        assert.equal(lemo.config.httpTimeOut, config.httpTimeOut)
     })
     it('http conn', () => {
         const lemo = new LemoClient({host: 'http://127.0.0.1:8002'})
