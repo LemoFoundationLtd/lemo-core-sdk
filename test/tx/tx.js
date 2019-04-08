@@ -1,14 +1,12 @@
 import {assert} from 'chai'
 import {Buffer} from 'safe-buffer'
 import Tx from '../../lib/tx/tx'
-import VoteTx from '../../lib/tx/vote_tx'
-import CandidateTx from '../../lib/tx/candidate_tx'
 import {TX_VERSION, TTTL, TX_DEFAULT_GAS_LIMIT, TX_DEFAULT_GAS_PRICE} from '../../lib/config'
 import errors from '../../lib/errors'
 import {toBuffer} from '../../lib/utils'
 import {testPrivate, txInfos, chainID, testAddr} from '../datas'
-import {TxType, MAX_TX_TO_NAME_LENGTH, TX_SIG_BYTE_LENGTH, NODE_ID_LENGTH, MAX_DEPUTY_HOST_LENGTH} from '../../lib/const'
-import Signer from '../../lib/tx/signer';
+import {TxType, MAX_TX_TO_NAME_LENGTH, TX_SIG_BYTE_LENGTH} from '../../lib/const'
+import Signer from '../../lib/tx/signer'
 
 describe('Tx_new', () => {
     it('empty config', () => {
@@ -127,12 +125,30 @@ describe('Tx_new', () => {
         {field: 'sig', configData: '-1', error: errors.TXMustBeNumber('sig', '-1')},
         {
             field: 'sig',
-            configData: '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
-            error: errors.TXInvalidMaxBytes('sig', '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001', TX_SIG_BYTE_LENGTH, 66),
-        }, {
+            configData:
+                '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+            error: errors.TXInvalidMaxBytes(
+                'sig',
+                '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+                TX_SIG_BYTE_LENGTH,
+                66,
+            ),
+        },
+        {
             field: 'sig',
-            configData: Buffer.from('100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001', 'hex'),
-            error: errors.TXInvalidMaxBytes('sig', Buffer.from('100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001', 'hex'), TX_SIG_BYTE_LENGTH, 66),
+            configData: Buffer.from(
+                '100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+                'hex',
+            ),
+            error: errors.TXInvalidMaxBytes(
+                'sig',
+                Buffer.from(
+                    '100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+                    'hex',
+                ),
+                TX_SIG_BYTE_LENGTH,
+                66,
+            ),
         },
     ]
     tests.forEach(test => {
@@ -153,7 +169,6 @@ describe('Tx_new', () => {
         })
     })
 
-
     it('Tx_from', () => {
         const obj = {
             chainID: '1',
@@ -167,7 +182,7 @@ describe('Tx_new', () => {
             tx.from = 'sdafacaggg'
             console.log(tx.from)
         }, errors.TXCanNotChangeFrom())
-    });
+    })
 })
 
 describe('Tx_serialize', () => {
@@ -217,141 +232,5 @@ describe('Tx_expirationTime', () => {
         const after = Math.floor(Date.now() / 1000)
         assert.isAtLeast(tx.expirationTime, before + TTTL)
         assert.isAtMost(tx.expirationTime, after + TTTL)
-    })
-})
-
-describe('VoteTx_new', () => {
-    it('empty config', () => {
-        const tx = new VoteTx({chainID})
-        assert.equal(tx.type, TxType.VOTE)
-        assert.equal(tx.amount, 0)
-        assert.equal(tx.data, '')
-    })
-    it('useless config', () => {
-        const tx = new VoteTx({
-            chainID,
-            type: 100,
-            amount: 101,
-            data: '102',
-        })
-        assert.equal(tx.type, TxType.VOTE)
-        assert.equal(tx.amount, 0)
-        assert.equal(tx.data, '')
-    })
-    it('useful config', () => {
-        const tx = new VoteTx({
-            chainID,
-            type: TxType.VOTE,
-            to: 'lemobw',
-        })
-        assert.equal(tx.type, TxType.VOTE)
-        assert.equal(tx.to, 'lemobw')
-    })
-})
-
-describe('CandidateTx_new', () => {
-    const minCandidateInfo = {
-        minerAddress: 'lemobw',
-        nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
-        host: 'a.com',
-        port: 7001,
-    }
-    it('min config', () => {
-        const tx = new CandidateTx({chainID}, minCandidateInfo)
-        assert.equal(tx.type, TxType.CANDIDATE)
-        assert.equal(tx.to, '')
-        assert.equal(tx.toName, '')
-        assert.equal(tx.amount, 0)
-        assert.equal(tx.data.toString(), JSON.stringify({isCandidate: 'true', ...minCandidateInfo}))
-    })
-    it('useless config', () => {
-        const tx = new CandidateTx(
-            {
-                chainID,
-                type: 100,
-                to: 'lemobw',
-                toName: 'alice',
-                amount: 101,
-                data: '102',
-            },
-            minCandidateInfo,
-        )
-        assert.equal(tx.type, TxType.CANDIDATE)
-        assert.equal(tx.to, '')
-        assert.equal(tx.toName, '')
-        assert.equal(tx.amount, 0)
-        assert.equal(tx.data.toString(), JSON.stringify({isCandidate: 'true', ...minCandidateInfo}))
-    })
-    it('useful config', () => {
-        const candidateInfo = {
-            isCandidate: false,
-            ...minCandidateInfo,
-        }
-        const tx = new CandidateTx(
-            {
-                chainID,
-                type: TxType.CANDIDATE,
-                message: 'abc',
-            },
-            candidateInfo,
-        )
-        assert.equal(tx.type, TxType.CANDIDATE)
-        assert.equal(tx.message, 'abc')
-        const result = JSON.stringify({...candidateInfo, isCandidate: String(candidateInfo.isCandidate)})
-        assert.equal(tx.data.toString(), result)
-    })
-
-    // test fields
-    const tests = [
-        {field: 'isCandidate', configData: false, result: 'false'},
-        {field: 'isCandidate', configData: true, result: 'true'},
-        {field: 'isCandidate', configData: 'true', error: errors.TXInvalidType('isCandidate', 'true', ['undefined', 'boolean'])},
-        {field: 'minerAddress', configData: 0x1, error: errors.TXInvalidType('minerAddress', 0x1, ['string'])},
-        {field: 'minerAddress', configData: '', error: errors.InvalidAddress('')},
-        {field: 'minerAddress', configData: '123', error: errors.InvalidAddress('')},
-        {field: 'minerAddress', configData: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG'},
-        {field: 'minerAddress', configData: '0x1'},
-        {field: 'nodeID', configData: '123', error: errors.TXInvalidLength('nodeID', '123', NODE_ID_LENGTH)},
-        {
-            field: 'nodeID',
-            configData:
-                '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
-        },
-        {field: 'host', configData: 'aaa'},
-        {
-            field: 'host',
-            configData:
-                'aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
-            error: errors.TXInvalidMaxLength(
-                'host',
-                'aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
-                MAX_DEPUTY_HOST_LENGTH,
-            ),
-        },
-        {field: 'port', configData: '1'},
-        {field: 'port', configData: 0, error: errors.TXInvalidRange('port', 0, 1, 0xffff)},
-        {field: 'port', configData: '0xfffff', error: errors.TXInvalidRange('port', '0xfffff', 1, 0xffff)},
-        {field: 'port', configData: ['0xff'], error: errors.TXInvalidType('port', ['0xff'], ['string', 'number'])},
-    ]
-    tests.forEach(test => {
-        it(`set candidateInfo.${test.field} to ${JSON.stringify(test.configData)}`, () => {
-            const candidateInfo = {
-                ...minCandidateInfo,
-                [test.field]: test.configData,
-            }
-            if (test.error) {
-                assert.throws(() => {
-                    new CandidateTx({chainID}, candidateInfo)
-                }, test.error)
-            } else {
-                const tx = new CandidateTx({chainID}, candidateInfo)
-                const targetField = JSON.parse(tx.data.toString())[test.field]
-                if (typeof test.result !== 'undefined') {
-                    assert.strictEqual(targetField, test.result)
-                } else {
-                    assert.strictEqual(targetField, test.configData)
-                }
-            }
-        })
     })
 })
