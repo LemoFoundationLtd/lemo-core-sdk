@@ -1,0 +1,99 @@
+import {assert} from 'chai'
+import {chainID} from '../../datas'
+import {TxType} from '../../../lib/const'
+import errors from '../../../lib/errors'
+import IssueAsset from '../../../lib/tx/special_tx/issue_asset_tx'
+
+describe('IssueAsset_new', () => {
+    const minIssueAssetInfo = {
+        assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+        metaData: 'issue asset metaData',
+        supplyAmount: '100000',
+    }
+    it('min config', () => {
+        const tx = new IssueAsset({chainID}, minIssueAssetInfo)
+        assert.equal(tx.type, TxType.ISSUE_ASSET)
+        assert.equal(tx.amount, 0)
+        assert.equal(tx.data.toString(), JSON.stringify({...minIssueAssetInfo}))
+    })
+    it('useless config', () => {
+        const tx = new IssueAsset(
+            {
+                chainID,
+                type: 100,
+                to: 'lemobw',
+                toName: 'alice',
+                amount: 101,
+                data: '102',
+            },
+            minIssueAssetInfo,
+        )
+        assert.equal(tx.type, TxType.ISSUE_ASSET)
+        assert.equal(tx.to, 'lemobw')
+        assert.equal(tx.toName, 'alice')
+        assert.equal(tx.amount, 0)
+        assert.equal(tx.data.toString(), JSON.stringify({...minIssueAssetInfo}))
+    })
+    it('useful config', () => {
+        const issueAssetInfo = {
+            ...minIssueAssetInfo,
+        }
+        const tx = new IssueAsset(
+            {
+                chainID,
+                type: TxType.ISSUE_ASSET,
+                message: 'abc',
+            },
+            issueAssetInfo,
+        )
+        assert.equal(tx.type, TxType.ISSUE_ASSET)
+        assert.equal(tx.message, 'abc')
+        const result = JSON.stringify({...issueAssetInfo})
+        assert.equal(tx.data.toString(), result)
+    })
+
+    // test fields
+    const tests = [
+        {field: 'assetCode', configData: 'Lemo83JZRYPYF97CFSZBBQBH4GW42PD8CFHT5ARN'},
+        {field: 'assetCode', configData: 123, error: errors.TXInvalidType('assetCode', 123, ['string'])},
+        {
+            field: 'assetCode',
+            configData: 'Lemo83JZRYPYF97CFSZBBQBH4GW42PD8CFHT5ARN1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+            error: errors.TXInvalidMaxLength('assetCode', 'Lemo83JZRYPYF97CFSZBBQBH4GW42PD8CFHT5ARN1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 66),
+        },
+        {field: 'metaData', configData: 'issue asset metaData'},
+        {field: 'metaData', configData: 123, error: errors.TXInvalidType('metaData', 123, ['string'])},
+        {
+            field: 'metaData',
+            configData: `aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0
+                aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0`,
+            error: errors.TXInvalidMaxLength(
+                'metaData',
+                `aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0
+                aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0`,
+                256,
+            ),
+        },
+        {field: 'supplyAmount', configData: '100000'},
+        {field: 'supplyAmount', configData: 123, error: errors.TXInvalidType('supplyAmount', 123, ['string'])},
+        {field: 'supplyAmount', configData: '0x123', error: errors.TXIsNotDecimalError('supplyAmount')},
+        {field: 'supplyAmount', configData: '-1000', error: errors.TXNegativeError('supplyAmount')},
+    ]
+    tests.forEach(test => {
+        it(`set issueAssetInfo.${test.field} to ${JSON.stringify(test.configData)}`, () => {
+            const issueAssetInfo = {
+                ...minIssueAssetInfo,
+                [test.field]: test.configData,
+            }
+            if (test.error) {
+                assert.throws(() => {
+                    new IssueAsset({chainID}, issueAssetInfo)
+                }, test.error)
+            } else {
+                const tx = new IssueAsset({chainID}, issueAssetInfo)
+                const targetField = JSON.parse(tx.data.toString())[test.field]
+                assert.strictEqual(targetField, test.configData)
+            }
+        })
+    })
+})
