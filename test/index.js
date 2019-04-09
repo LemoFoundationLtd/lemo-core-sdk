@@ -59,12 +59,6 @@ describe('LemoClient_new', () => {
         const lemo = new LemoClient({host: 'http://localhost:8002'})
         assert.equal(lemo._requester.conn.host, 'http://localhost:8002')
     })
-    it('unknown conn', () => {
-        const config = {host: 'abc'}
-        assert.throws(() => {
-            new LemoClient(config)
-        }, errors.invalidConnConfig(config))
-    })
     it('custom conn', async () => {
         let sendRecord = null
         const conn = {
@@ -86,10 +80,15 @@ describe('LemoClient_new', () => {
             },
         ])
     })
-    it('conn.host no http', () => {
+    it('conn.host no http ip', () => {
         const lemo = new LemoClient({host: '127.0.0.1:8001'})
         assert.equal(lemo._requester.conn instanceof HttpConn, true)
         assert.equal(lemo._requester.conn.host, 'http://127.0.0.1:8001')
+    })
+    it('conn.host no http domain', () => {
+        const lemo = new LemoClient({host: 'lemochain.com'})
+        assert.equal(lemo._requester.conn instanceof HttpConn, true)
+        assert.equal(lemo._requester.conn.host, 'http://lemochain.com')
     })
     it('hide property', () => {
         const hideProperties = ['_requester', '_blockWatcher', '_txWatcher', '_createAPI', '_parser']
