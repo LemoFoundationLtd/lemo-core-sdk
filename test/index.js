@@ -86,6 +86,11 @@ describe('LemoClient_new', () => {
             },
         ])
     })
+    it('conn.host no http', () => {
+        const lemo = new LemoClient({host: '127.0.0.1:8001'})
+        assert.equal(lemo._requester.conn instanceof HttpConn, true)
+        assert.equal(lemo._requester.conn.host, 'http://127.0.0.1:8001')
+    })
     it('hide property', () => {
         const hideProperties = ['_requester', '_blockWatcher', '_txWatcher', '_createAPI', '_parser']
         hideProperties.forEach(property => {
@@ -101,8 +106,7 @@ describe('LemoClient_new', () => {
 
 describe('LemoClient__createAPI', () => {
     const testConn = {
-        send: () => {
-        },
+        send: () => {},
     }
 
     it('lemo.test.setData', () => {
@@ -144,7 +148,7 @@ describe('LemoClient__createAPI', () => {
         const methodName = 'chain_getData'
         const params = 'abc'
         const conn = {
-            send: (payload) => {
+            send: payload => {
                 assert.equal(payload.method, methodName)
                 assert.isArray(payload.params)
                 assert.equal(payload.params.length, 1)
