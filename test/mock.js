@@ -40,6 +40,14 @@ const mockInfos = [
         },
     },
     {
+        method: 'account_getAssetEquity',
+        paramsCount: 3,
+        reply([address, index, limit]) {
+            const list = []
+            return {equities: list, total: String(list.length)}
+        },
+    },
+    {
         method: 'chain_latestStableBlock',
         paramsCount: 1,
         reply([withBody]) {

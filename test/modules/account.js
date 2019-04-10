@@ -65,3 +65,15 @@ describe('module_account_newKeyPair', () => {
     })
 })
 
+describe('module_account_getAssetEquityByAddress', () => {
+    it('0 equity', async () => {
+        const lemo = new LemoClient({host: '127.0.0.1:8001'})
+        const result = await lemo.account.getAssetEquityByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10)
+        assert.equal(result.equities.length, 0)
+    })
+    it('get from empty account', async () => {
+        const lemo = new LemoClient({host: '127.0.0.1:8001'})
+        const result = await lemo.account.getAssetEquityByAddress('Lemobw', 0, 10)
+        assert.equal(result.equities.length, 0)
+    })
+})
