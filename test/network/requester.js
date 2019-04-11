@@ -29,7 +29,7 @@ describe('Requester_send', () => {
     it('send with http conn', async () => {
         const conn = new HttpConn('http://127.0.0.1:8001')
         const requester = new Requester(conn)
-        const result = await requester.send('chain_latestStableBlock', [true])
+        const result = await requester.send('chain_currentBlock', [true])
         assert.deepEqual(result, currentBlock)
     })
     it('send with custom conn', async () => {
