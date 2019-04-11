@@ -21,6 +21,7 @@ import {
     txList,
     candidateList,
     deputyNodes,
+    equities,
 } from './datas'
 
 const mockInfos = [
@@ -37,6 +38,17 @@ const mockInfos = [
         paramsCount: 1,
         reply([address]) {
             return address === miner.address ? miner.balance : emptyAccount.balance
+        },
+    },
+    {
+        method: 'account_getAssetEquity',
+        paramsCount: 3,
+        reply([address, index, limit]) {
+            let list = []
+            if (address === 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D') {
+                list = equities.slice(index, index + limit)
+            }
+            return {equities: list, total: String(list.length)}
         },
     },
     {
