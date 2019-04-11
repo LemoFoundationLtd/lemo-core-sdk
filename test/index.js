@@ -75,7 +75,7 @@ describe('LemoClient_new', () => {
             {
                 jsonrpc: '2.0',
                 id: 1,
-                method: 'chain_latestStableBlock',
+                method: 'chain_currentBlock',
                 params: [false],
             },
         ])

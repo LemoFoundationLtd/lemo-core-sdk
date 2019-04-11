@@ -145,6 +145,84 @@ describe('module_tx_candidate', () => {
     })
 })
 
+describe('module_tx_create_asset', () => {
+    it('sign_create_asset', () => {
+        return Promise.all(
+            txInfos.map(async (test, i) => {
+                const lemo = new LemoClient({chainID})
+                const createAssetInfo = {
+                    category: 1,
+                    decimals: 18,
+                    isReplenishable: true,
+                    isDivisible: true,
+                    profile: {
+                        name: 'Demo Asset',
+                        symbol: 'DT',
+                        description: 'demo asset',
+                        suggestedGasLimit: '60000',
+                    },
+                }
+                let json = lemo.tx.signCreateAsset(testPrivate, test.txConfig, createAssetInfo)
+                json = JSON.parse(json)
+                assert.equal(json.type, TxType.CREATE_ASSET, `index=${i}`)
+                const result = JSON.stringify({...createAssetInfo, profile: {...createAssetInfo.profile, stop: 'false'}})
+                assert.equal(toBuffer(json.data).toString(), result, `index=${i}`)
+                assert.equal(json.to, undefined, `index=${i}`)
+                assert.equal(json.toName, undefined, `index=${i}`)
+                assert.equal(json.amount, 0, `index=${i}`)
+            }),
+        )
+    })
+})
+
+describe('module_tx_issue_asset', () => {
+    it('sign_issue_asset', () => {
+        txInfos[1].txConfig.to = '0x0000000000000000000000000000000000000001'
+        return Promise.all(
+            txInfos.map(async (test, i) => {
+                const lemo = new LemoClient({chainID})
+                const issueAssetInfo = {
+                    assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+                    metaData: 'issue asset metaData',
+                    supplyAmount: '100000',
+                }
+                let json = lemo.tx.signIssueAsset(testPrivate, test.txConfig, issueAssetInfo)
+                json = JSON.parse(json)
+                assert.equal(json.type, TxType.ISSUE_ASSET, `index=${i}`)
+                const result = JSON.stringify({...issueAssetInfo})
+                assert.equal(toBuffer(json.data).toString(), result, `index=${i}`)
+                assert.equal(json.to, test.txConfig.to, `index=${i}`)
+                assert.equal(json.toName, test.txConfig.toName, `index=${i}`)
+                assert.equal(json.amount, 0, `index=${i}`)
+            }),
+        )
+    })
+})
+
+describe('module_tx_transfer_asset', () => {
+    it('sign_transfer_asset', () => {
+        txInfos[1].txConfig.to = '0x0000000000000000000000000000000000000001'
+        txInfos[0].txConfig.amount = 0
+        txInfos[2].txConfig.amount = '117789804318558955305553166716194567721832259791707930541440413419507985'
+        return Promise.all(
+            txInfos.map(async (test, i) => {
+                const lemo = new LemoClient({chainID})
+                const transferAsset = {
+                    assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+                }
+                let json = lemo.tx.signTransferAsset(testPrivate, test.txConfig, transferAsset)
+                json = JSON.parse(json)
+                assert.equal(json.type, TxType.TRANSFER_ASSET, `index=${i}`)
+                const result = JSON.stringify({...transferAsset})
+                assert.equal(toBuffer(json.data).toString(), result, `index=${i}`)
+                assert.equal(json.to, test.txConfig.to, `index=${i}`)
+                assert.equal(json.toName, test.txConfig.toName, `index=${i}`)
+                assert.equal(json.amount, test.txConfig.amount, `index=${i}`)
+            }),
+        )
+    })
+})
+
 describe('module_tx_watchTx', () => {
     it('watchTx', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 1000)
@@ -156,9 +234,9 @@ describe('module_tx_watchTx', () => {
             toName: 'aa',
             message: 'aaa',
         }
-        const watchTxId =  lemo.tx.watchTx(testConfig, (() => {
+        const watchTxId = lemo.tx.watchTx(testConfig, () => {
             lemo.tx.stopWatchTx(watchTxId)
             done()
-        }))
+        })
     })
 })

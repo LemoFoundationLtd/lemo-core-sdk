@@ -52,13 +52,6 @@ const mockInfos = [
         },
     },
     {
-        method: 'chain_latestStableBlock',
-        paramsCount: 1,
-        reply([withBody]) {
-            return withBody ? currentBlock : {...currentBlock, transactions: null}
-        },
-    },
-    {
         method: 'chain_currentBlock',
         paramsCount: 1,
         reply([withBody]) {
@@ -99,13 +92,6 @@ const mockInfos = [
                 result = {...result, transactions: null}
             }
             return result
-        },
-    },
-    {
-        method: 'chain_latestStableHeight',
-        paramsCount: 0,
-        reply() {
-            return currentHeight
         },
     },
     {
