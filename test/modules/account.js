@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
-import {miner, formatedMiner, formattedSpecialLemoBase, formattedNotExistLemoBase} from '../datas'
+import {chainID, miner, formatedMiner, formattedSpecialLemoBase, formattedNotExistLemoBase, formattedEquities} from '../datas'
 
 import '../mock'
 
@@ -66,14 +66,25 @@ describe('module_account_newKeyPair', () => {
 })
 
 describe('module_account_getAssetEquityByAddress', () => {
+    it('equities', async () => {
+        const lemo = new LemoClient({chainID, host: '127.0.0.1:8001'})
+        const result = await lemo.account.getAllAssets('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10)
+        result.equities.forEach((item, index) => {
+            assert.deepEqual(item, formattedEquities[index])
+        })
+        assert.equal(result.equities.length, formattedEquities.length)
+        assert.equal(result.total, formattedEquities.length)
+    })
     it('0 equity', async () => {
-        const lemo = new LemoClient({host: '127.0.0.1:8001'})
-        const result = await lemo.account.getAssetEquityByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10)
+        const lemo = new LemoClient({chainID, host: '127.0.0.1:8001'})
+        const result = await lemo.account.getAllAssets('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24A', 0, 10)
         assert.equal(result.equities.length, 0)
+        assert.equal(result.total, 0)
     })
     it('get from empty account', async () => {
-        const lemo = new LemoClient({host: '127.0.0.1:8001'})
-        const result = await lemo.account.getAssetEquityByAddress('Lemobw', 0, 10)
+        const lemo = new LemoClient({chainID, host: '127.0.0.1:8001'})
+        const result = await lemo.account.getAllAssets('Lemobw', 0, 10)
         assert.equal(result.equities.length, 0)
+        assert.equal(result.total, 0)
     })
 })
