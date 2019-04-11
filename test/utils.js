@@ -42,86 +42,66 @@ describe('formatMoney', () => {
 })
 
 describe('moToLemo', () => {
-    it('moToLemo success', () => {
-        const test = {
-            0: '0',
-            1000000000000: '0.000001',
-            1000000000001: '0.000001000000000001',
-            11000000000000: '0.000011',
-            11111000000000000: '0.011111',
-            11110001000000000000: '11.110001',
-            11110001001000000000: '11.110001001',
-            111110001000000000000: '111.110001',
-            1000000000000000000: '1',
-            100000000000000000000: '100',
-        }
-        Object.entries(test).forEach(([input, output]) => {
-            it(`number ${input}`, () => {
-                assert.equal(utils.moToLemo(input), output)
-            })
+    const tests = [
+        {input: 0, output: '0'},
+        {input: 1111, output: '0.000000000000001111'},
+        {input: 1000000000000, output: '0.000001'},
+        {input: 1000000000001, output: '0.000001000000000001'},
+        {input: 11000000000000, output: '0.000011'},
+        {input: 11111000000000000, output: '0.011111'},
+        {input: 11110001000000000000, output: '11.110001'},
+        {input: 11110001001000000000, output: '11.110001001'},
+        {input: 111110001000000000000, output: '111.110001'},
+        {input: 1000000000000000000, output: 1},
+        {input: 100000000000000000000, output: '100'},
+        {input: '0x11111', output: '0.000000000000069905'},
+        {input: '-1000000', output: '', error: errors.MoneyFormatError()},
+        {input: '-0.2200000', output: '', error: errors.MoneyFormatError()},
+        {input: 'usuussua', output: '', error: errors.MoneyFormatError()},
+        {input: '-idndfsda', output: '', error: errors.MoneyFormatError()},
+    ]
+    it('all', () => {
+        tests.forEach((test) => {
+            console.log(test.error)
+            if (test.error) {
+                assert.throws(() => {
+                    utils.moToLemo(test.input)
+                }, test.error)
+            } else {
+                assert.equal(utils.moToLemo(test.input).toString(10), test.output)
+            }
         })
-    })
-    it('minus number mo', () => {
-        const test = [-1, -0.99878, 100000000000000000000000000]
-        assert.throws(() => {
-            utils.moToLemo(test[0])
-        }, errors.MoneyFormatError())
-        assert.throws(() => {
-            utils.moToLemo(test[1])
-        }, errors.MoneyFormatError())
-        assert.equal(utils.moToLemo(test[2]).toString(10), '100000000')
-    })
-    it('specil string mo', () => {
-        const test = ['msdja*jf', '-wwwwww', '0x1100000']
-        assert.throws(() => {
-            utils.moToLemo(test[0])
-        }, errors.MoneyFormatError())
-        assert.throws(() => {
-            utils.moToLemo(test[1])
-        }, errors.MoneyFormatError())
-        const result = utils.moToLemo(test[2])
-        assert.equal(result.toString(10), '0.000000000017825792')
     })
 })
 
 describe('lemoToMo', () => {
-    it('success', function() {
-        const test = {
-            0: '0',
-            0.000000000000000001: '1',
-            0.000001: '1000000000000',
-            0.000001000000000001: '1000000000001',
-            0.000011: '11000000000000',
-            0.011111: '11111000000000000',
-            11.110001: '11110001000000000000',
-            11.110001001: '11110001001000000000',
-            111.110001: '111110001000000000000',
-            1: '1000000000000000000',
-            100: '100000000000000000000',
-        }
-        Object.entries(test).forEach(([input, output]) => {
-            it(`number ${input}`, () => {
-                assert.equal(utils.lemoToMo(input), output)
-            })
+    const tests = [
+        {input: 0, output: '0'},
+        {input: 0.000000000000000001, output: '1'},
+        {input: 0.000001, output: '1000000000000'},
+        {input: 0.000001000000000001, output: '1000000000001'},
+        {input: 0.000011, output: '11000000000000'},
+        {input: 0.011111, output: '11111000000000000'},
+        {input: 11.110001, output: '11110001000000000000'},
+        {input: 11.110001001, output: '11110001001000000000'},
+        {input: 111.110001, output: '111110001000000000000'},
+        {input: 1, output: '1000000000000000000'},
+        {input: 100, output: '100000000000000000000'},
+        {input: '0x11111', output: '69905000000000000000000'},
+        {input: '-1000000', output: '', error: errors.MoneyFormatError()},
+        {input: 'usuussua', output: '', error: errors.MoneyFormatError()},
+        {input: '-0.2200000', output: '', error: errors.MoneyFormatError()},
+        {input: '-idndfsda', output: '', error: errors.MoneyFormatError()},
+    ]
+    it('all', () => {
+        tests.forEach((test) => {
+            if (test.error) {
+                assert.throws(() => {
+                    utils.lemoToMo(test.input)
+                }, test.error)
+            } else {
+                assert.equal(utils.lemoToMo(test.input).toString(10), test.output)
+            }
         })
-    })
-    it('minus number lemo', () => {
-        const test = [-100, -0.9134539878]
-        assert.throws(() => {
-            utils.lemoToMo(test[0])
-        }, errors.MoneyFormatError())
-        assert.throws(() => {
-            utils.lemoToMo(test[1])
-        }, errors.MoneyFormatError())
-    })
-    it('specil string lemo', () => {
-        const test = ['msdja*jf', '-wwwwww', '0x1100000']
-        assert.throws(() => {
-            utils.lemoToMo(test[0])
-        }, errors.MoneyFormatError())
-        assert.throws(() => {
-            utils.lemoToMo(test[1])
-        }, errors.MoneyFormatError())
-        assert.equal(utils.lemoToMo(test[2]).toString(10), '17825792000000000000000000')
     })
 })
