@@ -16,17 +16,17 @@ import {DEFAULT_POLL_DURATION} from '../../lib/config'
 
 
 describe('module_chain_getNewestBlock', () => {
-    it('latestStableBlock with body', async () => {
+    it('newest block with body', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getNewestBlock(true)
         assert.deepEqual(result, formattedCurrentBlock)
     })
-    it('latestStableBlock without body', async () => {
+    it('newest block without body', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getNewestBlock(false)
         assert.deepEqual(result, {header: formattedCurrentBlock.header})
     })
-    it('Parameter default', async () => {
+    it('default parameter', async () => {
         const lemo = new LemoClient()
         const result = await lemo.getNewestBlock()
         assert.deepEqual(result, {header: formattedCurrentBlock.header})
