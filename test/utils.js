@@ -55,6 +55,8 @@ describe('moToLemo', () => {
         {input: 1000000000000000000, output: 1},
         {input: 100000000000000000000, output: '100'},
         {input: '0x11111', output: '0.000000000000069905'},
+        {input: -1, output: '', error: errors.MoneyFormatError()},
+        {input: '', output: '', error: errors.MoneyFormatError()},
         {input: '-0x11111', output: '', error: errors.MoneyFormatError()},
         {input: '-1000000', output: '', error: errors.MoneyFormatError()},
         {input: '-0.2200000', output: '', error: errors.MoneyFormatError()},
@@ -63,7 +65,6 @@ describe('moToLemo', () => {
     ]
     it('all', () => {
         tests.forEach((test) => {
-            console.log(test.error)
             if (test.error) {
                 assert.throws(() => {
                     utils.moToLemo(test.input)
@@ -89,6 +90,8 @@ describe('lemoToMo', () => {
         {input: 1, output: '1000000000000000000'},
         {input: 100, output: '100000000000000000000'},
         {input: '0x11111', output: '69905000000000000000000'},
+        {input: -1, output: '', error: errors.MoneyFormatError()},
+        {input: '', output: '', error: errors.MoneyFormatError()},
         {input: '-0x11111', output: '', error: errors.MoneyFormatError()},
         {input: '-1000000', output: '', error: errors.MoneyFormatError()},
         {input: 'usuussua', output: '', error: errors.MoneyFormatError()},
