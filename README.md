@@ -78,7 +78,7 @@ API | description | asynchronous | available for remote
 [lemo.account.getBalance(addr)](#submodule-account-getBalance) | Get the balance of an account | ✓ | ✓
 [lemo.account.getAccount(addr)](#submodule-account-getAccount) | Get the information of an account | ✓ | ✓
 [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | Get the information of an candidate | ✓ | ✓
-[lemo.account.getAllAssets(address, index, limit)](#submodule-account-getAllAssets) | Obtain all asset interests held in the specified account | ✓ | ✓
+[lemo.account.getAllAssets(address, index, limit)](#submodule-account-getAllAssets) | Obtain all asset equities held in the specified account | ✓ | ✓
 [lemo.tx.getTx(txHash)](#submodule-tx-getTx) | Get transaction by the its hash | ✓    | ✓
 [lemo.tx.getTxListByAddress(address, index, limit)](#submodule-tx-getTxListByAddress)  | Get paged transactions by account address | ✓ | ✓
 [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx) | Sign and send transaction | ✓ | ✓
@@ -86,8 +86,8 @@ API | description | asynchronous | available for remote
 [lemo.tx.signVote(privateKey, txInfo)](#submodule-tx-signVote) | Sign a special transaction for vote | ✖ | ✓ 
 [lemo.tx.signCandidate(privateKey, txInfo, candidateInfo)](#submodule-tx-signCandidate) | Sign a special transaction for register/edit candidate | ✖ | ✓ 
 [lemo.tx.signCreateAsset(privateKey, txConfig, createAssetInfo)](#submodule-tx-signCreateAsset) | Sign a special transaction for create candidate | ✖ | ✓ 
-[lemo.tx.signIssueAsset(privateKey, txConfig, issueAssetInfo)](#submodule-tx-signIssueAsset) | Sign a special transaction for the issuance of assets | ✖ | ✓ 
-[lemo.tx.signTransferAsset(privateKey, txConfig, transferAssetInfo)](#submodule-tx-signTransferAsset) | Sign a special transaction for transaction candidate | ✖ | ✓ 
+[lemo.tx.signIssueAsset(privateKey, txConfig, issueAssetInfo)](#submodule-tx-signIssueAsset) | Sign a special transaction for the issuance of asset | ✖ | ✓ 
+[lemo.tx.signTransferAsset(privateKey, txConfig, transferAssetInfo)](#submodule-tx-signTransferAsset) | Sign a special transaction for transfer asset | ✖ | ✓ 
 [lemo.tx.send(signedTxInfo)](#submodule-tx-send) | Send a signed transaction | ✓ | ✓
 [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx) | listen and filter for transaction of block | ✖ | ✓ |
 [lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx) | Stop listening transaction | ✖ | ✓ |
@@ -1005,10 +1005,10 @@ lemo.account.getCandidateInfo('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
 ```
 lemo.account.getAllAssets(address, index, limit)
 ```
-Obtain all asset interests held in the specified account
+Obtain all asset equities held in the specified account
 
 ##### Parameters
-1. `string` - candidate account address
+1. `string` - Account address
 2. `number` - Index of equities
 3. `number` - The count of equities required
 
@@ -1273,7 +1273,7 @@ The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference i
 ##### Parameters
 1. `string` - Account private key
 2. `object` - Unsigned transaction like the same parameter in [`lemo.tx.sendTx`](#submodule-tx-sendTx). For this API, `to`, `toName`, `amount`, `data` fields will be ignored. 
-3. `object` - Trading of assets information. includes `assetCode`, `metaData`, `supplyAmount` field
+3. `object` - Transfer of assets information. includes `assetCode`, `metaData`, `supplyAmount` field
 
 ##### Returns
 `string` - The string of signed [transaction](#data-structure-transaction) information
@@ -1304,7 +1304,7 @@ The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference i
 ##### Parameters
 1. `string` - Account private key
 2. `object` - Unsigned transaction like the same parameter in [`lemo.tx.sendTx`](#submodule-tx-sendTx).
-3. `object` - transaction assets information. includes `assetID` field
+3. `object` - Transaction assets information. includes `assetID` field
 
 ##### Returns
 `string` - The string of signed [transaction](#data-structure-transaction) information
@@ -1536,7 +1536,7 @@ Convert the unit from mo to LEMO
 1. `string|number` - mo
 
 ##### Returns
-`bigNumber` - If it is a legal string or number, return an object of type bigNumber. If it is not legal, return the exception information.
+`bigNumber` - It returns an object of type bigNumber. If input an illegal string or number, it will throw an exception.
 
 ##### Example
 ```js
@@ -1559,7 +1559,7 @@ Convert the unit from LEMO to mo
 1. `string|number` - LEMO
 
 ##### Returns
-`bigNumber` - If it is a legal string or number, return an object of type bigNumber. If it is not legal, return the exception information.
+`bigNumber` - It returns an object of type bigNumber. If input an illegal string or number, it will throw an exception.
 
 ##### Example
 ```js

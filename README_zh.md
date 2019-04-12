@@ -94,8 +94,8 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.stopWatch(watchId)](#submodule-global-stopWatch)                     | 停止指定的轮询或所有轮询       | ✖    | ✓          |
 | [lemo.isWatching()](#submodule-global-isWatching)                          | 是否正在轮询                   | ✖    | ✓          |
 | [lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress)             | LemoChain地址校验             | ✖    | ✓          |
-| [lemo.tool.moToLemo(mo)](#submodule-tool-moToLemo)             | 将单位从mo转换为LEMO的个数             | ✖    | ✓          |
-| [lemo.tool.lemoToMo(ether)](#submodule-tool-lemoToMo)             | 将单位从LEMO转换为mo的个数             | ✖    | ✓          |
+| [lemo.tool.moToLemo(mo)](#submodule-tool-moToLemo)             | 将单位从mo转换为LEMO             | ✖    | ✓          |
+| [lemo.tool.lemoToMo(ether)](#submodule-tool-lemoToMo)             | 将单位从LEMO转换为mo             | ✖    | ✓          |
 
 | 常量                                                                        | 功能                           |
 | -------------------------------------------------------------------------- | ------------------------------ |
@@ -1768,20 +1768,18 @@ if (errMsg) {
 ```
 lemo.tool.moToLemo(mo)
 ```
-将单位从mo转换为LEMO的个数
+将单位从mo转换为LEMO
 
 ##### Parameters
 1. `string|number` - mo
 
 ##### Returns
-`bigNumber` - 如果是合法的字符串或者数字，返回一个bigNumber类型的对象，如果不合法，返回异常信息
+`string` - 返回一个bigNumber类型的对象，如果输入的字符串或数字不合法，则会抛出一个异常
 
 ##### Example
 ```js
 const result = lemo.tool.moToLemo('0.1')
 console.log(result.toString(10)) // '0.0000000000000000001'
-const errorMsg = lemo.tool.moToLemo('-0.1')
-console.log(errorMsg);// Error: The value entered is in the wrong format
 ```
 
 ---
@@ -1791,20 +1789,18 @@ console.log(errorMsg);// Error: The value entered is in the wrong format
 ```
 lemo.tool.lemoToMo(ether)
 ```
-将单位从LEMO转换为mo的个数
+将单位从LEMO转换为mo
 
 ##### Parameters
 1. `string|number` - LEMO
 
 ##### Returns
-`string` - 如果是合法的字符串或者数字，返回一个bigNumber类型的对象，如果不合法，返回异常信息
+`string` - 返回一个bigNumber类型的对象，如果输入的字符串或数字不合法，则会抛出一个异常
 
 ##### Example
 ```js
 const result = lemo.tool.lemoToMo('0.1')
 console.log(result.toString(10)) // '100000000000000000'
-const errorMsg = lemo.tool.lemoToMo('-0.1')
-console.log(errorMsg);// Error: The value entered is in the wrong format
 ```
 
 ---
