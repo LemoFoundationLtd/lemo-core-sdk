@@ -9,7 +9,6 @@ describe('module_account_getAccount', () => {
     it('account with miner balance', async () => {
         const lemo = new LemoClient()
         const result = await lemo.account.getAccount(miner.address)
-
         assert.deepEqual(result, formatedMiner)
     })
     it('account with special balance', async () => {
@@ -29,7 +28,6 @@ describe('module_account_getCandidateInfo', () => {
     it('candidate', async () => {
         const lemo = new LemoClient()
         const result = await lemo.account.getCandidateInfo(miner.address)
-
         assert.deepEqual(result, formatedMiner.candidate)
     })
     it('not candidate', async () => {
