@@ -77,6 +77,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.account.getBalance(addr)](#submodule-account-getBalance)             | 获取账户余额                   | ✓    | ✓          |
 | [lemo.account.getAccount(addr)](#submodule-account-getAccount)             | 获取账户信息                   | ✓    | ✓          |
 | [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | 获取候选人信息                 | ✓    | ✓          |
+| [lemo.account.getAllAssets(address, index, limit)](#submodule-account-getAllAssets) | 获取指定账户持有的所有资产权益                 | ✓    | ✓          |
 | [lemo.tx.getTx(txHash)](#submodule-tx-getTx)                               | 根据交易hash获取交易            | ✓    | ✓          |
 | [lemo.tx.getTxListByAddress(address, index, limit)](#submodule-tx-getTxListByAddress)     | 根据账户地址分页拉取交易列表      | ✓    | ✓          |
 | [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx)                 | 签名并发送交易                 | ✓    | ✓          |
@@ -1166,6 +1167,30 @@ lemo.account.getCandidateInfo('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
     .then(function(candidate) {
         console.log(candidate.votes); // "1599999000"
     })
+```
+
+---
+
+<a name="submodule-account-getAllAssets"></a>
+#### lemo.account.getAllAssets
+```
+lemo.account.getAllAssets(address, index, limit)
+```
+获取指定账户持有的所有资产权益
+
+##### Parameters
+1. `string` - 账户地址
+2. `number` - 账户信息的下标
+3. `number` - 获取账户的数量
+
+##### Returns
+`Promise` - 通过`then`可以获取到账户持有所有资产的信息
+
+##### Example
+```js
+lemo.account.getAllAssets('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).then(function(result) {
+    console.log(result.equities[0].assetId) // 0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a
+})
 ```
 
 ---

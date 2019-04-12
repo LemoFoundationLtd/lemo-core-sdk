@@ -78,6 +78,7 @@ API | description | asynchronous | available for remote
 [lemo.account.getBalance(addr)](#submodule-account-getBalance) | Get the balance of an account | ✓ | ✓
 [lemo.account.getAccount(addr)](#submodule-account-getAccount) | Get the information of an account | ✓ | ✓
 [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | Get the information of an candidate | ✓ | ✓
+[lemo.account.getAllAssets(address, index, limit)](#submodule-account-getAllAssets) | Obtain all asset interests held in the specified account | ✓ | ✓
 [lemo.tx.getTx(txHash)](#submodule-tx-getTx) | Get transaction by the its hash | ✓    | ✓
 [lemo.tx.getTxListByAddress(address, index, limit)](#submodule-tx-getTxListByAddress)  | Get paged transactions by account address | ✓ | ✓
 [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx) | Sign and send transaction | ✓ | ✓
@@ -995,6 +996,30 @@ lemo.account.getCandidateInfo('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
     .then(function(candidate) {
         console.log(candidate.votes); // "1599999000"
     })
+```
+
+---
+
+<a name="submodule-account-getAllAssets"></a>
+#### lemo.account.getAllAssets
+```
+lemo.account.getAllAssets(address, index, limit)
+```
+Obtain all asset interests held in the specified account
+
+##### Parameters
+1. `string` - candidate account address
+2. `number` - Index of equities
+3. `number` - The count of equities required
+
+##### Returns
+`Promise` - Call `then` method to get information about all assets.
+
+##### Example
+```js
+lemo.account.getAllAssets('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).then(function(result) {
+    console.log(result.equities[0].assetId) // '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a'
+})
 ```
 
 ---
