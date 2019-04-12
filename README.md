@@ -78,12 +78,16 @@ API | description | asynchronous | available for remote
 [lemo.account.getBalance(addr)](#submodule-account-getBalance) | Get the balance of an account | ✓ | ✓
 [lemo.account.getAccount(addr)](#submodule-account-getAccount) | Get the information of an account | ✓ | ✓
 [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | Get the information of an candidate | ✓ | ✓
+[lemo.account.getAllAssets(address, index, limit)](#submodule-account-getAllAssets) | Obtain all asset equities held in the specified account | ✓ | ✓
 [lemo.tx.getTx(txHash)](#submodule-tx-getTx) | Get transaction by the its hash | ✓    | ✓
 [lemo.tx.getTxListByAddress(address, index, limit)](#submodule-tx-getTxListByAddress)  | Get paged transactions by account address | ✓ | ✓
 [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx) | Sign and send transaction | ✓ | ✓
 [lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign) | Sign transaction | ✖ | ✓
 [lemo.tx.signVote(privateKey, txInfo)](#submodule-tx-signVote) | Sign a special transaction for vote | ✖ | ✓ 
 [lemo.tx.signCandidate(privateKey, txInfo, candidateInfo)](#submodule-tx-signCandidate) | Sign a special transaction for register/edit candidate | ✖ | ✓ 
+[lemo.tx.signCreateAsset(privateKey, txConfig, createAssetInfo)](#submodule-tx-signCreateAsset) | Sign a special transaction for create candidate | ✖ | ✓ 
+[lemo.tx.signIssueAsset(privateKey, txConfig, issueAssetInfo)](#submodule-tx-signIssueAsset) | Sign a special transaction for the issuance of asset | ✖ | ✓ 
+[lemo.tx.signTransferAsset(privateKey, txConfig, transferAssetInfo)](#submodule-tx-signTransferAsset) | Sign a special transaction for transfer asset | ✖ | ✓ 
 [lemo.tx.send(signedTxInfo)](#submodule-tx-send) | Send a signed transaction | ✓ | ✓
 [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx) | listen and filter for transaction of block | ✖ | ✓ |
 [lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx) | Stop listening transaction | ✖ | ✓ |
@@ -91,6 +95,8 @@ API | description | asynchronous | available for remote
 [lemo.stopWatch(watchId)](#submodule-global-stopWatch) | Stop listening | ✖ | ✓
 [lemo.isWatching()](#submodule-global-isWatching) | True if is listening | ✖ | ✓
 [lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress) | Verify a LemoChain address | ✖ | ✓
+[lemo.tool.moToLemo(mo)](#submodule-tool-moToLemo) | Convert the unit from mo to LEMO | ✖ | ✓
+[lemo.tool.lemoToMo(ether)](#submodule-tool-lemoToMo) | Convert the unit from LEMO to mo | ✖ | ✓
 
 | constant | description |
 | --- | --- |
@@ -994,6 +1000,30 @@ lemo.account.getCandidateInfo('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
 
 ---
 
+<a name="submodule-account-getAllAssets"></a>
+#### lemo.account.getAllAssets
+```
+lemo.account.getAllAssets(address, index, limit)
+```
+Obtain all asset equities held in the specified account
+
+##### Parameters
+1. `string` - Account address
+2. `number` - Index of equities
+3. `number` - The count of equities required
+
+##### Returns
+`Promise` - Call `then` method to get information about all assets.
+
+##### Example
+```js
+lemo.account.getAllAssets('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).then(function(result) {
+    console.log(result.equities[0].assetId) // '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a'
+})
+```
+
+---
+
 ### tx API
 
 ---
@@ -1194,6 +1224,104 @@ console.log(signedTxStr)
 
 ---
 
+<a name="submodule-tx-signCreateAsset"></a>
+#### lemo.tx.signCreateAsset
+```
+lemo.tx.signCreateAsset(privateKey, txConfig, createAssetInfo)
+```
+Sign a transaction for create assets and return the signed transaction string  
+The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference is filling special data in transaction
+
+##### Parameters
+1. `string` - Account private key
+2. `object` - Unsigned transaction like the same parameter in [`lemo.tx.sendTx`](#submodule-tx-sendTx). For this API, `to`, `amount`, `toName`fields will be ignored. 
+3. `object` - Create of assets information.
+
+##### Returns
+`string` - The string of signed [transaction](#data-structure-transaction) information
+
+##### Example
+```js
+const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34'}
+const createAssetInfo = {
+    category: 1,
+    decimals: 18,
+    isReplenishable: true,
+    isDivisible: true,
+    profile: {
+        name: 'Demo Asset',
+        symbol: 'DT',
+        description: 'demo asset',
+        suggestedGasLimit: '60000',
+    },
+}
+const signCreateAsset = lemo.tx.signCreateAsset('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', txInfo, createAssetInfo)
+console.log(signCreateAsset)
+// {"type":"3","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1544584596","data":"0x7b2263617465676f7279223a312c22646563696d616c73223a31382c2269735265706c656e69736861626c65223a747275652c226973446976697369626c65223a747275652c2270726f66696c65223a7b226e616d65223a2244656d6f204173736574222c2273796d626f6c223a224454222c226465736372697074696f6e223a2264656d6f206173736574222c227375676765737465644761734c696d6974223a223630303030222c2273746f70223a2266616c7365227d7d","sig":"0xf1c837a5621c1e62800099ead94668da3a6a8358187a3251e5e2936dea7205df5eeb75fc4c7737caa8a0b63cf1846f22426696ce96a581188c9fb6fece257fc900"}
+```
+
+---
+
+<a name="submodule-tx-signIssueAsset"></a>
+#### lemo.tx.signIssueAsset
+```
+lemo.tx.signIssueAsset(privateKey, txConfig, issueAssetInfo)
+```
+Sign a transaction for the issuance of assets and return the signed transaction string  
+The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference is filling special data in transaction
+
+##### Parameters
+1. `string` - Account private key
+2. `object` - Unsigned transaction like the same parameter in [`lemo.tx.sendTx`](#submodule-tx-sendTx). For this API, `to`, `toName`, `amount`, `data` fields will be ignored. 
+3. `object` - Transfer of assets information. includes `assetCode`, `metaData`, `supplyAmount` field
+
+##### Returns
+`string` - The string of signed [transaction](#data-structure-transaction) information
+
+##### Example
+```js
+const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34'}
+const issueAssetInfo = {
+    assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+    metaData: 'issue asset metaData',
+    supplyAmount: '100000',
+}
+const signIssueAsset = lemo.tx.signIssueAsset('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', txInfo, issueAssetInfo)
+console.log(signIssueAsset)
+// {"type":"4","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1544584596","data":"0x7b226173736574436f6465223a22307864306265666433383530633537346237663661643666373934336665313962323132616666623930313632393738616463323139336130333563656438383834222c226d65746144617461223a226973737565206173736574206d65746144617461222c22737570706c79416d6f756e74223a22313030303030227d","sig":"0x4b92594415a58adbade0774753922d7e34ae32f0545f38efa67d5fcbca6821fd0b57ef2ada36ef994fd06426feadabd030130b9e7e30064a4b2bf60c6b5832a400"}
+```
+
+---
+
+<a name="submodule-tx-signTransferAsset"></a>
+#### lemo.tx.signTransferAsset
+```
+lemo.tx.signTransferAsset(privateKey, txConfig, transferAssetInfo)
+```
+Sign a transaction for transaction assets and return the signed transaction string  
+The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference is filling special data in transaction
+
+##### Parameters
+1. `string` - Account private key
+2. `object` - Unsigned transaction like the same parameter in [`lemo.tx.sendTx`](#submodule-tx-sendTx).
+3. `object` - Transaction assets information. includes `assetID` field
+
+##### Returns
+`string` - The string of signed [transaction](#data-structure-transaction) information
+
+##### Example
+```js
+const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34'}
+const transferAsset = {
+    assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+}
+const signTransferAsset = lemo.tx.signTransferAsset('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', txInfo, transferAsset)
+console.log(signTransferAsset)
+// {"type":"7","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1544584596","data":"0x7b2261737365744964223a22307864306265666433383530633537346237663661643666373934336665313962323132616666623930313632393738616463323139336130333563656438383834227d","sig":"0x1555aa9541db00b02bc0d0632052b3a5533031315d200369cd9001965abec98e231a53ca5b89d82e88f5d2fd76e11f10bfed759f0d5cbca06527100e580bf1a801"}
+```
+
+---
+
 <a name="submodule-tx-send"></a>
 #### lemo.tx.send
 ```
@@ -1337,7 +1465,7 @@ console.log(lemo.TxType.VOTE) // 1
 <a name="submodule-global-stopWatch"></a>
 #### lemo.stopWatch
 ```
-lemo.tx.stopWatch(watchId)
+lemo.stopWatch(watchId)
 ```
 Stop listening
 
@@ -1357,7 +1485,7 @@ lemo.stopWatch()
 <a name="submodule-global-isWatching"></a>
 #### lemo.isWatching
 ```
-lemo.tx.isWatching()
+lemo.isWatching()
 ```
 True if is listening
 
@@ -1393,6 +1521,52 @@ const errMsg = lemo.tool.verifyAddress('LEMObw')
 if (errMsg) {
     console.error(errMsg);
 }
+```
+
+---
+
+<a name="submodule-tool-moToLemo"></a>
+#### lemo.tool.moToLemo
+```
+lemo.tool.moToLemo(mo)
+```
+Convert the unit from mo to LEMO
+
+##### Parameters
+1. `string|number` - mo
+
+##### Returns
+`bigNumber` - It returns an object of type bigNumber. If input an illegal string or number, it will throw an exception.
+
+##### Example
+```js
+const result = lemo.tool.moToLemo('0.1')
+console.log(result.toString(10));// '0.0000000000000000001'
+const errorMsg = lemo.tool.moToLemo('-0.1')
+console.log(errorMsg);// Error: The value entered is in the wrong format
+```
+
+---
+
+<a name="submodule-tool-lemoToMo"></a>
+#### lemo.tool.lemoToMo
+```
+lemo.tool.lemoToMo(ether)
+```
+Convert the unit from LEMO to mo
+
+##### Parameters
+1. `string|number` - LEMO
+
+##### Returns
+`bigNumber` - It returns an object of type bigNumber. If input an illegal string or number, it will throw an exception.
+
+##### Example
+```js
+const result = lemo.tool.lemoToMo('0.1')
+console.log(result.toString(10)) // '100000000000000000'
+const errorMsg = lemo.tool.lemoToMo('-0.1')
+console.log(errorMsg);// Error: The value entered is in the wrong format
 ```
 
 ---
