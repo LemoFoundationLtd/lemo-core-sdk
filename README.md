@@ -92,7 +92,7 @@ API | description | asynchronous | available for remote
 [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx) | listen and filter for transaction of block | ✖ | ✓ |
 [lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx) | Stop listening transaction | ✖ | ✓ |
 [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx) | Listening for new transactions | ✖ | ✖
-[lemo.stopWatch(watchId)](#submodule-global-stopWatch) | Stop listening | ✖ | ✓
+[lemo.stopWatch()](#submodule-global-stopWatch) | Stop listening | ✖ | ✓
 [lemo.isWatching()](#submodule-global-isWatching) | True if is listening | ✖ | ✓
 [lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress) | Verify a LemoChain address | ✖ | ✓
 [lemo.tool.moToLemo(mo)](#submodule-tool-moToLemo) | Convert the unit from mo to LEMO | ✖ | ✓
@@ -1465,12 +1465,12 @@ console.log(lemo.TxType.VOTE) // 1
 <a name="submodule-global-stopWatch"></a>
 #### lemo.stopWatch
 ```
-lemo.stopWatch(watchId)
+lemo.stopWatch()
 ```
 Stop listening
 
 ##### Parameters
-1. `number|undefined` - (optional) The id from `lemo.watchXXX`. If is undefined, then stop all watching
+None
 
 ##### Returns
 None
