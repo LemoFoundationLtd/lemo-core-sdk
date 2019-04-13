@@ -29,6 +29,7 @@ describe('Tx_new', () => {
         assert.equal(tx.expirationTime, Math.floor(Date.now() / 1000) + TTTL)
         assert.equal(tx.message, '')
         assert.equal(tx.sig, '')
+        assert.equal(tx.gasPayerSig, '')
         assert.equal(tx.from, '')
     })
 
@@ -46,6 +47,7 @@ describe('Tx_new', () => {
             expirationTime: 108,
             message: '109',
             sig: '0x0110',
+            gasPayerSig: '0x000',
         }
         const tx = new Tx(config)
         assert.equal(tx.chainID, config.chainID)
@@ -60,6 +62,7 @@ describe('Tx_new', () => {
         assert.equal(tx.expirationTime, config.expirationTime)
         assert.equal(tx.message, config.message)
         assert.equal(tx.sig, config.sig)
+        assert.equal(tx.gasPayerSig, config.gasPayerSig)
         assert.throws(() => {
             console.log(tx.from)
         }, 'invalid signature')
@@ -142,6 +145,48 @@ describe('Tx_new', () => {
             ),
             error: errors.TXInvalidMaxBytes(
                 'sig',
+                Buffer.from(
+                    '100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+                    'hex',
+                ),
+                TX_SIG_BYTE_LENGTH,
+                66,
+            ),
+        },
+        {field: 'gasPayerSig', configData: 0, result: ''},
+        {field: 'gasPayerSig', configData: ''},
+        {field: 'gasPayerSig', configData: '0'},
+        {field: 'gasPayerSig', configData: '1'},
+        {field: 'gasPayerSig', configData: '4294967295'},
+        {field: 'gasPayerSig', configData: '0x'},
+        {field: 'gasPayerSig', configData: '0x0'},
+        {field: 'gasPayerSig', configData: '0x1'},
+        {field: 'gasPayerSig', configData: '0xffffffff'},
+        {field: 'gasPayerSig', configData: toBuffer('1')},
+        {field: 'gasPayerSig', configData: toBuffer('0xffffffff')},
+        {field: 'gasPayerSig', configData: 1, error: errors.TXInvalidType('gasPayerSig', 1, ['string', Buffer])},
+        {field: 'gasPayerSig', configData: 'abc', error: errors.TXMustBeNumber('gasPayerSig', 'abc')},
+        {field: 'gasPayerSig', configData: '0xxyz', error: errors.TXMustBeNumber('gasPayerSig', '0xxyz')},
+        {field: 'gasPayerSig', configData: '-1', error: errors.TXMustBeNumber('gasPayerSig', '-1')},
+        {
+            field: 'gasPayerSig',
+            configData:
+                '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+            error: errors.TXInvalidMaxBytes(
+                'gasPayerSig',
+                '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+                TX_SIG_BYTE_LENGTH,
+                66,
+            ),
+        },
+        {
+            field: 'gasPayerSig',
+            configData: Buffer.from(
+                '100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+                'hex',
+            ),
+            error: errors.TXInvalidMaxBytes(
+                'gasPayerSig',
                 Buffer.from(
                     '100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
                     'hex',
