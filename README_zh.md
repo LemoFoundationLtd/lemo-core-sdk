@@ -1696,7 +1696,7 @@ console.log(lemo.TxType.VOTE) // 1
 lemo.stopWatch()
 ```
 
-停止轮询
+停止所有轮询
 
 ##### Parameters
 
