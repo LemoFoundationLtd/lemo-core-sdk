@@ -91,7 +91,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx)         | 监听过滤区块的交易            | ✖    | ✓          |
 | [lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx)                | 停止指定交易            | ✖    | ✓          |
 | [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx)           | 监听新的 pending 交易          | ✖    | ✖          |
-| [lemo.stopWatch(watchId)](#submodule-global-stopWatch)                     | 停止指定的轮询或所有轮询       | ✖    | ✓          |
+| [lemo.stopWatch()](#submodule-global-stopWatch)                     | 停止所有轮询       | ✖    | ✓          |
 | [lemo.isWatching()](#submodule-global-isWatching)                          | 是否正在轮询                   | ✖    | ✓          |
 | [lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress)             | LemoChain地址校验             | ✖    | ✓          |
 | [lemo.tool.moToLemo(mo)](#submodule-tool-moToLemo)             | 将单位从mo转换为LEMO             | ✖    | ✓          |
@@ -1693,14 +1693,14 @@ console.log(lemo.TxType.VOTE) // 1
 #### lemo.stopWatch
 
 ```
-lemo.stopWatch(watchId)
+lemo.stopWatch()
 ```
 
-停止轮询
+停止所有轮询
 
 ##### Parameters
 
-1. `number|undefined` - (选填) `lemo.watchXXX`接口返回的 id。若不填，则停止所有轮询
+无
 
 ##### Returns
 
