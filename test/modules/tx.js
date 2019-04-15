@@ -200,6 +200,50 @@ describe('module_tx_issue_asset', () => {
     })
 })
 
+describe('module_tx_replenish_asset', () => {
+    it('sign_replenish_asset', () => {
+        return Promise.all(
+            txInfos.map(async (test, i) => {
+                const lemo = new LemoClient({chainID})
+                const issueAssetInfo = {
+                    assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+                    replenishAmount: '100000',
+                }
+                let json = lemo.tx.signReplenishAsset(testPrivate, test.txConfig, issueAssetInfo)
+                json = JSON.parse(json)
+                assert.equal(json.type, TxType.REPLENISH_ASSET, `index=${i}`)
+                const result = JSON.stringify({...issueAssetInfo})
+                assert.equal(toBuffer(json.data).toString(), result, `index=${i}`)
+                assert.equal(json.toName, test.txConfig.toName, `index=${i}`)
+            }),
+        )
+    })
+})
+
+describe('module_tx_modify_asset', () => {
+    it('sign_modify_asset', () => {
+        return Promise.all(
+            txInfos.map(async (test, i) => {
+                const lemo = new LemoClient({chainID})
+                const ModifyAssetInfo = {
+                    assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+                    info: {
+                        name: 'Demo Asset',
+                        symbol: 'DT',
+                        description: 'demo asset',
+                    },
+                }
+                let json = lemo.tx.signModifyAsset(testPrivate, test.txConfig, ModifyAssetInfo)
+                json = JSON.parse(json)
+                assert.equal(json.type, TxType.MODIFY_ASSET, `index=${i}`)
+                const result = JSON.stringify({...ModifyAssetInfo})
+                assert.equal(toBuffer(json.data).toString(), result, `index=${i}`)
+                assert.equal(json.toName, test.txConfig.toName, `index=${i}`)
+            }),
+        )
+    })
+})
+
 describe('module_tx_transfer_asset', () => {
     it('sign_transfer_asset', () => {
         txInfos[1].txConfig.to = '0x0000000000000000000000000000000000000001'
