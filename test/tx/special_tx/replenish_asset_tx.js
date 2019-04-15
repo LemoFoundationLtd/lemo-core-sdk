@@ -51,15 +51,4 @@ describe('replenish-Asset', () => {
             new ReplenishAsset({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
         }, errors.TXMustBeNumber('replenishAmount', '0.11'))
     })
-    // isReplenishable is false
-    it('replenish_isReplenishable_false', () => {
-        const replenishAssetInfo = {
-            assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
-            replenishAmount: '1000',
-            isReplenishable: false,
-        }
-        assert.throws(() => {
-            new ReplenishAsset({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
-        }, errors.TXReplenishabble())
-    })
 })
