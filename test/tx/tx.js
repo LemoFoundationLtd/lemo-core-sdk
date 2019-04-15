@@ -47,7 +47,7 @@ describe('Tx_new', () => {
             expirationTime: 108,
             message: '109',
             sig: '0x0110',
-            gasPayerSig: '0x000',
+            gasPayerSig: '0x01011',
         }
         const tx = new Tx(config)
         assert.equal(tx.chainID, config.chainID)
