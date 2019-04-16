@@ -2,7 +2,7 @@ import {assert} from 'chai'
 import {chainID} from '../../datas'
 import {TxType, TX_ASSET_CODE_LENGTH} from '../../../lib/const'
 import errors from '../../../lib/errors'
-import IssueAsset from '../../../lib/tx/special_tx/issue_asset_tx'
+import IssueAssetTx from '../../../lib/tx/special_tx/issue_asset_tx'
 
 describe('IssueAsset_new', () => {
     it('miss config.metaData', () => {
@@ -10,7 +10,7 @@ describe('IssueAsset_new', () => {
             assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
             supplyAmount: '100000',
         }
-        const tx = new IssueAsset(
+        const tx = new IssueAssetTx(
             {
                 chainID,
                 type: TxType.ISSUE_ASSET,
@@ -32,7 +32,7 @@ describe('IssueAsset_new', () => {
             supplyAmount: '100000',
         }
         assert.throws(() => {
-            new IssueAsset({chainID, to: 'lemobw', toName: 'alice'}, issueAssetInfo)
+            new IssueAssetTx({chainID, to: 'lemobw', toName: 'alice'}, issueAssetInfo)
         }, errors.TXParamMissingError('assetCode'))
     })
     it('miss config.supplyAmount', () => {
@@ -40,7 +40,7 @@ describe('IssueAsset_new', () => {
             assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
         }
         assert.throws(() => {
-            new IssueAsset({chainID, to: 'lemobw', toName: 'alice'}, issueAssetInfo)
+            new IssueAssetTx({chainID, to: 'lemobw', toName: 'alice'}, issueAssetInfo)
         }, errors.TXParamMissingError('supplyAmount'))
     })
     it('normal config', () => {
@@ -49,7 +49,7 @@ describe('IssueAsset_new', () => {
             metaData: 'issue asset metaData',
             supplyAmount: '100000',
         }
-        const tx = new IssueAsset({chainID, to: 'lemobw', toName: 'alice'}, issueAssetInfo)
+        const tx = new IssueAssetTx({chainID, to: 'lemobw', toName: 'alice'}, issueAssetInfo)
         assert.equal(tx.to, 'lemobw')
         assert.equal(tx.toName, 'alice')
         assert.equal(tx.amount, 0)
@@ -93,10 +93,10 @@ describe('IssueAsset_new', () => {
             }
             if (test.error) {
                 assert.throws(() => {
-                    new IssueAsset({chainID}, issueAssetInfo)
+                    new IssueAssetTx({chainID}, issueAssetInfo)
                 }, test.error)
             } else {
-                const tx = new IssueAsset({chainID}, issueAssetInfo)
+                const tx = new IssueAssetTx({chainID}, issueAssetInfo)
                 const targetField = JSON.parse(tx.data.toString())[test.field]
                 assert.strictEqual(targetField, test.configData)
             }

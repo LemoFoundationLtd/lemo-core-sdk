@@ -2,7 +2,7 @@ import {assert} from 'chai'
 import {chainID} from '../../datas'
 import {TxType} from '../../../lib/const'
 import errors from '../../../lib/errors'
-import ReplenishAsset from '../../../lib/tx/special_tx/replenish_asset_tx'
+import ReplenishAssetTX from '../../../lib/tx/special_tx/replenish_asset_tx'
 
 describe('replenish-Asset', () => {
     // normal situation
@@ -11,7 +11,7 @@ describe('replenish-Asset', () => {
             assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
             replenishAmount: '100000',
         }
-        const tx = new ReplenishAsset(
+        const tx = new ReplenishAssetTX(
             {
                 chainID: 200,
                 type: 5,
@@ -29,7 +29,7 @@ describe('replenish-Asset', () => {
             replenishAmount: '100000',
         }
         assert.throws(() => {
-            new ReplenishAsset({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
+            new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
         }, errors.TXInvalidType('assetId', undefined, ['string']))
     })
     // no replenishAmount
@@ -38,7 +38,7 @@ describe('replenish-Asset', () => {
             assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
         }
         assert.throws(() => {
-            new ReplenishAsset({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
+            new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
         }, errors.TXInvalidType('replenishAmount', undefined, ['string']))
     })
     // error replenishAmount
@@ -48,7 +48,7 @@ describe('replenish-Asset', () => {
             replenishAmount: '0.11',
         }
         assert.throws(() => {
-            new ReplenishAsset({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
+            new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
         }, errors.TXMustBeNumber('replenishAmount', '0.11'))
     })
 })
