@@ -28,7 +28,7 @@ describe('Modify-Asset', () => {
         }
         assert.throws(() => {
             new ModifyAssetTx({chainID, to: 'lemobw', toName: 'alice'}, modifyInfo)
-        }, errors.TXParamMissingError('assetCode'))
+        }, errors.TXInvalidType('assetCode', undefined, ['string']))
     })
     // assetCode length error
     it('modify_assetCode_length', () => {

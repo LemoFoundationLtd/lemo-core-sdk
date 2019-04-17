@@ -30,7 +30,7 @@ describe('replenish-Asset', () => {
         }
         assert.throws(() => {
             new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
-        }, errors.TXParamMissingError('assetId'))
+        }, errors.TXInvalidType('assetId', undefined, ['string']))
     })
     // error assetId
     it('assetId_length_error', () => {
@@ -51,40 +51,31 @@ describe('replenish-Asset', () => {
             new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
         }, errors.TXInvalidType('replenishAmount', undefined, ['number', 'string']))
     })
-    // replenishAmount is decimals
-    it('replenish_replenishAmount_number', () => {
-        const replenishAssetInfo = {
-            assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
-            replenishAmount: 0.11,
-        }
-        const result = new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
-        assert.equal(JSON.parse(result.data.toString()).replenishAmount, 0.11)
-    })
-    it('replenish_replenishAmount_false', () => {
-        const replenishAssetInfo = {
-            assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
-            replenishAmount: '-0.11',
-        }
-        assert.throws(() => {
-            new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
-        }, errors.TXMustBeNumber('replenishAmount', '-0.11'))
-    })
-    it('replenish_replenishAmount_hex', () => {
-        const replenishAssetInfo = {
-            assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
-            replenishAmount: '-0x100001',
-        }
-        assert.throws(() => {
-            new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
-        }, errors.TXMustBeNumber('replenishAmount', '-0x100001'))
-    })
-    it('replenish_replenishAmount_otherstring', () => {
-        const replenishAssetInfo = {
-            assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
-            replenishAmount: -999,
-        }
-        assert.throws(() => {
-            new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
-        }, errors.TXNegativeError('replenishAmount'))
+})
+
+describe('replenishAmount', () => {
+    const tests = [
+        {field: 'replenishAmount', configData: '10001'},
+        {field: 'replenishAmount', configData: '-0.11', error: errors.TXMustBeNumber('replenishAmount', '-0.11')},
+        {field: 'replenishAmount', configData: '-abcd', error: errors.TXMustBeNumber('replenishAmount', '-abcd')},
+        {field: 'replenishAmount', configData: '-0x100001', error: errors.TXMustBeNumber('replenishAmount', '-0x100001')},
+        {field: 'replenishAmount', configData: -999, error: errors.TXNegativeError('replenishAmount')},
+    ]
+    tests.forEach(test => {
+        it('replenishAmount_test', () => {
+            const replenishAssetInfo = {
+                assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+                [test.field]: test.configData,
+            }
+            if (test.error) {
+                assert.throws(() => {
+                    new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
+                }, test.error)
+            } else {
+                const tx = new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
+                const targetField = test.profile ? JSON.parse(tx.data.toString()).profile[test.field] : JSON.parse(tx.data.toString())[test.field]
+                assert.strictEqual(targetField, test.configData)
+            }
+        });
     })
 })
