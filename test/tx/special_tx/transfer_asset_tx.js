@@ -2,14 +2,14 @@ import {assert} from 'chai'
 import {chainID} from '../../datas'
 import {TxType, TX_ASSET_ID_LENGTH} from '../../../lib/const'
 import errors from '../../../lib/errors'
-import TransferAsset from '../../../lib/tx/special_tx/transfer_asset_tx'
+import TransferAssetTx from '../../../lib/tx/special_tx/transfer_asset_tx'
 
 describe('TransferAsset_new', () => {
     it('min config', () => {
         const transferAssetInfo = {
             assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
         }
-        const tx = new TransferAsset({chainID, to: 'lemobw', toName: 'alice'}, transferAssetInfo)
+        const tx = new TransferAssetTx({chainID, to: 'lemobw', toName: 'alice'}, transferAssetInfo)
         assert.equal(tx.type, TxType.TRANSFER_ASSET)
         assert.equal(tx.amount, 0)
         assert.equal(tx.to, 'lemobw')
@@ -19,14 +19,14 @@ describe('TransferAsset_new', () => {
     it('miss config.assetId', () => {
         const transferAssetInfo = {}
         assert.throws(() => {
-            new TransferAsset({chainID, to: 'lemobw', toName: 'alice'}, transferAssetInfo)
+            new TransferAssetTx({chainID, to: 'lemobw', toName: 'alice'}, transferAssetInfo)
         }, errors.TXParamMissingError('assetId'))
     })
     it('normal config', () => {
         const transferAssetInfo = {
             assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
         }
-        const tx = new TransferAsset(
+        const tx = new TransferAssetTx(
             {
                 chainID,
                 type: TxType.TRANSFER_ASSET,
@@ -43,7 +43,9 @@ describe('TransferAsset_new', () => {
         const result = JSON.stringify({...transferAssetInfo})
         assert.equal(tx.data.toString(), result)
     })
+})
 
+describe('test fields', () => {
     // test fields
     const tests = [
         {field: 'assetId', configData: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884'},
@@ -57,15 +59,14 @@ describe('TransferAsset_new', () => {
     tests.forEach(test => {
         it(`set transferAssetInfo.${test.field} to ${JSON.stringify(test.configData)}`, () => {
             const transferAssetInfo = {
-                assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                 [test.field]: test.configData,
             }
             if (test.error) {
                 assert.throws(() => {
-                    new TransferAsset({chainID}, transferAssetInfo)
+                    new TransferAssetTx({chainID}, transferAssetInfo)
                 }, test.error)
             } else {
-                const tx = new TransferAsset({chainID}, transferAssetInfo)
+                const tx = new TransferAssetTx({chainID}, transferAssetInfo)
                 const targetField = JSON.parse(tx.data.toString())[test.field]
                 assert.strictEqual(targetField, test.configData)
             }

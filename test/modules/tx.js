@@ -11,7 +11,7 @@ import {DEFAULT_POLL_DURATION} from '../../lib/config'
 describe('module_tx_getTx', () => {
     it('getTx', async () => {
         const lemo = new LemoClient({chainID})
-        const result = await lemo.tx.getTx('0x649d498473cccc6c42f8932c40095da05558411252136bfebf343d7c6ac263c5')
+        const result = await lemo.tx.getTx('0x6768e6f7f19a0e55ebec3c40182361c9fce83cd3f638203654ef01f767a4732a')
         console.log(result)
         assert.deepEqual(result, formattedTxRes1)
     })
@@ -195,6 +195,49 @@ describe('module_tx_issue_asset', () => {
                 assert.equal(json.to, test.txConfig.to, `index=${i}`)
                 assert.equal(json.toName, test.txConfig.toName, `index=${i}`)
                 assert.equal(json.amount, 0, `index=${i}`)
+            }),
+        )
+    })
+})
+
+describe('module_tx_replenish_asset', () => {
+    it('sign_replenish_asset', () => {
+        return Promise.all(
+            txInfos.map(async (test, i) => {
+                const lemo = new LemoClient({chainID})
+                const issueAssetInfo = {
+                    assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+                    replenishAmount: '100000',
+                }
+                let json = lemo.tx.signReplenishAsset(testPrivate, test.txConfig, issueAssetInfo)
+                json = JSON.parse(json)
+                assert.equal(json.type, TxType.REPLENISH_ASSET, `index=${i}`)
+                const result = JSON.stringify({...issueAssetInfo})
+                assert.equal(toBuffer(json.data).toString(), result, `index=${i}`)
+                assert.equal(json.toName, test.txConfig.toName, `index=${i}`)
+            }),
+        )
+    })
+})
+
+describe('module_tx_modify_asset', () => {
+    it('sign_modify_asset', () => {
+        return Promise.all(
+            txInfos.map(async (test, i) => {
+                const lemo = new LemoClient({chainID})
+                const ModifyAssetInfo = {
+                    assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+                    info: {
+                        name: 'Demo Asset',
+                        symbol: 'DT',
+                        description: 'demo asset',
+                    },
+                }
+                let json = lemo.tx.signModifyAsset(testPrivate, test.txConfig, ModifyAssetInfo)
+                json = JSON.parse(json)
+                assert.equal(json.type, TxType.MODIFY_ASSET, `index=${i}`)
+                const result = JSON.stringify({...ModifyAssetInfo})
+                assert.equal(toBuffer(json.data).toString(), result, `index=${i}`)
             }),
         )
     })
