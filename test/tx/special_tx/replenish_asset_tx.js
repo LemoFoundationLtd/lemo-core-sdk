@@ -51,24 +51,13 @@ describe('replenish-Asset', () => {
             new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
         }, errors.TXIsNotDecimalError('replenishAmount'))
     })
-    // error replenishAmount is negative
+    // replenishAmount is decimals
     it('replenish_replenishAmount_false', () => {
         const replenishAssetInfo = {
             assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
-            replenishAmount: '0.11',
+            replenishAmount: 0.11,
         }
-        assert.throws(() => {
-            new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
-        }, errors.TXMustBeNumber('replenishAmount', '0.11'))
-    })
-    // error replenishAmount start with '0x'
-    it('replenish_replenishAmount_startwith_false', () => {
-        const replenishAssetInfo = {
-            assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
-            replenishAmount: '0x10001',
-        }
-        assert.throws(() => {
-            new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
-        }, errors.TXIsNotDecimalError('replenishAmount'))
+        const result = new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
+        assert.equal(JSON.parse(result.data.toString()).replenishAmount, 0.11)
     })
 })

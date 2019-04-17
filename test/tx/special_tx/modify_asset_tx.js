@@ -81,9 +81,9 @@ describe('info_test', () => {
         {field: 'stop', configData: 'false'},
         {field: 'stop', configData: false},
         {field: 'stop', configData: true},
-        {field: 'stop', configData: '231', error: errors.TxInvalidSymbol()},
-        {field: 'stop', configData: 'sandlfa', error: errors.TxInvalidSymbol()},
-        {field: 'stop', configData: 12314, error: errors.TxInvalidSymbol()},
+        {field: 'stop', configData: '2311222', error: errors.TxInvalidSymbol('stop')},
+        {field: 'stop', configData: 'sandlfa', error: errors.TxInvalidSymbol('stop')},
+        {field: 'stop', configData: 12314, error: errors.TXInvalidType('stop', 1234, ['boolean', 'string'])},
     ]
     tests.forEach(test => {
         it('info_stop', () => {
@@ -98,7 +98,7 @@ describe('info_test', () => {
             }
             if (test.error) {
                 assert.throws(() => {
-                    new ModifyAssetTx({chainID, to: 'hello'}, modifyInfo)
+                    new ModifyAssetTx({chainID, to: '0x1000000000000000000000000000000000000000'}, modifyInfo)
                 }, test.error)
             } else {
                 const tx = new ModifyAssetTx({chainID}, modifyInfo)
