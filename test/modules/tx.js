@@ -238,7 +238,6 @@ describe('module_tx_modify_asset', () => {
                 assert.equal(json.type, TxType.MODIFY_ASSET, `index=${i}`)
                 const result = JSON.stringify({...ModifyAssetInfo})
                 assert.equal(toBuffer(json.data).toString(), result, `index=${i}`)
-                assert.equal(json.toName, test.txConfig.toName, `index=${i}`)
             }),
         )
     })
@@ -262,6 +261,7 @@ describe('module_tx_transfer_asset', () => {
                 assert.equal(toBuffer(json.data).toString(), result, `index=${i}`)
                 assert.equal(json.to, test.txConfig.to, `index=${i}`)
                 assert.equal(json.toName, test.txConfig.toName, `index=${i}`)
+                assert.equal(json.amount, test.txConfig.amount, `index=${i}`)
             }),
         )
     })

@@ -60,7 +60,6 @@ describe('test fields', () => {
         it(`set transferAssetInfo.${test.field} to ${JSON.stringify(test.configData)}`, () => {
             const transferAssetInfo = {
                 [test.field]: test.configData,
-                transferAmount: '1000',
             }
             if (test.error) {
                 assert.throws(() => {

@@ -49,15 +49,42 @@ describe('replenish-Asset', () => {
         }
         assert.throws(() => {
             new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
-        }, errors.TXIsNotDecimalError('replenishAmount'))
+        }, errors.TXInvalidType('replenishAmount', undefined, ['number', 'string']))
     })
     // replenishAmount is decimals
-    it('replenish_replenishAmount_false', () => {
+    it('replenish_replenishAmount_number', () => {
         const replenishAssetInfo = {
             assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
             replenishAmount: 0.11,
         }
         const result = new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
         assert.equal(JSON.parse(result.data.toString()).replenishAmount, 0.11)
+    })
+    it('replenish_replenishAmount_false', () => {
+        const replenishAssetInfo = {
+            assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+            replenishAmount: '-0.11',
+        }
+        assert.throws(() => {
+            new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
+        }, errors.TXMustBeNumber('replenishAmount', '-0.11'))
+    })
+    it('replenish_replenishAmount_hex', () => {
+        const replenishAssetInfo = {
+            assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+            replenishAmount: '-0x100001',
+        }
+        assert.throws(() => {
+            new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
+        }, errors.TXMustBeNumber('replenishAmount', '-0x100001'))
+    })
+    it('replenish_replenishAmount_otherstring', () => {
+        const replenishAssetInfo = {
+            assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+            replenishAmount: -999,
+        }
+        assert.throws(() => {
+            new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
+        }, errors.TXNegativeError('replenishAmount'))
     })
 })
