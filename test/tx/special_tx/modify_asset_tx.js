@@ -17,9 +17,8 @@ describe('Modify-Asset', () => {
     // normal situation
     it('modify_normal', () => {
         const tx = new ModifyAssetTx({chainID}, modifyAssetInfo)
-        console.log(tx)
         assert.equal(tx.type, TxType.MODIFY_ASSET)
-        console.log(tx.data.toString(), modifyAssetInfo.info)
+        assert.equal(JSON.parse(tx.data).info.name, modifyAssetInfo.info.name)
     })
     // no assetCode
     it('modify_noassetCode', () => {
@@ -108,4 +107,5 @@ describe('info_test', () => {
         })
     })
 })
+
 
