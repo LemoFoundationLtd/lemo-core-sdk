@@ -62,7 +62,7 @@ describe('replenishAmount', () => {
         {field: 'replenishAmount', configData: -999, error: errors.TXNegativeError('replenishAmount')},
     ]
     tests.forEach(test => {
-        it('replenishAmount_test', () => {
+        it(`replenishAmount test is ${test.configData}`, () => {
             const replenishAssetInfo = {
                 assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                 [test.field]: test.configData,

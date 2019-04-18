@@ -134,4 +134,16 @@ describe('CreateAssetTx_new', () => {
             }
         })
     })
+    it('symbol_lower_case ', () => {
+        const test = {
+            ...minCreateAssetInfo,
+            profile: {
+                name: 'lemochain',
+                symbol: 'lemo',
+                description: 'demo asset',
+            },
+        }
+        const tx = new CreateAssetTx({chainID}, test)
+        assert.equal(JSON.parse(tx.data.toString()).profile.symbol, 'LEMO')
+    })
 })
