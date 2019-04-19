@@ -302,7 +302,7 @@ describe('module_tx_signReimbursement', () => {
         const lemo = new LemoClient({chainID})
         const noGasInfo = lemo.tx.signNoGas(testPrivate, txInfo.txConfig, testAddr)
         const result = lemo.tx.signReimbursement(testPrivate, noGasInfo, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit)
-        assert.equal(JSON.parse(result).sig, txInfo.gasAfterSign)
+        assert.equal(JSON.parse(result).gasPayerSig, txInfo.gasAfterSign)
         assert.equal(JSON.parse(result).gasLimit, txInfo.txConfig.gasLimit)
         assert.equal(JSON.parse(result).gasPrice, txInfo.txConfig.gasPrice)
     })
