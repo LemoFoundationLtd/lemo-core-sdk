@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 import LemoClient from '../../lib/index'
-import {txInfos, chainID, testPrivate, bigTxInfoWithLemoAddr, formattedTxRes1, formattedTxListRes, tx4} from '../datas'
+import {txInfos, chainID, testPrivate, bigTxInfoWithLemoAddr, formattedTxRes1, formattedTxListRes, tx4, txInfo, testAddr} from '../datas'
 import '../mock'
 import {toBuffer} from '../../lib/utils'
 import errors from '../../lib/errors'
@@ -12,7 +12,6 @@ describe('module_tx_getTx', () => {
     it('getTx', async () => {
         const lemo = new LemoClient({chainID})
         const result = await lemo.tx.getTx('0x6768e6f7f19a0e55ebec3c40182361c9fce83cd3f638203654ef01f767a4732a')
-        console.log(result)
         assert.deepEqual(result, formattedTxRes1)
     })
     it('getTx not exist', async () => {
@@ -282,5 +281,37 @@ describe('module_tx_watchTx', () => {
             lemo.tx.stopWatchTx(watchTxId)
             done()
         })
+    })
+})
+
+describe('module_tx_signNoGas', () => {
+    it('signNoGas_normal', () => {
+        const lemo = new LemoClient({chainID})
+        const txConfig = {
+            ...txInfo.txConfig,
+        }
+        const noGasInfo = lemo.tx.signNoGas(testPrivate, txConfig, testAddr)
+        assert.equal(JSON.parse(noGasInfo).type, txConfig.type)
+        assert.equal(JSON.parse(noGasInfo).payer, testAddr)
+        assert.equal(JSON.parse(noGasInfo).to, txConfig.to)
+    })
+})
+
+describe('module_tx_signReimbursement', () => {
+    it('signReimbursement_normal', () => {
+        const lemo = new LemoClient({chainID})
+        const noGasInfo = lemo.tx.signNoGas(testPrivate, txInfo.txConfig, testAddr)
+        const result = lemo.tx.signReimbursement(testPrivate, noGasInfo, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit)
+        assert.equal(JSON.parse(result).gasPayerSig, txInfo.gasAfterSign)
+        assert.equal(JSON.parse(result).gasLimit, txInfo.txConfig.gasLimit)
+        assert.equal(JSON.parse(result).gasPrice, txInfo.txConfig.gasPrice)
+    })
+    it('signReimbursement_payer_error', () => {
+        const lemo = new LemoClient({chainID})
+        const payer = 'Lemo839J9N2H8QWS4JSSPCZZ4DTGGA9C8PC49YB8'
+        const noGasInfo = lemo.tx.signNoGas(testPrivate, txInfo.txConfig, payer)
+        assert.throws(() => {
+            lemo.tx.signReimbursement(testPrivate, noGasInfo, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit)
+        }, errors.InvalidAddressConflict(payer))
     })
 })

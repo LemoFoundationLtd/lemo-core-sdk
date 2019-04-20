@@ -103,7 +103,7 @@ describe('LemoClient_new', () => {
     })
 })
 
-describe('LemoClient__createAPI', () => {
+describe('LemoClient_createAPI', () => {
     const testConn = {
         send: () => {},
     }
