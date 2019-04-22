@@ -1,6 +1,7 @@
 import {assert} from 'chai'
 import LemoClient from '../../lib/index'
 import {chainID} from '../datas'
+import errors from '../../lib/errors'
 
 describe('module_tool_verifyAddress', () => {
     const tests = [
@@ -28,45 +29,50 @@ describe('module_tool_verifyAddress', () => {
         })
     })
 })
-
 describe('moToLemo', () => {
-    it('is_float', function() {
-        const lemo = new LemoClient({chainID})
-        const mo = '0.1'
-        const result = lemo.tool.moToLemo(mo)
-        assert.equal(result.toString(10), '0.0000000000000000001')
-    })
-    it('bignumber', function() {
-        const lemo = new LemoClient({chainID})
-        const mo = '1000000000000000000'
-        const result = lemo.tool.moToLemo(mo)
-        assert.equal(result.toString(10), '1')
-    })
-    it('zero_number', function() {
-        const lemo = new LemoClient({chainID})
-        const mo = '0'
-        const result = lemo.tool.moToLemo(mo)
-        assert.equal(result.toString(10), '0')
+    const tests = [
+        {input: '0.1', output: '0.0000000000000000001'},
+        {input: '1000000000000000000', output: '1'},
+        {input: 0, output: '0'},
+        {input: '0x1001', output: '0.000000000000004097'},
+        {input: -1, output: '-0.000000000000000001'},
+        {input: '', output: '', error: errors.MoneyFormatError()},
+        {input: 'usuussua', output: '', error: errors.MoneyFormatError()},
+    ]
+    tests.forEach(test => {
+        it(`when input is ${test.input}`, () => {
+            const lemo = new LemoClient({chainID})
+            if (test.error) {
+                assert.throws(() => {
+                    lemo.tool.moToLemo(test.input)
+                }, test.error)
+            } else {
+                assert.equal(lemo.tool.moToLemo(test.input).toString(10), test.output)
+            }
+        })
     })
 })
 
 describe('lemoToMo', () => {
-    it('is_float', function() {
-        const lemo = new LemoClient({chainID})
-        const ether = '0.1'
-        const result = lemo.tool.lemoToMo(ether)
-        assert.equal(result.toString(10), '100000000000000000')
-    })
-    it('bignumber', function() {
-        const lemo = new LemoClient({chainID})
-        const ether = '1'
-        const result = lemo.tool.lemoToMo(ether)
-        assert.equal(result.toString(10), '1000000000000000000')
-    })
-    it('zero_number', function() {
-        const lemo = new LemoClient({chainID})
-        const ether = '0'
-        const result = lemo.tool.lemoToMo(ether)
-        assert.equal(result.toString(10), '0')
+    const tests = [
+        {input: '0.0000000000000000001', output: '0.1'},
+        {input: '1', output: '1000000000000000000'},
+        {input: '0x10011', output: '65553000000000000000000'},
+        {input: 0, output: '0'},
+        {input: -0.000000000000000001, output: '-1'},
+        {input: '', output: '', error: errors.MoneyFormatError()},
+        {input: 'usuussua', output: '', error: errors.MoneyFormatError()},
+    ]
+    tests.forEach(test => {
+        it(`when input is ${test.input}`, () => {
+            const lemo = new LemoClient({chainID})
+            if (test.error) {
+                assert.throws(() => {
+                    lemo.tool.lemoToMo(test.input)
+                }, test.error)
+            } else {
+                assert.equal(lemo.tool.lemoToMo(test.input).toString(10), test.output)
+            }
+        })
     })
 })
