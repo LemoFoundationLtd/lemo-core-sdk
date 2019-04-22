@@ -1,7 +1,7 @@
 {
     "name": "lemo-client",
     "namespace": "LemoFoundationLtd",
-    "version": "0.9.9",
+    "version": "0.10.0",
     "description": "Lemochain JavaScript SDK, access to a lemochain node over RPC",
     "main": "dist/lemo-client.cjs.js",
     "browser": "dist/lemo-client-browser.cjs.js",
