@@ -89,7 +89,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.tx.signTransferAsset(privateKey, txConfig, transferAssetInfo)](#submodule-tx-signTransferAsset)   | 签名交易资产交易   | ✖    | ✓          |
 | [lemo.tx.signReplenishAsset(privateKey, txConfig, replenishInfo)](#submodule-tx-signReplenishAsset)   | 签名增发资产交易   | ✖    | ✓         |
 | [lemo.tx.signModifyAsset(privateKey, txConfig, modifyInfo)](#submodule-tx-signModifyAsset)   | 签名修改资产交易   | ✖    | ✓         |
-| [lemo.tx.signNoGas(privateKey, txConfig, payer)](#submodule-tx-signNoGas)   | 签名免费Gas交易   | ✖    | ✓         |
+| [lemo.tx.signNoGas(privateKey, txConfig, payer)](#submodule-tx-signNoGas)   | 签名免Gas费用交易   | ✖    | ✓         |
 | [lemo.tx.signReimbursement(privateKey, noGasTxStr, gasPrice, gasLimit)](#submodule-tx-signReimbursement)   | 签名代付Gas交易   | ✖    | ✓         |
 | [lemo.tx.send(signedTxInfo)](#submodule-tx-send)                           | 发送已签名的交易               | ✓    | ✓          |
 | [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx)         | 监听过滤区块的交易            | ✖    | ✓          |
@@ -1581,14 +1581,14 @@ console.log(signReplenishAsset)
 lemo.tx.signModifyAsset(privateKey, txConfig, modifyInfo)
 ```
 
-签名用于修改资产的交易并返回签名后的交易信息字符串  
+签名用于修改资产信息的交易并返回签名后的交易信息字符串  
 与[`lemo.tx.sign`](#submodule-tx-sign)用法相同，只是在交易中填充了特殊的数据    
 
 ##### Parameters
 
 1. `string` - 账户私钥
 2. `object` - 签名前的交易信息，细节参考[`lemo.tx.sendTx`](#submodule-tx-sendTx)，这里的`amount`、`to`、`toName`字段会被忽略
-3. `object` - 修改资产的信息，包含`assetCode`字段和需要修改的内容，包括`name`、`symbol`、`description`、`stop`、`suggestedGasLimit`字段
+3. `object` - 修改资产的信息，包含`assetCode`和`info`字段，`info`对象中包含需要修改的内容，如`name`、`symbol`、`description`、`stop`、`suggestedGasLimit`等
 
 ##### Returns
 
@@ -1621,18 +1621,22 @@ console.log(signModifyAsset)
 lemo.tx.signNoGas(privateKey, txConfig, payer)
 ```
 
-签名用于免费 Gas 的交易并返回签名后的交易信息字符串  
-与[`lemo.tx.sign`](#submodule-tx-sign)用法相同，只是在交易中填充了特殊的数据    
+签名用于免Gas费用的交易并返回签名后的交易信息字符串  
+
+1. 对包含`payer`账户地址的交易信息进行签名，该交易信息中不含`gasLimit`和`gasPrice`字段
+2. 把返回的字符串交给代付gas的人
+3. 代付gas的人填上`gasLimit`和`gasPrice`字段，然后用自己的私钥对其进行签名，返回最终的交易信息字符串
+3. 通过[`lemo.tx.send`](#submodule-tx-send)方法把交易信息字符串发送到 LemoChain
 
 ##### Parameters
 
 1. `string` - 账户私钥
 2. `object` - 签名前的交易信息，细节参考[`lemo.tx.sendTx`](#submodule-tx-sendTx)，这里的`gasLimit`、`gasPrice`字段会被忽略
-3. `string` - Gas 交易的地址
+3. `string` - Gas代付账户的地址
 
 ##### Returns
 
-`string` - 签名后的[交易](#data-structure-transaction)信息字符串
+`string` - 用于代付交易的字符串 [`lemo.tx.signReimbursement`](#submodule-tx-signReimbursement)
 
 ##### Example
 
@@ -1654,14 +1658,14 @@ console.log(noGasInfo)
 lemo.tx.signReimbursement(privateKey, noGasTxStr, gasPrice, gasLimit)
 ```
 
-签名用于代付Gas的交易并返回签名后的交易信息字符串  
-与[`lemo.tx.sign`](#submodule-tx-sign)用法相同，只是在交易中填充了特殊的数据    
+对免 gas 费用交易信息进行签名，为其代付 gas，并返回签名后的交易信息字符串  
+使用方式请参考 [`lemo.tx.signNoGas`](#submodule-tx-signNoGas) 
 
 ##### Parameters
 
 1. `string` - 账户私钥
 2. `string` - signNoGas 方法返回的字符串，里面带有`payer`字段，细节参考[`lemo.tx.sendTx`](#submodule-tx-sendTx)
-3. `string` - 交易消耗的实际 gas
+3. `string` - 交易消耗 gas 的单价
 3. `string` - 交易消耗的总 gas 上限
 
 ##### Returns

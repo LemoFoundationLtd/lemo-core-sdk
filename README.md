@@ -91,7 +91,7 @@ API | description | asynchronous | available for remote
 [lemo.tx.signReplenishAsset(privateKey, txConfig, replenishInfo)](#submodule-tx-signReplenishAsset) | Sign a special transaction for replenish asset | ✖ | ✓ 
 [lemo.tx.signModifyAsset(privateKey, txConfig, modifyInfo)](#submodule-tx-signModifyAsset) | Sign a special transaction for modify asset | ✖ | ✓ 
 [lemo.tx.signNoGas(privateKey, txConfig, payer)](#submodule-tx-signNoGas) | Sign a special transaction for free gas | ✖ | ✓ 
-[lemo.tx.signReimbursement(privateKey, noGasTxStr, gasPrice, gasLimit)](#submodule-tx-signReimbursement) | Sign a special transaction for reimbursement gas | ✖ | ✓ 
+[lemo.tx.signReimbursement(privateKey, noGasTxStr, gasPrice, gasLimit)](#submodule-tx-signReimbursement) | Sign a special transaction for gas reimbursement | ✖ | ✓ 
 [lemo.tx.send(signedTxInfo)](#submodule-tx-send) | Send a signed transaction | ✓ | ✓
 [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx) | listen and filter for transaction of block | ✖ | ✓ |
 [lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx) | Stop listening transaction | ✖ | ✓ |
@@ -1367,7 +1367,7 @@ The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference i
 ##### Parameters
 1. `string` - Account private key
 2. `object` - Unsigned transaction like the same parameter in [`lemo.tx.sendTx`](#submodule-tx-sendTx).  For this API, `amount`, `to`, `toName` fields will be ignored.
-3. `object` - Modify assets information. include `assetID` field and needs to be modified, includes `name`, `symbol`, `description`, `stop`, `suggestedGasLimit` fields.
+3. `object` - Assets modification information. It contains `assetCode` and `info` fields. The `info` contains the fields you want to modify, such as `name`, `symbol`, `description`, `stop`, `suggestedGasLimit`.
 
 ##### Returns
 `string` - The string of signed [transaction](#data-structure-transaction) information
@@ -1395,16 +1395,19 @@ console.log(signModifyAsset)
 ```
 lemo.tx.signNoGas(privateKey, txConfig, payer)
 ```
-Sign a transaction for free Gas transaction and return the signed transaction string  
-The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference is filling special data in transaction
+Sign a transaction for gas free transaction and return the signed transaction string  
+1. Sign a gas free transaction with transaction information and `payer` account address. The transaction information is exclude `gasLimit` and `gasPrice` field
+2. Send the output string to gas payer
+3. The payer sign the string with his private key, fill `gasLimit` and `gasPrice` field. Then return a final transaction string
+4. Call [`lemo.tx.send`](#submodule-tx-send) to send the transaction string to LemoChain
 
 ##### Parameters
 1. `string` - Account private key
 2. `object` - Unsigned transaction like the same parameter in [`lemo.tx.sendTx`](#submodule-tx-sendTx). For this API, `gasLimit`, `gasPrice` fields will be ignored.
-3. `string` - The address of the transaction gas.
+3. `string` - The address of gas payer account.
 
 ##### Returns
-`string` - The string of signed [transaction](#data-structure-transaction) information
+`string` - The string for [`lemo.tx.signReimbursement`](#submodule-tx-signReimbursement)
 
 ##### Example
 ```js
@@ -1422,12 +1425,12 @@ console.log(noGasInfo)
 ```
 lemo.tx.signReimbursement(privateKey, noGasTxStr, gasPrice, gasLimit)
 ```
-Sign a transaction for reimbursement gas transaction and return the signed transaction string  
-The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference is filling special data in transaction
+Sign a gas reimbursement transaction for paying gas to a free gas transaction, then return the signed transaction string  
+See [`lemo.tx.signNoGas`](#submodule-tx-signNoGas)
 
 ##### Parameters
 1. `string` - Account private key
-2. `string` - The string returned by the signNoGas method with the `payer` field, like the same parameter in [`lemo.tx.sendTx`](#submodule-tx-sendTx).
+2. `string` - The string returned by the [`lemo.tx.signNoGas`](#submodule-tx-signNoGas) method
 3. `string` - Price of every gas in `mo`.
 4. `string` - Max gas limit of transaction.
 
