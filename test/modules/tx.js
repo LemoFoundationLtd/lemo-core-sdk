@@ -204,14 +204,14 @@ describe('module_tx_replenish_asset', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
                 const lemo = new LemoClient({chainID})
-                const issueAssetInfo = {
+                const replenishAssetInfo = {
                     assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                     replenishAmount: '100000',
                 }
-                let json = lemo.tx.signReplenishAsset(testPrivate, test.txConfig, issueAssetInfo)
+                let json = lemo.tx.signReplenishAsset(testPrivate, test.txConfig, replenishAssetInfo)
                 json = JSON.parse(json)
                 assert.equal(json.type, TxType.REPLENISH_ASSET, `index=${i}`)
-                const result = JSON.stringify({...issueAssetInfo})
+                const result = JSON.stringify({...replenishAssetInfo})
                 assert.equal(toBuffer(json.data).toString(), result, `index=${i}`)
                 assert.equal(json.toName, test.txConfig.toName, `index=${i}`)
             }),
