@@ -96,18 +96,16 @@ describe('module_account_getAsset', () => {
     })
 })
 
-describe('module_account_getMateData', () => {
-    it('normal_account_getMateData', async () => {
+describe('module_account_getMetaData', () => {
+    it('normal_account_getMetaData', async () => {
         const lemo = new LemoClient({chainID})
-        const result = await lemo.account.getMateData('0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a')
-        console.log(result)
+        const result = await lemo.account.getMetaData('0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a')
         assert.equal(result.assetCode, metaData.assetCode)
         assert.equal(result.metaDate, metaData.metaDate)
     })
     it('no_metaData', async () => {
         const lemo = new LemoClient({chainID})
-        const result = await lemo.account.getMateData('0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76652v')
-        console.log(result)
+        const result = await lemo.account.getMetaData('0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76652v')
         assert.equal(result.assetCode, metaData1.assetCode)
         assert.equal(result.owner, metaData1.owner)
     })
