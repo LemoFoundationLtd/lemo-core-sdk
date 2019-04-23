@@ -64,7 +64,7 @@ const mockInfos = [
         },
     },
     {
-        method: 'account_getMateData',
+        method: 'account_getMetaData',
         paramsCount: 1,
         reply([assetId]) {
             const result = assetId === metaData.assetId ? metaData : metaData1
