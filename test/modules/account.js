@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
-import {chainID, miner, formatedMiner, formattedSpecialLemoBase, formattedNotExistLemoBase, formattedEquities} from '../datas'
+import {chainID, miner, formatedMiner, formattedSpecialLemoBase, formattedNotExistLemoBase, formattedEquities, creatAsset, metaData, metaData1} from '../datas'
 
 import '../mock'
 
@@ -84,5 +84,31 @@ describe('module_account_getAssetEquityByAddress', () => {
         const result = await lemo.account.getAllAssets('Lemobw', 0, 10)
         assert.equal(result.equities.length, 0)
         assert.equal(result.total, 0)
+    })
+})
+
+describe('module_account_getAsset', () => {
+    it('normal_account_getAsset', async () => {
+        const lemo = new LemoClient({chainID})
+        const result = await lemo.account.getAsset('0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884')
+        assert.equal(result.category, creatAsset.category)
+        assert.equal(result.profile.suggestedGasLimit, creatAsset.profile.suggestedGasLimit)
+    })
+})
+
+describe('module_account_getMateData', () => {
+    it('normal_account_getMateData', async () => {
+        const lemo = new LemoClient({chainID})
+        const result = await lemo.account.getMateData('0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a')
+        console.log(result)
+        assert.equal(result.assetCode, metaData.assetCode)
+        assert.equal(result.metaDate, metaData.metaDate)
+    })
+    it('no_metaData', async () => {
+        const lemo = new LemoClient({chainID})
+        const result = await lemo.account.getMateData('0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76652v')
+        console.log(result)
+        assert.equal(result.assetCode, metaData1.assetCode)
+        assert.equal(result.owner, metaData1.owner)
     })
 })
