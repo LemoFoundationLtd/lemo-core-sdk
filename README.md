@@ -79,6 +79,8 @@ API | description | asynchronous | available for remote
 [lemo.account.getAccount(addr)](#submodule-account-getAccount) | Get the information of an account | ✓ | ✓
 [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | Get the information of an candidate | ✓ | ✓
 [lemo.account.getAllAssets(address, index, limit)](#submodule-account-getAllAssets) | Obtain all asset equities held in the specified account | ✓ | ✓
+[lemo.account.getAssetInfo(assetCode)](#submodule-account-getAssetInfo) | Obtain release information for the specified asset type | ✓ | ✓
+[lemo.account.getAssetMetaData(assetId)](#submodule-account-getAssetMetaData) | Obtain custom data saved in the specified asset | ✓ | ✓
 [lemo.tx.getTx(txHash)](#submodule-tx-getTx) | Get transaction by the its hash | ✓    | ✓
 [lemo.tx.getTxListByAddress(address, index, limit)](#submodule-tx-getTxListByAddress)  | Get paged transactions by account address | ✓ | ✓
 [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx) | Sign and send transaction | ✓ | ✓
@@ -1023,6 +1025,53 @@ Obtain all asset equities held in the specified account
 ```js
 lemo.account.getAllAssets('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).then(function(result) {
     console.log(result.equities[0].assetId) // '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a'
+})
+```
+
+---
+
+<a name="submodule-account-getAssetInfo"></a>
+#### lemo.account.getAssetInfo
+```
+lemo.account.getAssetInfo(assetCode)
+```
+Obtain release information for the specified asset type
+
+##### Parameters
+1. `string` - Account type
+
+##### Returns
+`Promise` - Call `then` method to get release information about the specified asset type.
+
+##### Example
+```js
+lemo.account.getAssetInfo('0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884').then(function(result) {
+    console.log(result.category) // 1
+    console.log(result.profile.suggestedGasLimit) //"60000"
+})
+```
+
+---
+
+<a name="submodule-account-getAssetMetaData"></a>
+#### lemo.account.getAssetMetaData
+```
+lemo.account.getAssetMetaData(assetId)
+```
+Obtain custom data saved in the specified asset
+
+##### Parameters
+1. `string` - Asset ID
+
+##### Returns
+`Promise` - Call `then` method to get custom data saved in the specified asset. There are some new fields in this object:
+    - `string` Asset owner address
+
+##### Example
+```js
+lemo.account.getAssetMetaData('0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a').then(function(result) {
+    console.log(result.metaDate) // "This is user-defined data"
+    console.log(result.owner) //"Lemo8498CBCJSY9G7JF4CGZDP64PRRNGP4HQ2QPF"
 })
 ```
 

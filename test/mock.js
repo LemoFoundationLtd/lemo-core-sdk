@@ -22,6 +22,10 @@ import {
     candidateList,
     deputyNodes,
     equities,
+    creatAsset,
+    metaData,
+    creatAsset1,
+    metaData1,
 } from './datas'
 
 const mockInfos = [
@@ -49,6 +53,22 @@ const mockInfos = [
                 list = equities.slice(index, index + limit)
             }
             return {equities: list, total: String(list.length)}
+        },
+    },
+    {
+        method: 'account_getAsset',
+        paramsCount: 1,
+        reply([assetCode]) {
+            const result = assetCode === creatAsset.assetCode ? creatAsset : creatAsset1
+            return {...result}
+        },
+    },
+    {
+        method: 'account_getMetaData',
+        paramsCount: 1,
+        reply([assetId]) {
+            const result = assetId === metaData.assetId ? metaData : metaData1
+            return {...result}
         },
     },
     {

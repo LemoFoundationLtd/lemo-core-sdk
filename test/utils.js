@@ -63,8 +63,8 @@ describe('moToLemo', () => {
         {input: 'usuussua', output: '', error: errors.MoneyFormatError()},
         {input: '-idndfsda', output: '', error: errors.MoneyFormatError()},
     ]
-    it('all', () => {
-        tests.forEach((test) => {
+    tests.forEach((test) => {
+        it(`The value entered by moToLemo is ${test.input}`, () => {
             if (test.error) {
                 assert.throws(() => {
                     utils.moToLemo(test.input)
@@ -98,8 +98,8 @@ describe('lemoToMo', () => {
         {input: 'usuussua', output: '', error: errors.MoneyFormatError()},
         {input: '-idndfsda', output: '', error: errors.MoneyFormatError()},
     ]
-    it('all', () => {
-        tests.forEach((test) => {
+    tests.forEach((test) => {
+        it(`The value entered by lemoToMo is ${test.input}`, () => {
             if (test.error) {
                 assert.throws(() => {
                     utils.lemoToMo(test.input)
