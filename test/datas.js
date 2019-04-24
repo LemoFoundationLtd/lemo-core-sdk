@@ -686,7 +686,7 @@ export const metaData = {
     assetId: '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a',
     assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
     owner: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D',
-    metaData: '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac765ced',
+    metaData: 'This is user-defined data',
 }
 export const metaData1 = {
     assetId: '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76652v',
