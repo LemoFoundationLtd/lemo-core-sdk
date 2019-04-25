@@ -21,7 +21,7 @@
 
 ### 使用 Yarn
 
-```bash
+```bash 
 yarn add lemo-client
 ```
 
@@ -266,6 +266,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 -   `v` 交易类型、交易编码版本号(当前为 0)、交易签名字段、chainID 这 4 个字段组合而成的数据
 
 <a name="data-transaction-type"></a>
+
 | 交易类型                 | 数值 | 说明                       |
 | ----------------------- | --- | -------------------------- |
 | lemo.TxType.ORDINARY    | 0   | 普通转账交易或合约执行交易    |
@@ -276,6 +277,71 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | ------- | -------------- |
 | 1       | LemoChain 主网 |
 | 100     | LemoChain 测试网 |
+
+<a name="data-structure-asset"></a>
+
+#### asset
+
+资产信息
+
+```json
+{
+    "category": 1,
+    "assetCode": "0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884",
+    "decimals": 18,
+    "totalSupply": "15000000000000000000",
+    "isReplenishable": true,
+    "isDivisible": true,
+    "issuer": "Lemo83GWNWJQ3DQFN6F24WFZF5TGQ39A696GJ7Z3",
+    "profile": {
+        "name": "Demo Asset",
+        "symbol": "DT",
+        "description": "this is a asset information",
+        "suggestedGasLimit": "60000",
+        "stop": false
+    }
+}
+```
+
+-   `category` 资产类型
+-   `assetCode` 创建资产时的交易hash，用户不允许修改
+-   `decimals` 发行资产的小数位，表示将总数细化到小数点后多少位，默认为18位
+-   `totalSupply` 发行的资产总量，在增发和销毁时实时变化，不允许用户设置，计算公式为：`发行量*10^decimals`
+-   `isReplenishable` 每一份资产是否可增发，在创建资产时设置，设置后不可更改，默认为`true`
+-   `isDivisible` 每一份资产是否可分割，在创建资产时设置，设置后不可更改，默认为`true`
+-   `issuer` 发行者地址，自动填写，不允许用户修改
+-   `profile` 资产的其他信息
+    -   `name` 资产名称，推荐使用单词全拼或首字母大写的形式
+    -   `symbol` 资产标识，默认转为大写字符
+    -   `description` 资产基本信息，建议不超过256字节
+    -   `stop` 是否停止特殊交易，默认为`false`,如果出现漏洞，将其设置为`true`可以停止一切特殊交易
+    -   `suggestedGasLimit` 交易消耗的交易上限，和`gasLimit`相同用法，创建资产时由用户自己设置，默认为60000
+
+<a name="data-release-category"></a>
+
+| category| 说明          |
+| ------- | -------------- |
+| 1       | TokenAsset，对应以太坊的ERC20代币 |
+| 2     | NonFungibleAsset，对应以太坊的ERC721代币 |
+| 3      | CommonAsset，可分割资产，融合以上两种场景 |
+
+<a name="data-structure-equity"></a>
+
+#### equity
+
+记录持有者的资产信息，保存在持有者的账户中
+
+```json
+{
+    "assetCode": "0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884",
+    "assetId": "0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a",
+    "balance": "15000000000000000000"
+}
+```
+
+-   `assetCode` 资产类型
+-   `assetId` 资产Id，如果是1，则该值与assetCode相同
+-   `balance` 资产余额，单位为`mo`
 
 <a name="data-structure-changeLog"></a>
 

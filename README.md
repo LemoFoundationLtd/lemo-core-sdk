@@ -249,6 +249,7 @@ Signed transaction
 - `v` This field is combined from transaction `type`, `version`(current is 0), `signature recovery data`, `chainID`
 
 <a name="data-transaction-type"></a>
+
 transaction type | number value | description
 ---|---|---
 lemo.TxType.ORDINARY | 0 | Normal transaction or smart contract execution transaction
