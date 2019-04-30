@@ -245,9 +245,9 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
     "gasPrice": "3000000000",
     "hash": "0x6d3062a9f5d4400b2002b436bc69485449891c83e23bf9e27229234da5b25dcf",
     "message": "",
-    "r": "0xaf5e573f07e4aaa2932b21b90a4b1b1a317b00a83d66908a0053a337319b149d",
-    "s": "0x6c1fbad11a56720fe219ef67c0ada27fa3c76212cc849f519e5fbcbe83a88b6b",
-    "v": "0x20001"
+    "sig": "0xd9a9f9f41ea020185a6480fe6938d776f0a675d89057c071fc890e09742a4dd96edb9d48c9978c2f12fbde0d0445f2ff5f08a448b91469511c663567d0b015f601",
+    "gasPayerSig": "0x800be6a0cf31ab9e86d547fb8cf964339276233a2b260ad8a4b4c93b39a48d6b1761e125f601bc6953e30eaad3e698c12add332a5740f1618915c12432dc610601",
+    "version": "1"
 }
 ```
 
@@ -261,9 +261,9 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 -   `gasPrice` 交易消耗 gas 的单价，`BigNumber`对象，单位为`mo`。单价越高越优先被打包
 -   `hash` 交易 hash
 -   `message` (可选) 交易附带的文本消息。最大长度为1024字符
--   `r` 交易签名字段
--   `s` 交易签名字段
--   `v` 交易类型、交易编码版本号(当前为 0)、交易签名字段、chainID 这 4 个字段组合而成的数据
+-   `sig` 交易签名字段，长度为65个字符
+-   `gasPayerSig` 代付 gas 交易签名字段，长度为65个字符
+-   `version` 当前交易版本，介于0-128之间
 
 <a name="data-transaction-type"></a>
 
@@ -272,6 +272,11 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | lemo.TxType.ORDINARY    | 0   | 普通转账交易或合约执行交易    |
 | lemo.TxType.VOTE        | 1   | 设置投票对象                |
 | lemo.TxType.CANDIDATE   | 2   | 注册或修改候选人信息         |
+| lemo.TxType.CREATE_ASSET | 3   | 创建资产信息                |
+| lemo.TxType.ISSUE_ASSET  | 4   | 发行资产                   |
+| lemo.TxType.REPLENISH_ASSET   | 5   | 增发资产交易           |
+| lemo.TxType.MODIFY_ASSET | 6   | 修改资产交易                |
+| lemo.TxType.TRANSFER_ASSET| 7   | 交易资产                   |
 
 | chainID | 说明           |
 | ------- | -------------- |
@@ -286,8 +291,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 
 ```json
 {
-    "category": 1,
-    "assetCode": "0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884",
+    "category": "1",
     "decimals": 18,
     "totalSupply": "15000000000000000000",
     "isReplenishable": true,
@@ -298,38 +302,37 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
         "symbol": "DT",
         "description": "this is a asset information",
         "suggestedGasLimit": "60000",
-        "stop": false
+        "stop": "false"
     }
 }
 ```
 
 -   `category` 资产类型
--   `assetCode` 创建资产时的交易hash，用户不允许修改
 -   `decimals` 发行资产的小数位，表示将总数细化到小数点后多少位，默认为18位
--   `totalSupply` 发行的资产总量，在增发和销毁时实时变化，不允许用户设置，计算公式为：`发行量*10^decimals`
--   `isReplenishable` 每一份资产是否可增发，在创建资产时设置，设置后不可更改，默认为`true`
--   `isDivisible` 每一份资产是否可分割，在创建资产时设置，设置后不可更改，默认为`true`
--   `issuer` 发行者地址，自动填写，不允许用户修改
--   `profile` 资产的其他信息
-    -   `name` 资产名称，推荐使用单词全拼或首字母大写的形式
-    -   `symbol` 资产标识，默认转为大写字符
-    -   `description` 资产基本信息，建议不超过256字节
-    -   `stop` 是否停止特殊交易，默认为`false`,如果出现漏洞，将其设置为`true`可以停止一切特殊交易
+-   `totalSupply` 发行的资产总量，当资产在增发和销毁时发行的资产总量会实时变化，发行资产总量为`发行量*10^decimals`
+-   `isReplenishable` 该资产是否可增发，在创建资产时设置，设置后该资产不可再次修改，默认为`true`
+-   `isDivisible` 该资产是否可分割，在创建资产时设置，设置后不可再次修改，默认为`true`
+-   `issuer` 发行者地址,根据创建资产时的签名字段得到
+-   `profile` 资产的其他信息，此部分内容可以再次修改
+    -   `name` 创建该资产时的资产名称
+    -   `symbol` 资产标识
+    -   `description` 资产基本信息
     -   `suggestedGasLimit` 交易消耗的交易上限，和`gasLimit`相同用法，创建资产时由用户自己设置，默认为60000
+    -   `stop` 是否停止特殊交易，默认为`false`，如果出现漏洞，将其设置为`true`可以停止一切特殊交易
 
-<a name="data-release-category"></a>
+<a name="data-asset-category"></a>
 
 | category| 说明          |
 | ------- | -------------- |
 | 1       | TokenAsset，对应以太坊的ERC20代币 |
-| 2     | NonFungibleAsset，对应以太坊的ERC721代币 |
-| 3      | CommonAsset，可分割资产，融合以上两种场景 |
+| 2       | NonFungibleAsset，对应以太坊的ERC721代币 |
+| 3       | CommonAsset，可分割资产，融合以上两种场景 |
 
 <a name="data-structure-equity"></a>
 
 #### equity
 
-记录持有者的资产信息，保存在持有者的账户中
+记录资产持有者的资产信息，保存在持有者的账户中
 
 ```json
 {
@@ -339,9 +342,9 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 }
 ```
 
--   `assetCode` 资产类型
--   `assetId` 资产Id，如果是1，则该值与assetCode相同
--   `balance` 资产余额，单位为`mo`
+-   `assetCode` 创建资产时的交易hash，由创建资产时解析得到
+-   `assetId` 资产Id，发行资产的时候解析得到，如果资产类型为1，则 assetCode 和 assetId 相同
+-   `balance` 资产余额，表示当前账户发行或交易资产之后该账户中剩余的金额，单位是`mo`
 
 <a name="data-structure-changeLog"></a>
 
@@ -1283,7 +1286,7 @@ lemo.account.getAssetInfo(assetCode)
 ##### Example
 ```js
 lemo.account.getAssetInfo('0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884').then(function(result) {
-    console.log(result.category) // 1
+    console.log(result.category) // "1"
     console.log(result.profile.suggestedGasLimit) //"60000"
 })
 ```
@@ -1308,7 +1311,7 @@ lemo.account.getAssetMetaData(assetId)
 ```js
 lemo.account.getAssetMetaData('0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a').then(function(result) {
     console.log(result.metaDate) // "This is user-defined data"
-    console.log(result.owner) //"Lemo8498CBCJSY9G7JF4CGZDP64PRRNGP4HQ2QPF"
+    console.log(result.owner) // "Lemo8498CBCJSY9G7JF4CGZDP64PRRNGP4HQ2QPF"
 })
 ```
 
@@ -1531,7 +1534,7 @@ const candidateInfo = {
 }
 const signedTxStr = lemo.tx.signCandidate('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', txInfo, candidateInfo)
 console.log(signedTxStr)
-// {"gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1548337908","v":"0x020300c8","r":"0x3a3bfc3c82c3f712b25917d9aa347474f3b1842f05c0d54c84442a7eea7cccde","s":"0x2a9bbf04db371dd11846ee46a0ffeafe6b4955b929fcda9391c3a026a984763b","data":"0x7b22697343616e646964617465223a747275652c226d696e657241646472657373223a224c656d6f3833474e3732475948324e5a3842413732395a39544354374b5135464333435236444a47222c226e6f64654944223a223565333630303735356639623531326136353630336233386533303838356339386362616337303235396333323335633962336634326565353633623438306564656133353162613066663537343861363338666530616566663564383435626633376133623433373833313837316234386664333266333363643961336330222c22686f7374223a223132372e302e302e31222c22706f7274223a2237303031227d"}
+// {"type":"2","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1548337908","sig":"0xd351bbc3e9e9c5097d3b67d9c5b9aacd19719ff075f0b8a6249f69afd30734a03965b26bdc19927f8da96628cefa76a4228f23609a3fbcd6c27b5cfb9c547dc100","data":"0x7b22697343616e646964617465223a747275652c226d696e657241646472657373223a224c656d6f3833474e3732475948324e5a3842413732395a39544354374b5135464333435236444a47222c226e6f64654944223a223565333630303735356639623531326136353630336233386533303838356339386362616337303235396333323335633962336634326565353633623438306564656133353162613066663537343861363338666530616566663564383435626633376133623433373833313837316234386664333266333363643961336330222c22686f7374223a223132372e302e302e31222c22706f7274223a2237303031227d"}
 ```
 
 ---
@@ -1551,11 +1554,11 @@ lemo.tx.signCreateAsset(privateKey, txConfig, createAssetInfo)
 
 1. `string` - 账户私钥
 2. `object` - 签名前的交易信息，细节参考[`lemo.tx.sendTx`](#submodule-tx-sendTx)。这里的 `to`, `amount`, `toName` 字段会被忽略
-3. `object` - 创建资产信息
+3. `object` - 创建[资产](#data-structure-asset)信息
 
 ##### Returns
 
-`string` - 签名后的[交易](#data-structure-transaction)信息字符串
+`string` - 签名后的[交易](#data-structure-transaction)信息字符串，`date`里面包含创建资产的信息。
 
 ##### Example
 
@@ -1599,7 +1602,7 @@ lemo.tx.signIssueAsset(privateKey, txConfig, issueAssetInfo)
 
 ##### Returns
 
-`string` - 签名后的[交易](#data-structure-transaction)信息字符串
+`string` - 签名后的[交易](#data-structure-transaction)信息字符串，`date`里面包含发行资产的信息。
 
 ##### Example
 
@@ -1636,7 +1639,7 @@ lemo.tx.signReplenishAsset(privateKey, txConfig, replenishInfo)
 
 ##### Returns
 
-`string` - 签名后的[交易](#data-structure-transaction)信息字符串
+`string` - 签名后的[交易](#data-structure-transaction)信息字符串，`date`里面包含增发资产的信息。
 
 ##### Example
 
@@ -1672,7 +1675,7 @@ lemo.tx.signModifyAsset(privateKey, txConfig, modifyInfo)
 
 ##### Returns
 
-`string` - 签名后的[交易](#data-structure-transaction)信息字符串
+`string` - 签名后的[交易](#data-structure-transaction)信息字符串，`date`里面包含修改资产的信息。
 
 ##### Example
 
@@ -1712,7 +1715,7 @@ lemo.tx.signTransferAsset(privateKey, txConfig, transferAssetInfo)
 
 ##### Returns
 
-`string` - 签名后的[交易](#data-structure-transaction)信息字符串
+`string` - 签名后的[交易](#data-structure-transaction)信息字符串，`date`里面包含交易资产的信息。
 
 ##### Example
 
@@ -1720,10 +1723,11 @@ lemo.tx.signTransferAsset(privateKey, txConfig, transferAssetInfo)
 const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34'}
 const transferAsset = {
     assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+    transferAmount: '110000',
 }
 const signTransferAsset = lemo.tx.signTransferAsset('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', txInfo, transferAsset)
 console.log(signTransferAsset)
-// {"type":"7","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1544584596","data":"0x7b2261737365744964223a22307864306265666433383530633537346237663661643666373934336665313962323132616666623930313632393738616463323139336130333563656438383834227d","sig":"0x1555aa9541db00b02bc0d0632052b3a5533031315d200369cd9001965abec98e231a53ca5b89d82e88f5d2fd76e11f10bfed759f0d5cbca06527100e580bf1a801"}
+// {"type":"7","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1544584596","data":"0x7b2261737365744964223a22307864306265666433383530633537346237663661643666373934336665313962323132616666623930313632393738616463323139336130333563656438383834222c227472616e73666572416d6f756e74223a22313130303030227d","sig":"0x2f8392e6407022fb0631592627cdc4d5d61126385f79861274614b02e4acbf44583598a897e38730fd83cf6c9a4de76f446a55a468be36c05eb2c676d85c6a7a01"}
 ```
 
 ---
