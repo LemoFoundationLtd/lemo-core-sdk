@@ -8,7 +8,8 @@ describe('replenish-Asset', () => {
     // normal situation
     it('replenish_normal', () => {
         const ReplenishAssetInfo = {
-            assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+            assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+            assetId: '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a',
             replenishAmount: '100000',
         }
         const tx = new ReplenishAssetTX(
@@ -22,10 +23,12 @@ describe('replenish-Asset', () => {
             ReplenishAssetInfo,
         )
         assert.equal(tx.type, TxType.REPLENISH_ASSET)
+        assert.equal(JSON.parse(tx.data.toString()).replenishAmount, ReplenishAssetInfo.replenishAmount)
     })
     // no assetId
     it('replenish_noassetId', () => {
         const replenishAssetInfo = {
+            assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
             replenishAmount: '100000',
         }
         assert.throws(() => {
@@ -35,6 +38,7 @@ describe('replenish-Asset', () => {
     // error assetId
     it('assetId_length_error', () => {
         const replenishAssetInfo = {
+            assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
             assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a',
             replenishAmount: '100000',
         }
@@ -45,6 +49,7 @@ describe('replenish-Asset', () => {
     // no replenishAmount
     it('replenish_noreplenishAmount', () => {
         const replenishAssetInfo = {
+            assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
             assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
         }
         assert.throws(() => {
@@ -64,6 +69,7 @@ describe('replenishAmount', () => {
     tests.forEach(test => {
         it(`replenishAmount test is ${test.configData}`, () => {
             const replenishAssetInfo = {
+                assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                 assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                 [test.field]: test.configData,
             }
