@@ -2,6 +2,7 @@ import {assert} from 'chai'
 import CandidateTx from '../../../lib/tx/special_tx/candidate_tx'
 import {chainID} from '../../datas'
 import {TxType, NODE_ID_LENGTH, MAX_DEPUTY_HOST_LENGTH} from '../../../lib/const'
+import {decodeUtf8Hex} from '../../../lib/utils'
 import errors from '../../../lib/errors'
 
 describe('CandidateTx_new', () => {
@@ -17,7 +18,7 @@ describe('CandidateTx_new', () => {
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
         assert.equal(tx.amount, 0)
-        assert.equal(tx.data.toString(), JSON.stringify({isCandidate: 'true', ...minCandidateInfo}))
+        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({isCandidate: 'true', ...minCandidateInfo}))
     })
     it('useless config', () => {
         const tx = new CandidateTx(
@@ -35,7 +36,7 @@ describe('CandidateTx_new', () => {
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
         assert.equal(tx.amount, 0)
-        assert.equal(tx.data.toString(), JSON.stringify({isCandidate: 'true', ...minCandidateInfo}))
+        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({isCandidate: 'true', ...minCandidateInfo}))
     })
     it('useful config', () => {
         const candidateInfo = {
@@ -53,7 +54,7 @@ describe('CandidateTx_new', () => {
         assert.equal(tx.type, TxType.CANDIDATE)
         assert.equal(tx.message, 'abc')
         const result = JSON.stringify({...candidateInfo, isCandidate: String(candidateInfo.isCandidate)})
-        assert.equal(tx.data.toString(), result)
+        assert.equal(decodeUtf8Hex(tx.data), result)
     })
 
     // test fields
@@ -100,7 +101,7 @@ describe('CandidateTx_new', () => {
                 }, test.error)
             } else {
                 const tx = new CandidateTx({chainID}, candidateInfo)
-                const targetField = JSON.parse(tx.data.toString())[test.field]
+                const targetField = JSON.parse(decodeUtf8Hex(tx.data))[test.field]
                 if (typeof test.result !== 'undefined') {
                     assert.strictEqual(targetField, test.result)
                 } else {

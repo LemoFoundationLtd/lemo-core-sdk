@@ -14,7 +14,7 @@ describe('module_tool_verifyAddress', () => {
         {input: 'lemo83gn72gyh2nz8ba729z9tct7kq5fc3cr6djg', output: ''},
         {
             input: 'Lemo03GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
-            output: 'Decode address LEMO03GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG fail: Non-base26 character'
+            output: 'Decode address LEMO03GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG fail: Non-base26 character',
         },
         {input: 'Lemo33GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG', output: 'Invalid address checksum Lemo33GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG'},
         {input: '123', output: 'Invalid LemoChain address 123'},
