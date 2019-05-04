@@ -102,6 +102,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress)             | LemoChain地址校验             | ✖    | ✓          |
 | [lemo.tool.moToLemo(mo)](#submodule-tool-moToLemo)             | 将单位从mo转换为LEMO             | ✖    | ✓          |
 | [lemo.tool.lemoToMo(ether)](#submodule-tool-lemoToMo)             | 将单位从LEMO转换为mo             | ✖    | ✓          |
+| [lemo.tool.toBuffer(data)](#submodule-tool-toBuffer)             | 将数据转换为Buffer类型             | ✖    | ✓          |
 
 | 常量                                                                        | 功能                           |
 | -------------------------------------------------------------------------- | ------------------------------ |
@@ -2002,6 +2003,27 @@ lemo.tool.lemoToMo(ether)
 ```js
 const result = lemo.tool.lemoToMo('0.1')
 console.log(result.toString(10)) // '100000000000000000'
+```
+
+---
+
+<a name="submodule-tool-toBuffer"></a>
+#### lemo.tool.toBuffer
+```
+lemo.tool.toBuffer(data)
+```
+将数据转换为Buffer类型
+
+##### Parameters
+1. `number|string|BigNumber|Buffer|null` - 要转换的数据
+
+##### Returns
+`Buffer` - 返回一个Buffer类型的对象，如果传入了不支持的类型，则会抛出一个异常
+
+##### Example
+```js
+const result = lemo.tool.toBuffer('{"value": 100}')
+console.log(result.toString('hex')) // '100000000000000000'
 ```
 
 ---

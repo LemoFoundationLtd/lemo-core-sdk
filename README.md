@@ -1718,8 +1718,6 @@ Convert the unit from mo to LEMO
 ```js
 const result = lemo.tool.moToLemo('0.1')
 console.log(result.toString(10));// '0.0000000000000000001'
-const errorMsg = lemo.tool.moToLemo('-0.1')
-console.log(errorMsg);// Error: The value entered is in the wrong format
 ```
 
 ---
@@ -1741,8 +1739,27 @@ Convert the unit from LEMO to mo
 ```js
 const result = lemo.tool.lemoToMo('0.1')
 console.log(result.toString(10)) // '100000000000000000'
-const errorMsg = lemo.tool.lemoToMo('-0.1')
-console.log(errorMsg);// Error: The value entered is in the wrong format
+```
+
+---
+
+<a name="submodule-tool-toBuffer"></a>
+#### lemo.tool.toBuffer
+```
+lemo.tool.toBuffer(data)
+```
+Convert the unit from LEMO to mo
+
+##### Parameters
+1. `number|string|BigNumber|Buffer|null` - The source data
+
+##### Returns
+`Buffer` - It returns an object of type Buffer. If the type of input is not supported, it will throw an exception.
+
+##### Example
+```js
+const result = lemo.tool.toBuffer('{"value": 100}')
+console.log(result.toString('hex')) // '100000000000000000'
 ```
 
 ---
