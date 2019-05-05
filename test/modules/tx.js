@@ -208,6 +208,7 @@ describe('module_tx_replenish_asset', () => {
             txInfos.map(async (test, i) => {
                 const lemo = new LemoClient({chainID})
                 const replenishAssetInfo = {
+                    assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                     assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                     replenishAmount: '100000',
                 }
@@ -257,6 +258,7 @@ describe('module_tx_transfer_asset', () => {
                 const lemo = new LemoClient({chainID})
                 const transferAsset = {
                     assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+                    transferAmount: '110000',
                 }
                 let json = lemo.tx.signTransferAsset(testPrivate, test, transferAsset)
                 json = JSON.parse(json)
@@ -265,7 +267,6 @@ describe('module_tx_transfer_asset', () => {
                 assert.equal(toBuffer(json.data).toString(), result, `index=${i}`)
                 assert.equal(json.to, test.to ? encodeAddress(test.to) : undefined, `index=${i}`)
                 assert.equal(json.toName, test.toName, `index=${i}`)
-                assert.equal(json.amount, test.amount, `index=${i}`)
             }),
         )
     })

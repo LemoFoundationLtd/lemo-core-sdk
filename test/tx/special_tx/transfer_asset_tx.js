@@ -9,6 +9,7 @@ describe('TransferAsset_new', () => {
     it('min config', () => {
         const transferAssetInfo = {
             assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+            transferAmount: '110000',
         }
         const tx = new TransferAssetTx({chainID, to: 'lemobw', toName: 'alice'}, transferAssetInfo)
         assert.equal(tx.type, TxType.TRANSFER_ASSET)
@@ -18,7 +19,9 @@ describe('TransferAsset_new', () => {
         assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...transferAssetInfo}))
     })
     it('miss config.assetId', () => {
-        const transferAssetInfo = {}
+        const transferAssetInfo = {
+            transferAmount: '110000',
+        }
         assert.throws(() => {
             new TransferAssetTx({chainID, to: 'lemobw', toName: 'alice'}, transferAssetInfo)
         }, errors.TXParamMissingError('assetId'))
@@ -26,6 +29,7 @@ describe('TransferAsset_new', () => {
     it('normal config', () => {
         const transferAssetInfo = {
             assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+            transferAmount: '110000',
         }
         const tx = new TransferAssetTx(
             {
@@ -58,6 +62,34 @@ describe('TransferAsset_new', () => {
     tests.forEach(test => {
         it(`set transferAssetInfo.${test.field} to ${JSON.stringify(test.configData)}`, () => {
             const transferAssetInfo = {
+                [test.field]: test.configData,
+                transferAmount: '110000',
+            }
+            if (test.error) {
+                assert.throws(() => {
+                    new TransferAssetTx({chainID}, transferAssetInfo)
+                }, test.error)
+            } else {
+                const tx = new TransferAssetTx({chainID}, transferAssetInfo)
+                const targetField = JSON.parse(decodeUtf8Hex(tx.data))[test.field]
+                assert.strictEqual(targetField, test.configData)
+            }
+        })
+    })
+})
+
+describe('test fields is transferAssetInfo', () => {
+    // test fields
+    const tests = [
+        {field: 'transferAmount', configData: '0x1001'},
+        {field: 'transferAmount', configData: '10000'},
+        {field: 'transferAmount', configData: 123, error: errors.TXInvalidType('transferAmount', 123, ['string'])},
+        {field: 'transferAmount', configData: '0xabcdrfg', error: errors.TXMustBeNumber('transferAmount', '0xabcdrfg')},
+    ]
+    tests.forEach(test => {
+        it(`set transferAssetInfo.${test.field} to ${JSON.stringify(test.configData)}`, () => {
+            const transferAssetInfo = {
+                assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                 [test.field]: test.configData,
             }
             if (test.error) {
