@@ -233,7 +233,7 @@ Signed transaction
   "hash": "0x6d3062a9f5d4400b2002b436bc69485449891c83e23bf9e27229234da5b25dcf",
   "message": "",
   "sig": "0xd9a9f9f41ea020185a6480fe6938d776f0a675d89057c071fc890e09742a4dd96edb9d48c9978c2f12fbde0d0445f2ff5f08a448b91469511c663567d0b015f601",
-  "gasPayerSig": "0x800be6a0cf31ab9e86d547fb8cf964339276233a2b260ad8a4b4c93b39a48d6b1761e125f601bc6953e30eaad3e698c12add332a5740f1618915c12432dc610601",
+  "gasPayerSig": "0x800be6a0cf31ab9e86d547fb8cf964339276233a2b260ad8a4b4c93b39a48d6b1761e125f601bc6953e30eaad3e698c12add332a5740f1618915c12432dc610601"
 }
 ```
 - `type` The type of transaction
@@ -301,7 +301,7 @@ Asset information
     - `symbol` Asset identification
     - `description` Basic information of assets
     - `suggesteGasLimit` Suggested gas limit. It is like the `gasLimit` field in transaction. The default is 60000
-    - `stop` Whether to stop all actions of the asset. The default is ` false`. Set it to ` true ` can stop all the assets other than the query operation
+    - `stop` Whether to stop all actions of the asset. The default is `false`. Set it to `true` can stop all the assets other than the query operation
 
 <a name="data-asset-category"></a>
 
