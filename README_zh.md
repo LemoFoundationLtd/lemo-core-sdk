@@ -306,7 +306,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
         "symbol": "DT",
         "description": "this is a asset information",
         "suggestedGasLimit": "60000",
-        "stop": "false"
+        "freeze": "false"
     }
 }
 ```
@@ -322,7 +322,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
     -   `symbol` 资产标识
     -   `description` 资产基本信息
     -   `suggestedGasLimit` 交易消耗的gas上限，和`gasLimit`相同用法，创建资产时由用户自己设置，默认为60000
-    -   `stop` 是否停止该资产的交易，默认为`false`，将其设置为`true`可以停止该资产除查询以外的一切操作
+    -   `freeze` 是否冻结资产，默认为`false`，将其设置为`true`可以停止该资产除查询以外的一切操作
 
 <a name="data-asset-category"></a>
 
@@ -1677,7 +1677,7 @@ lemo.tx.signModifyAsset(privateKey, txConfig, modifyInfo)
 
 1. `string` - 账户私钥
 2. `object` - 签名前的交易信息，细节参考[`lemo.tx.sendTx`](#submodule-tx-sendTx)，这里的`amount`、`to`、`toName`字段会被忽略
-3. `object` - 修改资产的信息，包含`assetCode`和`info`字段，`info`对象中包含需要修改的内容，如`name`、`symbol`、`description`、`stop`、`suggestedGasLimit`等
+3. `object` - 修改资产的信息，包含`assetCode`和`info`字段，`info`对象中包含需要修改的内容，如`name`、`symbol`、`description`、`freeze`、`suggestedGasLimit`等
 
 ##### Returns
 

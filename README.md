@@ -286,7 +286,7 @@ Asset information
         "symbol": "DT",
         "description": "this is a asset information",
         "suggestedGasLimit": "60000",
-        "stop": "false"
+        "freeze": "false"
     }
 }
 ```
@@ -301,7 +301,7 @@ Asset information
     - `symbol` Asset identification
     - `description` Basic information of assets
     - `suggesteGasLimit` Suggested gas limit. It is like the `gasLimit` field in transaction. The default is 60000
-    - `stop` Whether to stop all actions of the asset. The default is `false`. Set it to `true` can stop all the assets other than the query operation
+    - `freeze` Whether to freeze asset. The default is false. Set it to true will stop all actions about the asset except query operations
 
 <a name="data-asset-category"></a>
 
@@ -326,7 +326,7 @@ Record the asset information of the asset holder and keep it in the account of t
 ```
 
 -   `assetCode` Asset code, obtained when the asset is created
--   `assetId` The assetId, which is obtained when the asset is issued, is the same assetCode as the assetId when the asset type is 1
+-   `assetId` The assetId, which is obtained when the asset is issued. It will be same as assetCode when the asset type is 1
 -   `balance` The balance of assets, the unit is ` mo `
 
 <a name="data-structure-changeLog"></a>
@@ -1458,7 +1458,7 @@ The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference i
 ##### Parameters
 1. `string` - Account private key
 2. `object` - Unsigned transaction like the same parameter in [`lemo.tx.sendTx`](#submodule-tx-sendTx).  For this API, `amount`, `to`, `toName` fields will be ignored.
-3. `object` - Assets modification information. It contains `assetCode` and `info` fields. The `info` contains the fields you want to modify, such as `name`, `symbol`, `description`, `stop`, `suggestedGasLimit`.
+3. `object` - Assets modification information. It contains `assetCode` and `info` fields. The `info` contains the fields you want to modify, such as `name`, `symbol`, `description`, `freeze`, `suggestedGasLimit`.
 
 ##### Returns
 `string` - The string of signed [transaction](#data-structure-transaction) information, `data` contains the information for modify the asset
