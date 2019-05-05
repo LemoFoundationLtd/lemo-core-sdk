@@ -153,7 +153,7 @@ describe('module_tx_create_asset', () => {
                 const lemo = new LemoClient({chainID})
                 const createAssetInfo = {
                     category: 1,
-                    decimals: 18,
+                    decimal: 18,
                     isReplenishable: true,
                     isDivisible: true,
                     profile: {
