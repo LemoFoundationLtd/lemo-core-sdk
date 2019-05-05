@@ -81,23 +81,23 @@ describe('Modify-Asset', () => {
 describe('info_test', () => {
     // test about stop
     const tests = [
-        {field: 'stop', configData: 'true'},
-        {field: 'stop', configData: 'false'},
-        {field: 'stop', configData: false},
-        {field: 'stop', configData: true},
-        {field: 'stop', configData: '2311222', error: errors.TxInvalidSymbol('stop')},
-        {field: 'stop', configData: 'sandlfa', error: errors.TxInvalidSymbol('stop')},
-        {field: 'stop', configData: 12314, error: errors.TXInvalidType('stop', 1234, ['boolean', 'string'])},
+        {field: 'freeze', configData: 'true'},
+        {field: 'freeze', configData: 'false'},
+        {field: 'freeze', configData: false},
+        {field: 'freeze', configData: true},
+        {field: 'freeze', configData: '2311222', error: errors.TxInvalidSymbol('freeze')},
+        {field: 'freeze', configData: 'sandlfa', error: errors.TxInvalidSymbol('freeze')},
+        {field: 'freeze', configData: 12314, error: errors.TXInvalidType('freeze', 1234, ['boolean', 'string'])},
     ]
     tests.forEach(test => {
-        it('info_stop', () => {
+        it(`info_${test.freeze},${test.configData}`, () => {
             const modifyInfo = {
                 assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                 info: {
                     name: 'test',
                     symbol: 'DT',
                     suggestedGasLimit: '60000',
-                    stop: test.configData,
+                    freeze: test.configData,
                 },
             }
             if (test.error) {
@@ -107,7 +107,7 @@ describe('info_test', () => {
             } else {
                 const tx = new ModifyAssetTx({chainID}, modifyInfo)
                 const result = parseHexObject(tx.data).info
-                assert.strictEqual(result.stop, test.configData)
+                assert.strictEqual(result.freeze, test.configData)
             }
         })
     })

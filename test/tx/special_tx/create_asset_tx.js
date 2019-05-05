@@ -24,7 +24,7 @@ describe('CreateAssetTx_new', () => {
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
         assert.equal(tx.amount, 0)
-        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, stop: 'false'}}))
+        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, freeze: 'false'}}))
     })
     it('useless config', () => {
         const tx = new CreateAssetTx(
@@ -42,7 +42,7 @@ describe('CreateAssetTx_new', () => {
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
         assert.equal(tx.amount, 0)
-        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, stop: 'false'}}))
+        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, freeze: 'false'}}))
     })
     it('useful config', () => {
         const tx = new CreateAssetTx(
@@ -55,7 +55,7 @@ describe('CreateAssetTx_new', () => {
         )
         assert.equal(tx.type, TxType.CREATE_ASSET)
         assert.equal(tx.message, 'abc')
-        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, stop: 'false'}}))
+        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, freeze: 'false'}}))
     })
 
     // test fields
