@@ -235,6 +235,9 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 
 ```json
 {
+    "type": "1",
+    "chainID": "100",
+    "version": "1",
     "from": "Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D",
     "to": "Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY",
     "toName": "",
@@ -247,10 +250,12 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
     "message": "",
     "sig": "0xd9a9f9f41ea020185a6480fe6938d776f0a675d89057c071fc890e09742a4dd96edb9d48c9978c2f12fbde0d0445f2ff5f08a448b91469511c663567d0b015f601",
     "gasPayerSig": "0x800be6a0cf31ab9e86d547fb8cf964339276233a2b260ad8a4b4c93b39a48d6b1761e125f601bc6953e30eaad3e698c12add332a5740f1618915c12432dc610601",
-    "version": "1"
 }
 ```
 
+-   `type` 交易类型
+-   `chainID` LemoChain的ID
+-   `version` 当前交易版本，介于0-128之间
 -   `from` 交易发送者的账户地址。由签名字段解析得到
 -   `to` 交易接收者的账户地址
 -   `toName` (可选) 交易接收者的账户名，会与账户地址进行比对校验。类似银行转账时填写的姓名与卡号的关系。最大长度为100字符
@@ -261,9 +266,8 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 -   `gasPrice` 交易消耗 gas 的单价，`BigNumber`对象，单位为`mo`。单价越高越优先被打包
 -   `hash` 交易 hash
 -   `message` (可选) 交易附带的文本消息。最大长度为1024字符
--   `sig` 交易签名字段，长度为65个字符
--   `gasPayerSig` 代付 gas 交易签名字段，长度为65个字符
--   `version` 当前交易版本，介于0-128之间
+-   `sig` 交易签名字段，长度为65个字节
+-   `gasPayerSig` 代付 gas 交易签名字段，长度为65个字节
 
 <a name="data-transaction-type"></a>
 
@@ -292,7 +296,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 ```json
 {
     "category": "1",
-    "decimals": 18,
+    "decimal": 18,
     "totalSupply": "15000000000000000000",
     "isReplenishable": true,
     "isDivisible": true,
@@ -308,25 +312,25 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 ```
 
 -   `category` 资产类型
--   `decimals` 发行资产的小数位，表示将总数细化到小数点后多少位，默认为18位
--   `totalSupply` 发行的资产总量，当资产在增发和销毁时发行的资产总量会实时变化，发行资产总量为`发行量*10^decimals`
--   `isReplenishable` 该资产是否可增发，在创建资产时设置，设置后该资产不可再次修改，默认为`true`
+-   `decimal` 发行资产的小数位，表示将总数细化到小数点后多少位，默认为18位
+-   `totalSupply` 发行的资产总量，当资产在增发和销毁时发行的资产总量会实时变化，发行资产总量为`发行量*10^decimal`
+-   `isReplenishable` 该资产是否可增发，在创建资产时设置，设置后不可再次修改，默认为`true`
 -   `isDivisible` 该资产是否可分割，在创建资产时设置，设置后不可再次修改，默认为`true`
--   `issuer` 发行者地址,根据创建资产时的签名字段得到
+-   `issuer` 发行者地址，根据创建资产时的签名字段得到
 -   `profile` 资产的其他信息，此部分内容可以再次修改
     -   `name` 创建该资产时的资产名称
     -   `symbol` 资产标识
     -   `description` 资产基本信息
-    -   `suggestedGasLimit` 交易消耗的交易上限，和`gasLimit`相同用法，创建资产时由用户自己设置，默认为60000
-    -   `stop` 是否停止特殊交易，默认为`false`，如果出现漏洞，将其设置为`true`可以停止一切特殊交易
+    -   `suggestedGasLimit` 交易消耗的gas上限，和`gasLimit`相同用法，创建资产时由用户自己设置，默认为60000
+    -   `stop` 是否停止该资产的交易，默认为`false`，将其设置为`true`可以停止该资产的一切交易
 
 <a name="data-asset-category"></a>
 
 | category| 说明          |
 | ------- | -------------- |
-| 1       | TokenAsset，对应以太坊的ERC20代币 |
-| 2       | NonFungibleAsset，对应以太坊的ERC721代币 |
-| 3       | CommonAsset，可分割资产，融合以上两种场景 |
+| 1       | 通证资产，和以太坊的ERC20代币类似，发行时可以设置是否允许今后增发，用户收到币后可以任意分割转账 |
+| 2       | 非同质化资产，和以太坊的ERC721代币类似，可以携带少量资产信息，并且不可分割 |
+| 3       | 通用资产，更加灵活的数字资产，适用于更加复杂的场景，以上两种资产都由通用资产特化而来 |
 
 <a name="data-structure-equity"></a>
 
@@ -342,9 +346,9 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 }
 ```
 
--   `assetCode` 创建资产时的交易hash，由创建资产时解析得到
--   `assetId` 资产Id，发行资产的时候解析得到，如果资产类型为1，则 assetCode 和 assetId 相同
--   `balance` 资产余额，表示当前账户发行或交易资产之后该账户中剩余的金额，单位是`mo`
+-   `assetCode` 创建资产时得到的交易hash
+-   `assetId` 资产Id，发行资产时得到，如果资产类型为1，则 assetCode 和 assetId 相同
+-   `balance` 资产余额，单位是`mo`
 
 <a name="data-structure-changeLog"></a>
 
@@ -1558,7 +1562,7 @@ lemo.tx.signCreateAsset(privateKey, txConfig, createAssetInfo)
 
 ##### Returns
 
-`string` - 签名后的[交易](#data-structure-transaction)信息字符串，`date`里面包含创建资产的信息。
+`string` - 签名后的[交易](#data-structure-transaction)信息字符串，`data`里面包含创建资产的信息。
 
 ##### Example
 
@@ -1566,7 +1570,7 @@ lemo.tx.signCreateAsset(privateKey, txConfig, createAssetInfo)
 const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34'}
 const createAssetInfo = {
     category: 1,
-    decimals: 18,
+    decimal: 18,
     isReplenishable: true,
     isDivisible: true,
     profile: {
@@ -1602,7 +1606,7 @@ lemo.tx.signIssueAsset(privateKey, txConfig, issueAssetInfo)
 
 ##### Returns
 
-`string` - 签名后的[交易](#data-structure-transaction)信息字符串，`date`里面包含发行资产的信息。
+`string` - 签名后的[交易](#data-structure-transaction)信息字符串，`data`里面包含发行资产的信息。
 
 ##### Example
 
@@ -1639,7 +1643,7 @@ lemo.tx.signReplenishAsset(privateKey, txConfig, replenishInfo)
 
 ##### Returns
 
-`string` - 签名后的[交易](#data-structure-transaction)信息字符串，`date`里面包含增发资产的信息。
+`string` - 签名后的[交易](#data-structure-transaction)信息字符串，`data`里面包含增发资产的信息。
 
 ##### Example
 
@@ -1675,7 +1679,7 @@ lemo.tx.signModifyAsset(privateKey, txConfig, modifyInfo)
 
 ##### Returns
 
-`string` - 签名后的[交易](#data-structure-transaction)信息字符串，`date`里面包含修改资产的信息。
+`string` - 签名后的[交易](#data-structure-transaction)信息字符串，`data`里面包含修改资产的信息。
 
 ##### Example
 
@@ -1715,7 +1719,7 @@ lemo.tx.signTransferAsset(privateKey, txConfig, transferAssetInfo)
 
 ##### Returns
 
-`string` - 签名后的[交易](#data-structure-transaction)信息字符串，`date`里面包含交易资产的信息。
+`string` - 签名后的[交易](#data-structure-transaction)信息字符串，`data`里面包含交易资产的信息。
 
 ##### Example
 
