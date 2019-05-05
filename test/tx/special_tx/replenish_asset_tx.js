@@ -24,7 +24,7 @@ describe('replenish-Asset', () => {
             ReplenishAssetInfo,
         )
         assert.equal(tx.type, TxType.REPLENISH_ASSET)
-        assert.equal(JSON.parse(tx.data.toString()).replenishAmount, ReplenishAssetInfo.replenishAmount)
+        assert.equal(JSON.parse(decodeUtf8Hex(tx.data)).replenishAmount, ReplenishAssetInfo.replenishAmount)
     })
     // no assetId
     it('replenish_noassetId', () => {

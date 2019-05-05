@@ -71,7 +71,7 @@ describe('TransferAsset_new', () => {
                 }, test.error)
             } else {
                 const tx = new TransferAssetTx({chainID}, transferAssetInfo)
-                const targetField = JSON.parse(tx.data.toString())[test.field]
+                const targetField = JSON.parse(decodeUtf8Hex(tx.data))[test.field]
                 assert.strictEqual(targetField, test.configData)
             }
         })
