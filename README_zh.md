@@ -1149,7 +1149,7 @@ lemo.mine.getMiner().then(function(miner) {
 lemo.account.newKeyPair()
 ```
 
-创新账户公私钥
+创建新的账户地址和私钥
 
 ##### Parameters
 
@@ -1412,6 +1412,7 @@ lemo.tx.sendTx(privateKey, txconfig, waitConfirm)
 1. `string` - 账户私钥
 2. `object` - 签名前的交易信息
     - `type` - (number) (选填) 交易类型，默认值为`0`
+    - `chainID` - (number) (选填) LemoChain 的ID，默认值为`200`
     - `version` - (number) (选填) 交易编码版本号，默认值为`0`
     - `to` - (string) (选填) 交易接收者的账户地址。为空表示这是创建智能合约的交易，必须携带`data`
     - `toName` - (string) (选填) 交易接收者的账户名，会与账户地址进行比对校验。类似银行转账时填写的姓名与卡号的关系
@@ -1499,7 +1500,7 @@ lemo.tx.signVote(privateKey, txInfo)
 const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34'}
 const signedTxStr = lemo.tx.signVote('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', txInfo)
 console.log(signedTxStr)
-// {"gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1548337992","v":"0x010300c8","r":"0xc9230ed3a37b85603cd0ac690994d6f207d0744e9d451f9ff02ae0ef5c83ba21","s":"0x61848625fea8a18c0648d6c0f21407a4c347a5815bc01956842c91aec053fd38","to":"Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34"}
+// {"type":"1","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1557050433","to":"Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34","sig":"0xaaec0d412f8786af51a941f18ba301ea67621540e9ad2ff983bdbaaf5d5e29a33ef4f922563b53ea54272d3f43dad785f0c9fddc3c1ff6b854f02fda5c50fe6201"}
 ```
 
 ---
@@ -1528,7 +1529,7 @@ lemo.tx.signCandidate(privateKey, txInfo, candidateInfo)
 ##### Example
 
 ```js
-const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34'}
+const txInfo = {chainID, expirationTime: 1544584596}
 const candidateInfo = {
     isCandidate: true,
     minerAddress: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
@@ -1538,7 +1539,7 @@ const candidateInfo = {
 }
 const signedTxStr = lemo.tx.signCandidate('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', txInfo, candidateInfo)
 console.log(signedTxStr)
-// {"type":"2","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1548337908","sig":"0xd351bbc3e9e9c5097d3b67d9c5b9aacd19719ff075f0b8a6249f69afd30734a03965b26bdc19927f8da96628cefa76a4228f23609a3fbcd6c27b5cfb9c547dc100","data":"0x7b22697343616e646964617465223a747275652c226d696e657241646472657373223a224c656d6f3833474e3732475948324e5a3842413732395a39544354374b5135464333435236444a47222c226e6f64654944223a223565333630303735356639623531326136353630336233386533303838356339386362616337303235396333323335633962336634326565353633623438306564656133353162613066663537343861363338666530616566663564383435626633376133623433373833313837316234386664333266333363643961336330222c22686f7374223a223132372e302e302e31222c22706f7274223a2237303031227d"}
+// {"type":"2","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1544584596","data":"0x7b22697343616e646964617465223a2274727565222c226d696e657241646472657373223a224c656d6f6277222c226e6f64654944223a223565333630303735356639623531326136353630336233386533303838356339386362616337303235396333323335633962336634326565353633623438306564656133353162613066663537343861363338666530616566663564383435626633376133623433373833313837316234386664333266333363643961336330222c22686f7374223a223132372e302e302e31222c22706f7274223a2237303031227d","sig":"0xd351bbc3e9e9c5097d3b67d9c5b9aacd19719ff075f0b8a6249f69afd30734a03965b26bdc19927f8da96628cefa76a4228f23609a3fbcd6c27b5cfb9c547dc100"}
 ```
 
 ---
@@ -1567,7 +1568,7 @@ lemo.tx.signCreateAsset(privateKey, txConfig, createAssetInfo)
 ##### Example
 
 ```js
-const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34'}
+const txInfo = {chainID, expirationTime: 1544584596}
 const createAssetInfo = {
     category: 1,
     decimal: 18,
@@ -1684,7 +1685,7 @@ lemo.tx.signModifyAsset(privateKey, txConfig, modifyInfo)
 ##### Example
 
 ```js
-const txInfo = {to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY'}
+const txInfo = {chainID, expirationTime: 1544584596}
 const ModifyAssetInfo = {
     assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
     info: {
@@ -1695,7 +1696,7 @@ const ModifyAssetInfo = {
 }
 const signModifyAsset = lemo.tx.signModifyAsset('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', txInfo, ModifyAssetInfo)
 console.log(signModifyAsset)
-// {"type":"6","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1555916025","data":"0x7b226173736574436f6465223a22307864306265666433383530633537346237663661643666373934336665313962323132616666623930313632393738616463323139336130333563656438383834222c22696e666f223a7b226e616d65223a2244656d6f204173736574222c2273796d626f6c223a224454222c226465736372697074696f6e223a2264656d6f206173736574227d7d","sig":"0xc62aebe4539e9bfd7bbd2c87255426863986922431896883dee80bac0546fc926683f365c20e8a8812e382f1755318194aa32bf5bdd39bc21aba83a9a095208800"}
+// {"type":"6","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1544584596","data":"0x7b226173736574436f6465223a22307864306265666433383530633537346237663661643666373934336665313962323132616666623930313632393738616463323139336130333563656438383834222c22696e666f223a7b226e616d65223a2244656d6f204173736574222c2273796d626f6c223a224454222c226465736372697074696f6e223a2264656d6f206173736574227d7d","sig":"0x625646ae04dc29254315486b491cf6a7a1b6a371162f22694b0bf5164c53bbfa292973c4a2cac6cceb24b5b9dd2db31f763c970dce914925686a1b075c06bcb101"}
 ```
 
 ---
@@ -1822,9 +1823,9 @@ lemo.tx.send(txConfig, waitConfirm)
 
 1. `object|string` - 签名后的[交易](#data-structure-transaction)信息，可以是对象形式也可以是[`lemo.tx.sign`](#submodule-tx-sign)返回的字符串形式  
    相对于[`lemo.tx.sendTx`](#submodule-tx-sendTx)中的交易信息少了`type`、`version`字段，并多出了以下字段
-    - `r` - (Buffer|string) 交易签名字段
-    - `s` - (Buffer|string) 交易签名字段
-    - `v` - (Buffer|string) `type`、`version`、交易签名字段、`chainID`这 4 个字段组合而成的数据
+    - `sig` - (string) 交易签名字段
+    - `gasPayerSig` - (string) 代付gas交易签名字段
+    - `version` - (string) 当前交易版本
 2. `boolean` - (选填)等待[交易](#data-structure-transaction)共识，默认为`true`
 
 ##### Returns
@@ -1841,7 +1842,7 @@ lemo.tx
         return lemo.tx.send(signedTx)
     })
     .then(function(txHash) {
-        console.log(txHash)
+        console.log(txHash) // "0xe116a56b301f3bede1ad10c1496d57d6cb89454b4d6efbc20ca39132a4bc2b96"
     })
 ```
 
