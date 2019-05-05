@@ -1,6 +1,7 @@
 import {assert} from 'chai'
 import {chainID} from '../../datas'
 import {TxType} from '../../../lib/const'
+import {decodeUtf8Hex} from '../../../lib/utils'
 import errors from '../../../lib/errors'
 import CreateAssetTx from '../../../lib/tx/special_tx/create_asset_tx'
 
@@ -23,7 +24,7 @@ describe('CreateAssetTx_new', () => {
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
         assert.equal(tx.amount, 0)
-        assert.equal(tx.data.toString(), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, stop: 'false'}}))
+        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, stop: 'false'}}))
     })
     it('useless config', () => {
         const tx = new CreateAssetTx(
@@ -41,7 +42,7 @@ describe('CreateAssetTx_new', () => {
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
         assert.equal(tx.amount, 0)
-        assert.equal(tx.data.toString(), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, stop: 'false'}}))
+        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, stop: 'false'}}))
     })
     it('useful config', () => {
         const tx = new CreateAssetTx(
@@ -54,7 +55,7 @@ describe('CreateAssetTx_new', () => {
         )
         assert.equal(tx.type, TxType.CREATE_ASSET)
         assert.equal(tx.message, 'abc')
-        assert.equal(tx.data.toString(), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, stop: 'false'}}))
+        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, stop: 'false'}}))
     })
 
     // test fields
@@ -76,26 +77,26 @@ describe('CreateAssetTx_new', () => {
         {field: 'isDivisible', configData: false},
         {field: 'isDivisible', configData: 'false', error: errors.TXInvalidType('isDivisible', 'false', ['boolean'])},
         {field: 'isDivisible', configData: 1, error: errors.TXInvalidType('isDivisible', 1, ['boolean'])},
-        {field: 'name', configData: 'Demo Token', profile: 'profile'},
-        {field: 'name', configData: '', profile: 'profile'},
-        {field: 'name', configData: 1, profile: 'profile', error: errors.TXInvalidType('name', 1, ['string'])},
-        {field: 'symbol', configData: 'DT', profile: 'profile'},
-        {field: 'symbol', configData: '', profile: 'profile'},
-        {field: 'symbol', configData: 1, profile: 'profile', error: errors.TXInvalidType('symbol', 1, ['string'])},
-        {field: 'description', configData: 'DT', profile: 'profile'},
-        {field: 'description', configData: '', profile: 'profile'},
-        {field: 'description', configData: 1, profile: 'profile', error: errors.TXInvalidType('description', 1, ['string'])},
+        {field: 'name', configData: 'Demo Token', inProfile: true},
+        {field: 'name', configData: '', inProfile: true},
+        {field: 'name', configData: 1, inProfile: true, error: errors.TXInvalidType('name', 1, ['string'])},
+        {field: 'symbol', configData: 'DT', inProfile: true},
+        {field: 'symbol', configData: '', inProfile: true},
+        {field: 'symbol', configData: 1, inProfile: true, error: errors.TXInvalidType('symbol', 1, ['string'])},
+        {field: 'description', configData: 'DT', inProfile: true},
+        {field: 'description', configData: '', inProfile: true},
+        {field: 'description', configData: 1, inProfile: true, error: errors.TXInvalidType('description', 1, ['string'])},
         {
             field: 'description',
             configData:
                 'aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
-            profile: 'profile',
+            inProfile: true,
         },
         {
             field: 'description',
             configData: `aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0
                 aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0`,
-            profile: 'profile',
+            inProfile: true,
             error: errors.TXInvalidMaxLength(
                 'description',
                 `aaaaaa0755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0
@@ -103,16 +104,16 @@ describe('CreateAssetTx_new', () => {
                 256,
             ),
         },
-        {field: 'suggestedGasLimit', configData: '60000', profile: 'profile'},
-        {field: 'suggestedGasLimit', configData: 60000, profile: 'profile', error: errors.TXInvalidType('suggestedGasLimit', 60000, ['string'])},
+        {field: 'suggestedGasLimit', configData: '60000', inProfile: true},
+        {field: 'suggestedGasLimit', configData: 60000, inProfile: true, error: errors.TXInvalidType('suggestedGasLimit', 60000, ['string'])},
     ]
     tests.forEach(test => {
-        it(`set createAssetInfo.${test.profile ? `${test.profile}.` : ''}${test.field} to ${JSON.stringify(test.configData)}`, () => {
+        it(`set createAssetInfo.${test.inProfile ? 'profile.' : ''}${test.field} to ${JSON.stringify(test.configData)}`, () => {
             let createAssetInfo
-            if (test.profile) {
+            if (test.inProfile) {
                 createAssetInfo = {
                     ...minCreateAssetInfo,
-                    [test.profile]: {
+                    profile: {
                         ...minCreateAssetInfo.profile,
                         [test.field]: test.configData,
                     },
@@ -129,7 +130,8 @@ describe('CreateAssetTx_new', () => {
                 }, test.error)
             } else {
                 const tx = new CreateAssetTx({chainID}, createAssetInfo)
-                const targetField = test.profile ? JSON.parse(tx.data.toString()).profile[test.field] : JSON.parse(tx.data.toString())[test.field]
+                const parsedData = JSON.parse(decodeUtf8Hex(tx.data))
+                const targetField = test.inProfile ? parsedData.profile[test.field] : parsedData[test.field]
                 assert.strictEqual(targetField, test.configData)
             }
         })
@@ -144,6 +146,6 @@ describe('CreateAssetTx_new', () => {
             },
         }
         const tx = new CreateAssetTx({chainID}, test)
-        assert.equal(JSON.parse(tx.data.toString()).profile.symbol, 'LEMO')
+        assert.equal(JSON.parse(decodeUtf8Hex(tx.data)).profile.symbol, 'LEMO')
     })
 })

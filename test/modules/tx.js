@@ -7,6 +7,7 @@ import errors from '../../lib/errors'
 import {TxType} from '../../lib/const'
 import Tx from '../../lib/tx/tx'
 import {DEFAULT_POLL_DURATION} from '../../lib/config'
+import {encodeAddress} from '../../lib/crypto';
 
 describe('module_tx_getTx', () => {
     it('getTx', async () => {
@@ -177,22 +178,24 @@ describe('module_tx_create_asset', () => {
 
 describe('module_tx_issue_asset', () => {
     it('sign_issue_asset', () => {
-        txInfos[1].txConfig.to = '0x0000000000000000000000000000000000000001'
         return Promise.all(
             txInfos.map(async (test, i) => {
+                const txConfig = {...test.txConfig}
+                if (!txConfig.to) {
+                    txConfig.to = '0x0000000000000000000000000000000000000001'
+                }
                 const lemo = new LemoClient({chainID})
                 const issueAssetInfo = {
                     assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                     metaData: 'issue asset metaData',
                     supplyAmount: '100000',
                 }
-                let json = lemo.tx.signIssueAsset(testPrivate, test.txConfig, issueAssetInfo)
+                let json = lemo.tx.signIssueAsset(testPrivate, txConfig, issueAssetInfo)
                 json = JSON.parse(json)
                 assert.equal(json.type, TxType.ISSUE_ASSET, `index=${i}`)
                 const result = JSON.stringify({...issueAssetInfo})
                 assert.equal(toBuffer(json.data).toString(), result, `index=${i}`)
-                assert.equal(json.to, test.txConfig.to, `index=${i}`)
-                assert.equal(json.toName, test.txConfig.toName, `index=${i}`)
+                assert.equal(json.toName, txConfig.toName, `index=${i}`)
                 assert.equal(json.amount, 0, `index=${i}`)
             }),
         )
@@ -245,24 +248,25 @@ describe('module_tx_modify_asset', () => {
 
 describe('module_tx_transfer_asset', () => {
     it('sign_transfer_asset', () => {
-        txInfos[1].txConfig.to = '0x0000000000000000000000000000000000000001'
-        txInfos[0].txConfig.amount = 0
-        txInfos[2].txConfig.amount = '117789804318558955305553166716194567721832259791707930541440413419507985'
+        const tests = [
+            {...txInfos[0].txConfig, amount: 0},
+            {...txInfos[1].txConfig, to: 'Lemobw'},
+            {...txInfos[2].txConfig, amount: '117789804318558955305553166716194567721832259791707930541440413419507985'},
+        ]
         return Promise.all(
-            txInfos.map(async (test, i) => {
+            tests.map(async (test, i) => {
                 const lemo = new LemoClient({chainID})
                 const transferAsset = {
                     assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                     transferAmount: '110000',
                 }
-                let json = lemo.tx.signTransferAsset(testPrivate, test.txConfig, transferAsset)
+                let json = lemo.tx.signTransferAsset(testPrivate, test, transferAsset)
                 json = JSON.parse(json)
                 assert.equal(json.type, TxType.TRANSFER_ASSET, `index=${i}`)
                 const result = JSON.stringify({...transferAsset})
                 assert.equal(toBuffer(json.data).toString(), result, `index=${i}`)
-                assert.equal(json.to, test.txConfig.to, `index=${i}`)
-                assert.equal(json.toName, test.txConfig.toName, `index=${i}`)
-                assert.equal(JSON.parse(toBuffer(json.data).toString()).transferAmount, transferAsset.transferAmount, `index=${i}`)
+                assert.equal(json.to, test.to ? encodeAddress(test.to) : undefined, `index=${i}`)
+                assert.equal(json.toName, test.toName, `index=${i}`)
             }),
         )
     })
@@ -295,7 +299,7 @@ describe('module_tx_signNoGas', () => {
         const noGasInfo = lemo.tx.signNoGas(testPrivate, txConfig, testAddr)
         assert.equal(JSON.parse(noGasInfo).type, txConfig.type)
         assert.equal(JSON.parse(noGasInfo).payer, testAddr)
-        assert.equal(JSON.parse(noGasInfo).to, txConfig.to)
+        assert.equal(JSON.parse(noGasInfo).toName, txConfig.toName)
     })
 })
 

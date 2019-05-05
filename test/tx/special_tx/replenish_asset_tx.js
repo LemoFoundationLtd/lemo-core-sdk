@@ -1,6 +1,7 @@
 import {assert} from 'chai'
 import {chainID} from '../../datas'
 import {TX_ASSET_ID_LENGTH, TxType} from '../../../lib/const'
+import {decodeUtf8Hex} from '../../../lib/utils'
 import errors from '../../../lib/errors'
 import ReplenishAssetTX from '../../../lib/tx/special_tx/replenish_asset_tx'
 
@@ -100,7 +101,7 @@ describe('replenishAmount', () => {
                 }, test.error)
             } else {
                 const tx = new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
-                const targetField = test.profile ? JSON.parse(tx.data.toString()).profile[test.field] : JSON.parse(tx.data.toString())[test.field]
+                const targetField = JSON.parse(decodeUtf8Hex(tx.data))[test.field]
                 assert.strictEqual(targetField, test.configData)
             }
         });

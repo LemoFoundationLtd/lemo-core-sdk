@@ -1,8 +1,13 @@
 import {assert} from 'chai'
 import {chainID} from '../../datas'
 import {TX_ASSET_CODE_LENGTH, TxType} from '../../../lib/const'
+import {decodeUtf8Hex} from '../../../lib/utils'
 import errors from '../../../lib/errors'
 import ModifyAssetTx from '../../../lib/tx/special_tx/modify_asset_tx'
+
+function parseHexObject(hex) {
+    return JSON.parse(decodeUtf8Hex(hex))
+}
 
 describe('Modify-Asset', () => {
     const modifyAssetInfo = {
@@ -18,7 +23,7 @@ describe('Modify-Asset', () => {
     it('modify_normal', () => {
         const tx = new ModifyAssetTx({chainID}, modifyAssetInfo)
         assert.equal(tx.type, TxType.MODIFY_ASSET)
-        assert.equal(JSON.parse(tx.data).info.name, modifyAssetInfo.info.name)
+        assert.equal(parseHexObject(tx.data).info.name, modifyAssetInfo.info.name)
     })
     // no assetCode
     it('modify_noassetCode', () => {
@@ -56,8 +61,8 @@ describe('Modify-Asset', () => {
                 name: 'alice',
             },
         }
-        const result = new ModifyAssetTx({chainID}, modifyInfo)
-        assert.equal(JSON.parse(result.data.toString()).info.name, modifyInfo.info.name)
+        const tx = new ModifyAssetTx({chainID}, modifyInfo)
+        assert.equal(parseHexObject(tx.data).info.name, modifyInfo.info.name)
     })
     // symbol is lower case
     it('modify_lower_case_symbol', () => {
@@ -68,8 +73,8 @@ describe('Modify-Asset', () => {
                 symbol: 'lemochain',
             },
         }
-        const result = new ModifyAssetTx({chainID}, modifyInfo)
-        assert.equal(JSON.parse(result.data.toString()).info.symbol, 'LEMOCHAIN')
+        const tx = new ModifyAssetTx({chainID}, modifyInfo)
+        assert.equal(parseHexObject(tx.data).info.symbol, 'LEMOCHAIN')
     })
 })
 
@@ -101,7 +106,7 @@ describe('info_test', () => {
                 }, test.error)
             } else {
                 const tx = new ModifyAssetTx({chainID}, modifyInfo)
-                const result = JSON.parse(tx.data.toString()).info
+                const result = parseHexObject(tx.data).info
                 assert.strictEqual(result.stop, test.configData)
             }
         })
