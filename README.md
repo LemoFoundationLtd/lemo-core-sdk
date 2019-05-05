@@ -220,7 +220,7 @@ Signed transaction
 ```json
 {
   "type": "1",
-  "chainID": "100",
+  "chainID": "1",
   "version": "1",
   "from": "Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D",
   "to": "Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY",
@@ -263,7 +263,7 @@ lemo.TxType.CREATE_ASSET | 3 | Create asset information
 lemo.TxType.ISSUE_ASSET | 4 | Issue asset
 lemo.TxType.REPLENISH_ASSET | 5 | Replenish asset transaction
 lemo.TxType.MODIFY_ASSET | 6 | Modify asset transaction
-lemo.TxType.TRANSFER_ASSET | 7 |transaction assets
+lemo.TxType.TRANSFER_ASSET | 7 |Transfer assets
 
 chainID | description
 ---|---
@@ -301,15 +301,33 @@ Asset information
     - `symbol` Asset identification
     - `description` Basic information of assets
     - `suggesteGasLimit` Suggested gas limit. It is like the `gasLimit` field in transaction. The default is 60000
-    - `stop` Whether to stop all actions of the asset. The default is ` false`
+    - `stop` Whether to stop all actions of the asset. The default is ` false`. Set it to ` true ` can stop all the assets other than the query operation
 
 <a name="data-asset-category"></a>
 
 category | description
 --- |---
-1 |  TokenAsset, similar to ethereum's ERC20 token, it can set whether additional issuance is allowed in the future when issuing, and users can divide and transfer money at will after receiving the coin
-2 |  NonFungibleAsset, Similar to ethereum's ERC721 token, it can carry a small amount of asset information and is indivisible
-3 |  CommonAsset, more flexible digital assets, are suitable for more complex scenarios, both of which are specialized from generic assets
+1 |  TokenAsset. Similar to Ethereum's ERC20 token. The issuer can decide whether additional issuance is allowed in the future when issuing. The token is divisible.
+2 |  NonFungibleAsset. Similar to Ethereum's ERC721 token, it can store a certain amount of information. Every token is indivisible.
+3 |  CommonAsset. More flexible digital assets. It is suitable for more complex scenarios. Actualy, the TokenAsset and NonFungibleAsset are two special CommonAsset.
+
+<a name="data-structure-equity"></a>
+
+#### equity
+
+Record the asset information of the asset holder and keep it in the account of the asset holder
+
+```json
+{
+    "assetCode": "0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884",
+    "assetId": "0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a",
+    "balance": "15000000000000000000"
+}
+```
+
+-   `assetCode` Asset code, obtained when the asset is created
+-   `assetId` The assetId, which is obtained when the asset is issued, is the same assetCode as the assetId when the asset type is 1
+-   `balance` The balance of assets, the unit is ` mo `
 
 <a name="data-structure-changeLog"></a>
 #### changeLog
@@ -1217,7 +1235,7 @@ Sign and send transaction
 1. `string` - Account private key
 2. `object` - Unsigned transaction
     - `type` - (number) (optional) Transaction type. Default value is `0`
-    - `chainID` - (number) (optional) The LemoChain id. Default value is `200`
+    - `chainID` - (number) (optional) The LemoChain id. Default value is `1`
     - `version` - (number) (optional) Transaction encode version. Default value is `0`
     - `to` - (string) (optional) Recipient address. Empty `to` represents a contract creation transaction with contract code in `data` field
     - `toName` - (string) (optional) Recipient name. It will be checked with `to` for safe
@@ -1291,7 +1309,7 @@ The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference i
 const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34'}
 const signedTxStr = lemo.tx.signVote('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', txInfo)
 console.log(signedTxStr)
-// {"type":"1","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1557050433","to":"Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34","sig":"0xaaec0d412f8786af51a941f18ba301ea67621540e9ad2ff983bdbaaf5d5e29a33ef4f922563b53ea54272d3f43dad785f0c9fddc3c1ff6b854f02fda5c50fe6201"}
+// {"type":"1","version":"1","chainID":"1","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1557054086","to":"Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34","sig":"0x8eb17851931bcd0c6e2d53e6f01dcde5c124991f6f7c6d09db19cad83d24f6be668dad376dbdbc0793853565053a0ac12183ef6953ca7586cf07cede73f124d900"}
 ```
 
 ---
@@ -1314,7 +1332,7 @@ The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference i
 
 ##### Example
 ```js
-const txInfo = {chainID, expirationTime: 1544584596}
+const txInfo = {chainID: '1'}
 const candidateInfo = {
     isCandidate: true,
     minerAddress: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
@@ -1324,7 +1342,7 @@ const candidateInfo = {
 }
 const signedTxStr = lemo.tx.signCandidate('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', txInfo, candidateInfo)
 console.log(signedTxStr)
-// {"type":"2","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1544584596","data":"0x7b22697343616e646964617465223a2274727565222c226d696e657241646472657373223a224c656d6f6277222c226e6f64654944223a223565333630303735356639623531326136353630336233386533303838356339386362616337303235396333323335633962336634326565353633623438306564656133353162613066663537343861363338666530616566663564383435626633376133623433373833313837316234386664333266333363643961336330222c22686f7374223a223132372e302e302e31222c22706f7274223a2237303031227d","sig":"0xd351bbc3e9e9c5097d3b67d9c5b9aacd19719ff075f0b8a6249f69afd30734a03965b26bdc19927f8da96628cefa76a4228f23609a3fbcd6c27b5cfb9c547dc100"}
+// {"type":"2","version":"1","chainID":"1","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1557054141","data":"0x7b22697343616e646964617465223a2274727565222c226d696e657241646472657373223a224c656d6f3833474e3732475948324e5a3842413732395a39544354374b5135464333435236444a47222c226e6f64654944223a223565333630303735356639623531326136353630336233386533303838356339386362616337303235396333323335633962336634326565353633623438306564656133353162613066663537343861363338666530616566663564383435626633376133623433373833313837316234386664333266333363643961336330222c22686f7374223a223132372e302e302e31222c22706f7274223a2237303031227d","sig":"0xd81f37f282cac1aba65bd263bf1b2340da19e9e4a101f0aff2a414821185c340573e540fbb79e83cb24f92727789dbe781c018e040a58f0505109cd4949d13d501"}
 ```
 
 ---
@@ -1347,7 +1365,7 @@ The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference i
 
 ##### Example
 ```js
-const txInfo = {chainID, expirationTime: 1544584596}
+const txInfo = {chainID: '1'}
 const createAssetInfo = {
     category: 1,
     decimal: 18,
@@ -1362,7 +1380,7 @@ const createAssetInfo = {
 }
 const signCreateAsset = lemo.tx.signCreateAsset('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', txInfo, createAssetInfo)
 console.log(signCreateAsset)
-// {"type":"3","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1544584596","data":"0x7b2263617465676f7279223a312c22646563696d616c73223a31382c2269735265706c656e69736861626c65223a747275652c226973446976697369626c65223a747275652c2270726f66696c65223a7b226e616d65223a2244656d6f204173736574222c2273796d626f6c223a224454222c226465736372697074696f6e223a2264656d6f206173736574222c227375676765737465644761734c696d6974223a223630303030222c2273746f70223a2266616c7365227d7d","sig":"0xf1c837a5621c1e62800099ead94668da3a6a8358187a3251e5e2936dea7205df5eeb75fc4c7737caa8a0b63cf1846f22426696ce96a581188c9fb6fece257fc900"}
+// {"type":"3","version":"1","chainID":"1","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1557054204","data":"0x7b2263617465676f7279223a312c22646563696d616c73223a31382c2269735265706c656e69736861626c65223a747275652c226973446976697369626c65223a747275652c2270726f66696c65223a7b226e616d65223a2244656d6f204173736574222c2273796d626f6c223a224454222c226465736372697074696f6e223a2264656d6f206173736574222c227375676765737465644761734c696d6974223a223630303030222c2273746f70223a2266616c7365227d7d","sig":"0x067752b1f07813623e1d3b18042e2925a8745e1c585b2281ad1f4c00a9c72a7331ca4e7639533b7623cc417bef9acb3617c320a48d12c00423c191a17a77657300"}
 ```
 
 ---
@@ -1393,7 +1411,7 @@ const issueAssetInfo = {
 }
 const signIssueAsset = lemo.tx.signIssueAsset('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', txInfo, issueAssetInfo)
 console.log(signIssueAsset)
-// {"type":"4","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1544584596","data":"0x7b226173736574436f6465223a22307864306265666433383530633537346237663661643666373934336665313962323132616666623930313632393738616463323139336130333563656438383834222c226d65746144617461223a226973737565206173736574206d65746144617461222c22737570706c79416d6f756e74223a22313030303030227d","sig":"0x4b92594415a58adbade0774753922d7e34ae32f0545f38efa67d5fcbca6821fd0b57ef2ada36ef994fd06426feadabd030130b9e7e30064a4b2bf60c6b5832a400"}
+// {"type":"4","version":"1","chainID":"1","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1557054355","to":"Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34","data":"0x7b226173736574436f6465223a22307864306265666433383530633537346237663661643666373934336665313962323132616666623930313632393738616463323139336130333563656438383834222c226d65746144617461223a226973737565206173736574206d65746144617461222c22737570706c79416d6f756e74223a22313030303030227d","sig":"0xed8441c8d93fa8389ec7512ff24608199c1d6c9ffbf29d5293e25d1446956d75628f39e8492d7b8d33707ffa001a1caa2f34e3ebe46b27550daae6f4e474d72c00"}
 ```
 
 ---
@@ -1418,12 +1436,13 @@ The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference i
 ```js
 const txInfo = {to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY'}
 const replenishAssetInfo = {
+    assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
     assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
     replenishAmount: '100000',
 }
 const signReplenishAsset = lemo.tx.signReplenishAsset('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', txInfo, replenishAssetInfo)
 console.log(signReplenishAsset)
-// {"type":"5","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1555916116","to":"Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY","data":"0x7b2261737365744964223a22307864306265666433383530633537346237663661643666373934336665313962323132616666623930313632393738616463323139336130333563656438383834222c227265706c656e697368416d6f756e74223a22313030303030227d","sig":"0xa9c28cf5efbf2ff91028a719038edfe98c4a2ddb19ae74b5a01f83ac58c25bff4b4a4ce78462be3de8185c6c31355247f47411bf0682fcd63602e38dd3f56f3501"}
+// {"type":"5","version":"1","chainID":"1","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1557054506","to":"Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY","data":"0x7b226173736574436f6465223a22307864306265666433383530633537346237663661643666373934336665313962323132616666623930313632393738616463323139336130333563656438383834222c2261737365744964223a22307864306265666433383530633537346237663661643666373934336665313962323132616666623930313632393738616463323139336130333563656438383834222c227265706c656e697368416d6f756e74223a22313030303030227d","sig":"0x057955895c00aeef80d56effc0cb981628a0bfff303d3d76af4d7532560615f04230cf6a5f849de5b818fe13ce1b4819a0284865be4d477bb12de0536a940de500"}
 ```
 
 ---
@@ -1446,7 +1465,7 @@ The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference i
 
 ##### Example
 ```js
-const txInfo = {chainID, expirationTime: 1544584596}
+const txInfo = {chainID: '1'}
 const ModifyAssetInfo = {
     assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
     info: {
@@ -1457,7 +1476,7 @@ const ModifyAssetInfo = {
 }
 const signModifyAsset = lemo.tx.signModifyAsset('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', txInfo, ModifyAssetInfo)
 console.log(signModifyAsset)
-// {"type":"6","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1544584596","data":"0x7b226173736574436f6465223a22307864306265666433383530633537346237663661643666373934336665313962323132616666623930313632393738616463323139336130333563656438383834222c22696e666f223a7b226e616d65223a2244656d6f204173736574222c2273796d626f6c223a224454222c226465736372697074696f6e223a2264656d6f206173736574227d7d","sig":"0x625646ae04dc29254315486b491cf6a7a1b6a371162f22694b0bf5164c53bbfa292973c4a2cac6cceb24b5b9dd2db31f763c970dce914925686a1b075c06bcb101"}
+// {"type":"6","version":"1","chainID":"1","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1557054562","data":"0x7b226173736574436f6465223a22307864306265666433383530633537346237663661643666373934336665313962323132616666623930313632393738616463323139336130333563656438383834222c22696e666f223a7b226e616d65223a2244656d6f204173736574222c2273796d626f6c223a224454222c226465736372697074696f6e223a2264656d6f206173736574227d7d","sig":"0x989529bed1afbd162cde2097dbaa33c9f8b15e3bec5d187a58a7f8aa7d941ccb1bc0402278d52a47790262683c3ad77ed9face932f9403f0431117cff7ff962000"}
 ```
 
 ---
@@ -1487,7 +1506,7 @@ const transferAsset = {
 }
 const signTransferAsset = lemo.tx.signTransferAsset('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', txInfo, transferAsset)
 console.log(signTransferAsset)
-// {"type":"7","version":"1","chainID":"200","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1544584596","data":"0x7b2261737365744964223a22307864306265666433383530633537346237663661643666373934336665313962323132616666623930313632393738616463323139336130333563656438383834222c227472616e73666572416d6f756e74223a22313130303030227d","sig":"0x2f8392e6407022fb0631592627cdc4d5d61126385f79861274614b02e4acbf44583598a897e38730fd83cf6c9a4de76f446a55a468be36c05eb2c676d85c6a7a01"}
+// {"type":"7","version":"1","chainID":"1","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1557054587","to":"Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34","data":"0x7b2261737365744964223a22307864306265666433383530633537346237663661643666373934336665313962323132616666623930313632393738616463323139336130333563656438383834222c227472616e73666572416d6f756e74223a22313130303030227d","sig":"0x4d01229abf436c1d96ab6414b7da1b448035bcb1e0ed936974f94683fc253d973f34a4bce64e8b30178c3e735550e0c75bc6abc9fdcf85ff142d9fadeff1c78c00"}
 ```
 
 ---
@@ -1517,7 +1536,7 @@ const txInfo = {to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY'}
 const payer = 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'
 const noGasInfo = lemo.tx.signNoGas('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', txInfo, payer)
 console.log(noGasInfo)
-// {"type":0,"version":1,"chainID":200,"to":"Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY","toName":"","gasPrice":3000000000,"gasLimit":2000000,"amount":0,"data":"","expirationTime":1555915830,"message":"","sig":"0x5d2d0564b2f7bdecb62e405160bbb4f56a365108335fc21553624a7db1f9ff211cc86a911a185e8c5e690155237750ece4c710adfd69294309a38f9f43f658c900","gasPayerSig":"","from":"Lemo83RZBGSQH7ZYS9SY32H37KAN3R3N2DBJP4R6","payer":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D"}
+// {"type":0,"version":"1","chainID":"1","to":"Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY","toName":"","gasPrice":3000000000,"gasLimit":2000000,"amount":"0","data":"","expirationTime":1557054625,"message":"","sig":"0xbb713b4e6a955e3bf5934dc7e7b02e0cf04936b1f7603cc646c380a0c6d5217f0923cff69b1d388da52983167072114898cbeb055cf6296ca1292b610fc91fdb01","gasPayerSig":"","from":"Lemo83AHRG46C3JP3D4QQP897ACCJD4G8BT5ZS67","payer":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D"}
 ```
 
 ---
@@ -1546,7 +1565,7 @@ const payer = 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'
 const noGasInfo = lemo.tx.signNoGas('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', txInfo, payer)
 const result = lemo.tx.signReimbursement('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', noGasInfo, 2, 100)
 console.log(result)
-// {"type":"0","version":"1","chainID":"200","gasPrice":"2","gasLimit":"100","amount":"0","expirationTime":"1555915737","to":"Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY","sig":"0xaaf375a16de05e64c977e1a234661ec113fafc9c9d227ccd570ccfa232a72f93659f267c7e47bb51059eda5045f2f46c509dbd933181a85197a121dc26e2d03f01","gasPayerSig":"0x0edb211e684bfda13969aa9115c292a485bdb43061b54148b140b97cd0322b3d7d973004d8caf0c4de3975d0d553baa6d0d7d41a6ce0d14c0b754cecb4b020a900"}
+// {"type":"0","version":"1","chainID":"1","gasPrice":"2","gasLimit":"100","amount":"0","expirationTime":"1557054706","to":"Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY","sig":"0x5b13c147a7e700dbe24d76f245daaf0ebcd35d9ecf17e436a0ceb691b26d79c46cc4f0fc3bb88b20f3c179bb61adfa008bfc31fe0648aa299052375a61317da700","gasPayerSig":"0x0edb211e684bfda13969aa9115c292a485bdb43061b54148b140b97cd0322b3d7d973004d8caf0c4de3975d0d553baa6d0d7d41a6ce0d14c0b754cecb4b020a900"}
 ```
 
 ---
@@ -1562,7 +1581,6 @@ Send a signed transaction
 1. `object|string` - Signed [transaction](#data-structure-transaction) information. It could be a string which returned by [`lemo.tx.sign`](#submodule-tx-sign), as well as an object like the same parameter in [`lemo.tx.sendTx`](#submodule-tx-sendTx), but these fields instead of `type`, `version`:
     - `sig` - (string) Transaction signature field
     - `gasPayerSig` - (string) Paid gas transaction signature data
-    - `version` - (string) Current transaction version, Between 0 and 128
 2. `boolean` - (optional) Waiting for [transaction](#data-structure-transaction) consensus.default value is `true`
 
 ##### Returns
