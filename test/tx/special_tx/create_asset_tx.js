@@ -8,7 +8,7 @@ import CreateAssetTx from '../../../lib/tx/special_tx/create_asset_tx'
 describe('CreateAssetTx_new', () => {
     const minCreateAssetInfo = {
         category: 1,
-        decimals: 18,
+        decimal: 18,
         isReplenishable: true,
         isDivisible: true,
         profile: {
@@ -24,7 +24,7 @@ describe('CreateAssetTx_new', () => {
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
         assert.equal(tx.amount, 0)
-        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, stop: 'false'}}))
+        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, freeze: 'false'}}))
     })
     it('useless config', () => {
         const tx = new CreateAssetTx(
@@ -42,7 +42,7 @@ describe('CreateAssetTx_new', () => {
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
         assert.equal(tx.amount, 0)
-        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, stop: 'false'}}))
+        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, freeze: 'false'}}))
     })
     it('useful config', () => {
         const tx = new CreateAssetTx(
@@ -55,7 +55,7 @@ describe('CreateAssetTx_new', () => {
         )
         assert.equal(tx.type, TxType.CREATE_ASSET)
         assert.equal(tx.message, 'abc')
-        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, stop: 'false'}}))
+        assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({...minCreateAssetInfo, profile: {...minCreateAssetInfo.profile, freeze: 'false'}}))
     })
 
     // test fields
@@ -65,12 +65,12 @@ describe('CreateAssetTx_new', () => {
         {field: 'category', configData: 0, error: errors.TXInvalidRange('category', 0, 1, 3)},
         {field: 'category', configData: '1', error: errors.TXInvalidType('category', '1', ['number'])},
         {field: 'category', configData: '0xAB', error: errors.TXInvalidType('category', '0xAB', ['number'])},
-        {field: 'decimals', configData: 18},
-        {field: 'decimals', configData: 0},
-        {field: 'decimals', configData: -1, error: errors.TXInvalidRange('decimals', -1, 0, 0xffff)},
-        {field: 'decimals', configData: '0xAB', error: errors.TXInvalidType('decimals', '0xAB', ['number'])},
-        {field: 'decimals', configData: '18', error: errors.TXInvalidType('decimals', '18', ['number'])},
-        {field: 'decimals', configData: 0xfffff, error: errors.TXInvalidRange('decimals', 0xfffff, 0, 0xffff)},
+        {field: 'decimal', configData: 18},
+        {field: 'decimal', configData: 0},
+        {field: 'decimal', configData: -1, error: errors.TXInvalidRange('decimal', -1, 0, 0xffff)},
+        {field: 'decimal', configData: '0xAB', error: errors.TXInvalidType('decimal', '0xAB', ['number'])},
+        {field: 'decimal', configData: '18', error: errors.TXInvalidType('decimal', '18', ['number'])},
+        {field: 'decimal', configData: 0xfffff, error: errors.TXInvalidRange('decimal', 0xfffff, 0, 0xffff)},
         {field: 'isReplenishable', configData: false},
         {field: 'isReplenishable', configData: 'false', error: errors.TXInvalidType('isReplenishable', 'false', ['boolean'])},
         {field: 'isReplenishable', configData: 1, error: errors.TXInvalidType('isReplenishable', 1, ['boolean'])},

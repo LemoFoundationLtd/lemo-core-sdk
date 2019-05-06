@@ -12,7 +12,7 @@ import {encodeAddress} from '../../lib/crypto';
 describe('module_tx_getTx', () => {
     it('getTx', async () => {
         const lemo = new LemoClient({chainID})
-        const result = await lemo.tx.getTx('0x6768e6f7f19a0e55ebec3c40182361c9fce83cd3f638203654ef01f767a4732a')
+        const result = await lemo.tx.getTx('0x649d498473cccc6c42f8932c40095da05558411252136bfebf343d7c6ac263c5')
         assert.deepEqual(result, formattedTxRes1)
     })
     it('getTx not exist', async () => {
@@ -153,7 +153,7 @@ describe('module_tx_create_asset', () => {
                 const lemo = new LemoClient({chainID})
                 const createAssetInfo = {
                     category: 1,
-                    decimals: 18,
+                    decimal: 18,
                     isReplenishable: true,
                     isDivisible: true,
                     profile: {
@@ -166,7 +166,7 @@ describe('module_tx_create_asset', () => {
                 let json = lemo.tx.signCreateAsset(testPrivate, test.txConfig, createAssetInfo)
                 json = JSON.parse(json)
                 assert.equal(json.type, TxType.CREATE_ASSET, `index=${i}`)
-                const result = JSON.stringify({...createAssetInfo, profile: {...createAssetInfo.profile, stop: 'false'}})
+                const result = JSON.stringify({...createAssetInfo, profile: {...createAssetInfo.profile, freeze: 'false'}})
                 assert.equal(toBuffer(json.data).toString(), result, `index=${i}`)
                 assert.equal(json.to, undefined, `index=${i}`)
                 assert.equal(json.toName, undefined, `index=${i}`)
