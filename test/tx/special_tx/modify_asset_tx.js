@@ -12,7 +12,7 @@ function parseHexObject(hex) {
 describe('Modify-Asset', () => {
     const modifyAssetInfo = {
         assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
-        info: {
+        updateProfile: {
             name: 'Demo Asset',
             symbol: 'DT',
             description: 'demo asset',
@@ -23,7 +23,7 @@ describe('Modify-Asset', () => {
     it('modify_normal', () => {
         const tx = new ModifyAssetTx({chainID}, modifyAssetInfo)
         assert.equal(tx.type, TxType.MODIFY_ASSET)
-        assert.equal(parseHexObject(tx.data).info.name, modifyAssetInfo.info.name)
+        assert.equal(parseHexObject(tx.data).updateProfile.name, modifyAssetInfo.updateProfile.name)
     })
     // no assetCode
     it('modify_noassetCode', () => {
@@ -44,8 +44,8 @@ describe('Modify-Asset', () => {
             new ModifyAssetTx({chainID, to: 'lemobw', toName: 'alice'}, modifyInfo)
         }, errors.TXInvalidLength('assetCode', modifyInfo.assetCode, TX_ASSET_CODE_LENGTH))
     })
-    // no info
-    it('modify_noinfo', () => {
+    // no updateProfile
+    it('modify_noupdateProfile', () => {
         const modifyInfo = {
             assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
         }
@@ -53,32 +53,32 @@ describe('Modify-Asset', () => {
             new ModifyAssetTx({chainID, to: 'hello'}, modifyInfo)
         }, errors.TXInfoError())
     })
-    // no symbol info
-    it('modify_only_one_info', () => {
+    // no symbol updateProfile
+    it('modify_only_one_updateProfile', () => {
         const modifyInfo = {
             assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
-            info: {
+            updateProfile: {
                 name: 'alice',
             },
         }
         const tx = new ModifyAssetTx({chainID}, modifyInfo)
-        assert.equal(parseHexObject(tx.data).info.name, modifyInfo.info.name)
+        assert.equal(parseHexObject(tx.data).updateProfile.name, modifyInfo.updateProfile.name)
     })
     // symbol is lower case
     it('modify_lower_case_symbol', () => {
         const modifyInfo = {
             assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
-            info: {
+            updateProfile: {
                 name: 'alice',
                 symbol: 'lemochain',
             },
         }
         const tx = new ModifyAssetTx({chainID}, modifyInfo)
-        assert.equal(parseHexObject(tx.data).info.symbol, 'LEMOCHAIN')
+        assert.equal(parseHexObject(tx.data).updateProfile.symbol, 'LEMOCHAIN')
     })
 })
 
-describe('info_test', () => {
+describe('updateProfile_test', () => {
     // test about stop
     const tests = [
         {field: 'freeze', configData: 'true'},
@@ -90,10 +90,10 @@ describe('info_test', () => {
         {field: 'freeze', configData: 12314, error: errors.TXInvalidType('freeze', 1234, ['boolean', 'string'])},
     ]
     tests.forEach(test => {
-        it(`info_${test.freeze},${test.configData}`, () => {
+        it(`updateProfile_${test.freeze},${test.configData}`, () => {
             const modifyInfo = {
                 assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
-                info: {
+                updateProfile: {
                     name: 'test',
                     symbol: 'DT',
                     suggestedGasLimit: '60000',
@@ -106,7 +106,7 @@ describe('info_test', () => {
                 }, test.error)
             } else {
                 const tx = new ModifyAssetTx({chainID}, modifyInfo)
-                const result = parseHexObject(tx.data).info
+                const result = parseHexObject(tx.data).updateProfile
                 assert.strictEqual(result.freeze, test.configData)
             }
         })

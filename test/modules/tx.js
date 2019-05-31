@@ -230,7 +230,7 @@ describe('module_tx_modify_asset', () => {
                 const lemo = new LemoClient({chainID})
                 const ModifyAssetInfo = {
                     assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
-                    info: {
+                    updateProfile: {
                         name: 'Demo Asset',
                         symbol: 'DT',
                         description: 'demo asset',
