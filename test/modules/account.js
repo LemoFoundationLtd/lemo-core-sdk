@@ -1,9 +1,21 @@
 import {assert} from 'chai'
 import BigNumber from 'bignumber.js'
 import LemoClient from '../../lib/index'
-import {chainID, miner, formatedMiner, formattedSpecialLemoBase, formattedNotExistLemoBase, formattedEquities, creatAsset, metaData, metaData1} from '../datas'
+import {
+    chainID,
+    miner,
+    formatedMiner,
+    formattedSpecialLemoBase,
+    formattedNotExistLemoBase,
+    formattedEquities,
+    creatAsset,
+    metaData,
+    metaData1,
+    testAddr,
+} from '../datas'
 
 import '../mock'
+import errors from '../../lib/errors'
 
 describe('module_account_getAccount', () => {
     it('account with miner balance', async () => {
@@ -108,5 +120,55 @@ describe('module_account_getAssetMetaData', () => {
         const result = await lemo.account.getAssetMetaData('0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76652v')
         assert.equal(result.assetCode, metaData1.assetCode)
         assert.equal(result.owner, metaData1.owner)
+    })
+})
+describe('module_account_createTempAddress', () => {
+    it('normal_account_createTempAddress', async () => {
+        const lemo = new LemoClient({chainID})
+        const userId = '0123456789'
+        const result = await lemo.account.createTempAddress(testAddr, userId)
+        assert.equal(result, 'Lemo85SY56SGRTQQ63A2Y48GBNCRGJC25A6HTDGR')
+    })
+    it('userId_less_than_10', async () => {
+        const lemo = new LemoClient({chainID})
+        const userId = '182338900'
+        const result = await lemo.account.createTempAddress(testAddr, userId)
+        assert.equal(result, 'Lemo85SY56SGRTQQ63A2Y48GBNCRGJCA448KJS2C')
+    })
+    it('userId_more_than_10', async () => {
+        const lemo = new LemoClient({chainID})
+        const userId = '01311111111000000000000'
+        assert.throws(() => {
+            lemo.account.createTempAddress(testAddr, userId)
+        }, errors.TXInvalidUserIdLength())
+    })
+})
+
+describe('module_account_isTempAddress', () => {
+    it('account_isTempAddress_false', async () => {
+        const lemo = new LemoClient({chainID})
+        const result = await lemo.account.isTempAddress(testAddr)
+        assert.equal(result, false)
+    })
+    it('account_isTempAddress_true', async () => {
+        const lemo = new LemoClient({chainID})
+        const userId = '032479789'
+        const address = await lemo.account.createTempAddress(testAddr, userId)
+        const result = await lemo.account.isTempAddress(address)
+        assert.equal(result, true)
+    })
+})
+
+describe('module_account_isContractAddress', () => {
+    it('account_isContractAddress_false', async () => {
+        const lemo = new LemoClient({chainID})
+        const result = await lemo.account.isContractAddress(testAddr)
+        assert.equal(result, false)
+    })
+    // 暂时没有合约账户，此部分为后期需要修改的的部分
+    it('account_isContractAddress_true', async () => {
+        const lemo = new LemoClient({chainID})
+        const result = await lemo.account.isContractAddress(testAddr)
+        assert.equal(result, false)
     })
 })

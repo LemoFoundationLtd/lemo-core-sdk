@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import {chainID} from '../../datas'
+import {chainID, from} from '../../datas'
 import {TX_ASSET_CODE_LENGTH, TxType} from '../../../lib/const'
 import {decodeUtf8Hex} from '../../../lib/utils'
 import errors from '../../../lib/errors'
@@ -21,7 +21,7 @@ describe('Modify-Asset', () => {
     }
     // normal situation
     it('modify_normal', () => {
-        const tx = new ModifyAssetTx({chainID}, modifyAssetInfo)
+        const tx = new ModifyAssetTx({chainID, from}, modifyAssetInfo)
         assert.equal(tx.type, TxType.MODIFY_ASSET)
         assert.equal(parseHexObject(tx.data).updateProfile.name, modifyAssetInfo.updateProfile.name)
     })
@@ -61,7 +61,7 @@ describe('Modify-Asset', () => {
                 name: 'alice',
             },
         }
-        const tx = new ModifyAssetTx({chainID}, modifyInfo)
+        const tx = new ModifyAssetTx({chainID, from}, modifyInfo)
         assert.equal(parseHexObject(tx.data).updateProfile.name, modifyInfo.updateProfile.name)
     })
     // symbol is lower case
@@ -73,7 +73,7 @@ describe('Modify-Asset', () => {
                 symbol: 'lemochain',
             },
         }
-        const tx = new ModifyAssetTx({chainID}, modifyInfo)
+        const tx = new ModifyAssetTx({chainID, from}, modifyInfo)
         assert.equal(parseHexObject(tx.data).updateProfile.symbol, 'LEMOCHAIN')
     })
 })
@@ -102,10 +102,10 @@ describe('updateProfile_test', () => {
             }
             if (test.error) {
                 assert.throws(() => {
-                    new ModifyAssetTx({chainID, to: '0x1000000000000000000000000000000000000000'}, modifyInfo)
+                    new ModifyAssetTx({chainID, from, to: '0x1000000000000000000000000000000000000000'}, modifyInfo)
                 }, test.error)
             } else {
-                const tx = new ModifyAssetTx({chainID}, modifyInfo)
+                const tx = new ModifyAssetTx({chainID, from}, modifyInfo)
                 const result = parseHexObject(tx.data).updateProfile
                 assert.strictEqual(result.freeze, test.configData)
             }

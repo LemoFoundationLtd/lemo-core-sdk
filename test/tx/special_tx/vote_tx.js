@@ -1,11 +1,11 @@
 import {assert} from 'chai'
 import VoteTx from '../../../lib/tx/special_tx/vote_tx'
-import {chainID} from '../../datas'
+import {chainID, from} from '../../datas'
 import {TxType} from '../../../lib/const'
 
 describe('VoteTx_new', () => {
     it('empty config', () => {
-        const tx = new VoteTx({chainID})
+        const tx = new VoteTx({chainID, from})
         assert.equal(tx.type, TxType.VOTE)
         assert.equal(tx.amount, 0)
         assert.equal(tx.data, '')
@@ -13,6 +13,7 @@ describe('VoteTx_new', () => {
     it('useless config', () => {
         const tx = new VoteTx({
             chainID,
+            from,
             type: 100,
             amount: 101,
             data: '102',
@@ -24,6 +25,7 @@ describe('VoteTx_new', () => {
     it('useful config', () => {
         const tx = new VoteTx({
             chainID,
+            from,
             type: TxType.VOTE,
             to: 'lemobw',
         })

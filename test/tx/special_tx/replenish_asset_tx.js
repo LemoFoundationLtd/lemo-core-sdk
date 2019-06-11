@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import {chainID} from '../../datas'
+import {chainID, from} from '../../datas'
 import {TX_ASSET_ID_LENGTH, TxType} from '../../../lib/const'
 import {decodeUtf8Hex} from '../../../lib/utils'
 import errors from '../../../lib/errors'
@@ -16,6 +16,7 @@ describe('replenish-Asset', () => {
         const tx = new ReplenishAssetTX(
             {
                 chainID: 200,
+                from,
                 type: 5,
                 to: '0x000000000000000000000001',
                 toName: 'hello',
@@ -97,10 +98,10 @@ describe('replenishAmount', () => {
             }
             if (test.error) {
                 assert.throws(() => {
-                    new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
+                    new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice', from}, replenishAssetInfo)
                 }, test.error)
             } else {
-                const tx = new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice'}, replenishAssetInfo)
+                const tx = new ReplenishAssetTX({chainID, to: 'lemobw', toName: 'alice', from}, replenishAssetInfo)
                 const targetField = JSON.parse(decodeUtf8Hex(tx.data))[test.field]
                 assert.strictEqual(targetField, test.configData)
             }

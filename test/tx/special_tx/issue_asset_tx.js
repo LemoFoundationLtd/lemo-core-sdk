@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import {chainID} from '../../datas'
+import {chainID, from} from '../../datas'
 import {TxType, TX_ASSET_CODE_LENGTH} from '../../../lib/const'
 import {decodeUtf8Hex} from '../../../lib/utils'
 import errors from '../../../lib/errors'
@@ -18,6 +18,7 @@ describe('IssueAsset_new', () => {
                 to: 'lemobw',
                 toName: 'alice',
                 message: 'abc',
+                from,
             },
             issueAssetInfo,
         )
@@ -50,7 +51,7 @@ describe('IssueAsset_new', () => {
             metaData: 'issue asset metaData',
             supplyAmount: '100000',
         }
-        const tx = new IssueAssetTx({chainID, to: 'lemobw', toName: 'alice'}, issueAssetInfo)
+        const tx = new IssueAssetTx({chainID, to: 'lemobw', toName: 'alice', from}, issueAssetInfo)
         assert.equal(tx.to, 'lemobw')
         assert.equal(tx.toName, 'alice')
         assert.equal(tx.amount, 0)
@@ -94,10 +95,10 @@ describe('IssueAsset_new', () => {
             }
             if (test.error) {
                 assert.throws(() => {
-                    new IssueAssetTx({chainID}, issueAssetInfo)
+                    new IssueAssetTx({chainID, from}, issueAssetInfo)
                 }, test.error)
             } else {
-                const tx = new IssueAssetTx({chainID}, issueAssetInfo)
+                const tx = new IssueAssetTx({chainID, from}, issueAssetInfo)
                 const targetField = JSON.parse(decodeUtf8Hex(tx.data))[test.field]
                 assert.strictEqual(targetField, test.configData)
             }

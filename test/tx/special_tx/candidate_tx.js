@@ -1,6 +1,6 @@
 import {assert} from 'chai'
 import CandidateTx from '../../../lib/tx/special_tx/candidate_tx'
-import {chainID} from '../../datas'
+import {chainID, from} from '../../datas'
 import {TxType, NODE_ID_LENGTH, MAX_DEPUTY_HOST_LENGTH} from '../../../lib/const'
 import {decodeUtf8Hex} from '../../../lib/utils'
 import errors from '../../../lib/errors'
@@ -13,7 +13,7 @@ describe('CandidateTx_new', () => {
         port: 7001,
     }
     it('min config', () => {
-        const tx = new CandidateTx({chainID}, minCandidateInfo)
+        const tx = new CandidateTx({chainID, from}, minCandidateInfo)
         assert.equal(tx.type, TxType.CANDIDATE)
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
@@ -29,6 +29,7 @@ describe('CandidateTx_new', () => {
                 toName: 'alice',
                 amount: 101,
                 data: '102',
+                from,
             },
             minCandidateInfo,
         )
@@ -46,6 +47,7 @@ describe('CandidateTx_new', () => {
         const tx = new CandidateTx(
             {
                 chainID,
+                from,
                 type: TxType.CANDIDATE,
                 message: 'abc',
             },
@@ -97,10 +99,10 @@ describe('CandidateTx_new', () => {
             }
             if (test.error) {
                 assert.throws(() => {
-                    new CandidateTx({chainID}, candidateInfo)
+                    new CandidateTx({chainID, from}, candidateInfo)
                 }, test.error)
             } else {
-                const tx = new CandidateTx({chainID}, candidateInfo)
+                const tx = new CandidateTx({chainID, from}, candidateInfo)
                 const targetField = JSON.parse(decodeUtf8Hex(tx.data))[test.field]
                 if (typeof test.result !== 'undefined') {
                     assert.strictEqual(targetField, test.result)
