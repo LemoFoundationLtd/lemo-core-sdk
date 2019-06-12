@@ -1,18 +1,33 @@
 import {assert} from 'chai'
 import LemoClient from '../../lib/index'
-import {txInfos, chainID, testPrivate, bigTxInfoWithLemoAddr, formattedTxRes1, formattedTxListRes, tx4, txInfo, testAddr} from '../datas'
+import {
+    txInfos,
+    chainID,
+    testPrivate,
+    bigTxInfoWithLemoAddr,
+    formattedTxRes1,
+    formattedTxListRes,
+    tx4,
+    txInfo,
+    testAddr,
+    emptyTxInfo,
+} from '../datas'
 import '../mock'
-import {toBuffer} from '../../lib/utils'
+import {decodeUtf8Hex, toBuffer} from '../../lib/utils'
 import errors from '../../lib/errors'
 import {TxType} from '../../lib/const'
 import Tx from '../../lib/tx/tx'
 import {DEFAULT_POLL_DURATION} from '../../lib/config'
 import {encodeAddress} from '../../lib/crypto';
 
+function parseHexObject(hex) {
+    return JSON.parse(decodeUtf8Hex(hex))
+}
+
 describe('module_tx_getTx', () => {
     it('getTx', async () => {
         const lemo = new LemoClient({chainID})
-        const result = await lemo.tx.getTx('0x649d498473cccc6c42f8932c40095da05558411252136bfebf343d7c6ac263c5')
+        const result = await lemo.tx.getTx(emptyTxInfo.hashAfterSign)
         assert.deepEqual(result, formattedTxRes1)
     })
     it('getTx not exist', async () => {
@@ -308,7 +323,7 @@ describe('module_tx_signReimbursement', () => {
         const lemo = new LemoClient({chainID})
         const noGasInfo = lemo.tx.signNoGas(testPrivate, txInfo.txConfig, testAddr)
         const result = lemo.tx.signReimbursement(testPrivate, noGasInfo, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit)
-        assert.equal(JSON.parse(result).gasPayerSig, txInfo.gasAfterSign)
+        assert.equal(JSON.parse(result).gasPayerSigs, txInfo.gasAfterSign)
         assert.equal(JSON.parse(result).gasLimit, txInfo.txConfig.gasLimit)
         assert.equal(JSON.parse(result).gasPrice, txInfo.txConfig.gasPrice)
     })
@@ -319,5 +334,27 @@ describe('module_tx_signReimbursement', () => {
         assert.throws(() => {
             lemo.tx.signReimbursement(testPrivate, noGasInfo, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit)
         }, errors.InvalidAddressConflict(payer))
+    })
+})
+
+describe('module_tx_signCreateTempAddress', () => {
+    it('signCreateTempAddress_normal', async () => {
+        const lemo = new LemoClient({chainID})
+        const userId = '0123456789'
+        const result = await lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, userId)
+        assert.equal(parseHexObject(JSON.parse(result).data).signers[0].address, txInfo.txConfig.from)
+    })
+    it('signCreateTempAddress_userID_less', async () => {
+        const lemo = new LemoClient({chainID})
+        const userId = '112'
+        const result = await lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, userId)
+        assert.equal(parseHexObject(JSON.parse(result).data).signers[0].address, txInfo.txConfig.from)
+    })
+    it('signCreateTempAddress_userID_more', () => {
+        const lemo = new LemoClient({chainID})
+        const userId = '100000000000000000002'
+        assert.throws(() => {
+            lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, userId)
+        }, errors.TXInvalidUserIdLength())
     })
 })
