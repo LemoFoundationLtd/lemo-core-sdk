@@ -1,6 +1,5 @@
 import {assert} from 'chai'
 import {chainID, testAddr} from '../../datas'
-import {TX_ASSET_CODE_LENGTH} from '../../../lib/const'
 import {decodeUtf8Hex} from '../../../lib/utils'
 import errors from '../../../lib/errors'
 import ModifySignersTx from '../../../lib/tx/special_tx/modify_signers_tx'
@@ -9,7 +8,7 @@ function parseHexObject(hex) {
     return JSON.parse(decodeUtf8Hex(hex))
 }
 
-describe('Modify-signers', () => {
+describe('Modify_signers', () => {
     const modifySignersInfo = {
         signers: [{
             address: testAddr,
@@ -22,7 +21,6 @@ describe('Modify-signers', () => {
     // normal situation
     it('modify_normal', () => {
         const tx = new ModifySignersTx({chainID, from: testAddr}, modifySignersInfo)
-        console.log(parseHexObject(tx.data))
         assert.equal(tx.type, '0')
         assert.deepEqual(parseHexObject(tx.data).signers, modifySignersInfo.signers)
     })

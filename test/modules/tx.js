@@ -18,7 +18,7 @@ import errors from '../../lib/errors'
 import {TxType} from '../../lib/const'
 import Tx from '../../lib/tx/tx'
 import {DEFAULT_POLL_DURATION} from '../../lib/config'
-import {encodeAddress} from '../../lib/crypto';
+import {encodeAddress, decodeAddress} from '../../lib/crypto';
 
 function parseHexObject(hex) {
     return JSON.parse(decodeUtf8Hex(hex))
@@ -344,17 +344,24 @@ describe('module_tx_signCreateTempAddress', () => {
         const result = await lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, userId)
         assert.equal(parseHexObject(JSON.parse(result).data).signers[0].address, txInfo.txConfig.from)
     })
-    it('signCreateTempAddress_userID_less', async () => {
+    it('signCreateTempAddress_userID_short', async () => {
         const lemo = new LemoClient({chainID})
         const userId = '112'
         const result = await lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, userId)
         assert.equal(parseHexObject(JSON.parse(result).data).signers[0].address, txInfo.txConfig.from)
     })
-    it('signCreateTempAddress_userID_more', () => {
+    it('signCreateTempAddress_userID_long', () => {
         const lemo = new LemoClient({chainID})
         const userId = '100000000000000000002'
         assert.throws(() => {
             lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, userId)
         }, errors.TXInvalidUserIdLength())
+    })
+    it('signCreateTempAddress_contrast_from', async () => {
+        const lemo = new LemoClient({chainID})
+        const result = await lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, '0123456789')
+        const codeAddress = decodeAddress(JSON.parse(result).to)
+        const codeFrom = decodeAddress(txInfo.txConfig.from)
+        assert.equal(codeAddress.slice(4, 22), codeFrom.substring(codeFrom.length - 18))
     })
 })
