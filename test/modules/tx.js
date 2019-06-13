@@ -11,6 +11,8 @@ import {
     txInfo,
     testAddr,
     emptyTxInfo,
+    bigTxInfo,
+    createTempDate,
 } from '../datas'
 import '../mock'
 import {decodeUtf8Hex, toBuffer} from '../../lib/utils'
@@ -341,27 +343,27 @@ describe('module_tx_signCreateTempAddress', () => {
     it('signCreateTempAddress_normal', async () => {
         const lemo = new LemoClient({chainID})
         const userId = '0123456789'
-        const result = await lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, userId)
-        assert.equal(parseHexObject(JSON.parse(result).data).signers[0].address, txInfo.txConfig.from)
+        const result = await lemo.tx.signCreateTempAddress(testPrivate, createTempDate.txConfig, userId)
+        assert.equal(parseHexObject(JSON.parse(result).data).signers[0].address, createTempDate.txConfig.from)
     })
     it('signCreateTempAddress_userID_short', async () => {
         const lemo = new LemoClient({chainID})
         const userId = '112'
-        const result = await lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, userId)
-        assert.equal(parseHexObject(JSON.parse(result).data).signers[0].address, txInfo.txConfig.from)
+        const result = await lemo.tx.signCreateTempAddress(testPrivate, createTempDate.txConfig, userId)
+        assert.equal(parseHexObject(JSON.parse(result).data).signers[0].address, createTempDate.txConfig.from)
     })
     it('signCreateTempAddress_userID_long', () => {
         const lemo = new LemoClient({chainID})
         const userId = '100000000000000000002'
         assert.throws(() => {
-            lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, userId)
+            lemo.tx.signCreateTempAddress(testPrivate, createTempDate.txConfig, userId)
         }, errors.TXInvalidUserIdLength())
     })
     it('signCreateTempAddress_contrast_from', async () => {
         const lemo = new LemoClient({chainID})
-        const result = await lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, '0123456789')
+        const result = await lemo.tx.signCreateTempAddress(testPrivate, createTempDate.txConfig, '0123456789')
         const codeAddress = decodeAddress(JSON.parse(result).to)
-        const codeFrom = decodeAddress(txInfo.txConfig.from)
+        const codeFrom = decodeAddress(createTempDate.txConfig.from)
         assert.equal(codeAddress.slice(4, 22), codeFrom.substring(codeFrom.length - 18))
     })
 })

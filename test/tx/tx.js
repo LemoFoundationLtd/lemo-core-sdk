@@ -188,14 +188,14 @@ describe('Tx_new', () => {
 
 describe('Tx_serialize', () => {
     it('without signature', () => {
-        txInfos.forEach(async (test, i) => {
-            const tx = await new Tx(test.txConfig)
+        txInfos.forEach((test, i) => {
+            const tx = new Tx(test.txConfig)
             assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlp, `inedx=${i}`)
         })
     })
     it('with signature', () => {
-        txInfos.forEach(async (test, i) => {
-            const tx = await new Tx(test.txConfig)
+        txInfos.forEach((test, i) => {
+            const tx = new Tx(test.txConfig)
             tx.signWith(testPrivate)
             assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlpAfterSign, `index=${i}`)
         })
@@ -210,8 +210,8 @@ describe('Tx_hash', () => {
         })
     })
     it('with signature', () => {
-        txInfos.forEach(async (test, i) => {
-            const tx = await new Tx(test.txConfig)
+        txInfos.forEach((test, i) => {
+            const tx = new Tx(test.txConfig)
             tx.signWith(testPrivate)
             assert.equal(tx.hash(), test.hashAfterSign, `index=${i}`)
         })
