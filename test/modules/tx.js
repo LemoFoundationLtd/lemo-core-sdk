@@ -365,3 +365,90 @@ describe('module_tx_signCreateTempAddress', () => {
         assert.equal(codeAddress.slice(4, 22), codeFrom.substring(codeFrom.length - 18))
     })
 })
+describe('module_tx_boxTx', () => {
+    it('boxTx_normal', async () => {
+        const lemo = new LemoClient({chainID})
+        // sign create Asset tx
+        const createAssetInfo = {
+            category: 1,
+            decimal: 18,
+            isReplenishable: true,
+            isDivisible: true,
+            profile: {
+                name: 'Demo Asset',
+                symbol: 'DT',
+                description: 'demo asset',
+                suggestedGasLimit: '60000',
+            },
+        }
+        const createAsset = lemo.tx.signCreateAsset(testPrivate, emptyTxInfo.txConfig, createAssetInfo)
+        // sign modify Asset tx
+        const ModifyAssetInfo = {
+            assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+            updateProfile: {
+                name: 'Demo Asset',
+                symbol: 'DT',
+                description: 'demo asset',
+            },
+        }
+        const modifyAsset = lemo.tx.signModifyAsset(testPrivate, bigTxInfo.txConfig, ModifyAssetInfo)
+        // subTxInfo: one is string and the other is a object. Same expirationTime
+        const boxTxInfo = {
+            subTxList: [createAsset, JSON.parse(modifyAsset)],
+        }
+        const result = await lemo.tx.signBoxTx(testPrivate, txInfo.txConfig, boxTxInfo)
+        assert.deepEqual(JSON.parse(result).to, undefined)
+        assert.deepEqual(parseHexObject(JSON.parse(result).data), boxTxInfo)
+        assert.deepEqual(JSON.parse(result).expirationTime, boxTxInfo.subTxList[0].expirationTime)
+    })
+    it('boxTx_time_different', async () => {
+        const lemo = new LemoClient({chainID})
+        // sign replenish Asset tx
+        const replenishAssetInfo = {
+            assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+            assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+            replenishAmount: '100000',
+        }
+        const replenishAsset = lemo.tx.signReplenishAsset(testPrivate, tx4, replenishAssetInfo)
+        // sign modify Asset tx
+        const ModifyAssetInfo = {
+            assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
+            updateProfile: {
+                name: 'Demo Asset',
+                symbol: 'DT',
+                description: 'demo asset',
+            },
+        }
+        const modifyAsset = lemo.tx.signModifyAsset(testPrivate, bigTxInfo.txConfig, ModifyAssetInfo)
+        // subTxInfo: two data are object. expirationTime is different
+        const boxTxInfo = {
+            subTxList: [replenishAsset, modifyAsset],
+        }
+        const result = await lemo.tx.signBoxTx(testPrivate, txInfo.txConfig, boxTxInfo)
+        // Compare the size of the expirationTime within a transaction
+        const time = []
+        parseHexObject(JSON.parse(result).data).subTxList.forEach(item => {
+            time.push(item.expirationTime)
+        })
+        assert.deepEqual(JSON.parse(result).expirationTime, Math.min(...time).toString())
+    })
+})
+
+describe('module_tx_Contract_creation', () => {
+    it('Contract_creation_normal', async () => {
+        const lemo = new LemoClient({chainID})
+        const code = '0x000000100000100'
+        const constructorArgs = '0xdaaod10000001111'
+        const result = await lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, code, constructorArgs)
+        console.log(result)
+        assert.deepEqual(JSON.parse(result).data.slice(2, code.length), code.slice(2))
+    })
+    it('Contract_creation_code_number', () => {
+        const lemo = new LemoClient({chainID})
+        const code = 0x000000100000100
+        const constructorArgs = '0xdaaod10000001111'
+        assert.throws(() => {
+            lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, code, constructorArgs)
+        }, errors.TXInvalidType('code', 0x000000100000100, ['string']))
+    })
+})
