@@ -131,6 +131,8 @@ describe('module_account_createTempAddress', () => {
         {input: '测试', output: 'Lemo85SY56SGRTQQ63A2Y48GBNCS79CBNPK8Y7TN'},
         {input: 'sanff,da', output: 'Lemo85SY56SGRTQQ63A2Y48GCYCJZKHF3JW4R7C2'},
         {input: 213545, output: 'Lemo85SY56SGRTQQ63A2Y48GBNCRGJC85HPB87RW'},
+        {input: [1232312133], output: '', error: errors.InvalidUserId()},
+        {input: ['01311111111000000000000'], output: '', error: errors.InvalidUserId()},
         {input: 21352312414157567575656765623145, output: '', error: errors.TXInvalidUserIdLength()},
         {input: '01311111111000000000000', output: '', error: errors.TXInvalidUserIdLength()},
     ]
