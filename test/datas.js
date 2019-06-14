@@ -697,3 +697,12 @@ export const metaData1 = {
     assetCode: '0x78d01bf80c705796328167963b0fdc857a4991aa1829fa68a7495d2980771228',
     owner: 'Lemo8498CBCJSY9G7JF4CGZDP64PRRNGP4HQ2QPF',
 }
+
+export const tempConfig1 = {
+    ...txInfo.txConfig,
+    sigs: ['0xacba6ce994874d7b856d663a7f1d04bc7bf65278d33afb0a7fd8da69f626292a01e6badf976c360673b71c54ff363bbcb521ae545fec47cb0bf83eb4c83332b601', '0x8c0499083cb3d27bead4f21994aeebf8e75fa11df6bfe01c71cad583fc9a3c70778a437607d072540719a866adb630001fabbfb6b032d1a8dfbffac7daed8f0201'],
+}
+export const tempConfig2 = {
+    ...txInfo.txConfig,
+    sigs: ['0xacba6ce994874d7b856d663a7f1d04bc7bf65278d33afb0a7fd8da69f626292a01e6badf976c360673b71c54ff363bbcb521ae545fec47cb0bf83eb4c83332b601', '0x8c0499083cb3d27bead4f21994aeebf8e75fa11df6bfe01c71cad583fc9a3c70778a437607d072540719a866adb630001fabbfb6b032d1a8dfbffac7daed8f0201', '0x0b6f84fd741d875cbfaf387c06fbf855906eaa20bdd47401b6a4fbac8cb2254d746bc9109bf88afc98d1317799f4679bb02abb1340572c26c82eacb82f0eac4401'],
+}
