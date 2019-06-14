@@ -380,7 +380,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | type        | 功能                 | newValue  | extra |
 | ----------- | -------------------- | --------- | ----- |
 | BalanceLog  | 账户余额变化         | 新的余额  | -     |
-| StorageLog  | 合约账户存储数据变化 | 	storage value     | 	storage key   |
+| StorageLog  | 合约账户存储数据变化 | 	value     | 	key   |
 | CodeLog     | 合约账户创建         | 合约 code | -     |
 | AddEventLog | 产生一条合约日志     | 合约日志  | -     |
 | SuicideLog  | 合约账户销毁         | -         | -     |
