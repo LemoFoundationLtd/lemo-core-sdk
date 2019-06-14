@@ -1339,7 +1339,7 @@ lemo.account.createTempAddress(from, userId)
 
 ##### Parameters
 1. `string` - 创建者地址
-2. `string` - 用户的ID，在十六进制下长度不能大于20字节
+2. `string` - 自定义的用户ID，必须是一个10字节以内的十六进制字符串
 
 ##### Returns
 `string` - 临时账户地址
@@ -1892,17 +1892,17 @@ console.log(result)
 lemo.tx.signCreateTempAddress(privateKey, txConfig, userId)
 ```
 
-对创建的临时账户进行签名，并返回签名后的交易信息字符串
+对创建临时账户的交易进行签名，并返回签名后的交易信息字符串
 1. 临时账户没有私钥，只能由Signers中的账户进行签名
 2. 临时账户必须先配置Signers才能使用
-3. 如果账户已存在，只有多签名账户才能修改Signers
+3. 如果账户已存在，则创建失败
 与[`lemo.tx.sign`](#submodule-tx-sign)用法相同，只是在交易中填充了特殊的数据  
 
 ##### Parameters
 
 1. `string` - 账户私钥
 2. `object` - 签名前的交易信息，细节参考[`lemo.tx.sendTx`](#submodule-tx-sendTx)
-3. `string` - 用户的ID，在十六进制下长度不能大于20字节
+3. `string` - 自定义的用户ID，必须是一个10字节以内的十六进制字符串
 
 ##### Returns
 
@@ -1937,7 +1937,7 @@ lemo.tx.signBoxTx(privateKey, txConfig, boxTxInfo)
 
 1. `string` - 账户私钥
 2. `object` - 签名前的交易信息，细节参考[`lemo.tx.sendTx`](#submodule-tx-sendTx)， 这里的 `to` 字段会被省略
-3. `object` - 箱子交易储存的完整交易的信息
+3. `array` - 签名后的子交易列表。列表中的交易必须是字符串或对象的形式
 
 ##### Returns
 
@@ -1974,7 +1974,7 @@ console.log(result)
 lemo.tx.signContractCreation(privateKey, txConfig, code, constructorArgs)
 ```
 
-对合约交易进行签名，并返回签名后的交易信息字符串
+对创建智能合约的交易进行签名，并返回签名后的交易信息字符串
 与[`lemo.tx.sign`](#submodule-tx-sign)用法相同，只是在交易中填充了特殊的数据  
 
 ##### Parameters

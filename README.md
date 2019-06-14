@@ -255,8 +255,8 @@ Signed transaction
 - `gasPrice` Price of every gas in `mo`. It is a `BigNumber` object. The more gas price the more priority
 - `hash` Transaction hash
 - `message` (optional) Extra text message from sender. The max limit of length is 1024.
-- `sigs` Transaction signature array, each field length of 65 bytes
-- `gasPayerSigs` An array of paid gas transaction signature data, each field length of 65 bytes
+- `sigs` Transaction signature array, each field length is 65 bytes
+- `gasPayerSigs` An array of paid gas transaction signature data, each field length is 65 bytes
 
 <a name="data-transaction-type"></a>
 
@@ -361,8 +361,8 @@ SuicideLog | Destroying a contract account | - | -
 VoteForLog | The change of vote target address in account | new vote target address | -
 VotesLog | The change of received votes count in candidate account | new votes count | -
 CandidateProfileLog | The change of candidate profile in account | candidate profile map | -
-TxCountLog | The change of number of transactions | Number of transactions | -
-SignersLog | The change of Multiple signature account | signers profile map | -
+TxCountLog | The change of number of transactions which send from the account | Number of transactions | -
+SignersLog | The change of singers address and weight of the account | signers profile map | -
 
 <a name="data-structure-confirm"></a>
 #### confirm
@@ -1163,7 +1163,7 @@ create a temp account
 
 ##### Parameters
 1. `string` - account address
-2. `string` - User id, which cannot be longer than 20 bytes in hexadecimal
+2. `string` - customized user id, which's length should be 10 bytes in hexadecimal at most
 
 ##### Returns
 `string` - Temporary account address
@@ -1182,7 +1182,7 @@ console.log(result) // Lemo85SY56SGRTQQ63A2Y43KYA8C7QAZB37P3KY5
 ```
 lemo.account.isTempAddress(address)
 ```
-True if the current address is a temporary account
+True if the specific address is a temporary account
 
 ##### Parameters
 1. `string` - Asset ID
@@ -1649,15 +1649,15 @@ console.log(result)
 lemo.tx.signCreateTempAddress(privateKey, txConfig, userId)
 ```
 Sign a transaction for create temp account transaction, then return the signed transaction string  
-1. Temp account have no privatekey and only can be signed by accounts in Signers
-2. Temp account must be configured with Signers before they can be used
-3. If the temp account already exists, only multi-signed accounts can modify the Signers
+1. Temp account has no private key and only can be signed by accounts in its `signers`
+2. Temp account must be configured with Signers before using it
+3. If the temp account already exists, the creation will be fail
 The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference is filling special data in transaction
 
 ##### Parameters
 1. `string` - Account private key
 2. `object` - Unsigned transaction like the same parameter in [`lemo.tx.sendTx`](#submodule-tx-sendTx).
-3. `string` - User id, which cannot be longer than 20 bytes in hexadecimal
+2. `string` - customized user id, which's length should be 10 bytes in hexadecimal at most
 
 ##### Returns
 `string` - The string of signed [transaction](#data-structure-transaction) information
@@ -1679,14 +1679,14 @@ console.log(result)
 lemo.tx.signBoxTx(privateKey, txConfig, boxTxInfo) 
 ```
 Sign a transaction for box transactions, then return the signed transaction string. 
-1. Box transactions can store multiple complete transaction information including special transactions, but cannot store box transactions in box transactions
+1. Box transaction can store multiple signed transaction informations including special transactions, but cannot store box transactions
 2. The timestamp of the box transaction is equal to the minimum timestamp of the child transaction in the box
 The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference is filling special data in transaction
 
 ##### Parameters
 1. `string` - Account private key
 2. `object` - Unsigned transaction like the same parameter in [`lemo.tx.sendTx`](#submodule-tx-sendTx). For this API, `to` fields will be ignored.
-3. `object` - Box transactions stores complete transaction information
+3. `array` - Signed transaction list. The item should by signed transaction string or object
 
 ##### Returns
 `string` - The string of signed [transaction](#data-structure-transaction) information
