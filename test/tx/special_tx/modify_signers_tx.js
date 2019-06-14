@@ -3,6 +3,7 @@ import {chainID, testAddr} from '../../datas'
 import {decodeUtf8Hex} from '../../../lib/utils'
 import errors from '../../../lib/errors'
 import ModifySignersTx from '../../../lib/tx/special_tx/modify_signers_tx'
+import {TxType} from '../../../lib/const'
 
 function parseHexObject(hex) {
     return JSON.parse(decodeUtf8Hex(hex))
@@ -21,7 +22,7 @@ describe('Modify_signers', () => {
     // normal situation
     it('modify_normal', () => {
         const tx = new ModifySignersTx({chainID, from: testAddr}, modifySignersInfo)
-        assert.equal(tx.type, '0')
+        assert.equal(tx.type, TxType.MODIFY_SIGNER)
         assert.deepEqual(parseHexObject(tx.data).signers, modifySignersInfo.signers)
     })
 })
@@ -57,5 +58,4 @@ describe('Modify-signers_miss_weight', () => {
             new ModifySignersTx({chainID, from: testAddr}, modifySignersInfo)
         }, errors.TXInvalidType('signers[0].weight', undefined, ['number']))
     })
-
 })
