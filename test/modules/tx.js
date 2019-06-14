@@ -11,6 +11,7 @@ import {
     txInfo,
     testAddr,
     emptyTxInfo,
+    bigTxInfo,
 } from '../datas'
 import '../mock'
 import {decodeUtf8Hex, toBuffer} from '../../lib/utils'
