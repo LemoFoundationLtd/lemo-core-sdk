@@ -2,7 +2,7 @@ import {assert} from 'chai'
 import Tx from '../../lib/tx/tx'
 import {TX_VERSION, TTTL, TX_DEFAULT_GAS_LIMIT, TX_DEFAULT_GAS_PRICE} from '../../lib/config'
 import errors from '../../lib/errors'
-import {testPrivate, txInfos, chainID, testAddr, tempConfig1, tempConfig2} from '../datas'
+import {testPrivate, txInfos, chainID, testAddr, emptyTxInfo} from '../datas'
 import {TxType, MAX_TX_TO_NAME_LENGTH, TX_SIG_BYTE_LENGTH} from '../../lib/const'
 import Signer from '../../lib/tx/signer'
 import {encodeAddress} from '../../lib/crypto'
@@ -230,13 +230,10 @@ describe('Tx_expirationTime', () => {
 
 describe('Tx_signWith', () => {
     it('sigWith_success', () => {
-        const tx = new Tx(tempConfig1)
+        const tx = new Tx(emptyTxInfo.txConfig)
         tx.signWith(testPrivate)
-        assert.equal(tx.sigs.length, tempConfig1.sigs.length + 1)
-    })
-    it('sigWith_failure', () => {
-        const tx = new Tx(tempConfig2)
+        assert.equal(tx.sigs.length, 1)
         tx.signWith(testPrivate)
-        assert.equal(tx.sigs.length, tempConfig2.sigs.length)
+        assert.equal(tx.sigs.length, 1)
     })
 })
