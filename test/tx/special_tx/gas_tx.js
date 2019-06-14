@@ -8,7 +8,6 @@ describe('GasTx_new', () => {
     }
     it('payer is LemoAddress', () => {
         const tx = new GasTx(txConfig, testAddr)
-        console.log(tx)
         assert.equal(tx.gasLimit, txConfig.gasLimit)
         assert.equal(tx.data, txConfig.data)
         assert.equal(tx.payer, testAddr)

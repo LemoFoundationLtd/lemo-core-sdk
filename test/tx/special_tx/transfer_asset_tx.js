@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import {chainID} from '../../datas'
+import {chainID, from} from '../../datas'
 import {TxType, TX_ASSET_ID_LENGTH} from '../../../lib/const'
 import {decodeUtf8Hex} from '../../../lib/utils'
 import errors from '../../../lib/errors'
@@ -11,7 +11,7 @@ describe('TransferAsset_new', () => {
             assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
             transferAmount: '110000',
         }
-        const tx = new TransferAssetTx({chainID, to: 'lemobw', toName: 'alice'}, transferAssetInfo)
+        const tx = new TransferAssetTx({chainID, to: 'lemobw', toName: 'alice', from}, transferAssetInfo)
         assert.equal(tx.type, TxType.TRANSFER_ASSET)
         assert.equal(tx.amount, 0)
         assert.equal(tx.to, 'lemobw')
@@ -34,6 +34,7 @@ describe('TransferAsset_new', () => {
         const tx = new TransferAssetTx(
             {
                 chainID,
+                from,
                 type: TxType.TRANSFER_ASSET,
                 to: 'lemobw',
                 toName: 'alice',
@@ -67,10 +68,10 @@ describe('TransferAsset_new', () => {
             }
             if (test.error) {
                 assert.throws(() => {
-                    new TransferAssetTx({chainID}, transferAssetInfo)
+                    new TransferAssetTx({chainID, from}, transferAssetInfo)
                 }, test.error)
             } else {
-                const tx = new TransferAssetTx({chainID}, transferAssetInfo)
+                const tx = new TransferAssetTx({chainID, from}, transferAssetInfo)
                 const targetField = JSON.parse(decodeUtf8Hex(tx.data))[test.field]
                 assert.strictEqual(targetField, test.configData)
             }
@@ -94,10 +95,10 @@ describe('test fields is transferAssetInfo', () => {
             }
             if (test.error) {
                 assert.throws(() => {
-                    new TransferAssetTx({chainID}, transferAssetInfo)
+                    new TransferAssetTx({chainID, from}, transferAssetInfo)
                 }, test.error)
             } else {
-                const tx = new TransferAssetTx({chainID}, transferAssetInfo)
+                const tx = new TransferAssetTx({chainID, from}, transferAssetInfo)
                 const targetField = JSON.parse(decodeUtf8Hex(tx.data))[test.field]
                 assert.strictEqual(targetField, test.configData)
             }

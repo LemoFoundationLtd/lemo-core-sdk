@@ -2,8 +2,7 @@ import {assert} from 'chai'
 import Tx from '../../lib/tx/tx'
 import {TX_VERSION, TTTL, TX_DEFAULT_GAS_LIMIT, TX_DEFAULT_GAS_PRICE} from '../../lib/config'
 import errors from '../../lib/errors'
-import {toBuffer} from '../../lib/utils'
-import {testPrivate, txInfos, chainID, testAddr} from '../datas'
+import {testPrivate, txInfos, chainID, testAddr, emptyTxInfo} from '../datas'
 import {TxType, MAX_TX_TO_NAME_LENGTH, TX_SIG_BYTE_LENGTH} from '../../lib/const'
 import Signer from '../../lib/tx/signer'
 import {encodeAddress} from '../../lib/crypto'
@@ -16,7 +15,7 @@ describe('Tx_new', () => {
     })
 
     it('minimal config', () => {
-        const tx = new Tx({chainID})
+        const tx = new Tx({chainID, from: testAddr})
         assert.equal(tx.type, TxType.ORDINARY)
         assert.equal(tx.version, TX_VERSION)
         assert.equal(tx.chainID, chainID)
@@ -28,14 +27,15 @@ describe('Tx_new', () => {
         assert.equal(tx.data, '')
         assert.equal(tx.expirationTime, Math.floor(Date.now() / 1000) + TTTL)
         assert.equal(tx.message, '')
-        assert.equal(tx.sig, '')
-        assert.equal(tx.gasPayerSig, '')
-        assert.equal(tx.from, '')
+        assert.deepEqual(tx.sigs, [])
+        assert.deepEqual(tx.gasPayerSigs, [])
+        assert.equal(tx.from, testAddr)
     })
 
     it('full config', () => {
         const config = {
             chainID,
+            from: testAddr,
             type: 100,
             version: 101,
             to: '0x102',
@@ -46,8 +46,8 @@ describe('Tx_new', () => {
             data: '107',
             expirationTime: 108,
             message: '109',
-            sig: '0x0110',
-            gasPayerSig: '0x01011',
+            sigs: ['0x0110'],
+            gasPayerSigs: ['0x01011'],
         }
         const tx = new Tx(config)
         assert.equal(tx.chainID, config.chainID)
@@ -61,11 +61,9 @@ describe('Tx_new', () => {
         assert.equal(tx.data, `0x${config.data}`)
         assert.equal(tx.expirationTime, config.expirationTime)
         assert.equal(tx.message, config.message)
-        assert.equal(tx.sig, config.sig)
-        assert.equal(tx.gasPayerSig, config.gasPayerSig)
-        assert.throws(() => {
-            console.log(tx.from)
-        }, 'invalid signature')
+        assert.deepEqual(tx.sigs, config.sigs)
+        assert.deepEqual(tx.gasPayerSigs, config.gasPayerSigs)
+        assert.equal(tx.from, config.from)
     })
 
     const tests = [
@@ -111,51 +109,46 @@ describe('Tx_new', () => {
                 MAX_TX_TO_NAME_LENGTH,
             ),
         },
-        {field: 'sig', configData: 0, result: ''},
-        {field: 'sig', configData: ''},
-        {field: 'sig', configData: '0', result: '0x0'},
-        {field: 'sig', configData: '1', result: '0x1'},
-        {field: 'sig', configData: '4294967295', result: '0x4294967295'},
-        {field: 'sig', configData: '0x'},
-        {field: 'sig', configData: '0x0'},
-        {field: 'sig', configData: '0x1'},
-        {field: 'sig', configData: '0xffffffff'},
-        {field: 'sig', configData: toBuffer('0x1'), error: errors.TXInvalidType('sig',  toBuffer('0x1'), ['string'])},
-        {field: 'sig', configData: 1, error: errors.TXInvalidType('sig', 1, ['string'])},
-        {field: 'sig', configData: 'abc', error: errors.TXMustBeNumber('sig', 'abc')},
-        {field: 'sig', configData: '0xxyz', error: errors.TXMustBeNumber('sig', '0xxyz')},
-        {field: 'sig', configData: '-1', error: errors.TXMustBeNumber('sig', '-1')},
+        {field: 'sigs', configData: [], result: []},
+        {field: 'sigs', configData: ['0'], result: ['0x0']},
+        {field: 'sigs', configData: ['1'], result: ['0x1']},
+        {field: 'sigs', configData: ['4294967295'], result: ['0x4294967295']},
+        {field: 'sigs', configData: ['0x']},
+        {field: 'sigs', configData: ['0x0']},
+        {field: 'sigs', configData: ['0x1']},
+        {field: 'sigs', configData: ['0xffffffff', '0x12111111']},
+        {field: 'sigs', configData: 1, error: errors.TXInvalidType('sigs', 1, ['array'])},
+        {field: 'sigs', configData: 'abc', error: errors.TXInvalidType('sigs', 'abc', ['array'])},
+        {field: 'sigs', configData: '0xxyz', error: errors.TXInvalidType('sigs', '0xxyz', ['array'])},
+        {field: 'sigs', configData: '-1', error: errors.TXInvalidType('sigs', '-1', ['array'])},
         {
-            field: 'sig',
+            field: 'sigs',
             configData:
-                '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+                ['0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001'],
             error: errors.TXInvalidMaxBytes(
-                'sig',
+                'sigs[0]',
                 '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
                 TX_SIG_BYTE_LENGTH,
                 66,
             ),
         },
-        {field: 'gasPayerSig', configData: 0, result: ''},
-        {field: 'gasPayerSig', configData: ''},
-        {field: 'gasPayerSig', configData: '0', result: '0x0'},
-        {field: 'gasPayerSig', configData: '1', result: '0x1'},
-        {field: 'gasPayerSig', configData: '4294967295', result: '0x4294967295'},
-        {field: 'gasPayerSig', configData: '0x'},
-        {field: 'gasPayerSig', configData: '0x0'},
-        {field: 'gasPayerSig', configData: '0x1'},
-        {field: 'gasPayerSig', configData: '0xffffffff'},
-        {field: 'gasPayerSig', configData: toBuffer('0x1'), error: errors.TXInvalidType('gasPayerSig',   toBuffer('0x1'), ['string'])},
-        {field: 'gasPayerSig', configData: 1, error: errors.TXInvalidType('gasPayerSig', 1, ['string'])},
-        {field: 'gasPayerSig', configData: 'abc', error: errors.TXMustBeNumber('gasPayerSig', 'abc')},
-        {field: 'gasPayerSig', configData: '0xxyz', error: errors.TXMustBeNumber('gasPayerSig', '0xxyz')},
-        {field: 'gasPayerSig', configData: '-1', error: errors.TXMustBeNumber('gasPayerSig', '-1')},
+        {field: 'gasPayerSigs', configData: [], result: []},
+        {field: 'gasPayerSigs', configData: ['0'], result: ['0x0']},
+        {field: 'gasPayerSigs', configData: ['1'], result: ['0x1']},
+        {field: 'gasPayerSigs', configData: ['4294967295'], result: ['0x4294967295']},
+        {field: 'gasPayerSigs', configData: ['0x']},
+        {field: 'gasPayerSigs', configData: ['0x0']},
+        {field: 'gasPayerSigs', configData: ['0x1']},
+        {field: 'gasPayerSigs', configData: ['0xffffffff']},
+        {field: 'gasPayerSigs', configData: 'abc', error: errors.TXInvalidType('gasPayerSigs', 'abc', ['array'])},
+        {field: 'gasPayerSigs', configData: '0xxyz', error: errors.TXInvalidType('gasPayerSigs', '0xxyz', ['array'])},
+        {field: 'gasPayerSigs', configData: '-1', error: errors.TXInvalidType('gasPayerSigs', '-1', ['array'])},
         {
-            field: 'gasPayerSig',
+            field: 'gasPayerSigs',
             configData:
-                '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+                ['0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001'],
             error: errors.TXInvalidMaxBytes(
-                'gasPayerSig',
+                'gasPayerSigs[0]',
                 '0x10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
                 TX_SIG_BYTE_LENGTH,
                 66,
@@ -164,7 +157,7 @@ describe('Tx_new', () => {
     ]
     tests.forEach(test => {
         it(`set ${test.field} to ${JSON.stringify(test.configData)}`, () => {
-            const config = {chainID, [test.field]: test.configData}
+            const config = {chainID, from: testAddr,  [test.field]: test.configData}
             if (test.error) {
                 assert.throws(() => {
                     new Tx(config)
@@ -172,9 +165,9 @@ describe('Tx_new', () => {
             } else {
                 const tx = new Tx(config)
                 if (typeof test.result !== 'undefined') {
-                    assert.strictEqual(tx[test.field], test.result)
+                    assert.deepStrictEqual(tx[test.field], test.result)
                 } else {
-                    assert.strictEqual(tx[test.field], test.configData)
+                    assert.deepStrictEqual(tx[test.field], test.configData)
                 }
             }
         })
@@ -184,64 +177,64 @@ describe('Tx_new', () => {
         const obj = {
             chainID: '1',
             expirationTime: '1541649536',
+            from: testAddr,
         }
         const tx = new Tx(obj)
         tx.sig = new Signer().sign(tx, testPrivate)
-        assert.equal(tx.from, testAddr)
+        assert.equal(tx.from, obj.from)
         assert.equal(typeof tx.from, 'string')
-        assert.throws(() => {
-            tx.from = 'sdafacaggg'
-            console.log(tx.from)
-        }, errors.TXCanNotChangeFrom())
     })
 })
 
 describe('Tx_serialize', () => {
     it('without signature', () => {
-        return Promise.all(
-            txInfos.map(async (test, i) => {
-                const tx = new Tx(test.txConfig)
-                assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlp, `index=${i}`)
-            }),
-        )
+        txInfos.forEach((test, i) => {
+            const tx = new Tx(test.txConfig)
+            assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlp, `inedx=${i}`)
+        })
     })
     it('with signature', () => {
-        return Promise.all(
-            txInfos.map(async (test, i) => {
-                const tx = new Tx(test.txConfig)
-                tx.signWith(testPrivate)
-                assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlpAfterSign, `index=${i}`)
-            }),
-        )
+        txInfos.forEach((test, i) => {
+            const tx = new Tx(test.txConfig)
+            tx.signWith(testPrivate)
+            assert.equal(`0x${tx.serialize().toString('hex')}`, test.rlpAfterSign, `index=${i}`)
+        })
     })
 })
 
 describe('Tx_hash', () => {
     it('without signature', () => {
-        return Promise.all(
-            txInfos.map(async (test, i) => {
-                const tx = new Tx(test.txConfig)
-                assert.equal(tx.hash(), test.hash, `index=${i}`)
-            }),
-        )
+        txInfos.forEach((test, i) => {
+            const tx = new Tx(test.txConfig)
+            assert.equal(tx.hash(), test.hash, `index=${i}`)
+        })
     })
     it('with signature', () => {
-        return Promise.all(
-            txInfos.map(async (test, i) => {
-                const tx = new Tx(test.txConfig)
-                tx.signWith(testPrivate)
-                assert.equal(tx.hash(), test.hashAfterSign, `index=${i}`)
-            }),
-        )
+        txInfos.forEach((test, i) => {
+            const tx = new Tx(test.txConfig)
+            tx.signWith(testPrivate)
+            assert.equal(tx.hash(), test.hashAfterSign, `index=${i}`)
+        })
     })
 })
 
 describe('Tx_expirationTime', () => {
     it('default expiration', () => {
         const before = Math.floor(Date.now() / 1000)
-        const tx = new Tx({chainID})
+        const tx = new Tx({chainID, from: testAddr})
         const after = Math.floor(Date.now() / 1000)
         assert.isAtLeast(tx.expirationTime, before + TTTL)
         assert.isAtMost(tx.expirationTime, after + TTTL)
+    })
+})
+
+describe('Tx_signWith', () => {
+    it('sigWith_sigs_length', () => {
+        const tx = new Tx(emptyTxInfo.txConfig)
+        assert.equal(emptyTxInfo.txConfig.sigs, undefined)
+        tx.signWith(testPrivate)
+        assert.equal(tx.sigs.length, 1)
+        tx.signWith(testPrivate)
+        assert.equal(tx.sigs.length, 1)
     })
 })

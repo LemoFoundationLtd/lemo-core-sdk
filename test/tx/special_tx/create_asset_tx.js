@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import {chainID} from '../../datas'
+import {chainID, from} from '../../datas'
 import {TxType} from '../../../lib/const'
 import {decodeUtf8Hex} from '../../../lib/utils'
 import errors from '../../../lib/errors'
@@ -19,7 +19,7 @@ describe('CreateAssetTx_new', () => {
         },
     }
     it('min config', () => {
-        const tx = new CreateAssetTx({chainID}, minCreateAssetInfo)
+        const tx = new CreateAssetTx({chainID, from}, minCreateAssetInfo)
         assert.equal(tx.type, TxType.CREATE_ASSET)
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
@@ -30,6 +30,7 @@ describe('CreateAssetTx_new', () => {
         const tx = new CreateAssetTx(
             {
                 chainID,
+                from,
                 type: 100,
                 to: 'lemobw',
                 toName: 'alice',
@@ -48,6 +49,7 @@ describe('CreateAssetTx_new', () => {
         const tx = new CreateAssetTx(
             {
                 chainID,
+                from,
                 type: TxType.CREATE_ASSET,
                 message: 'abc',
             },
@@ -126,10 +128,10 @@ describe('CreateAssetTx_new', () => {
             }
             if (test.error) {
                 assert.throws(() => {
-                    new CreateAssetTx({chainID}, createAssetInfo)
+                    new CreateAssetTx({chainID, from}, createAssetInfo)
                 }, test.error)
             } else {
-                const tx = new CreateAssetTx({chainID}, createAssetInfo)
+                const tx = new CreateAssetTx({chainID, from}, createAssetInfo)
                 const parsedData = JSON.parse(decodeUtf8Hex(tx.data))
                 const targetField = test.inProfile ? parsedData.profile[test.field] : parsedData[test.field]
                 assert.strictEqual(targetField, test.configData)
@@ -145,7 +147,7 @@ describe('CreateAssetTx_new', () => {
                 description: 'demo asset',
             },
         }
-        const tx = new CreateAssetTx({chainID}, test)
+        const tx = new CreateAssetTx({chainID, from}, test)
         assert.equal(JSON.parse(decodeUtf8Hex(tx.data)).profile.symbol, 'LEMO')
     })
 })
