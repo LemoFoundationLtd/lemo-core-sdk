@@ -291,7 +291,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | lemo.TxType.MODIFY_ASSET | 7   | 修改资产交易                |
 | lemo.TxType.TRANSFER_ASSET| 8   | 交易资产                   |
 | lemo.TxType.MODIFY_SIGNER| 9   | 修改多重签名                   |
-| lemo.TxType.BOX_TX| 10   | 箱子交易                   |
+| lemo.TxType.BOX_TX| 10   | 箱子交易，打包多笔交易，事务性地运行它们      |
 
 | chainID | 说明           |
 | ------- | -------------- |

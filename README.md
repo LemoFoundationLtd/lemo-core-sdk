@@ -264,16 +264,16 @@ Signed transaction
 transaction type | number value | description
 ---|---|---
 lemo.TxType.ORDINARY | 0 | Normal transaction or smart contract execution transaction
-lemo.TxType.CREATE_CONTRACT | 1 | create contract creation transaction
+lemo.TxType.CREATE_CONTRACT | 1 | Create contract
 lemo.TxType.VOTE | 2 | Set vote target
 lemo.TxType.CANDIDATE | 3 | Register or modify candidate information
 lemo.TxType.CREATE_ASSET | 4 | Create asset information
 lemo.TxType.ISSUE_ASSET | 5 | Issue asset
 lemo.TxType.REPLENISH_ASSET | 6 | Replenish asset transaction
 lemo.TxType.MODIFY_ASSET | 7 | Modify asset transaction
-lemo.TxType.TRANSFER_ASSET | 8 |Transfer assets
-lemo.TxType.MODIFY_SIGNER | 9 |Modify signers
-lemo.TxType.BOX_TX | 10 |Box transaction
+lemo.TxType.TRANSFER_ASSET | 8 | Transfer assets
+lemo.TxType.MODIFY_SIGNER | 9 | Modify account signers
+lemo.TxType.BOX_TX | 10 | Package multiple transactions and run them transactional
 
 chainID | description
 ---|---
