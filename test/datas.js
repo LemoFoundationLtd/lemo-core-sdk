@@ -697,20 +697,3 @@ export const metaData1 = {
     assetCode: '0x78d01bf80c705796328167963b0fdc857a4991aa1829fa68a7495d2980771228',
     owner: 'Lemo8498CBCJSY9G7JF4CGZDP64PRRNGP4HQ2QPF',
 }
-
-export const createTempDate = {
-    txConfig: {
-        chainID,
-        version: 1,
-        type: 0,
-        to: '0x0000000000000000000000000000000000000001',
-        toName: 'aa',
-        gasPrice: 2,
-        gasLimit: 100,
-        amount: 1,
-        data: '0x0c',
-        expirationTime: 1544584596,
-        message: 'aaa',
-        from: testAddr,
-    },
-}
