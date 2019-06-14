@@ -229,8 +229,9 @@ describe('Tx_expirationTime', () => {
 })
 
 describe('Tx_signWith', () => {
-    it('sigWith_success', () => {
+    it('sigWith_sigs_length', () => {
         const tx = new Tx(emptyTxInfo.txConfig)
+        assert.equal(emptyTxInfo.txConfig.sigs, undefined)
         tx.signWith(testPrivate)
         assert.equal(tx.sigs.length, 1)
         tx.signWith(testPrivate)
