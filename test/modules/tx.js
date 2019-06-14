@@ -314,7 +314,7 @@ describe('module_tx_signNoGas', () => {
         }
         const noGasInfo = lemo.tx.signNoGas(testPrivate, txConfig, testAddr)
         assert.equal(JSON.parse(noGasInfo).type, txConfig.type)
-        assert.equal(JSON.parse(noGasInfo).payer, testAddr)
+        assert.equal(JSON.parse(noGasInfo).gasPayer, testAddr)
         assert.equal(JSON.parse(noGasInfo).toName, txConfig.toName)
     })
 })
@@ -324,17 +324,17 @@ describe('module_tx_signReimbursement', () => {
         const lemo = new LemoClient({chainID})
         const noGasInfo = lemo.tx.signNoGas(testPrivate, txInfo.txConfig, testAddr)
         const result = lemo.tx.signReimbursement(testPrivate, noGasInfo, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit)
-        assert.equal(JSON.parse(result).gasPayerSigs, txInfo.gasAfterSign)
+        assert.deepEqual(JSON.parse(result).gasPayerSigs, txInfo.gasAfterSign)
         assert.equal(JSON.parse(result).gasLimit, txInfo.txConfig.gasLimit)
         assert.equal(JSON.parse(result).gasPrice, txInfo.txConfig.gasPrice)
     })
     it('signReimbursement_payer_error', () => {
         const lemo = new LemoClient({chainID})
-        const payer = 'Lemo839J9N2H8QWS4JSSPCZZ4DTGGA9C8PC49YB8'
-        const noGasInfo = lemo.tx.signNoGas(testPrivate, txInfo.txConfig, payer)
+        const gasPayer = 'Lemo839J9N2H8QWS4JSSPCZZ4DTGGA9C8PC49YB8'
+        const noGasInfo = lemo.tx.signNoGas(testPrivate, txInfo.txConfig, gasPayer)
         assert.throws(() => {
             lemo.tx.signReimbursement(testPrivate, noGasInfo, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit)
-        }, errors.InvalidAddressConflict(payer))
+        }, errors.InvalidAddressConflict(gasPayer))
     })
 })
 
@@ -394,13 +394,11 @@ describe('module_tx_boxTx', () => {
         }
         const modifyAsset = lemo.tx.signModifyAsset(testPrivate, bigTxInfo.txConfig, ModifyAssetInfo)
         // subTxInfo: one is string and the other is a object. Same expirationTime
-        const boxTxInfo = {
-            subTxList: [createAsset, JSON.parse(modifyAsset)],
-        }
-        const result = await lemo.tx.signBoxTx(testPrivate, txInfo.txConfig, boxTxInfo)
+        const subTxList = [createAsset, JSON.parse(modifyAsset)]
+        const result = await lemo.tx.signBoxTx(testPrivate, txInfo.txConfig, subTxList)
         assert.deepEqual(JSON.parse(result).to, undefined)
-        assert.deepEqual(parseHexObject(JSON.parse(result).data), boxTxInfo)
-        assert.deepEqual(JSON.parse(result).expirationTime, boxTxInfo.subTxList[0].expirationTime)
+        assert.deepEqual(parseHexObject(JSON.parse(result).data).subTxList[1], subTxList[1])
+        assert.deepEqual(JSON.parse(result).expirationTime, subTxList[1].expirationTime)
     })
     it('boxTx_time_different', async () => {
         const lemo = new LemoClient({chainID})
@@ -410,7 +408,11 @@ describe('module_tx_boxTx', () => {
             assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
             replenishAmount: '100000',
         }
-        const replenishAsset = lemo.tx.signReplenishAsset(testPrivate, tx4, replenishAssetInfo)
+        const txConfig = {
+            ...tx4,
+            expirationTime: 1560513710327,
+        }
+        const replenishAsset = lemo.tx.signReplenishAsset(testPrivate, txConfig, replenishAssetInfo)
         // sign modify Asset tx
         const ModifyAssetInfo = {
             assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
@@ -420,17 +422,16 @@ describe('module_tx_boxTx', () => {
                 description: 'demo asset',
             },
         }
-        const modifyAsset = lemo.tx.signModifyAsset(testPrivate, bigTxInfo.txConfig, ModifyAssetInfo)
-        // subTxInfo: two data are object. expirationTime is different
-        const boxTxInfo = {
-            subTxList: [replenishAsset, modifyAsset],
+        const modifyTxConfig = {
+            ...bigTxInfo.txConfig,
+            expirationTime: 1544584598,
         }
-        const result = await lemo.tx.signBoxTx(testPrivate, txInfo.txConfig, boxTxInfo)
+        const modifyAsset = lemo.tx.signModifyAsset(testPrivate, modifyTxConfig, ModifyAssetInfo)
+        // subTxInfo: two data are object. expirationTime is different
+        const subTxList = [replenishAsset, modifyAsset]
+        const result = await lemo.tx.signBoxTx(testPrivate, txInfo.txConfig, subTxList)
         // Compare the size of the expirationTime within a transaction
-        const time = []
-        parseHexObject(JSON.parse(result).data).subTxList.forEach(item => {
-            time.push(item.expirationTime)
-        })
+        const time = parseHexObject(JSON.parse(result).data).subTxList.map(item => item.expirationTime)
         assert.deepEqual(JSON.parse(result).expirationTime, Math.min(...time).toString())
     })
 })
@@ -439,29 +440,30 @@ describe('module_tx_Contract_creation', () => {
     // normal
     it('Contract_creation_normal', () => {
         const lemo = new LemoClient({chainID})
-        const code = '0x1003330000001'
-        const constructorArgs = '0x000000001'
-        const result = lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, code, constructorArgs)
-        assert.deepEqual(JSON.parse(result).data.slice(0, code.length), code)
+        const codeHex = '0x1003330000001'
+        const constructorArgsHex = '0x000000001'
+        const result = lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, codeHex, constructorArgsHex)
+        assert.deepEqual(JSON.parse(result).type, TxType.CREATE_CONTRACT.toString())
+        assert.deepEqual(JSON.parse(result).data.slice(0, codeHex.length), codeHex)
         const data = JSON.parse(result).data
-        assert.deepEqual(data.slice(code.length, data.length), constructorArgs.slice(2))
+        assert.deepEqual(data.slice(codeHex.length, data.length), constructorArgsHex.slice(2))
     })
-    // Code starts with 0x, but it's not hex, constructorArgs is the same
+    // Code starts with 0x, but it's not hex, constructorArgsHex is the same
     it('Contract_creation_code_noHex', () => {
         const lemo = new LemoClient({chainID})
-        const code = '0x000gbfdfggh000001'
-        const constructorArgs = '0x000000001'
+        const codeHex = '0x000gbfdfggh000001'
+        const constructorArgsHex = '0x000000001'
         assert.throws(() => {
-            lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, code, constructorArgs)
-        }, errors.TXMustBeNumber('data', `${code + constructorArgs.slice(2)}`))
+            lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, codeHex, constructorArgsHex)
+        }, errors.TXMustBeNumber('codeHex', '0x000gbfdfggh000001'))
     })
-    // code is number
+    // codeHex is number
     it('Contract_creation_code_number', () => {
         const lemo = new LemoClient({chainID})
-        const code = 23455467
-        const constructorArgs = '0x000000001'
+        const codeHex = 23455467
+        const constructorArgsHex = '0x000000001'
         assert.throws(() => {
-            lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, code, constructorArgs)
-        }, errors.TXInvalidType('code', 23455467, ['string']))
+            lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, codeHex, constructorArgsHex)
+        }, errors.TXInvalidType('codeHex', 23455467, ['string']))
     })
 })

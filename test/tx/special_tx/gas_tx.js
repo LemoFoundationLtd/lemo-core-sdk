@@ -10,15 +10,15 @@ describe('GasTx_new', () => {
         const tx = new GasTx(txConfig, testAddr)
         assert.equal(tx.gasLimit, txConfig.gasLimit)
         assert.equal(tx.data, txConfig.data)
-        assert.equal(tx.payer, testAddr)
+        assert.equal(tx.gasPayer, testAddr)
     })
     it('no payer', () => {
         const tx = new GasTx(txConfig)
-        assert.equal(tx.payer, '')
+        assert.equal(tx.gasPayer, '')
     })
     it('payer is encodeAddress', () => {
         const payer = formattedSpecialLemoBase.address
         const tx = new GasTx(txConfig, payer)
-        assert.equal(tx.payer, miner.address)
+        assert.equal(tx.gasPayer, miner.address)
     })
 })
