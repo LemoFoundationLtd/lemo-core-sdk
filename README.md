@@ -1681,6 +1681,7 @@ lemo.tx.signBoxTx(privateKey, txConfig, boxTxInfo)
 Sign a transaction for box transactions, then return the signed transaction string. 
 1. Box transaction can store multiple signed transaction informations including special transactions, but cannot store box transactions
 2. The timestamp of the box transaction is equal to the minimum timestamp of the child transaction in the box
+3. The neutron in the box transactions will succeed or fail at the same time, if one of the sub-transaction does not succeed then all the transactions in the box trade will fail
 The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference is filling special data in transaction
 
 ##### Parameters
