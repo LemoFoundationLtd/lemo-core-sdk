@@ -19,7 +19,7 @@ import errors from '../../lib/errors'
 import {TxType} from '../../lib/const'
 import Tx from '../../lib/tx/tx'
 import {DEFAULT_POLL_DURATION} from '../../lib/config'
-import {encodeAddress, decodeAddress} from '../../lib/crypto';
+import {encodeAddress, decodeAddress} from '../../lib/crypto'
 
 function parseHexObject(hex) {
     return JSON.parse(decodeUtf8Hex(hex))
@@ -436,47 +436,32 @@ describe('module_tx_boxTx', () => {
 })
 
 describe('module_tx_Contract_creation', () => {
-    const testCode = [
-        {field: 'code', input: '0x000000100000100', output: '0x000000100000100'},
-        {field: 'code', input: '0xc27e68963c219c3240c7767105e1b03c001c02eb42feb116ecbf4', output: '0xc27e68963c219c3240c7767105e1b03c001c02eb42feb116ecbf4'},
-        {field: 'code', input: 0x2300000010a, output: [], error: errors.TXInvalidType('code', 0x2300000010aa, ['string'])},
-        {field: 'code', input: 123342545, output: [], error: errors.TXInvalidType('code', 123342545, ['string'])},
-    ]
-    testCode.forEach(test => {
-        it(`the ${test.field} is ${test.input}`, () => {
-            const lemo = new LemoClient({chainID})
-            const code = test.input
-            const constructorArgs = '0x000000001'
-            if (test.error) {
-                assert.throws(() => {
-                    lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, code, constructorArgs)
-                }, test.error)
-            } else {
-                const result = lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, code, constructorArgs)
-                assert.deepEqual(JSON.parse(result).data.slice(0, code.length), test.output)
-            }
-        })
+    // normal
+    it('Contract_creation_normal', () => {
+        const lemo = new LemoClient({chainID})
+        const code = '0x1003330000001'
+        const constructorArgs = '0x000000001'
+        const result = lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, code, constructorArgs)
+        assert.deepEqual(JSON.parse(result).data.slice(0, code.length), code)
+        const data = JSON.parse(result).data
+        assert.deepEqual(data.slice(code.length, data.length), constructorArgs.slice(2))
     })
-    const testConstructorArgs = [
-        {field: 'constructorArgs', input: '0x000000100000100', output: '0x000000100000100'},
-        {field: 'constructorArgs', input: '0xc27e68963c219c3240c7767105e1b03c001c02eb42feb116ecbf4', output: '0xc27e68963c219c3240c7767105e1b03c001c02eb42feb116ecbf4'},
-        {field: 'constructorArgs', input: 0xa2135932fd, output: [], error: errors.TXInvalidType('constructorArgs', 0xa2135932fd, ['string'])},
-        {field: 'constructorArgs', input: 245547200000001, output: [], error: errors.TXInvalidType('constructorArgs', 245547200000001, ['string'])},
-    ]
-    testConstructorArgs.forEach(test => {
-        it(`the ${test.field} is ${test.input}`, () => {
-            const lemo = new LemoClient({chainID})
-            const code = '0x000000001'
-            const constructorArgs = test.input
-            if (test.error) {
-                assert.throws(() => {
-                    lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, code, constructorArgs)
-                }, test.error)
-            } else {
-                const result = lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, code, constructorArgs)
-                const data = JSON.parse(result).data
-                assert.deepEqual(data.slice(code.length, data.length), test.output.slice(2))
-            }
-        })
+    // Code starts with 0x, but it's not hex, constructorArgs is the same
+    it('Contract_creation_code_noHex', () => {
+        const lemo = new LemoClient({chainID})
+        const code = '0x000gbfdfggh000001'
+        const constructorArgs = '0x000000001'
+        assert.throws(() => {
+            lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, code, constructorArgs)
+        }, errors.TXMustBeNumber('data', `${code + constructorArgs.slice(2)}`))
+    })
+    // code is number
+    it('Contract_creation_code_number', () => {
+        const lemo = new LemoClient({chainID})
+        const code = 23455467
+        const constructorArgs = '0x000000001'
+        assert.throws(() => {
+            lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, code, constructorArgs)
+        }, errors.TXInvalidType('code', 23455467, ['string']))
     })
 })
