@@ -434,6 +434,21 @@ describe('module_tx_boxTx', () => {
         const time = parseHexObject(JSON.parse(result).data).subTxList.map(item => item.expirationTime)
         assert.deepEqual(JSON.parse(result).expirationTime, Math.min(...time).toString())
     })
+    it('box_tx_include_box', () => {
+        const lemo = new LemoClient({chainID})
+        // sign temp address
+        const tempAddress = lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, '01234567')
+        // sign ordinary tx
+        const ordinary = lemo.tx.sign(testPrivate, emptyTxInfo.txConfig)
+        const subTxList = [tempAddress, ordinary]
+        // first sign box Tx
+        const boxTx = lemo.tx.signBoxTx(testPrivate, txInfo.txConfig, subTxList)
+        const subTxLists = [tempAddress, ordinary, boxTx]
+        assert.throws(() => {
+            // two sign box Tx
+            lemo.tx.signBoxTx(testPrivate, txInfo.txConfig, subTxLists)
+        }, errors.InvalidBoxTransaction())
+    })
 })
 
 describe('module_tx_Contract_creation', () => {
