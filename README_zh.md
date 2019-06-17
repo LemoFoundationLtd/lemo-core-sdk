@@ -2,10 +2,10 @@
 
 # LemoChain Core SDK
 
-[![npm](https://img.shields.io/npm/v/lemo-client.svg?style=flat-square)](https://www.npmjs.com/package/lemo-core-sdk)
-[![Build Status](https://travis-ci.org/LemoFoundationLtd/lemo-client.svg?branch=master)](https://travis-ci.org/LemoFoundationLtd/lemo-core-sdk)
-[![Coverage Status](https://coveralls.io/repos/github/LemoFoundationLtd/lemo-client/badge.svg?branch=master)](https://coveralls.io/github/LemoFoundationLtd/lemo-core-sdk?branch=master)
-[![gitter chat](https://img.shields.io/gitter/room/LemoFoundationLtd/lemo-client.svg?style=flat-square)](https://gitter.im/LemoFoundationLtd/lemo-core-sdk)
+[![npm](https://img.shields.io/npm/v/lemo-core-sdk.svg?style=flat-square)](https://www.npmjs.com/package/lemo-core-sdk)
+[![Build Status](https://travis-ci.org/LemoFoundationLtd/lemo-core-sdk.svg?branch=master)](https://travis-ci.org/LemoFoundationLtd/lemo-core-sdk)
+[![Coverage Status](https://coveralls.io/repos/github/LemoFoundationLtd/lemo-core-sdk/badge.svg?branch=master)](https://coveralls.io/github/LemoFoundationLtd/lemo-core-sdk?branch=master)
+[![gitter chat](https://img.shields.io/gitter/room/LemoFoundationLtd/lemo-core-sdk.svg?style=flat-square)](https://gitter.im/LemoFoundationLtd/lemo-core-sdk)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![GitHub license](https://img.shields.io/badge/license-LGPL3.0-blue.svg?style=flat-square)](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/LICENSE)
 
@@ -13,8 +13,8 @@
 
 > 需要先在本地通过`--rpc`参数启动一个[LemoChain 节点](https://github.com/LemoFoundationLtd/lemochain-go)，或远程连接到一个已存在的 LemoChain 节点，才能运行本项目
 
-[中文版](https://github.com/LemoFoundationLtd/lemo-client/blob/master/README_zh.md)  
-[English](https://github.com/LemoFoundationLtd/lemo-client/blob/master/README.md)
+[中文版](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/README_zh.md)  
+[English](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/README.md)
 
 ## 安装
 
@@ -2316,7 +2316,7 @@ yarn build
 
 ### 配置项
 
-在 [lib/config.js](https://github.com/LemoFoundationLtd/lemo-client/blob/master/lib/config.js) 文件中有一些配置项，如果搭建 LemoChain 私链的话可以用到
+在 [lib/config.js](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/lib/config.js) 文件中有一些配置项，如果搭建 LemoChain 私链的话可以用到
 
 ### 测试
 
