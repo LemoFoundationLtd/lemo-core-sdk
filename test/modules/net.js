@@ -1,10 +1,10 @@
 import {assert} from 'chai'
-import LemoClient from '../../lib/index'
+import LemoCore from '../../lib/index'
 import '../mock'
 
 describe('module_net_getConnectionsCount', () => {
     it('getConnectionsCount', async () => {
-        const lemo = new LemoClient()
+        const lemo = new LemoCore()
         const result = await lemo.net.getConnectionsCount()
         assert.strictEqual(result, '0')
     })
@@ -12,7 +12,7 @@ describe('module_net_getConnectionsCount', () => {
 
 describe('module_net_getInfo', () => {
     it('getInfo', async () => {
-        const lemo = new LemoClient()
+        const lemo = new LemoCore()
         const result = await lemo.net.getInfo()
         assert.deepEqual(result, {
             nodeName: 'Lemo',

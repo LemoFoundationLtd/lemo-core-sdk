@@ -1,11 +1,11 @@
 import {assert} from 'chai'
-import LemoClient from '../../../lib/index'
+import LemoCore from '../../../lib/index'
 import {chainID, testAddr, testPrivate, txInfo} from '../../datas'
 import GasReimbursementTx from '../../../lib/tx/special_tx/gas_reimbursement_tx'
 import errors from '../../../lib/errors'
 
 describe('GasReimbursementTx_new', () => {
-    const lemo = new LemoClient(chainID)
+    const lemo = new LemoCore(chainID)
     const noGasInfo = lemo.tx.signNoGas(testPrivate, txInfo.txConfig, testAddr)
     const info = JSON.parse(noGasInfo)
     it('normal', () => {
@@ -16,7 +16,7 @@ describe('GasReimbursementTx_new', () => {
     })
 })
 describe('other gasPrice', () => {
-    const lemo = new LemoClient(chainID)
+    const lemo = new LemoCore(chainID)
     const noGasInfo = lemo.tx.signNoGas(testPrivate, txInfo.txConfig, testAddr)
     const info = JSON.parse(noGasInfo)
     const tests = [
@@ -46,7 +46,7 @@ describe('other gasPrice', () => {
     })
 })
 describe('other gasLimit', () => {
-    const lemo = new LemoClient(chainID)
+    const lemo = new LemoCore(chainID)
     const noGasInfo = lemo.tx.signNoGas(testPrivate, txInfo.txConfig, testAddr)
     const info = JSON.parse(noGasInfo)
     const tests = [

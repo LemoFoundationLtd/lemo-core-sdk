@@ -37,7 +37,7 @@
 
                 describe('module_tx_sign_send', () => {
                     it('sign_send_with_hex_address', async () => {
-                        const lemo = new LemoClient(conn)
+                        const lemo = new LemoCore(conn)
                         const json = await lemo.tx.sign(testPrivate, emptyTxInfo.txConfig)
                         const result = await lemo.tx.send(json)
                         assert.equal(result, emptyTxInfo.hashAfterSign)

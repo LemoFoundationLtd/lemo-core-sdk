@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import LemoClient from '../../lib/index'
+import LemoCore from '../../lib/index'
 import {
     txInfos,
     chainID,
@@ -27,12 +27,12 @@ function parseHexObject(hex) {
 
 describe('module_tx_getTx', () => {
     it('getTx', async () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const result = await lemo.tx.getTx(emptyTxInfo.hashAfterSign)
         assert.deepEqual(result, formattedTxRes1)
     })
     it('getTx not exist', async () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const result = await lemo.tx.getTx('0x28ee2b4622946e35c3e761e826d18d95c319452efe23ce6844f14de3ece95b5e')
         assert.equal(result, null)
     })
@@ -40,22 +40,22 @@ describe('module_tx_getTx', () => {
 
 describe('module_tx_getTxListByAddress', () => {
     it('got 3 txs', async () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const result = await lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10)
         assert.deepEqual(result, formattedTxListRes)
     })
     it('got 1 tx', async () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const result = await lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 1)
         assert.equal(result.txList.length, 1)
     })
     it('got 0 tx', async () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const result = await lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 0)
         assert.equal(result.txList.length, 0)
     })
     it('get from empty account', async () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const result = await lemo.tx.getTxListByAddress('Lemobw', 0, 10)
         assert.equal(result.txList.length, 0)
     })
@@ -65,7 +65,7 @@ describe('module_tx_sendTx', () => {
     it('sendTx_with_hex_address_without_waitConfirm', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
-                const lemo = new LemoClient({chainID})
+                const lemo = new LemoCore({chainID})
                 const result = await lemo.tx.sendTx(testPrivate, test.txConfig, false)
                 return assert.equal(result, test.hashAfterSign, `index=${i}`)
             }),
@@ -74,20 +74,20 @@ describe('module_tx_sendTx', () => {
     it('sendTx_with_hex_address_waitConfirm', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
-                const lemo = new LemoClient({chainID})
+                const lemo = new LemoCore({chainID})
                 const result = await lemo.tx.sendTx(testPrivate, test.txConfig, true)
                 return assert.equal(result, test.hashAfterSign, `index=${i}`)
             }),
         )
     })
     it('sendTx_with_hex_address_timeOut', () => {
-        const lemo = new LemoClient({chainID, httpTimeOut: 1000})
+        const lemo = new LemoCore({chainID, httpTimeOut: 1000})
         lemo.tx.sendTx(testPrivate, tx4, true).catch(e => {
             return assert.equal(e.message, errors.InvalidPollTxTimeOut())
         })
     })
     it('sendTx_with_lemo_address_without_waitConfirm', async () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const result = await lemo.tx.sendTx(testPrivate, bigTxInfoWithLemoAddr.txConfig, false)
         assert.equal(result, bigTxInfoWithLemoAddr.hashAfterSign)
     })
@@ -97,7 +97,7 @@ describe('module_tx_sign_send', () => {
     it('sign_send_with_hex_address', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
-                const lemo = new LemoClient({chainID})
+                const lemo = new LemoCore({chainID})
                 const json = await lemo.tx.sign(testPrivate, test.txConfig)
                 const result = await lemo.tx.send(json)
                 assert.equal(result, test.hashAfterSign, `index=${i}`)
@@ -105,13 +105,13 @@ describe('module_tx_sign_send', () => {
         )
     })
     it('sign_send_with_lemo_address', async () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const json = await lemo.tx.sign(testPrivate, bigTxInfoWithLemoAddr.txConfig)
         const result = await lemo.tx.send(json)
         assert.equal(result, bigTxInfoWithLemoAddr.hashAfterSign)
     })
     it('sign_without_chainID', async () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const txConfigCopy = {...txInfos[1].txConfig}
         delete txConfigCopy.chainID
         let json = await lemo.tx.sign(testPrivate, txConfigCopy)
@@ -125,7 +125,7 @@ describe('module_tx_vote', () => {
     it('sign_vote', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
-                const lemo = new LemoClient({chainID})
+                const lemo = new LemoCore({chainID})
                 let json = lemo.tx.signVote(testPrivate, test.txConfig)
                 json = JSON.parse(json)
                 assert.equal(json.type, TxType.VOTE, `index=${i}`)
@@ -140,7 +140,7 @@ describe('module_tx_candidate', () => {
     it('sign_candidate', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
-                const lemo = new LemoClient({chainID})
+                const lemo = new LemoCore({chainID})
                 const candidateInfo = {
                     isCandidate: true,
                     minerAddress: 'Lemobw',
@@ -166,7 +166,7 @@ describe('module_tx_create_asset', () => {
     it('sign_create_asset', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
-                const lemo = new LemoClient({chainID})
+                const lemo = new LemoCore({chainID})
                 const createAssetInfo = {
                     category: 1,
                     decimal: 18,
@@ -200,7 +200,7 @@ describe('module_tx_issue_asset', () => {
                 if (!txConfig.to) {
                     txConfig.to = '0x0000000000000000000000000000000000000001'
                 }
-                const lemo = new LemoClient({chainID})
+                const lemo = new LemoCore({chainID})
                 const issueAssetInfo = {
                     assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                     metaData: 'issue asset metaData',
@@ -222,7 +222,7 @@ describe('module_tx_replenish_asset', () => {
     it('sign_replenish_asset', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
-                const lemo = new LemoClient({chainID})
+                const lemo = new LemoCore({chainID})
                 const replenishAssetInfo = {
                     assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                     assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
@@ -243,7 +243,7 @@ describe('module_tx_modify_asset', () => {
     it('sign_modify_asset', () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
-                const lemo = new LemoClient({chainID})
+                const lemo = new LemoCore({chainID})
                 const ModifyAssetInfo = {
                     assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                     updateProfile: {
@@ -271,7 +271,7 @@ describe('module_tx_transfer_asset', () => {
         ]
         return Promise.all(
             tests.map(async (test, i) => {
-                const lemo = new LemoClient({chainID})
+                const lemo = new LemoCore({chainID})
                 const transferAsset = {
                     assetId: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
                     transferAmount: '110000',
@@ -291,7 +291,7 @@ describe('module_tx_transfer_asset', () => {
 describe('module_tx_watchTx', () => {
     it('watchTx', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 1000)
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const testConfig = {
             type: 0,
             version: 1,
@@ -308,7 +308,7 @@ describe('module_tx_watchTx', () => {
 
 describe('module_tx_signNoGas', () => {
     it('signNoGas_normal', () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const txConfig = {
             ...txInfo.txConfig,
         }
@@ -321,7 +321,7 @@ describe('module_tx_signNoGas', () => {
 
 describe('module_tx_signReimbursement', () => {
     it('signReimbursement_normal', () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const noGasInfo = lemo.tx.signNoGas(testPrivate, txInfo.txConfig, testAddr)
         const result = lemo.tx.signReimbursement(testPrivate, noGasInfo, txInfo.txConfig.gasPrice, txInfo.txConfig.gasLimit)
         assert.deepEqual(JSON.parse(result).gasPayerSigs, txInfo.gasAfterSign)
@@ -329,7 +329,7 @@ describe('module_tx_signReimbursement', () => {
         assert.equal(JSON.parse(result).gasPrice, txInfo.txConfig.gasPrice)
     })
     it('signReimbursement_payer_error', () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const gasPayer = 'Lemo839J9N2H8QWS4JSSPCZZ4DTGGA9C8PC49YB8'
         const noGasInfo = lemo.tx.signNoGas(testPrivate, txInfo.txConfig, gasPayer)
         assert.throws(() => {
@@ -340,26 +340,26 @@ describe('module_tx_signReimbursement', () => {
 
 describe('module_tx_signCreateTempAddress', () => {
     it('signCreateTempAddress_normal', async () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const userId = '0123456789'
         const result = await lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, userId)
         assert.equal(parseHexObject(JSON.parse(result).data).signers[0].address, txInfo.txConfig.from)
     })
     it('signCreateTempAddress_userID_short', async () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const userId = '112'
         const result = await lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, userId)
         assert.equal(parseHexObject(JSON.parse(result).data).signers[0].address, txInfo.txConfig.from)
     })
     it('signCreateTempAddress_userID_long', () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const userId = '100000000000000000002'
         assert.throws(() => {
             lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, userId)
         }, errors.TXInvalidUserIdLength())
     })
     it('signCreateTempAddress_contrast_from', async () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const result = await lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, '0123456789')
         const codeAddress = decodeAddress(JSON.parse(result).to)
         const codeFrom = decodeAddress(txInfo.txConfig.from)
@@ -368,7 +368,7 @@ describe('module_tx_signCreateTempAddress', () => {
 })
 describe('module_tx_boxTx', () => {
     it('boxTx_normal', async () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         // sign create Asset tx
         const createAssetInfo = {
             category: 1,
@@ -401,7 +401,7 @@ describe('module_tx_boxTx', () => {
         assert.deepEqual(JSON.parse(result).expirationTime, subTxList[1].expirationTime)
     })
     it('boxTx_time_different', async () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         // sign replenish Asset tx
         const replenishAssetInfo = {
             assetCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
@@ -435,7 +435,7 @@ describe('module_tx_boxTx', () => {
         assert.deepEqual(JSON.parse(result).expirationTime, Math.min(...time).toString())
     })
     it('box_tx_include_box', () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         // sign temp address
         const tempAddress = lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, '01234567')
         // sign ordinary tx
@@ -454,7 +454,7 @@ describe('module_tx_boxTx', () => {
 describe('module_tx_Contract_creation', () => {
     // normal
     it('Contract_creation_normal', () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const codeHex = '0x1003330000001'
         const constructorArgsHex = '0x000000001'
         const result = lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, codeHex, constructorArgsHex)
@@ -465,7 +465,7 @@ describe('module_tx_Contract_creation', () => {
     })
     // Code starts with 0x, but it's not hex, constructorArgsHex is the same
     it('Contract_creation_code_noHex', () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const codeHex = '0x000gbfdfggh000001'
         const constructorArgsHex = '0x000000001'
         assert.throws(() => {
@@ -474,7 +474,7 @@ describe('module_tx_Contract_creation', () => {
     })
     // codeHex is number
     it('Contract_creation_code_number', () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         const codeHex = 23455467
         const constructorArgsHex = '0x000000001'
         assert.throws(() => {

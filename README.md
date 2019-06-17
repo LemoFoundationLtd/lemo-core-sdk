@@ -1,39 +1,39 @@
 ![Logo of the project](./logo.png)
 
-# LemoChain JavaScript SDK
-[![npm](https://img.shields.io/npm/v/lemo-client.svg?style=flat-square)](https://www.npmjs.com/package/lemo-client)
-[![Build Status](https://travis-ci.org/LemoFoundationLtd/lemo-client.svg?branch=master)](https://travis-ci.org/LemoFoundationLtd/lemo-client)
-[![Coverage Status](https://coveralls.io/repos/github/LemoFoundationLtd/lemo-client/badge.svg?branch=master)](https://coveralls.io/github/LemoFoundationLtd/lemo-client?branch=master)
-[![gitter chat](https://img.shields.io/gitter/room/LemoFoundationLtd/lemo-client.svg?style=flat-square)](https://gitter.im/LemoFoundationLtd/lemo-client)
+# LemoChain Core SDK
+[![npm](https://img.shields.io/npm/v/lemo-client.svg?style=flat-square)](https://www.npmjs.com/package/lemo-core-sdk)
+[![Build Status](https://travis-ci.org/LemoFoundationLtd/lemo-client.svg?branch=master)](https://travis-ci.org/LemoFoundationLtd/lemo-core-sdk)
+[![Coverage Status](https://coveralls.io/repos/github/LemoFoundationLtd/lemo-client/badge.svg?branch=master)](https://coveralls.io/github/LemoFoundationLtd/lemo-core-sdk?branch=master)
+[![gitter chat](https://img.shields.io/gitter/room/LemoFoundationLtd/lemo-client.svg?style=flat-square)](https://gitter.im/LemoFoundationLtd/lemo-core-sdk)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![GitHub license](https://img.shields.io/badge/license-LGPL3.0-blue.svg?style=flat-square)](https://github.com/LemoFoundationLtd/lemo-client/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-LGPL3.0-blue.svg?style=flat-square)](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/LICENSE)
 
-This is the LemoChain compatible JavaScript SDK which implements the Generic JSON RPC.
+This is the LemoChain compatible Core SDK which implements the Generic JSON RPC.
 
 
 > You need to run a local [LemoChain node](https://github.com/LemoFoundationLtd/lemochain-go) with flag `--rpc` or connect to a remote LemoChain node to use this library.
 
-[中文版](https://github.com/LemoFoundationLtd/lemo-client/blob/master/README_zh.md)  
-[English](https://github.com/LemoFoundationLtd/lemo-client/blob/master/README.md)
+[中文版](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/README_zh.md)  
+[English](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/README.md)
 
 ## Installing
 
 ### Using Yarn
 
 ```bash
-yarn add lemo-client
+yarn add lemo-core-sdk
 ```
 
 ### As Browser module
 
-* Include `lemo-client.min.js` in your html file.
-* Use the `LemoClient` object directly from global namespace
+* Include `lemo-core-sdk.min.js` in your html file.
+* Use the `LemoCore` object directly from global namespace
 
 ## Example
 
 ```js
-const LemoClient = require('lemo-client')
-const lemo = new LemoClient({
+const LemoCore = require('lemo-core-sdk')
+const lemo = new LemoCore({
     host: 'http://127.0.0.1:8001'
 })
 
@@ -43,9 +43,9 @@ lemo.chain.getBlockByNumber(0)
     })
 ```
 
-## LemoChain API
+## LemoChain Core API
 > Almost every API returns a promise object, except `watchXXX`, `stopWatch` and so on  
-> All API available in the console of LemoChain node. But some APIs are not available over remote connection such as http, websocket
+> All API available in the console of LemoChain core. But some APIs are not available over remote connection such as http, websocket
 
 API | description | asynchronous | available for remote
 ---|---|---|---
@@ -451,7 +451,7 @@ Account information
 
 ### Constructor
 ```
-lemo = new LemoClient({
+lemo = new LemoCore({
     chainID: 1, 
     host: 'http://127.0.0.1:8001'
 })

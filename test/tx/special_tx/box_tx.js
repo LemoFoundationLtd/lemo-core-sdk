@@ -1,5 +1,5 @@
 import {assert} from 'chai'
-import LemoClient from '../../../lib/index'
+import LemoCore from '../../../lib/index'
 import {chainID, testAddr, testPrivate, txInfo} from '../../datas'
 import BoxTx from '../../../lib/tx/special_tx/box_tx'
 import {TxType} from '../../../lib/const'
@@ -9,7 +9,7 @@ import errors from '../../../lib/errors'
 describe('box_tx', () => {
     // normal situation
     it('box_specialTx_normal', () => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         // sign temp address
         const tempAddress = lemo.tx.signCreateTempAddress(testPrivate, txInfo.txConfig, '01234567')
         // sign vote: this method has no data

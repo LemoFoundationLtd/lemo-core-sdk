@@ -1,20 +1,20 @@
-import replace from 'rollup-plugin-replace';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import json from 'rollup-plugin-json';
-import {eslint} from 'rollup-plugin-eslint';
-import formatter from 'eslint-friendly-formatter';
-import babel from 'rollup-plugin-babel';
-import {uglify} from 'rollup-plugin-uglify';
-import builtins from 'rollup-plugin-node-builtins';
-import globals from 'rollup-plugin-node-globals';
-import pkg from './package.json';
+import replace from 'rollup-plugin-replace'
+import resolve from 'rollup-plugin-node-resolve'
+import commonjs from 'rollup-plugin-commonjs'
+import json from 'rollup-plugin-json'
+import {eslint} from 'rollup-plugin-eslint'
+import formatter from 'eslint-friendly-formatter'
+import babel from 'rollup-plugin-babel'
+import {uglify} from 'rollup-plugin-uglify'
+import builtins from 'rollup-plugin-node-builtins'
+import globals from 'rollup-plugin-node-globals'
+import pkg from './package.json'
 
 function umdConfig(name) {
     return {
         input: 'lib/index.js',
         output: {
-            name: 'LemoClient',
+            name: 'LemoCore',
             file: `dist/${name}`,
             format: 'umd',
         },
@@ -44,11 +44,11 @@ function umdConfig(name) {
     }
 }
 
-const umdVersion = umdConfig('lemo-client.js')
+const umdVersion = umdConfig('lemo-core-sdk.js')
 // eslint should before babel
 umdVersion.plugins.unshift(eslint({formatter}))
 
-const umdMinVersion = umdConfig('lemo-client.min.js')
+const umdMinVersion = umdConfig('lemo-core-sdk.min.js')
 umdMinVersion.plugins.push(uglify())
 
 export default [
