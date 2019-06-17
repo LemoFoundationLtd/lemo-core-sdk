@@ -1,5 +1,5 @@
 {
-    "name": "lemo-client",
+    "name": "lemo-core",
     "namespace": "LemoFoundationLtd",
     "version": "0.10.1",
     "description": "Lemochain JavaScript SDK, access to a lemochain node over RPC",
@@ -58,7 +58,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/LemoFoundationLtd/lemo-client.git"
+        "url": "https://github.com/LemoFoundationLtd/lemo-core.git"
     },
     "keywords": [
         "lemochain",

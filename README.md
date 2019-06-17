@@ -1,10 +1,10 @@
 ![Logo of the project](./logo.png)
 
 # LemoChain Core SDK
-[![npm](https://img.shields.io/npm/v/lemo-client.svg?style=flat-square)](https://www.npmjs.com/package/lemo-core-sdk)
-[![Build Status](https://travis-ci.org/LemoFoundationLtd/lemo-client.svg?branch=master)](https://travis-ci.org/LemoFoundationLtd/lemo-core-sdk)
-[![Coverage Status](https://coveralls.io/repos/github/LemoFoundationLtd/lemo-client/badge.svg?branch=master)](https://coveralls.io/github/LemoFoundationLtd/lemo-core-sdk?branch=master)
-[![gitter chat](https://img.shields.io/gitter/room/LemoFoundationLtd/lemo-client.svg?style=flat-square)](https://gitter.im/LemoFoundationLtd/lemo-core-sdk)
+[![npm](https://img.shields.io/npm/v/lemo-core-sdk.svg?style=flat-square)](https://www.npmjs.com/package/lemo-core-sdk)
+[![Build Status](https://travis-ci.org/LemoFoundationLtd/lemo-core-sdk.svg?branch=master)](https://travis-ci.org/LemoFoundationLtd/lemo-core-sdk)
+[![Coverage Status](https://coveralls.io/repos/github/LemoFoundationLtd/lemo-core-sdk/badge.svg?branch=master)](https://coveralls.io/github/LemoFoundationLtd/lemo-core-sdk?branch=master)
+[![gitter chat](https://img.shields.io/gitter/room/LemoFoundationLtd/lemo-core-sdk.svg?style=flat-square)](https://gitter.im/LemoFoundationLtd/lemo-core-sdk)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![GitHub license](https://img.shields.io/badge/license-LGPL3.0-blue.svg?style=flat-square)](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/LICENSE)
 
@@ -61,7 +61,7 @@ API | description | asynchronous | available for remote
 [lemo.getCandidateTop30()](#submodule-chain-getCandidateTop30) | Get top 30 candidates information | ✓ | ✓
 [lemo.getDeputyNodeList()](#submodule-chain-getDeputyNodeList) | Get the address list of current deputy nodes | ✓ | ✓
 [lemo.getNodeVersion()](#submodule-chain-getNodeVersion) | Get the version of LemoChain node | ✓ | ✓
-[lemo.getSdkVersion()](#submodule-chain-getSdkVersion) | Get the version of lemo-client | ✖ | ✓
+[lemo.getSdkVersion()](#submodule-chain-getSdkVersion) | Get the version of lemo-core | ✖ | ✓
 [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock) | Listen for new block | ✖ | ✓
 [lemo.stopWatchBlock(subscribeId)](#submodule-chain-stopWatchBlock) | Stop listening block | ✖ | ✓
 [lemo.net.connect(nodeAddr)](#submodule-net-connect) | Connect to a LemoChain node | ✓ | ✖
@@ -2032,7 +2032,7 @@ yarn build
 
 ### Configuration
 
-There is some configuration in [lib/config.js](https://github.com/LemoFoundationLtd/lemo-client/blob/master/lib/config.js). It is useful for those who want build a private LemoChain
+There is some configuration in [lib/config.js](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/lib/config.js). It is useful for those who want build a private LemoChain
 
 ### Testing
 
