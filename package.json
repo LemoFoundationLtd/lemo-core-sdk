@@ -1,10 +1,10 @@
 {
     "name": "lemo-client",
     "namespace": "LemoFoundationLtd",
-    "version": "0.10.0",
+    "version": "0.10.1",
     "description": "Lemochain JavaScript SDK, access to a lemochain node over RPC",
-    "main": "dist/lemo-client.cjs.js",
-    "browser": "dist/lemo-client-browser.cjs.js",
+    "main": "dist/lemo-core-sdk.cjs.js",
+    "browser": "dist/lemo-core-sdk-browser.cjs.js",
     "dependencies": {
         "@babel/runtime": "7.3.1",
         "axios": "0.18.0",

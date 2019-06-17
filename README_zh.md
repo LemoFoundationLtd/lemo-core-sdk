@@ -1,15 +1,15 @@
 ![Logo of the project](./logo.png)
 
-# LemoChain JavaScript SDK
+# LemoChain Core SDK
 
 [![npm](https://img.shields.io/npm/v/lemo-client.svg?style=flat-square)](https://www.npmjs.com/package/lemo-client)
-[![Build Status](https://img.shields.io/travis/lemo-client/lemo-client.svg?style=flat-square)](https://travis-ci.org/lemo-client/lemo-client)
-[![code coverage](https://img.shields.io/coveralls/LemoFoundationLtd/lemo-client.svg?style=flat-square)](https://coveralls.io/githup/LemoFoundationLtd/lemo-client)
+[![Build Status](https://travis-ci.org/LemoFoundationLtd/lemo-client.svg?branch=master)](https://travis-ci.org/LemoFoundationLtd/lemo-core-sdk)
+[![Coverage Status](https://coveralls.io/repos/github/LemoFoundationLtd/lemo-client/badge.svg?branch=master)](https://coveralls.io/github/LemoFoundationLtd/lemo-core-sdk?branch=master)
 [![gitter chat](https://img.shields.io/gitter/room/LemoFoundationLtd/lemo-client.svg?style=flat-square)](https://gitter.im/LemoFoundationLtd/lemo-client)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![GitHub license](https://img.shields.io/badge/license-LGPL3.0-blue.svg?style=flat-square)](https://github.com/LemoFoundationLtd/lemo-client/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-LGPL3.0-blue.svg?style=flat-square)](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/LICENSE)
 
-通过 JSON RPC 协议访问 LemoChain 上的数据
+通过 JSON RPC 协议访问 LemoChain Core 上的数据
 
 > 需要先在本地通过`--rpc`参数启动一个[LemoChain 节点](https://github.com/LemoFoundationLtd/lemochain-go)，或远程连接到一个已存在的 LemoChain 节点，才能运行本项目
 
@@ -21,19 +21,19 @@
 ### 使用 Yarn
 
 ```bash 
-yarn add lemo-client
+yarn add lemo-core-sdk
 ```
 
 ### 在浏览器中引入
 
--   在 html 中引入 `lemo-client.min.js` 文件
--   通过全局变量 `LemoClient` 使用 SDK
+-   在 html 中引入 `lemo-core-sdk.min.js` 文件
+-   通过全局变量 `LemoCore` 使用 SDK
 
 ## 示例
 
 ```js
-const LemoClient = require('lemo-client')
-const lemo = new LemoClient({
+const LemoCore = require('lemo-core-sdk')
+const lemo = new LemoCore({
     host: 'http://127.0.0.1:8001'
 })
 
@@ -42,10 +42,10 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 })
 ```
 
-## LemoChain API
+## LemoChain Core API
 
 > 所有异步接口都返回 Promise 对象  
-> 所有接口都可在 LemoChain 节点的控制台中使用，但通过远程连接（如 http、websocket）到节点时，只能使用部分接口
+> 所有接口都可在 LemoChain Core 的控制台中使用，但通过远程连接（如 http、websocket）到节点时，只能使用部分接口
 
 | API                                                                        | 功能                           | 异步 | 可远程使用 |
 | -------------------------------------------------------------------------- | ------------------------------ | ----- | ---------- |
