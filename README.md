@@ -8,10 +8,10 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![GitHub license](https://img.shields.io/badge/license-LGPL3.0-blue.svg?style=flat-square)](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/LICENSE)
 
-This is the LemoChain compatible Core SDK which implements the Generic JSON RPC.
+This is the LemoChain Core node SDK which implements the Generic JSON RPC.
 
 
-> You need to run a local [LemoChain node](https://github.com/LemoFoundationLtd/lemochain-go) with flag `--rpc` or connect to a remote LemoChain node to use this library.
+> You need to run a local [LemoChain Core node](https://github.com/LemoFoundationLtd/lemochain-go) with flag `--rpc` or connect to a remote LemoChain Core node to use this library.
 
 [中文版](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/README_zh.md)  
 [English](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/README.md)
