@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import {Buffer} from 'safe-buffer'
 import BigNumber from 'bignumber.js'
-import LemoClient from '../../lib/index'
+import LemoCore from '../../lib/index'
 import {chainID} from '../datas'
 import errors from '../../lib/errors'
 
@@ -27,7 +27,7 @@ describe('module_tool_verifyAddress', () => {
     ]
 
     tests.forEach(({input, output}, i) => {
-        const lemo = new LemoClient({chainID})
+        const lemo = new LemoCore({chainID})
         it(`address ${JSON.stringify(input)}`, async () => {
             const errMsg = await lemo.tool.verifyAddress(input)
             return assert.equal(errMsg, output, `index=${i}`)
@@ -46,7 +46,7 @@ describe('module_tool_moToLemo', () => {
     ]
     tests.forEach(test => {
         it(`when input is ${test.input}`, () => {
-            const lemo = new LemoClient({chainID})
+            const lemo = new LemoCore({chainID})
             if (test.error) {
                 assert.throws(() => {
                     lemo.tool.moToLemo(test.input)
@@ -70,7 +70,7 @@ describe('module_tool_lemoToMo', () => {
     ]
     tests.forEach(test => {
         it(`when input is ${test.input}`, () => {
-            const lemo = new LemoClient({chainID})
+            const lemo = new LemoCore({chainID})
             if (test.error) {
                 assert.throws(() => {
                     lemo.tool.lemoToMo(test.input)
@@ -99,7 +99,7 @@ describe('module_tool_toBuffer', () => {
     ]
     tests.forEach(test => {
         it(`when input is ${test.input}`, () => {
-            const lemo = new LemoClient({chainID})
+            const lemo = new LemoCore({chainID})
             if (test.error) {
                 assert.throws(() => {
                     lemo.tool.toBuffer(test.input)

@@ -1,7 +1,7 @@
 ![Logo of the project](./logo.png)
 
 # LemoChain Core SDK
-[![npm](https://img.shields.io/npm/v/lemo-client.svg?style=flat-square)](https://www.npmjs.com/package/lemo-client)
+[![npm](https://img.shields.io/npm/v/lemo-client.svg?style=flat-square)](https://www.npmjs.com/package/lemo-core-sdk)
 [![Build Status](https://travis-ci.org/LemoFoundationLtd/lemo-client.svg?branch=master)](https://travis-ci.org/LemoFoundationLtd/lemo-core-sdk)
 [![Coverage Status](https://coveralls.io/repos/github/LemoFoundationLtd/lemo-client/badge.svg?branch=master)](https://coveralls.io/github/LemoFoundationLtd/lemo-core-sdk?branch=master)
 [![gitter chat](https://img.shields.io/gitter/room/LemoFoundationLtd/lemo-client.svg?style=flat-square)](https://gitter.im/LemoFoundationLtd/lemo-core-sdk)
@@ -451,7 +451,7 @@ Account information
 
 ### Constructor
 ```
-lemo = new LemoClient({
+lemo = new LemoCore({
     chainID: 1, 
     host: 'http://127.0.0.1:8001'
 })
