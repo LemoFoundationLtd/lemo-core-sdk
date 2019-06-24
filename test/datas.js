@@ -517,12 +517,14 @@ export const txRes1 = {
     height: '100',
     time: '1541649535',
     tx: tx1,
+    pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
 }
 
 export const formattedTxRes1 = {
     ...formattedTx1,
     blockHeight: 100,
     minedTime: 1541649535,
+    pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
     blockHash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
 }
 
@@ -531,12 +533,14 @@ export const txRes2 = {
     height: '100',
     time: '1541649535',
     tx: tx2,
+    pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
 }
 
 export const formattedTxRes2 = {
     ...formattedTx2,
     blockHeight: 100,
     minedTime: 1541649535,
+    pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
     blockHash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
 }
 export const txRes3 = {
@@ -544,6 +548,7 @@ export const txRes3 = {
     height: '100',
     time: '1541649535',
     tx: tx3,
+    pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
 }
 
 export const formattedTxRes3 = {
@@ -557,14 +562,17 @@ export const txList = [
     {
         tx: tx1,
         time: '1541649535',
+        pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
     },
     {
         tx: tx2,
         time: '1541649536',
+        pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
     },
     {
         tx: tx3,
         time: '1541649536',
+        pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
     },
 ]
 
@@ -573,14 +581,17 @@ export const formattedTxListRes = {
         {
             ...formattedTx1,
             minedTime: 1541649535,
+            pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
         },
         {
             ...formattedTx2,
             minedTime: 1541649536,
+            pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
         },
         {
             ...formattedTx3,
             minedTime: 1541649536,
+            pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
         },
     ],
     total: 3,
