@@ -482,3 +482,48 @@ describe('module_tx_Contract_creation', () => {
         }, errors.TXInvalidType('codeHex', 23455467, ['string']))
     })
 })
+describe('module_tx_modify_signer', () => {
+    // normal
+    it('Contract_creation_normal', () => {
+        const lemo = new LemoCore({chainID})
+        const signers = [{
+            address: testAddr,
+            weight: 50,
+        }, {
+            address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
+            weight: 60,
+        }]
+        let oneTime = lemo.tx.signModifySigner(testPrivate, txInfo.txConfig, signers)
+        oneTime = JSON.parse(oneTime)
+        const signerData = parseHexObject(oneTime.data)
+        assert.equal(oneTime.type, TxType.MODIFY_SIGNER.toString())
+        assert.deepEqual(signerData.signers, signers)
+    })
+    // no address
+    it('Contract_creation_no_address', () => {
+        const lemo = new LemoCore({chainID})
+        const signers = [{
+            address: testAddr,
+            weight: 50,
+        }, {
+            address: '',
+            weight: 60,
+        }]
+        assert.throws(() => {
+            lemo.tx.signModifySigner(testPrivate, txInfo.txConfig, signers)
+        }, errors.InvalidAddress(''))
+    })
+    // no weight
+    it('Contract_creation_no_weight', () => {
+        const lemo = new LemoCore({chainID})
+        const signers = [{
+            address: testAddr,
+        }, {
+            address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
+            weight: 60,
+        }]
+        assert.throws(() => {
+            lemo.tx.signModifySigner(testPrivate, txInfo.txConfig, signers)
+        }, errors.TXInvalidType('signers[0].weight', undefined, ['number']))
+    })
+})
