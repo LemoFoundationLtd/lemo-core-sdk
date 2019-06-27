@@ -59,3 +59,11 @@ describe('Modify-signers_miss_weight', () => {
         }, errors.TXInvalidType('signers[0].weight', undefined, ['number']))
     })
 })
+describe('Modify_signers_empty', () => {
+    const modifySignersInfo = {
+        signers: [],
+    }
+    assert.throws(() => {
+        new ModifySignersTx({chainID, from: testAddr}, modifySignersInfo)
+    }, errors.TXFieldCanNotEmpty('signers'))
+})

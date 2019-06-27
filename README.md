@@ -97,7 +97,7 @@ API | description | asynchronous | available for remote
 [lemo.tx.signNoGas(privateKey, txConfig, gasPayer)](#submodule-tx-signNoGas) | Sign a special transaction for free gas | ✖ | ✓ 
 [lemo.tx.signReimbursement(privateKey, noGasTxStr, gasPrice, gasLimit)](#submodule-tx-signReimbursement) | Sign a special transaction for gas reimbursement | ✖ | ✓ 
 [lemo.tx.signCreateTempAddress(privateKey, txConfig, userId)](#submodule-tx-signCreateTempAddress) | Sign a special transaction for create temp account  | ✖ | ✓ 
-[lemo.tx.signModifySigner(privateKey, txConfig, signer)](#submodule-tx-signModifySigner) | Sign a special transaction for modify multiple signer| ✖ | ✓ 
+[lemo.tx.signModifySigners(privateKey, txConfig, signer)](#submodule-tx-signModifySigners) | Sign a special transaction for modify multiple signer| ✖ | ✓ 
 [lemo.tx.signBoxTx(privateKey, txConfig, subTxList)](#submodule-tx-signBoxTx) | Sign a special transaction for box transaction | ✖ | ✓ 
 [lemo.tx.signContractCreation(privateKey, txConfig, code, constructorArgs)](#submodule-tx-signContractCreation) | Sign a special transaction for contract creation | ✖ | ✓ 
 [lemo.tx.send(signedTxInfo)](#submodule-tx-send) | Send a signed transaction | ✓ | ✓
@@ -1678,12 +1678,12 @@ console.log(result)
 
 ---
 
-<a name="submodule-tx-signModifySigner"></a>
-#### lemo.tx.signModifySigner
+<a name="submodule-tx-signModifySigners"></a>
+#### lemo.tx.signModifySigners
 ```
-lemo.tx.signModifySigner(privateKey, txConfig, signers)
+lemo.tx.signModifySigners(privateKey, txConfig, signers)
 ```
-Sign a transaction for modify multiple signer transaction, then return the signed transaction string
+Sign the transaction of the signers in the multi-signer account, then return the signed transaction string
 The API is used like [`lemo.tx.sign`](#submodule-tx-sign). The only difference is filling special data in transaction
 
 ##### Parameters
@@ -1701,12 +1701,12 @@ const signers = [{
             weight: 50,
         }, {
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
-            weight: 60,
+            weight: 50,
         }]
 const txInfo = {chianID: 1, from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'}
-const result = lemo.tx.signModifySigner('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', txInfo, signers)
+const result = lemo.tx.signModifySigners('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', txInfo, signers)
 console.log(result)
-// {"type":"9","version":"1","chainID":"200","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1561548867","data":"0x7b227369676e657273223a5b7b2261646472657373223a224c656d6f38333642514b43425a385a3742374e3447344e34534e47425432345a5a534a5144323444222c22776569676874223a35307d2c7b2261646472657373223a224c656d6f3833474e3732475948324e5a3842413732395a39544354374b5135464333435236444a47222c22776569676874223a36307d5d7d","sigs":["0xc14f082680acad15f6d392380a9d5aa9282f47c56c3b1852d2833cc35d5d0ea02a1923cda307946ea100891f87045c80427d85e17ef9f4a8585d69183e79a5ae01"],"gasPayerSigs":[]}
+// {"type":"9","version":"1","chainID":"200","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1561549968","data":"0x7b227369676e657273223a5b7b2261646472657373223a224c656d6f38333642514b43425a385a3742374e3447344e34534e47425432345a5a534a5144323444222c22776569676874223a35307d2c7b2261646472657373223a224c656d6f3833474e3732475948324e5a3842413732395a39544354374b5135464333435236444a47222c22776569676874223a35307d5d7d","sigs":["0x13ae8791ed6541bbd9583cf473195e80a54561ce29b0f0812e831a6d62704d965b7e257f3b2963b27854b3d0b5ac4b2e9473e4dcf8c6a7845ce8179a681b06f501"],"gasPayerSigs":[]}
 ```
 
 ---

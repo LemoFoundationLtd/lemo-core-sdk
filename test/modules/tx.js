@@ -493,10 +493,10 @@ describe('module_tx_modify_signer', () => {
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             weight: 60,
         }]
-        let oneTime = lemo.tx.signModifySigner(testPrivate, txInfo.txConfig, signers)
-        oneTime = JSON.parse(oneTime)
-        const signerData = parseHexObject(oneTime.data)
-        assert.equal(oneTime.type, TxType.MODIFY_SIGNER.toString())
+        let result = lemo.tx.signModifySigners(testPrivate, txInfo.txConfig, signers)
+        result = JSON.parse(result)
+        const signerData = parseHexObject(result.data)
+        assert.equal(result.type, TxType.MODIFY_SIGNER.toString())
         assert.deepEqual(signerData.signers, signers)
     })
     // no address
@@ -510,7 +510,7 @@ describe('module_tx_modify_signer', () => {
             weight: 60,
         }]
         assert.throws(() => {
-            lemo.tx.signModifySigner(testPrivate, txInfo.txConfig, signers)
+            lemo.tx.signModifySigners(testPrivate, txInfo.txConfig, signers)
         }, errors.InvalidAddress(''))
     })
     // no weight
@@ -523,7 +523,7 @@ describe('module_tx_modify_signer', () => {
             weight: 60,
         }]
         assert.throws(() => {
-            lemo.tx.signModifySigner(testPrivate, txInfo.txConfig, signers)
+            lemo.tx.signModifySigners(testPrivate, txInfo.txConfig, signers)
         }, errors.TXInvalidType('signers[0].weight', undefined, ['number']))
     })
 })
