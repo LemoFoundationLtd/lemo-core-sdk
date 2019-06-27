@@ -184,6 +184,15 @@ describe('Tx_new', () => {
         assert.equal(tx.from, obj.from)
         assert.equal(typeof tx.from, 'string')
     })
+    it('Tx_no_from', () => {
+        const obj = {
+            chainID: '1',
+            expirationTime: '1541649536',
+        }
+        assert.throws(() => {
+            new Tx(obj)
+        }, errors.TXFieldCanNotEmpty('from'))
+    })
 })
 
 describe('Tx_serialize', () => {
