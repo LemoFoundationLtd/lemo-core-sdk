@@ -18,7 +18,7 @@ describe('replenish-Asset', () => {
                 chainID: 200,
                 from,
                 type: 5,
-                to: '0x000000000000000000000001',
+                to: 'Lemo837J796DDHYTQTRTQDT7B4QJJ9B6H559BCCT',
                 toName: 'hello',
                 message: 'abc',
             },

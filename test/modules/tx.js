@@ -198,7 +198,7 @@ describe('module_tx_issue_asset', () => {
             txInfos.map(async (test, i) => {
                 const txConfig = {...test.txConfig}
                 if (!txConfig.to) {
-                    txConfig.to = '0x0000000000000000000000000000000000000001'
+                    txConfig.to = 'Lemo8888888888888888888888888888888888BW'
                 }
                 const lemo = new LemoCore({chainID})
                 const issueAssetInfo = {

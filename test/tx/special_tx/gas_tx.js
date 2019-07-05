@@ -1,6 +1,7 @@
 import {assert} from 'chai'
-import {testAddr, txInfo, formattedSpecialLemoBase, miner} from '../../datas'
+import {testAddr, txInfo, formattedSpecialLemoBase} from '../../datas'
 import GasTx from '../../../lib/tx/special_tx/gas_tx'
+import errors from '../../../lib/errors'
 
 describe('GasTx_new', () => {
     const txConfig = {
@@ -18,7 +19,8 @@ describe('GasTx_new', () => {
     })
     it('payer is encodeAddress', () => {
         const payer = formattedSpecialLemoBase.address
-        const tx = new GasTx(txConfig, payer)
-        assert.equal(tx.gasPayer, miner.address)
+        assert.throws(() => {
+            new GasTx(txConfig, payer)
+        }, errors.InvalidAddress(payer))
     })
 })
