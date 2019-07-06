@@ -111,6 +111,12 @@ describe('module_account_getAssetEquityByAddress', () => {
         assert.equal(result.equities.length, 0)
         assert.equal(result.total, 0)
     })
+    it('get from error account', () => {
+        const lemo = new LemoCore({chainID, host: '127.0.0.1:8001'})
+        lemo.account.getAllAssets('0x015780F8456F9c1532645087a19DcF9a7e0c7F97', 0, 10).catch(e => {
+            assert.equal(e.message, errors.InvalidAddress('0x015780F8456F9c1532645087a19DcF9a7e0c7F97'))
+        })
+    })
 })
 
 describe('module_account_getAssetInfo', () => {
