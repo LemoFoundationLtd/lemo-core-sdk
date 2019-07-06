@@ -38,7 +38,7 @@ describe('Tx_new', () => {
             from: testAddr,
             type: 100,
             version: 101,
-            to: '0x102',
+            to: 'Lemo837J796DDHYTQTRTQDT7B4QJJ9B6H559BCCT',
             toName: '103',
             gasPrice: 104,
             gasLimit: 105,
@@ -53,7 +53,7 @@ describe('Tx_new', () => {
         assert.equal(tx.chainID, config.chainID)
         assert.equal(tx.type, config.type)
         assert.equal(tx.version, config.version)
-        assert.equal(tx.to, encodeAddress(config.to))
+        assert.equal(tx.to, config.to)
         assert.equal(tx.toName, config.toName)
         assert.equal(tx.gasPrice, config.gasPrice)
         assert.equal(tx.gasLimit, config.gasLimit)
@@ -91,7 +91,7 @@ describe('Tx_new', () => {
         {field: 'version', configData: -1, error: errors.TXInvalidRange('version', -1, 0, 0xff)},
         {field: 'version', configData: 0x100, error: errors.TXInvalidRange('version', 0x100, 0, 0xff)},
         {field: 'to', configData: 0x1, error: errors.TXInvalidType('to', 0x1, ['string'])},
-        {field: 'to', configData: '0x1', result: 'Lemo8888888888888888888888888888888888BW'},
+        {field: 'to', configData: '0x1', result: 'Lemo8888888888888888888888888888888888BW', error: errors.InvalidAddress('0x1')},
         {field: 'to', configData: 'lemobw'},
         {field: 'to', configData: 'lemob', error: errors.InvalidAddressCheckSum('lemob')},
         {

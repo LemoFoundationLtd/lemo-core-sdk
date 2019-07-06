@@ -59,6 +59,12 @@ describe('module_tx_getTxListByAddress', () => {
         const result = await lemo.tx.getTxListByAddress('Lemobw', 0, 10)
         assert.equal(result.txList.length, 0)
     })
+    it('get from error account', () => {
+        const lemo = new LemoCore({chainID})
+        lemo.tx.getTxListByAddress('0x015780F8456F9c1532645087a19DcF9a7e0c7F97', 0, 10).catch(e => {
+            assert.equal(e.message, errors.InvalidAddress('0x015780F8456F9c1532645087a19DcF9a7e0c7F97'))
+        })
+    })
 })
 
 describe('module_tx_sendTx', () => {
@@ -198,7 +204,7 @@ describe('module_tx_issue_asset', () => {
             txInfos.map(async (test, i) => {
                 const txConfig = {...test.txConfig}
                 if (!txConfig.to) {
-                    txConfig.to = '0x0000000000000000000000000000000000000001'
+                    txConfig.to = 'Lemo8888888888888888888888888888888888BW'
                 }
                 const lemo = new LemoCore({chainID})
                 const issueAssetInfo = {

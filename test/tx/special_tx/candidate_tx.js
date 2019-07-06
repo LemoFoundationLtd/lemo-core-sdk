@@ -68,7 +68,7 @@ describe('CandidateTx_new', () => {
         {field: 'minerAddress', configData: '', error: errors.InvalidAddress('')},
         {field: 'minerAddress', configData: '123', error: errors.InvalidAddress('')},
         {field: 'minerAddress', configData: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG'},
-        {field: 'minerAddress', configData: '0x1'},
+        {field: 'minerAddress', configData: '0x1', error: errors.InvalidAddress('0x1')},
         {field: 'nodeID', configData: '123', error: errors.TXInvalidLength('nodeID', '123', NODE_ID_LENGTH)},
         {
             field: 'nodeID',
