@@ -1,7 +1,7 @@
 {
     "name": "lemo-core-sdk",
     "namespace": "LemoFoundationLtd",
-    "version": "0.10.1",
+    "version": "0.10.2",
     "description": "Lemochain JavaScript SDK, access to a lemochain node over RPC",
     "main": "dist/lemo-core-sdk.cjs.js",
     "browser": "dist/lemo-core-sdk-browser.cjs.js",
