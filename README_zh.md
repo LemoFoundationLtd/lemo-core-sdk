@@ -56,8 +56,6 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.getNewestUnstableHeight()](#submodule-chain-getNewestUnstableHeight)         | 获取最新不稳定块高度                   | ✓    | ✖          |
 | [lemo.getGenesis()](#submodule-chain-getGenesis)                           | 获取创世区块                   | ✓    | ✓          |
 | [lemo.getChainID()](#submodule-chain-getChainID)                           | 获取当前链 ID                  | ✓    | ✓          |
-| [lemo.getGasPriceAdvice()](#submodule-chain-getGasPriceAdvice)             | 获取建议 gas 价格              | ✓    | ✓          |
-| [lemo.getCandidateList()](#submodule-chain-getCandidateList)               | 分页获取候选节点列表            | ✓    | ✓          |
 | [lemo.getCandidateTop30()](#submodule-chain-getCandidateTop30)             | 获取排名前30的候选节点列表       | ✓    | ✓          |
 | [lemo.getDeputyNodeList()](#submodule-chain-getDeputyNodeList)             | 获取当前所有共识节点的地址列表    | ✓    | ✓          |
 | [lemo.getNodeVersion()](#submodule-chain-getNodeVersion)                   | 节点版本号                     | ✓    | ✓          |
@@ -76,14 +74,9 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.account.getBalance(addr)](#submodule-account-getBalance)             | 获取账户余额                   | ✓    | ✓          |
 | [lemo.account.getAccount(addr)](#submodule-account-getAccount)             | 获取账户信息                   | ✓    | ✓          |
 | [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | 获取候选人信息                 | ✓    | ✓          |
-| [lemo.account.getAllAssets(address, index, limit)](#submodule-account-getAllAssets) | 获取指定账户持有的所有资产权益                 | ✓    | ✓          |
-| [lemo.account.getAssetInfo(assetCode)](#submodule-account-getAssetInfo) | 获取指定资产类型的发行信息                 | ✓    | ✓          |
-| [lemo.account.getAssetMetaData(assetId)](#submodule-account-getAssetMetaData) | 获取指定资产中保存的自定义数据                 | ✓    | ✓          |
 | [lemo.account.createTempAddress(from, userId)](#submodule-account-createTempAddress) | 创建临时账户                 | ✖    | ✓          |
 | [lemo.account.isTempAddress(address)](#submodule-account-isTempAddress) | 是否是临时账户                 | ✖    | ✓          |
 | [lemo.account.isContractAddress(address)](#submodule-account-isContractAddress) | 是否是合约账户账户                 | ✖    | ✓          |
-| [lemo.tx.getTx(txHash)](#submodule-tx-getTx)                               | 根据交易hash获取交易            | ✓    | ✓          |
-| [lemo.tx.getTxListByAddress(address, index, limit)](#submodule-tx-getTxListByAddress)     | 根据账户地址分页拉取交易列表      | ✓    | ✓          |
 | [lemo.tx.sendTx(privateKey, txInfo)](#submodule-tx-sendTx)                 | 签名并发送交易                 | ✓    | ✓          |
 | [lemo.tx.sign(privateKey, txInfo)](#submodule-tx-sign)                     | 签名交易                       | ✖    | ✓          |
 | [lemo.tx.signVote(privateKey, txInfo)](#submodule-tx-signVote)             | 签名投票的特殊交易              | ✖    | ✓          |
@@ -669,8 +662,8 @@ lemo.getGenesis()
 ##### Example
 
 ```js
-lemo.getGenesis().then(function(height) {
-    console.log(block.header.parentHash) // "0x0000000000000000000000000000000000000000000000000000000000000000"
+lemo.getGenesis().then(function(result) {
+    console.log(result.header.parentHash) // "0x0000000000000000000000000000000000000000000000000000000000000000"
 })
 ```
 
@@ -699,61 +692,6 @@ lemo.getChainID()
 ```js
 lemo.getChainID().then(function(chainID) {
     console.log(chainID) // "1"
-})
-```
-
----
-
-<a name="submodule-chain-getGasPriceAdvice"></a>
-
-#### lemo.getGasPriceAdvice
-
-```
-lemo.getGasPriceAdvice()
-```
-
-获取建议 gas 价格
-
-##### Parameters
-
-无
-
-##### Returns
-
-`Promise` - 通过`then`可以获取到建议 gas 价格，单位为`mo`
-
-##### Example
-
-```js
-lemo.getGasPriceAdvice().then(function(gasPrice) {
-    console.log(gasPrice) // "2000000000"
-})
-```
-
----
-
-<a name="submodule-chain-getCandidateList"></a>
-#### lemo.getCandidateList
-```
-lemo.getCandidateList(index, limit)
-```
-分页获取候选节点列表
-
-##### Parameters
-1. `number` - 要获取的候选人信息起始序号
-2. `number` - 获取候选人信息的最大条数
-
-##### Returns
-`Promise` - 通过`then`可以获取到一个`{candidateList:Array, total:number}`对象  
-    - `candidateList` 候选人信息数组。与[账户信息](#data-structure-account)中的`candidate`对象一致，只是在这个候选人信息中增加了一个`address`字段，表示账户地址  
-    - `total` 候选人的总数  
-
-##### Example
-```js
-lemo.getCandidateList(0, 10).then(function(result) {
-    console.log(result.total) // 1
-    console.log(result.candidateList[0].address) // Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG
-    console.log(JSON.stringify(result.candidateList)) // [{"address":"Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG","profile":{"host":"127.0.0.1","isCandidate":true,"minerAddress":"Lemobw","nodeID":"5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0","port":7001},"votes":"1599999000"}]
 })
 ```
 
@@ -1264,77 +1202,6 @@ lemo.account.getCandidateInfo('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
 
 ---
 
-<a name="submodule-account-getAllAssets"></a>
-#### lemo.account.getAllAssets
-```
-lemo.account.getAllAssets(address, index, limit)
-```
-获取指定账户持有的所有资产权益
-
-##### Parameters
-1. `string` - 账户地址
-2. `number` - 账户信息的下标
-3. `number` - 获取账户的数量
-
-##### Returns
-`Promise` - 通过`then`可以获取到账户持有所有资产的信息
-
-##### Example
-```js
-lemo.account.getAllAssets('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).then(function(result) {
-    console.log(result.equities[0].assetId) // 0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a
-})
-```
-
----
-
-<a name="submodule-account-getAssetInfo"></a>
-#### lemo.account.getAssetInfo
-```
-lemo.account.getAssetInfo(assetCode) 
-```
-获取指定资产类型的发行信息
-
-##### Parameters
-1. `string` - 资产类型
-
-##### Returns
-`Promise` - 通过`then`可以获取到指定资产的发行信息
-
-##### Example
-```js
-lemo.account.getAssetInfo('0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884').then(function(result) {
-    console.log(result.category) // "1"
-    console.log(result.profile.suggestedGasLimit) //"60000"
-})
-```
-
----
-
-<a name="submodule-account-getAssetMetaData"></a>
-#### lemo.account.getAssetMetaData
-```
-lemo.account.getAssetMetaData(assetId) 
-```
-获取指定资产中保存的自定义数据
-
-##### Parameters
-1. `string` - 资产ID
-
-##### Returns
-`Promise` - 通过`then`可以获取到指定资产保存的自定义数据。这个对象中增加了以下属性：  
-    - `string` 资产拥有者地址 
-
-##### Example
-```js
-lemo.account.getAssetMetaData('0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a').then(function(result) {
-    console.log(result.metaDate) // "This is user-defined data"
-    console.log(result.owner) // "Lemo8498CBCJSY9G7JF4CGZDP64PRRNGP4HQ2QPF"
-})
-```
-
----
-
 <a name="submodule-account-createTempAddress"></a>
 #### lemo.account.createTempAddress
 ```
@@ -1402,80 +1269,6 @@ console.log(result) // false
 
 ### tx 模块 API
 
-<a name="submodule-tx-getTx"></a>
-
-#### lemo.tx.getTx
-
-```
-lemo.tx.getTx(txHash)
-```
-
-根据交易hash获取交易
-
-##### Parameters
-
-1. `string` - 交易hash
-
-##### Returns
-
-`Promise` - 通过`then`可以获取到[交易](#data-structure-transaction)信息。这个对象中增加了以下属性：  
-    - `blockHash` 交易所在区块的hash  
-    - `blockHeight` 交易所在区块的高度  
-    - `minedTime` 交易所在区块的出块时间  
-
-##### Example
-
-```js
-lemo.tx.getTx('0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2de').then(function(tx) {
-    console.log(tx.from) // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
-    console.log(tx.to) // "Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY"
-    console.log(tx.amount) // "100"
-    console.log(tx.gasPrice) // "3000000000"
-    console.log(tx.gasLimit) // 2000000
-    console.log(tx.expirationTime) // 1541649535
-    console.log(tx.message) // ''
-    console.log(tx.blockHeight) // 100
-    console.log(tx.minedTime) // 1541649535
-    console.log(tx.blockHash) // '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab'
-})
-```
-
----
-
-<a name="submodule-tx-getTxListByAddress"></a>
-
-#### lemo.tx.getTxListByAddress
-
-```
-lemo.tx.getTxListByAddress(address, index, limit)
-```
-
-根据账户地址分页拉取交易列表
-
-##### Parameters
-
-1. `string` - 账户地址
-2. `number` - 要获取的第一条交易的序号
-3. `number` - 获取交易的最大条数
-
-##### Returns
-
-`Promise` - 通过`then`可以获取到一个`{txList:Array, total:number}`对象。其中  
-    - `txList` [交易](#data-structure-transaction)的数组，其中增加了`minedTime`属性，表示所在区块的出块时间  
-    - `total` 该账户下的交易总数  
-
-##### Example
-
-```js
-lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10).then(function(result) {
-    console.log(result.total) // 3
-    console.log(result.txList[0].minedTime) // 1541649535
-    console.log(JSON.stringify(result.txList)) // [{"chainID":200,"expirationTime":1544584596,"from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","version":1,"type":0,"toName":"","gasPrice":"3000000000","gasLimit":2000000,"amount":"0","data":"0x","message":"","sigs":["0xf642fbc4588fbab945a6db57381fb756221607c96f5519c5f5092ca212b454e7529b1c78da1927bc99d07f0b0f3e18442b6d911ce71a45a6f0da101e84b88e3c01"],"typeText":"UnknonwType(0)","minedTime":1541649535},{"chainID":200,"version":1,"type":0,"to":"0x1000000000000000000000000000000000000000","toName":"888888888888888888888888888888888888888888888888888888888888","gasPrice":"1.17789804318558955305553166716194567721832259791707930541440413419507985e+71","gasLimit":100,"amount":"1.17789804318558955305553166716194567721832259791707930541440413419507985e+71","data":"0x4949494949494949","expirationTime":1544584596,"message":"888888888888888888888888888888888888888888888888888888888888","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","sigs":["0xacba6ce994874d7b856d663a7f1d04bc7bf65278d33afb0a7fd8da69f626292a01e6badf976c360673b71c54ff363bbcb521ae545fec47cb0bf83eb4c83332b601"],"typeText":"UnknonwType(0)","minedTime":1541649536}]
-})
-```
-
----
-
 <a name="submodule-tx-sendTx"></a>
 
 #### lemo.tx.sendTx
@@ -1510,9 +1303,9 @@ lemo.tx.sendTx(privateKey, txconfig, waitConfirm)
 ##### Example
 
 ```js
-const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
+const txInfo = {from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
 lemo.tx.sendTx('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', txInfo).then(function(txHash) {
-    console.log(txHash)
+    console.log(txHash) //"0xc74aa1a1e8bbf5b4ce083a56d67ab4c36d9d12746f38dac995f6c4cd10cdf5f0"
 })
 ```
 
@@ -1649,7 +1442,7 @@ lemo.tx.signCreateAsset(privateKey, txConfig, createAssetInfo)
 ```js
 const txInfo = {chainID: '1', from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'}
 const createAssetInfo = {
-    category: '1',
+    category: 1,
     decimal: 18,
     isReplenishable: true,
     isDivisible: true,
@@ -2004,7 +1797,7 @@ const signTransferAsset = lemo.tx.signTransferAsset('0x432a86ab8765d82415a803e29
 const subTxList = [createTempAddress, signTransferAsset]
 const result = lemo.tx.signBoxTx('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', {chainID: '1', from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'}, subTxList)
 console.log(result)
-// // {"type":"0","version":"1","chainID":"1","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1560486874","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","data":"0x7b2273756254784c697374223a5b7b2274797065223a2230222c2276657273696f6e223a2231222c22636861696e4944223a22323030222c226761735072696365223a2233303030303030303030222c226761734c696d6974223a2232303030303030222c22616d6f756e74223a2230222c2265787069726174696f6e54696d65223a2231353630343836383734222c2266726f6d223a224c656d6f38333642514b43425a385a3742374e3447344e34534e47425432345a5a534a5144323444222c22746f223a224c656d6f3835535935365347525451513633413259355a5742424247595433434143425936414238222c2264617461223a223078376232323733363936373665363537323733323233613562376232323631363436343732363537333733323233613232346336353664366633383333333634323531346234333432356133383561333734323337346533343437333434653334353334653437343235343332333435613561353334613531343433323334343432323263323237373635363936373638373432323361333133303330376435643764222c2273696773223a5b22307861326637376662613832383331333464333337633138316463363635306532633461396135343863633834656561313462356431363635656436623933636337316130373635616430643030656536333838393330366632376330343562646432623365643139313038393363326137623964666431653239623034363261323031225d2c22676173506179657253696773223a5b5d7d2c7b2274797065223a2237222c2276657273696f6e223a2231222c22636861696e4944223a22323030222c226761735072696365223a2233303030303030303030222c226761734c696d6974223a2232303030303030222c22616d6f756e74223a2230222c2265787069726174696f6e54696d65223a2231353630343836383734222c2266726f6d223a224c656d6f38333642514b43425a385a3742374e3447344e34534e47425432345a5a534a5144323444222c22746f223a224c656d6f383342594b5a4a34524e34544b4339433738524657375948573653383754505253483334222c2264617461223a2230783762323236313733373336353734343936343232336132323330373836343330363236353636363433333338333533303633333533373334363233373636333636313634333636363337333933343333363636353331333936323332333133323631363636363632333933303331333633323339333733383631363436333332333133393333363133303333333536333635363433383338333833343232326332323734373236313665373336363635373234313664366637353665373432323361323233313331333033303330333032323764222c2273696773223a5b22307861653666633965393561613938626161303162613439353061663636633031373062623765623862326339323262343238306264643863616338636466363132313236313732393964626339323065306538306561336534343566353134303166633339663761393433346336363533366264376564333734333037636432653030225d2c22676173506179657253696773223a5b5d7d5d7d","sigs":["0xa715e1cd58df234fb08be8803eebbe1c53b51e45a3fdee2fb7362d4664dc3ea84703d8e397868d416b1498d16fcf188af0806b6a11912f309288712f3854838101"],"gasPayerSigs":[]}
+// {"type":"10","version":"1","chainID":"1","gasPrice":"3000000000","gasLimit":"2000000","amount":"0","expirationTime":"1560486874","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","data":"0x7b2273756254784c697374223a5b7b2274797065223a2230222c2276657273696f6e223a2231222c22636861696e4944223a22323030222c226761735072696365223a2233303030303030303030222c226761734c696d6974223a2232303030303030222c22616d6f756e74223a2230222c2265787069726174696f6e54696d65223a2231353630343836383734222c2266726f6d223a224c656d6f38333642514b43425a385a3742374e3447344e34534e47425432345a5a534a5144323444222c22746f223a224c656d6f3835535935365347525451513633413259355a5742424247595433434143425936414238222c2264617461223a223078376232323733363936373665363537323733323233613562376232323631363436343732363537333733323233613232346336353664366633383333333634323531346234333432356133383561333734323337346533343437333434653334353334653437343235343332333435613561353334613531343433323334343432323263323237373635363936373638373432323361333133303330376435643764222c2273696773223a5b22307861326637376662613832383331333464333337633138316463363635306532633461396135343863633834656561313462356431363635656436623933636337316130373635616430643030656536333838393330366632376330343562646432623365643139313038393363326137623964666431653239623034363261323031225d2c22676173506179657253696773223a5b5d7d2c7b2274797065223a2237222c2276657273696f6e223a2231222c22636861696e4944223a22323030222c226761735072696365223a2233303030303030303030222c226761734c696d6974223a2232303030303030222c22616d6f756e74223a2230222c2265787069726174696f6e54696d65223a2231353630343836383734222c2266726f6d223a224c656d6f38333642514b43425a385a3742374e3447344e34534e47425432345a5a534a5144323444222c22746f223a224c656d6f383342594b5a4a34524e34544b4339433738524657375948573653383754505253483334222c2264617461223a2230783762323236313733373336353734343936343232336132323330373836343330363236353636363433333338333533303633333533373334363233373636333636313634333636363337333933343333363636353331333936323332333133323631363636363632333933303331333633323339333733383631363436333332333133393333363133303333333536333635363433383338333833343232326332323734373236313665373336363635373234313664366637353665373432323361323233313331333033303330333032323764222c2273696773223a5b22307861653666633965393561613938626161303162613439353061663636633031373062623765623862326339323262343238306264643863616338636466363132313236313732393964626339323065306538306561336534343566353134303166633339663761393433346336363533366264376564333734333037636432653030225d2c22676173506179657253696773223a5b5d7d5d7d","sigs":["0xa715e1cd58df234fb08be8803eebbe1c53b51e45a3fdee2fb7362d4664dc3ea84703d8e397868d416b1498d16fcf188af0806b6a11912f309288712f3854838101"],"gasPayerSigs":[]}
 ```
 
 ---
@@ -2034,11 +1827,12 @@ lemo.tx.signContractCreation(privateKey, txConfig, code, constructorArgs)
 ##### Example
 
 ```js
+const txInfo = {from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
 const code = '0x000000100000100'
-const constructorArgs = '0xdaaod10000001111'
-const result = lemo.tx.signContractCreation(testPrivate, txInfo.txConfig, code, constructorArgs)
+const constructorArgs = '213313'
+const result = lemo.tx.signContractCreation('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb', txInfo, code, constructorArgs)
 console.log(result)
-// {"type":"1","version":"1","chainID":"200","gasPrice":"2","gasLimit":"100","amount":"1","expirationTime":"1544584596","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","to":"Lemo8888888888888888888888888888888888BW","toName":"aa","data":"0x000000100000100daaod10000001111","message":"aaa","sigs":["0x6ea18d3d4bc70e5474bcb6f7158b2a020ed7ae91711659bfce4cb110f2703a783dbbc3765ee19fb54dddbcb95776477dd3bf7266d939762fa1b422abf8185a7800"],"gasPayerSigs":[]}
+// {"type":"1","version":"1","chainID":"100","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","gasPrice":"3000000000","gasLimit":"2000000","amount":"100","expirationTime":"1563365829","to":"Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34","data":"0x0000001000001003313","sigs":["0x37c83328309196b39528be15cffbe1494a36c2df785ac0b0a1e14ac0649c9756552dbd930d5a3f21e40db530db0f066ce64365c8200f758e9258261c5e98b43b01"],"gasPayerSigs":[]}
 ```
 
 ---

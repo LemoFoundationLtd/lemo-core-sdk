@@ -25,47 +25,6 @@ function parseHexObject(hex) {
     return JSON.parse(decodeUtf8Hex(hex))
 }
 
-describe('module_tx_getTx', () => {
-    it('getTx', async () => {
-        const lemo = new LemoCore({chainID})
-        const result = await lemo.tx.getTx(emptyTxInfo.hashAfterSign)
-        assert.deepEqual(result, formattedTxRes1)
-    })
-    it('getTx not exist', async () => {
-        const lemo = new LemoCore({chainID})
-        const result = await lemo.tx.getTx('0x28ee2b4622946e35c3e761e826d18d95c319452efe23ce6844f14de3ece95b5e')
-        assert.equal(result, null)
-    })
-})
-
-describe('module_tx_getTxListByAddress', () => {
-    it('got 3 txs', async () => {
-        const lemo = new LemoCore({chainID})
-        const result = await lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 10)
-        assert.deepEqual(result, formattedTxListRes)
-    })
-    it('got 1 tx', async () => {
-        const lemo = new LemoCore({chainID})
-        const result = await lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 1)
-        assert.equal(result.txList.length, 1)
-    })
-    it('got 0 tx', async () => {
-        const lemo = new LemoCore({chainID})
-        const result = await lemo.tx.getTxListByAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', 0, 0)
-        assert.equal(result.txList.length, 0)
-    })
-    it('get from empty account', async () => {
-        const lemo = new LemoCore({chainID})
-        const result = await lemo.tx.getTxListByAddress('Lemobw', 0, 10)
-        assert.equal(result.txList.length, 0)
-    })
-    it('get from error account', () => {
-        const lemo = new LemoCore({chainID})
-        lemo.tx.getTxListByAddress('0x015780F8456F9c1532645087a19DcF9a7e0c7F97', 0, 10).catch(e => {
-            assert.equal(e.message, errors.InvalidAddress('0x015780F8456F9c1532645087a19DcF9a7e0c7F97'))
-        })
-    })
-})
 
 describe('module_tx_sendTx', () => {
     it('sendTx_with_hex_address_without_waitConfirm', () => {

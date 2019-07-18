@@ -26,6 +26,7 @@ import {
     metaData,
     creatAsset1,
     metaData1,
+    unstableHeight,
 } from './datas'
 
 const mockInfos = [
@@ -79,6 +80,13 @@ const mockInfos = [
         },
     },
     {
+        method: 'chain_unstableBlock',
+        paramsCount: 1,
+        reply([withBody]) {
+            return withBody ? currentBlock : {...currentBlock, transactions: null}
+        },
+    },
+    {
         method: 'chain_getBlockByHeight',
         paramsCount: 2,
         reply([height, withBody]) {
@@ -119,6 +127,13 @@ const mockInfos = [
         paramsCount: 0,
         reply() {
             return currentHeight
+        },
+    },
+    {
+        method: 'chain_unstableHeight',
+        paramsCount: 0,
+        reply() {
+            return unstableHeight
         },
     },
     {
