@@ -585,8 +585,8 @@ None
 
 ##### Example
 ```js
-lemo.getGenesis().then(function(result) {
-    console.log(result.header.parentHash); // "0x0000000000000000000000000000000000000000000000000000000000000000"
+lemo.getGenesis().then(function(block) {
+    console.log(block.header.parentHash); // "0x0000000000000000000000000000000000000000000000000000000000000000"
 })
 ```
 
