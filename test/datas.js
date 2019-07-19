@@ -8,6 +8,7 @@ export const testPrivate = '0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95
 export const testAddr = 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'
 export const from = testAddr
 export const currentHeight = 2
+export const unstableHeight = 3
 export const chainID = 200
 export const HxGasPriceAdvice = '0x5f5e100'
 export const nodeVersion = '1.0.0'

@@ -1,5 +1,4 @@
 import {assert} from 'chai'
-import BigNumber from 'bignumber.js'
 import LemoCore from '../../lib/index'
 import {
     chainID,
@@ -10,6 +9,7 @@ import {
     currentHeight,
     formattedCandidateListRes,
     deputyNodes,
+    unstableHeight,
 } from '../datas'
 import '../mock'
 import {DEFAULT_POLL_DURATION} from '../../lib/config'
@@ -29,6 +29,23 @@ describe('module_chain_getNewestBlock', () => {
     it('default parameter', async () => {
         const lemo = new LemoCore()
         const result = await lemo.getNewestBlock()
+        assert.deepEqual(result, {header: formattedCurrentBlock.header})
+    })
+})
+describe('module_chain_getNewestUnstableBlock', () => {
+    it('newest block with body', async () => {
+        const lemo = new LemoCore()
+        const result = await lemo.getNewestUnstableBlock(true)
+        assert.deepEqual(result, formattedCurrentBlock)
+    })
+    it('newest block without body', async () => {
+        const lemo = new LemoCore()
+        const result = await lemo.getNewestUnstableBlock(false)
+        assert.deepEqual(result, {header: formattedCurrentBlock.header})
+    })
+    it('default parameter', async () => {
+        const lemo = new LemoCore()
+        const result = await lemo.getNewestUnstableBlock()
         assert.deepEqual(result, {header: formattedCurrentBlock.header})
     })
 })
@@ -73,6 +90,13 @@ describe('module_chain_getNewestHeight', () => {
         assert.strictEqual(result, currentHeight)
     })
 })
+describe('module_chain_getNewestUnstableHeight', () => {
+    it('default for getNewestUnstableHeight', async () => {
+        const lemo = new LemoCore()
+        const result = await lemo.getNewestUnstableHeight()
+        assert.strictEqual(result, unstableHeight)
+    })
+})
 
 describe('module_chain_getGenesis', () => {
     it('getGenesis', async () => {
@@ -90,15 +114,6 @@ describe('module_chain_getChainID', () => {
     })
 })
 
-describe('module_chain_getGasPriceAdvice', () => {
-    it('getGasPriceAdvice', async () => {
-        const lemo = new LemoCore()
-        const result = await lemo.getGasPriceAdvice()
-        assert.strictEqual(result instanceof BigNumber, true)
-        assert.exists(result.toMoney)
-        assert.strictEqual(result.toMoney(), '100M mo')
-    })
-})
 
 describe('module_chain_getNodeVersion', () => {
     it('getNodeVersion', async () => {
@@ -164,23 +179,6 @@ describe('module_chain_watchBlock', () => {
     })
 })
 
-describe('module_chain_getCandidateList', () => {
-    it('got 2 candidates', async () => {
-        const lemo = new LemoCore()
-        const result = await lemo.getCandidateList(0, 10)
-        assert.deepEqual(result, formattedCandidateListRes)
-    })
-    it('got 1 candidate', async () => {
-        const lemo = new LemoCore()
-        const result = await lemo.getCandidateList(0, 1)
-        assert.equal(result.candidateList.length, 1)
-    })
-    it('got 0 candidate', async () => {
-        const lemo = new LemoCore()
-        const result = await lemo.getCandidateList(0, 0)
-        assert.equal(result.candidateList.length, 0)
-    })
-})
 
 describe('module_chain_getCandidateTop30', () => {
     it('got 2 candidates', async () => {
