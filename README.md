@@ -95,6 +95,7 @@ API | description | asynchronous | available for remote
 [lemo.tx.signBoxTx(privateKey, txConfig, subTxList)](#submodule-tx-signBoxTx) | Sign a special transaction for box transaction | ✖ | ✓ 
 [lemo.tx.signContractCreation(privateKey, txConfig, code, constructorArgs)](#submodule-tx-signContractCreation) | Sign a special transaction for contract creation | ✖ | ✓ 
 [lemo.tx.send(signedTxInfo)](#submodule-tx-send) | Send a signed transaction | ✓ | ✓
+[lemo.tx.waitConfirm(txHash)](#submodule-tx-waitConfirm)                           |  wait for the transaction to be confirmed               | ✓    | ✓ 
 [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx) | listen and filter for transaction of block | ✖ | ✓ |
 [lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx) | Stop listening transaction | ✖ | ✓ |
 [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx) | Listening for new transactions | ✖ | ✖
@@ -1601,6 +1602,26 @@ lemo.tx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52
         console.log(txHash) // "0xe116a56b301f3bede1ad10c1496d57d6cb89454b4d6efbc20ca39132a4bc2b96"
     })
 ```
+
+---
+
+<a name="submodule-tx-waitConfirm"></a>
+
+#### lemo.tx.waitConfirm
+
+```
+lemo.tx.waitConfirm(txHash)
+```
+
+wait for the transaction to be confirmed
+
+##### Parameters
+
+1. `string` - transaction hash
+
+##### Returns
+
+`Promise` - Call `then` method to get transaction hash
 
 ---
 

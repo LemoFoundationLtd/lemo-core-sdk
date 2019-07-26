@@ -11,6 +11,7 @@ describe('CandidateTx_new', () => {
         nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
         host: 'a.com',
         port: 7001,
+        introduction: 'acsdusjkajkdaijadjskdei',
     }
     it('min config', () => {
         const tx = new CandidateTx({chainID, from}, minCandidateInfo)
@@ -36,7 +37,7 @@ describe('CandidateTx_new', () => {
         assert.equal(tx.type, TxType.CANDIDATE)
         assert.equal(tx.to, '')
         assert.equal(tx.toName, '')
-        assert.equal(tx.amount, 0)
+        assert.equal(tx.amount, 101)
         assert.equal(decodeUtf8Hex(tx.data), JSON.stringify({isCandidate: 'true', ...minCandidateInfo}))
     })
     it('useful config', () => {
@@ -90,6 +91,12 @@ describe('CandidateTx_new', () => {
         {field: 'port', configData: 0, error: errors.TXInvalidRange('port', 0, 1, 0xffff)},
         {field: 'port', configData: '0xfffff', error: errors.TXInvalidRange('port', '0xfffff', 1, 0xffff)},
         {field: 'port', configData: ['0xff'], error: errors.TXInvalidType('port', ['0xff'], ['string', 'number'])},
+        {field: 'introduction', configData: 'ab0000011111111'},
+        {field: 'introduction', configData: ''},
+        {
+            field: 'introduction',
+            configData: 'aaaaaa0，%7&5——5f9b512a65603b38e30885c98cbac7，0259c3235c9b3f42e，563b480，，dea351ba0ff5748a638fe0aeff5d845bf37a3b437831871mb48fd32f33cd9a3c0',
+        },
     ]
     tests.forEach(test => {
         it(`set candidateInfo.${test.field} to ${JSON.stringify(test.configData)}`, () => {
@@ -111,5 +118,18 @@ describe('CandidateTx_new', () => {
                 }
             }
         })
+    })
+})
+describe('CandidateTx_host_empty', () => {
+    it('min config', () => {
+        const minCandidateInfo = {
+            minerAddress: 'lemobw',
+            nodeID: '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
+            host: '',
+            port: 7001,
+        }
+        assert.throws(() => {
+            new CandidateTx({chainID, from}, minCandidateInfo)
+        }, errors.TXFieldCanNotEmpty('host'))
     })
 })
