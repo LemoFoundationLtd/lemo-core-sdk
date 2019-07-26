@@ -83,7 +83,6 @@ describe('module_tx_waitConfirm', () => {
         const json = lemo.tx.sign(testPrivate, txInfo.txConfig)
         const txHash = await lemo.tx.send(json)
         const result = await lemo.tx.waitConfirm(txHash)
-        console.log(JSON.stringify(result))
         assert.equal(result.data, txInfo.data)
     })
 })
