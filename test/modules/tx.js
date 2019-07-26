@@ -77,6 +77,18 @@ describe('module_tx_sign_send', () => {
     })
 })
 
+describe('module_tx_waitConfirm', () => {
+    it('sign_send_with_waitConfirm_narmal', async () => {
+        const lemo = new LemoCore({chainID})
+        const json = lemo.tx.sign(testPrivate, txInfo.txConfig)
+        const txHash = await lemo.tx.send(json)
+        const result = await lemo.tx.waitConfirm(txHash)
+        console.log(JSON.stringify(result))
+        assert.equal(result.data, txInfo.data)
+    })
+})
+
+
 describe('module_tx_vote', () => {
     it('sign_vote', () => {
         return Promise.all(

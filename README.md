@@ -1623,6 +1623,14 @@ wait for the transaction to be confirmed
 
 `Promise` - Call `then` method to get transaction hash
 
+##### Example
+
+```js
+lemo.tx.waitConfirm(0xe71cd6d98b1e48ddccf36ed655700478971a8514abf7c4d2173512201222c6c0).then(function(result) {
+  console.log(JSON.stringify(result))
+  // {"blockHash":"0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab","height":"100","time":"1541649535","tx":{"chainID":200,"version":"1","type":"0","to":"Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH","toName":"aa","gasPrice":"2","gasLimit":"100","amount":"1","data":"0x0c","expirationTime":"1544584596","message":"aaa","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","sigs":["0x8c0499083cb3d27bead4f21994aeebf8e75fa11df6bfe01c71cad583fc9a3c70778a437607d072540719a866adb630001fabbfb6b032d1a8dfbffac7daed8f0201"]}}
+})
+```
 ---
 
 <a name="submodule-tx-watchTx"></a>
