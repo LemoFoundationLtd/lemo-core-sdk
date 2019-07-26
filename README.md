@@ -95,6 +95,7 @@ API | description | asynchronous | available for remote
 [lemo.tx.signBoxTx(privateKey, txConfig, subTxList)](#submodule-tx-signBoxTx) | Sign a special transaction for box transaction | ✖ | ✓ 
 [lemo.tx.signContractCreation(privateKey, txConfig, code, constructorArgs)](#submodule-tx-signContractCreation) | Sign a special transaction for contract creation | ✖ | ✓ 
 [lemo.tx.send(signedTxInfo)](#submodule-tx-send) | Send a signed transaction | ✓ | ✓
+[lemo.tx.waitConfirm(txHash)](#submodule-tx-waitConfirm)                           |  wait for the transaction to be confirmed               | ✓    | ✓ 
 [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx) | listen and filter for transaction of block | ✖ | ✓ |
 [lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx) | Stop listening transaction | ✖ | ✓ |
 [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx) | Listening for new transactions | ✖ | ✖
@@ -1602,6 +1603,34 @@ lemo.tx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52
     })
 ```
 
+---
+
+<a name="submodule-tx-waitConfirm"></a>
+
+#### lemo.tx.waitConfirm
+
+```
+lemo.tx.waitConfirm(txHash)
+```
+
+wait for the transaction to be confirmed
+
+##### Parameters
+
+1. `string` - transaction hash
+
+##### Returns
+
+`Promise` - Call `then` method to get transaction hash
+
+##### Example
+
+```js
+lemo.tx.waitConfirm(0xe71cd6d98b1e48ddccf36ed655700478971a8514abf7c4d2173512201222c6c0).then(function(result) {
+  console.log(JSON.stringify(result))
+  // {"blockHash":"0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab","height":"100","time":"1541649535","tx":{"chainID":200,"version":"1","type":"0","to":"Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH","toName":"aa","gasPrice":"2","gasLimit":"100","amount":"1","data":"0x0c","expirationTime":"1544584596","message":"aaa","from":"Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D","sigs":["0x8c0499083cb3d27bead4f21994aeebf8e75fa11df6bfe01c71cad583fc9a3c70778a437607d072540719a866adb630001fabbfb6b032d1a8dfbffac7daed8f0201"]}}
+})
+```
 ---
 
 <a name="submodule-tx-watchTx"></a>
