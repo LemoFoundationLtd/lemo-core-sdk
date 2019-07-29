@@ -102,7 +102,7 @@ API | description | asynchronous | available for remote
 [lemo.stopWatch()](#submodule-global-stopWatch) | Stop listening | ✖ | ✓
 [lemo.isWatching()](#submodule-global-isWatching) | True if is listening | ✖ | ✓
 
-| classProperties | description |
+| Class Properties | description |
 | --- | --- |
 | [LemoCore.SDK_VERSION](#submodule-tool-SDK_VERSION) | The version of js SDK |
 | [LemoCore.TxType](#submodule-tool-TxType) | Enum of transaction type |
