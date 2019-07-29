@@ -101,15 +101,15 @@ API | description | asynchronous | available for remote
 [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx) | Listening for new transactions | ✖ | ✖
 [lemo.stopWatch()](#submodule-global-stopWatch) | Stop listening | ✖ | ✓
 [lemo.isWatching()](#submodule-global-isWatching) | True if is listening | ✖ | ✓
-[LemoCore.verifyAddress(addr)](#submodule-tool-verifyAddress) | Verify a LemoChain address | ✖ | ✓
-[LemoCore.moToLemo(mo)](#submodule-tool-moToLemo) | Convert the unit from mo to LEMO | ✖ | ✓
-[LemoCore.lemoToMo(ether)](#submodule-tool-lemoToMo) | Convert the unit from LEMO to mo | ✖ | ✓
-[LemoCore.toBuffer(data)](#submodule-tool-data) | Convert the data to Buffer type | ✖ | ✓
 
-| constant | description |
+| classProperties | description |
 | --- | --- |
 | [LemoCore.SDK_VERSION](#submodule-tool-SDK_VERSION) | The version of js SDK |
 | [LemoCore.TxType](#submodule-tool-TxType) | Enum of transaction type |
+| [LemoCore.verifyAddress(addr)](#submodule-tool-verifyAddress) | Verify a LemoChain address |
+| [LemoCore.moToLemo(mo)](#submodule-tool-moToLemo) | Convert the unit from mo to LEMO |
+| [LemoCore.lemoToMo(ether)](#submodule-tool-lemoToMo) | Convert the unit from LEMO to mo |
+| [LemoCore.toBuffer(data)](#submodule-tool-data) | Convert the data to Buffer type |
 
 ---
 

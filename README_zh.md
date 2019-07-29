@@ -99,15 +99,16 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx)           | 监听新的 pending 交易          | ✖    | ✖          |
 | [lemo.stopWatch()](#submodule-global-stopWatch)                     | 停止所有轮询       | ✖    | ✓          |
 | [lemo.isWatching()](#submodule-global-isWatching)                          | 是否正在轮询                   | ✖    | ✓          |
-| [LemoCore.verifyAddress(addr)](#submodule-tool-verifyAddress)             | LemoChain地址校验             | ✖    | ✓          |
-| [LemoCore.moToLemo(mo)](#submodule-tool-moToLemo)             | 将单位从mo转换为LEMO             | ✖    | ✓          |
-| [LemoCore.lemoToMo(ether)](#submodule-tool-lemoToMo)             | 将单位从LEMO转换为mo             | ✖    | ✓          |
-| [LemoCore.toBuffer(data)](#submodule-tool-toBuffer)             | 将数据转换为Buffer类型             | ✖    | ✓          |
 
-| 常量                                                                        | 功能                           |
+
+| 类属性                                                                        | 描述                           |
 | -------------------------------------------------------------------------- | ------------------------------ |
 | [LemoCore.SDK_VERSION](#submodule-tool-SDK_VERSION)                          | js SDK 版本号                  |
 | [LemoCore.TxType](#submodule-tool-TxType)                                    | 交易类型枚举                  |
+| [LemoCore.verifyAddress(addr)](#submodule-tool-verifyAddress)             | LemoChain地址校验             | 
+| [LemoCore.moToLemo(mo)](#submodule-tool-moToLemo)             | 将单位从mo转换为LEMO             | 
+| [LemoCore.lemoToMo(ether)](#submodule-tool-lemoToMo)             | 将单位从LEMO转换为mo             |
+| [LemoCore.toBuffer(data)](#submodule-tool-toBuffer)             | 将数据转换为Buffer类型             | 
 
 ---
 
