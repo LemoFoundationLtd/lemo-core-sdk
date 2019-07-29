@@ -101,14 +101,15 @@ API | description | asynchronous | available for remote
 [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx) | Listening for new transactions | ✖ | ✖
 [lemo.stopWatch()](#submodule-global-stopWatch) | Stop listening | ✖ | ✓
 [lemo.isWatching()](#submodule-global-isWatching) | True if is listening | ✖ | ✓
-[lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress) | Verify a LemoChain address | ✖ | ✓
-[lemo.tool.moToLemo(mo)](#submodule-tool-moToLemo) | Convert the unit from mo to LEMO | ✖ | ✓
-[lemo.tool.lemoToMo(ether)](#submodule-tool-lemoToMo) | Convert the unit from LEMO to mo | ✖ | ✓
 
-| constant | description |
+| Class Properties | description |
 | --- | --- |
-| [lemo.SDK_VERSION](#submodule-global-SDK_VERSION) | The version of js SDK |
-| [lemo.TxType](#submodule-global-TxType) | Enum of transaction type |
+| [LemoCore.SDK_VERSION](#submodule-tool-SDK_VERSION) | The version of js SDK |
+| [LemoCore.TxType](#submodule-tool-TxType) | Enum of transaction type |
+| [LemoCore.verifyAddress(addr)](#submodule-tool-verifyAddress) | Verify a LemoChain address |
+| [LemoCore.moToLemo(mo)](#submodule-tool-moToLemo) | Convert the unit from mo to LEMO |
+| [LemoCore.lemoToMo(ether)](#submodule-tool-lemoToMo) | Convert the unit from LEMO to mo |
+| [LemoCore.toBuffer(data)](#submodule-tool-data) | Convert the data to Buffer type |
 
 ---
 
@@ -1707,12 +1708,12 @@ lemo.watchPendingTx(true, function(transactions) {
 
 ### other API
 
-<a name="submodule-global-SDK_VERSION"></a>
+<a name="submodule-tool-SDK_VERSION"></a>
 
-#### lemo.SDK_VERSION
+#### LemoCore.SDK_VERSION
 
 ```
-lemo.SDK_VERSION
+LemoCore.SDK_VERSION
 ```
 
 `string` - The version of SDK
@@ -1720,17 +1721,17 @@ lemo.SDK_VERSION
 ##### Example
 
 ```js
-console.log(lemo.SDK_VERSION) // "1.0.0"
+console.log(LemoCore.SDK_VERSION) // "1.0.0"
 ```
 
 ---
 
-<a name="submodule-global-TxType"></a>
+<a name="submodule-tool-TxType"></a>
 
-#### lemo.TxType
+#### LemoCore.TxType
 
 ```
-lemo.TxType
+LemoCore.TxType
 ```
 
 Enum of [transaction type](#data-transaction-type), the value is `number` type
@@ -1738,7 +1739,7 @@ Enum of [transaction type](#data-transaction-type), the value is `number` type
 ##### Example
 
 ```js
-console.log(lemo.TxType.VOTE) // 1
+console.log(LemoCore.TxType.VOTE) // 1
 ```
 
 ---
@@ -1784,9 +1785,9 @@ console.log(lemo.isWatching() ? 'watching' : 'not watching')
 ---
 
 <a name="submodule-tool-verifyAddress"></a>
-#### lemo.tool.verifyAddress
+#### LemoCore.verifyAddress
 ```
-lemo.tool.verifyAddress(addr)
+LemoCore.verifyAddress(addr)
 ```
 Verify LemoChain address
 
@@ -1798,7 +1799,7 @@ Verify LemoChain address
 
 ##### Example
 ```js
-const errMsg = lemo.tool.verifyAddress('LEMObw')
+const errMsg = LemoCore.verifyAddress('LEMObw')
 if (errMsg) {
     console.error(errMsg);
 }
@@ -1807,7 +1808,7 @@ if (errMsg) {
 ---
 
 <a name="submodule-tool-moToLemo"></a>
-#### lemo.tool.moToLemo
+#### LemoCore.moToLemo
 ```
 lemo.tool.moToLemo(mo)
 ```
@@ -1821,16 +1822,16 @@ Convert the unit from mo to LEMO
 
 ##### Example
 ```js
-const result = lemo.tool.moToLemo('0.1')
+const result = LemoCore.moToLemo('0.1')
 console.log(result.toString(10));// '0.0000000000000000001'
 ```
 
 ---
 
 <a name="submodule-tool-lemoToMo"></a>
-#### lemo.tool.lemoToMo
+#### LemoCore.lemoToMo
 ```
-lemo.tool.lemoToMo(ether)
+LemoCore.lemoToMo(ether)
 ```
 Convert the unit from LEMO to mo
 
@@ -1842,16 +1843,16 @@ Convert the unit from LEMO to mo
 
 ##### Example
 ```js
-const result = lemo.tool.lemoToMo('0.1')
+const result = LemoCore.lemoToMo('0.1')
 console.log(result.toString(10)) // '100000000000000000'
 ```
 
 ---
 
 <a name="submodule-tool-toBuffer"></a>
-#### lemo.tool.toBuffer
+#### LemoCore.toBuffer
 ```
-lemo.tool.toBuffer(data)
+LemoCore.toBuffer(data)
 ```
 Convert the unit from LEMO to mo
 
@@ -1863,7 +1864,7 @@ Convert the unit from LEMO to mo
 
 ##### Example
 ```js
-const result = lemo.tool.toBuffer('{"value": 100}')
+const result = LemoCore.toBuffer('{"value": 100}')
 console.log(result.toString('hex')) // '100000000000000000'
 ```
 

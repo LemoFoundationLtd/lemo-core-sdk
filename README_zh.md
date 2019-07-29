@@ -99,15 +99,16 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx)           | 监听新的 pending 交易          | ✖    | ✖          |
 | [lemo.stopWatch()](#submodule-global-stopWatch)                     | 停止所有轮询       | ✖    | ✓          |
 | [lemo.isWatching()](#submodule-global-isWatching)                          | 是否正在轮询                   | ✖    | ✓          |
-| [lemo.tool.verifyAddress(addr)](#submodule-tool-verifyAddress)             | LemoChain地址校验             | ✖    | ✓          |
-| [lemo.tool.moToLemo(mo)](#submodule-tool-moToLemo)             | 将单位从mo转换为LEMO             | ✖    | ✓          |
-| [lemo.tool.lemoToMo(ether)](#submodule-tool-lemoToMo)             | 将单位从LEMO转换为mo             | ✖    | ✓          |
-| [lemo.tool.toBuffer(data)](#submodule-tool-toBuffer)             | 将数据转换为Buffer类型             | ✖    | ✓          |
 
-| 常量                                                                        | 功能                           |
+
+| 类属性                                                                        | 描述                           |
 | -------------------------------------------------------------------------- | ------------------------------ |
-| [lemo.SDK_VERSION](#submodule-global-SDK_VERSION)                          | js SDK 版本号                  |
-| [lemo.TxType](#submodule-global-TxType)                                    | 交易类型枚举                  |
+| [LemoCore.SDK_VERSION](#submodule-tool-SDK_VERSION)                          | js SDK 版本号                  |
+| [LemoCore.TxType](#submodule-tool-TxType)                                    | 交易类型枚举                  |
+| [LemoCore.verifyAddress(addr)](#submodule-tool-verifyAddress)             | LemoChain地址校验             | 
+| [LemoCore.moToLemo(mo)](#submodule-tool-moToLemo)             | 将单位从mo转换为LEMO             | 
+| [LemoCore.lemoToMo(ether)](#submodule-tool-lemoToMo)             | 将单位从LEMO转换为mo             |
+| [LemoCore.toBuffer(data)](#submodule-tool-toBuffer)             | 将数据转换为Buffer类型             | 
 
 ---
 
@@ -1981,12 +1982,12 @@ lemo.watchPendingTx(true, function(transactions) {
 
 ### 其它 API
 
-<a name="submodule-global-SDK_VERSION"></a>
+<a name="submodule-tool-SDK_VERSION"></a>
 
-#### lemo.SDK_VERSION
+#### LemoCore.SDK_VERSION
 
 ```
-lemo.SDK_VERSION
+LemoCore.SDK_VERSION
 ```
 
 `string` - SDK 版本号字符串
@@ -1994,17 +1995,17 @@ lemo.SDK_VERSION
 ##### Example
 
 ```js
-console.log(lemo.SDK_VERSION) // "1.0.0"
+console.log(LemoCore.SDK_VERSION) // "1.0.0"
 ```
 
 ---
 
-<a name="submodule-global-TxType"></a>
+<a name="submodule-tool-TxType"></a>
 
-#### lemo.TxType
+#### LemoCore.TxType
 
 ```
-lemo.TxType
+LemoCore.TxType
 ```
 
 [交易类型](#data-transaction-type)枚举类型，其中的值都是`number`类型
@@ -2012,7 +2013,7 @@ lemo.TxType
 ##### Example
 
 ```js
-console.log(lemo.TxType.VOTE) // 1
+console.log(LemoCore.TxType.VOTE) // 1
 ```
 
 ---
@@ -2070,9 +2071,9 @@ console.log(lemo.isWatching() ? 'watching' : 'not watching')
 ---
 
 <a name="submodule-tool-verifyAddress"></a>
-#### lemo.tool.verifyAddress
+#### LemoCore.verifyAddress
 ```
-lemo.tool.verifyAddress(addr)
+LemoCore.verifyAddress(addr)
 ```
 校验LemoChain地址
 
@@ -2084,7 +2085,7 @@ lemo.tool.verifyAddress(addr)
 
 ##### Example
 ```js
-const errMsg = lemo.tool.verifyAddress('LEMObw')
+const errMsg = LemoCore.verifyAddress('LEMObw')
 if (errMsg) {
     console.error(errMsg);
 }
@@ -2093,9 +2094,9 @@ if (errMsg) {
 ---
 
 <a name="submodule-tool-moToLemo"></a>
-#### lemo.tool.moToLemo
+#### LemoCore.moToLemo
 ```
-lemo.tool.moToLemo(mo)
+LemoCore.moToLemo(mo)
 ```
 将单位从mo转换为LEMO
 
@@ -2107,16 +2108,16 @@ lemo.tool.moToLemo(mo)
 
 ##### Example
 ```js
-const result = lemo.tool.moToLemo('0.1')
+const result = LemoCore.moToLemo('0.1')
 console.log(result.toString(10)) // '0.0000000000000000001'
 ```
 
 ---
 
 <a name="submodule-tool-lemoToMo"></a>
-#### lemo.tool.lemoToMo
+#### LemoCore.lemoToMo
 ```
-lemo.tool.lemoToMo(ether)
+LemoCore.lemoToMo(ether)
 ```
 将单位从LEMO转换为mo
 
@@ -2128,16 +2129,16 @@ lemo.tool.lemoToMo(ether)
 
 ##### Example
 ```js
-const result = lemo.tool.lemoToMo('0.1')
+const result = LemoCore.lemoToMo('0.1')
 console.log(result.toString(10)) // '100000000000000000'
 ```
 
 ---
 
 <a name="submodule-tool-toBuffer"></a>
-#### lemo.tool.toBuffer
+#### LemoCore.toBuffer
 ```
-lemo.tool.toBuffer(data)
+LemoCore.toBuffer(data)
 ```
 将数据转换为Buffer类型
 
@@ -2149,7 +2150,7 @@ lemo.tool.toBuffer(data)
 
 ##### Example
 ```js
-const result = lemo.tool.toBuffer('{"value": 100}')
+const result = LemoCore.toBuffer('{"value": 100}')
 console.log(result.toString('hex')) // '100000000000000000'
 ```
 
