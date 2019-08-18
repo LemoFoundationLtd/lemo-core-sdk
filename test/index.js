@@ -3,6 +3,17 @@ import LemoCore from '../lib/index'
 import HttpConn from '../lib/network/conn/http_conn'
 import errors from '../lib/errors'
 
+describe('LemoCore_static', () => {
+    const props = ['SDK_VERSION', 'BigNumber']
+    const lemo = new LemoCore()
+    props.forEach(prop => {
+        it(prop, () => {
+            assert.exists(LemoCore[prop])
+            assert.exists(lemo[prop])
+        })
+    })
+})
+
 describe('LemoCore_new', () => {
     it('no config', () => {
         const lemo = new LemoCore()
