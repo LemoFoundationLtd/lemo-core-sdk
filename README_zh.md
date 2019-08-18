@@ -2175,10 +2175,6 @@ sudo apt-get install yarn
 yarn build
 ```
 
-### 配置项
-
-在 [lib/config.js](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/lib/config.js) 文件中有一些配置项，如果搭建 LemoChain 私链的话可以用到
-
 ### 测试
 
 ```bash

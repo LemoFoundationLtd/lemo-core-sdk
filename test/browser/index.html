@@ -15,14 +15,15 @@
         <script src="../../dist/lemo-core-sdk.min.js"></script>
         <script src="../../node_modules/chai/chai.js"></script>
         <script>
-            ;(() => {
+            (() => {
                 const testPrivate = '0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb'
-                const assert = chai.should()
+                const assert = chai.assert
                 const chainID = 200
                 const emptyTxInfo = {
                     txConfig: {
                         chainID,
-                        expirationTime: 1544584596
+                        expirationTime: 1544584596,
+                        from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D',
                     },
                     hashAfterSign: '0x37e2548baa166815431afc470fc65dfc5a399959fb179d3d33ebc8d561697ae6'
                 }
@@ -38,8 +39,7 @@
                 describe('module_tx_sign_send', () => {
                     it('sign_send_with_hex_address', async () => {
                         const lemo = new LemoCore(conn)
-                        const json = await lemo.tx.sign(testPrivate, emptyTxInfo.txConfig)
-                        const result = await lemo.tx.send(json)
+                        const result = await lemo.tx.send(emptyTxInfo.txConfig, testPrivate)
                         assert.equal(result, emptyTxInfo.hashAfterSign)
                     })
                 })

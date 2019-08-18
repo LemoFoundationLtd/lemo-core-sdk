@@ -1310,11 +1310,6 @@ crypto-browserify@^3.11.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
-crypto-js@3.1.9-1:
-  version "3.1.9-1"
-  resolved "http://registry.npm.taobao.org/crypto-js/download/crypto-js-3.1.9-1.tgz#fda19e761fc077e01ffbfdc6e9fdfc59e8806cd8"
-  integrity sha1-/aGedh/Ad+Af+/3G6f38WeiAbNg=
-
 dashdash@^1.12.0:
   version "1.14.1"
   resolved "http://registry.npm.taobao.org/dashdash/download/dashdash-1.14.1.tgz#853cfa0f7cbe2fed5de20326b8dd581035f6e2f0"
@@ -2567,6 +2562,30 @@ lcid@^1.0.0:
 lcov-parse@^0.0.10:
   version "0.0.10"
   resolved "http://registry.npm.taobao.org/lcov-parse/download/lcov-parse-0.0.10.tgz#1b0b8ff9ac9c7889250582b70b71315d9da6d9a3"
+
+lemo-tx@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npm.taobao.org/lemo-tx/download/lemo-tx-1.0.0.tgz?cache=0&sync_timestamp=1566146907898&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flemo-tx%2Fdownload%2Flemo-tx-1.0.0.tgz#e5c95c8e5453c4c94133f76b49a53f1b753121ed"
+  integrity sha1-5clcjlRTxMlBM/drSaU/G3UxIe0=
+  dependencies:
+    "@babel/runtime" "7.3.1"
+    bignumber.js "github:LemoFoundationLtd/bignumber.js#fit_otto"
+    lemo-utils "^1.1.0"
+    rollup-plugin-node-globals "1.4.0"
+    safe-buffer "5.1.2"
+
+lemo-utils@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npm.taobao.org/lemo-utils/download/lemo-utils-1.1.0.tgz?cache=0&sync_timestamp=1566146513882&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flemo-utils%2Fdownload%2Flemo-utils-1.1.0.tgz#044ba0a23362e6dac2bd737d2e1d9b05b9934971"
+  integrity sha1-BEugojNi5trCvXN9Lh2bBbmTSXE=
+  dependencies:
+    "@babel/runtime" "7.3.1"
+    base-x "3.0.4"
+    bignumber.js "github:LemoFoundationLtd/bignumber.js#fit_otto"
+    elliptic "github:LemoFoundationLtd/elliptic#fit_rollup"
+    keccak "2.0.0"
+    rollup-plugin-node-globals "1.4.0"
+    safe-buffer "5.1.2"
 
 level-blobs@^0.1.7:
   version "0.1.7"

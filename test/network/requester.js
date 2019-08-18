@@ -1,12 +1,20 @@
 import {assert} from 'chai'
 import {resetRPC} from '../../lib/network/jsonrpc'
 import {currentBlock} from '../datas'
-import {wait} from '../../lib/utils'
-import {DEFAULT_POLL_DURATION} from '../../lib/config';
+import {DEFAULT_POLL_DURATION} from '../../lib/const';
 import Requester from '../../lib/network/requester';
 import errors from '../../lib/errors';
 import HttpConn from '../../lib/network/conn/http_conn';
 import '../mock'
+
+/**
+ * time out promise
+ * @param {number} duration millisecond
+ * @return {Promise}
+ */
+function wait(duration) {
+    return new Promise(resolve => setTimeout(resolve, duration))
+}
 
 describe('Requester_new', () => {
     it('no conn', () => {

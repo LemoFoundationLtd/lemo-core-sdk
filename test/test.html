@@ -13,7 +13,7 @@
         .then(d => console.log(d))
     lemo.getNodeVersion()
         .then(d => console.log(d))
-    lemo.tx.sendTx('0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb',{to:'0x01', expirationTime: 1544584596})
+    lemo.tx.send({from:'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', to:'lemoQR'}, '0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb')
         .then(d => console.log(d))
     lemo.watchBlock(false, newBlock => console.log(newBlock))
     setTimeout(() => {

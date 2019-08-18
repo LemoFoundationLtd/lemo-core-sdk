@@ -8,14 +8,10 @@
     "dependencies": {
         "@babel/runtime": "7.3.1",
         "axios": "0.18.0",
-        "base-x": "3.0.4",
         "bignumber.js": "github:LemoFoundationLtd/bignumber.js#fit_otto",
-        "crypto-js": "3.1.9-1",
         "deep-eql": "^4.0.0",
-        "elliptic": "github:LemoFoundationLtd/elliptic#fit_rollup",
-        "keccak": "2.0.0",
-        "rollup-plugin-node-globals": "1.4.0",
-        "safe-buffer": "5.1.2"
+        "lemo-tx": "^1.0.0",
+        "lemo-utils": "^1.1.0"
     },
     "devDependencies": {
         "@babel/core": "7.2.2",

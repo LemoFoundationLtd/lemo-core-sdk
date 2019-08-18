@@ -12,7 +12,7 @@ import {
     unstableHeight,
 } from '../datas'
 import '../mock'
-import {DEFAULT_POLL_DURATION} from '../../lib/config'
+import {DEFAULT_POLL_DURATION} from '../../lib/const'
 
 
 describe('module_chain_getNewestBlock', () => {

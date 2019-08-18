@@ -1,5 +1,5 @@
 import nock from 'nock'
-import Tx from '../lib/tx/tx'
+import Tx from 'lemo-tx'
 import {
     miner,
     emptyAccount,

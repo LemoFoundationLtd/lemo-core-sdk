@@ -1890,11 +1890,6 @@ sudo apt-get install yarn
 yarn build
 ```
 
-
-### Configuration
-
-There is some configuration in [lib/config.js](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/lib/config.js). It is useful for those who want build a private LemoChain
-
 ### Testing
 
 ```bash
