@@ -12,7 +12,7 @@ describe('module_tx_watcher', () => {
     it('tx_watcher', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 1000)
         const responses = [{jsonrpc: '2.0', id: 1, result: null}, {jsonrpc: '2.0', id: 2, result: {hash: 'hash'}}]
-        const testTx =  {hash: 'hash'}
+        const testTx = {hash: 'hash'}
         const error = new Error('waitTx too many times')
         const conn = {
             async send() {
@@ -36,9 +36,9 @@ describe('module_tx_watcher', () => {
         const hash = formattedCurrentBlock.transactions[0].hash
         const testTx = formattedCurrentBlock.transactions[0]
         const tx = await txWatcher.waitTx(hash)
-        return  assert.deepEqual(tx, testTx)
+        return assert.deepEqual(tx, testTx)
     })
-    it('server_mode_true_timeOut',  () => {
+    it('server_mode_true_timeOut', () => {
         const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
         const blockWatcher = new BlockWatcher(requester)
         const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: true, txPollTimeout: 1000})
@@ -56,7 +56,7 @@ describe('module_tx_watcher', () => {
         const tx = await txWatcher.waitTx(txInfo.hashAfterSign)
         return assert.deepEqual(tx, txRes2)
     })
-    it('server_mode_false_timeOut',  () => {
+    it('server_mode_false_timeOut', () => {
         const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
         const blockWatcher = new BlockWatcher(requester)
         const txWatcher = new TxWatcher(requester, blockWatcher, {serverMode: false, txPollTimeout: 1000})
@@ -67,9 +67,9 @@ describe('module_tx_watcher', () => {
             assert.equal(e.message, errors.InvalidPollTxTimeOut())
         })
     })
-    it('server_mode_false_error', async() => {
+    it('server_mode_false_error', async () => {
         const hash = formattedCurrentBlock.transactions[0].hash
-        const error =  new Error('Cannot get the value of result')
+        const error = new Error('Cannot get the value of result')
         const conn = {
             async send() {
                 throw error
@@ -77,8 +77,10 @@ describe('module_tx_watcher', () => {
         }
         const requester = new Requester(conn, {maxPollRetry: 0})
         const txWatcher = new TxWatcher(requester, undefined, {serverMode: false, txPollTimeout: 1000})
-        await txWatcher.waitTx(hash).catch(e => {
-            assert.equal(e, error)
+        return txWatcher.waitTx(hash).then(() => {
+            assert.fail('success', `throw error: ${error}`)
+        }, e => {
+            return assert.equal(e, error)
         })
     })
 })

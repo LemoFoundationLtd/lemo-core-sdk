@@ -32,6 +32,7 @@ describe('module_chain_getNewestBlock', () => {
         assert.deepEqual(result, {header: formattedCurrentBlock.header})
     })
 })
+
 describe('module_chain_getNewestUnstableBlock', () => {
     it('newest block with body', async () => {
         const lemo = new LemoCore()
@@ -90,6 +91,7 @@ describe('module_chain_getNewestHeight', () => {
         assert.strictEqual(result, currentHeight)
     })
 })
+
 describe('module_chain_getNewestUnstableHeight', () => {
     it('default for getNewestUnstableHeight', async () => {
         const lemo = new LemoCore()
@@ -114,7 +116,6 @@ describe('module_chain_getChainID', () => {
     })
 })
 
-
 describe('module_chain_getNodeVersion', () => {
     it('getNodeVersion', async () => {
         const lemo = new LemoCore()
@@ -127,7 +128,7 @@ describe('module_chain_watchBlock', () => {
     it('watchBlock without body', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 50)
         const lemo = new LemoCore()
-        const watchId =  lemo.watchBlock(false, block => {
+        const watchId = lemo.watchBlock(false, block => {
             try {
                 assert.deepEqual(block, {header: formattedCurrentBlock.header})
                 done()
@@ -154,8 +155,7 @@ describe('module_chain_watchBlock', () => {
         this.timeout(DEFAULT_POLL_DURATION + 50)
         const lemo = new LemoCore()
         const watchId1 = lemo.watchBlock(true, () => {
-            const e =  new Error('make multiple requests at once')
-            done(e)
+            done(new Error('make multiple requests at once'))
         })
         const watchId2 = lemo.watchBlock(true, () => {
             lemo.stopWatchBlock(watchId2)

@@ -1,7 +1,7 @@
 import {assert} from 'chai'
 import LemoTx from 'lemo-tx'
 import LemoCore from '../../lib/index'
-import {txInfos, chainID, testPrivate, txInfo} from '../datas'
+import {txInfos, chainID, testPrivate, txInfo, tx4} from '../datas'
 import '../mock'
 import {DEFAULT_POLL_DURATION} from '../../lib/const'
 import errors from '../../lib/errors'
@@ -37,11 +37,21 @@ describe('module_tx_send', () => {
 })
 
 describe('module_tx_waitConfirm', () => {
-    it('sign_send_with_waitConfirm_narmal', async () => {
+    it('waitConfirm_narmal', async () => {
         const lemo = new LemoCore({chainID})
         const txHash = await lemo.tx.send(txInfo.txConfig, testPrivate)
         const result = await lemo.tx.waitConfirm(txHash)
         assert.equal(result.data, txInfo.data)
+    })
+    it('waitConfirm_timeOut', async () => {
+        const lemo = new LemoCore({chainID, httpTimeOut: 1000})
+        const txHash = await lemo.tx.send(tx4, testPrivate)
+        const expectedErr = errors.InvalidPollTxTimeOut()
+        return lemo.tx.waitConfirm(txHash).then(() => {
+            assert.fail('success', `throw error: ${expectedErr}`)
+        }, e => {
+            return assert.equal(e.message, expectedErr)
+        })
     })
 })
 
