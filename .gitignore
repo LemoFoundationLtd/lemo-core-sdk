@@ -74,3 +74,4 @@ modules.xml
 /.reify-cache/
 /.nyc_output/
 /coverage/
+/file_size_visualizer.html

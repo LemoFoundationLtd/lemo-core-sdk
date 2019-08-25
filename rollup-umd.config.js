@@ -8,6 +8,7 @@ import babel from 'rollup-plugin-babel'
 import {uglify} from 'rollup-plugin-uglify'
 import builtins from 'rollup-plugin-node-builtins'
 import globals from 'rollup-plugin-node-globals'
+import visualizer from 'rollup-plugin-visualizer'
 import pkg from './package.json'
 
 function umdConfig(name) {
@@ -20,33 +21,29 @@ function umdConfig(name) {
         },
         plugins: [
             replace({
+                'process.browser': 'true',
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
                 'process.env.SDK_VERSION': JSON.stringify(pkg.version),
             }),
-            // force not use Uint8Array polyfill, because otto do not support the Buffer which implemented by Uint8Array
-            replace({
-                include: 'node_modules/buffer-es6/index.js',
-                'global.TYPED_ARRAY_SUPPORT': false,
-                delimiters: ['', '']
-            }),
             // use resolve so Rollup can find external libraries
-            // set preferBuiltins to false cause we had rollup-plugin-node-builtins already
-            resolve({browser: true, preferBuiltins: false}),
+            // set browser to true so we could load the 'browser' field of libraries' package.json
+            resolve({browser: true}),
             // use commonjs so Rollup can convert external libraries to an ES module
             commonjs(),
             babel({
-                exclude: 'node_modules/**'
+                exclude: 'node_modules/**',
             }),
             json(),
-            globals(),
+            globals({process: false, dirname: false, filename: false}),
             builtins(),
-        ]
+        ],
     }
 }
 
 const umdVersion = umdConfig('lemo-core-sdk.js')
 // eslint should before babel
 umdVersion.plugins.unshift(eslint({formatter}))
+umdVersion.plugins.push(visualizer({filename: 'file_size_visualizer.html'}))
 
 const umdMinVersion = umdConfig('lemo-core-sdk.min.js')
 umdMinVersion.plugins.push(uglify())
