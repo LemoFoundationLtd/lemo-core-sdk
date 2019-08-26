@@ -22,15 +22,20 @@ function umdConfig(name) {
         plugins: [
             replace({
                 'process.browser': 'true',
+                // use esm version to support tree-shaking
+                'lemo-utils': 'lemo-utils/dist/lemo-utils.esm.js',
+                'lemo-tx': 'lemo-tx/dist/lemo-tx.esm.js',
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
                 'process.env.SDK_VERSION': JSON.stringify(pkg.version),
             }),
             // use resolve so Rollup can find external libraries
             // set browser to true so we could load the 'browser' field of libraries' package.json
-            resolve({browser: true}),
+            resolve({browser: true, preferBuiltins: true}),
             // use commonjs so Rollup can convert external libraries to an ES module
             commonjs(),
             babel({
+                // transform es6 code. This needs @babel/plugin-transform-runtime and @babel/runtime
+                runtimeHelpers: true,
                 exclude: 'node_modules/**',
             }),
             json(),
