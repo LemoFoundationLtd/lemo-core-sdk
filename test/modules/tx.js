@@ -22,7 +22,7 @@ describe('module_tx_send', () => {
                 const lemo = new LemoCore({chainID})
                 const tx = new LemoTx(test.txConfig)
                 tx.signWith(testPrivate)
-                const result = await lemo.tx.send(tx)
+                const result = await lemo.tx.send(tx.toString())
                 assert.equal(result, test.hashAfterSign, `index=${i}`)
             }),
         )
@@ -31,7 +31,7 @@ describe('module_tx_send', () => {
         const lemo = new LemoCore({chainID})
         const tx = new LemoTx(txInfo.txConfig)
         assert.throws(() => {
-            lemo.tx.send(tx)
+            lemo.tx.send(tx.toString())
         }, errors.InvalidTxSigs())
     })
 })
