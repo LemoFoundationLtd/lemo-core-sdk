@@ -1,7 +1,7 @@
 {
     "name": "lemo-core-sdk",
     "namespace": "LemoFoundationLtd",
-    "version": "0.10.7",
+    "version": "0.10.8",
     "description": "Lemochain JavaScript SDK, access to a lemochain node over RPC",
     "main": "dist/lemo-core-sdk.cjs.js",
     "module": "dist/lemo-core-sdk.esm.js",
@@ -39,7 +39,7 @@
         "rollup-plugin-node-globals": "1.4.0",
         "rollup-plugin-node-resolve": "5.2.0",
         "rollup-plugin-replace": "2.2.0",
-        "rollup-plugin-uglify": "6.0.2",
+        "rollup-plugin-uglify": "6.0.3",
         "rollup-plugin-visualizer": "^2.5.4"
     },
     "scripts": {
