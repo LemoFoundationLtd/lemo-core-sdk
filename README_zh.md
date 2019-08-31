@@ -5,13 +5,11 @@
 [![npm](https://img.shields.io/npm/v/lemo-core-sdk.svg?style=flat-square)](https://www.npmjs.com/package/lemo-core-sdk)
 [![Build Status](https://travis-ci.org/LemoFoundationLtd/lemo-core-sdk.svg?branch=master)](https://travis-ci.org/LemoFoundationLtd/lemo-core-sdk)
 [![Coverage Status](https://coveralls.io/repos/github/LemoFoundationLtd/lemo-core-sdk/badge.svg?branch=master)](https://coveralls.io/github/LemoFoundationLtd/lemo-core-sdk?branch=master)
-[![gitter chat](https://img.shields.io/gitter/room/LemoFoundationLtd/lemo-core-sdk.svg?style=flat-square)](https://gitter.im/LemoFoundationLtd/lemo-core-sdk)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![GitHub license](https://img.shields.io/badge/license-LGPL3.0-blue.svg?style=flat-square)](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/LICENSE)
 
 通过 JSON RPC 协议访问 LemoChain Core 节点上的数据
 
-> 需要先在本地通过`--rpc`参数启动一个[LemoChain Core节点](https://github.com/LemoFoundationLtd/lemochain-go)，或远程连接到一个已存在的 LemoChain Core 节点，才能运行本项目
+> 需要先在本地通过`--rpc`参数启动一个[LemoChain Core节点](https://github.com/LemoFoundationLtd/lemochain-core)，或远程连接到一个已存在的 LemoChain Core 节点，才能运行本项目
 
 [中文版](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/README_zh.md)  
 [English](https://github.com/LemoFoundationLtd/lemo-core-sdk/blob/master/README.md)
