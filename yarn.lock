@@ -663,7 +663,7 @@ acorn-jsx@^5.0.0:
   version "5.0.0"
   resolved "http://registry.npm.taobao.org/acorn-jsx/download/acorn-jsx-5.0.0.tgz#958584ddb60990c02c97c1bd9d521fce433bb101"
 
-acorn@^5.5.3, acorn@^5.7.3:
+acorn@^5.5.3:
   version "5.7.3"
   resolved "http://registry.npm.taobao.org/acorn/download/acorn-5.7.3.tgz#67aa231bf8812974b85235a96771eb6bd07ea279"
 
@@ -903,13 +903,6 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/balanced-match/download/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
 
-base-x@3.0.4:
-  version "3.0.4"
-  resolved "http://registry.npm.taobao.org/base-x/download/base-x-3.0.4.tgz#94c1788736da065edb1d68808869e357c977fa77"
-  integrity sha1-lMF4hzbaBl7bHWiAiGnjV8l3+nc=
-  dependencies:
-    safe-buffer "^5.0.1"
-
 base-x@3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/base-x/-/base-x-3.0.6.tgz#de047ec95f5f7b99ae63d830a2a894c96538b2cd"
@@ -1038,7 +1031,7 @@ browserslist@^4.3.4:
     electron-to-chromium "^1.3.103"
     node-releases "^1.1.3"
 
-buffer-es6@^4.9.2, buffer-es6@^4.9.3:
+buffer-es6@^4.9.2:
   version "4.9.3"
   resolved "http://registry.npm.taobao.org/buffer-es6/download/buffer-es6-4.9.3.tgz#f26347b82df76fd37e18bcb5288c4970cfd5c404"
 
@@ -1503,7 +1496,7 @@ elliptic@6.5.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-elliptic@^6.0.0, "elliptic@github:LemoFoundationLtd/elliptic#fit_rollup":
+elliptic@^6.0.0:
   version "6.4.1"
   resolved "https://codeload.github.com/LemoFoundationLtd/elliptic/tar.gz/1a6a65cfd3f2fc1fa8c7be357ed154521adf08e8"
   dependencies:
@@ -2622,19 +2615,6 @@ lemo-tx@^1.1.4:
     js-base64 "2.5.1"
     lemo-utils "^1.1.4"
 
-lemo-utils@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.npm.taobao.org/lemo-utils/download/lemo-utils-1.1.0.tgz?cache=0&sync_timestamp=1566146513882&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flemo-utils%2Fdownload%2Flemo-utils-1.1.0.tgz#044ba0a23362e6dac2bd737d2e1d9b05b9934971"
-  integrity sha1-BEugojNi5trCvXN9Lh2bBbmTSXE=
-  dependencies:
-    "@babel/runtime" "7.3.1"
-    base-x "3.0.4"
-    bignumber.js "github:LemoFoundationLtd/bignumber.js#fit_otto"
-    elliptic "github:LemoFoundationLtd/elliptic#fit_rollup"
-    keccak "2.0.0"
-    rollup-plugin-node-globals "1.4.0"
-    safe-buffer "5.1.2"
-
 lemo-utils@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/lemo-utils/-/lemo-utils-1.1.4.tgz#ff484aa4feeba9da08bf135ebe7d356c751c45df"
@@ -2791,12 +2771,6 @@ lru-cache@^4.0.1:
 ltgt@^2.1.2:
   version "2.2.1"
   resolved "http://registry.npm.taobao.org/ltgt/download/ltgt-2.2.1.tgz#f35ca91c493f7b73da0e07495304f17b31f87ee5"
-
-magic-string@^0.22.5:
-  version "0.22.5"
-  resolved "http://registry.npm.taobao.org/magic-string/download/magic-string-0.22.5.tgz#8e9cf5afddf44385c1da5bc2a6a0dbd10b03657e"
-  dependencies:
-    vlq "^0.2.2"
 
 magic-string@^0.25.1:
   version "0.25.1"
@@ -3331,7 +3305,7 @@ private@^0.1.6:
   version "0.1.8"
   resolved "http://registry.npm.taobao.org/private/download/private-0.1.8.tgz#2381edb3689f7a53d653190060fcf822d2f368ff"
 
-process-es6@^0.11.2, process-es6@^0.11.6:
+process-es6@^0.11.2:
   version "0.11.6"
   resolved "http://registry.npm.taobao.org/process-es6/download/process-es6-0.11.6.tgz#c6bb389f9a951f82bd4eb169600105bd2ff9c778"
 
@@ -3690,17 +3664,6 @@ rollup-plugin-node-builtins@2.1.2:
     crypto-browserify "^3.11.0"
     process-es6 "^0.11.2"
 
-rollup-plugin-node-globals@1.4.0:
-  version "1.4.0"
-  resolved "http://registry.npm.taobao.org/rollup-plugin-node-globals/download/rollup-plugin-node-globals-1.4.0.tgz#5e1f24a9bb97c0ef51249f625e16c7e61b7c020b"
-  dependencies:
-    acorn "^5.7.3"
-    buffer-es6 "^4.9.3"
-    estree-walker "^0.5.2"
-    magic-string "^0.22.5"
-    process-es6 "^0.11.6"
-    rollup-pluginutils "^2.3.1"
-
 "rollup-plugin-node-resolve@github:LemoFoundationLtd/rollup-plugin-node-resolve#fit_nodejs10":
   version "3.4.0"
   resolved "https://codeload.github.com/LemoFoundationLtd/rollup-plugin-node-resolve/tar.gz/ccadeddd49150dd63762620670b069a46ae85a6c"
@@ -3755,14 +3718,14 @@ rxjs@^6.1.0:
   dependencies:
     tslib "^1.9.0"
 
-safe-buffer@5.1.2, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
-  version "5.1.2"
-  resolved "http://registry.npm.taobao.org/safe-buffer/download/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
-
 safe-buffer@5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.0.tgz#b74daec49b1148f88c64b68d49b1e815c1f2f519"
   integrity sha512-fZEwUGbVl7kouZs1jCdMLdt95hdIv0ZeHg6L7qPeciMZhZ+/gdesW4wgTARkrFWEpspjEATAzUGPG8N2jJiwbg==
+
+safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
+  version "5.1.2"
+  resolved "http://registry.npm.taobao.org/safe-buffer/download/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
 
 "safer-buffer@>= 2.1.2 < 3", safer-buffer@^2.0.2, safer-buffer@^2.1.0, safer-buffer@~2.1.0:
   version "2.1.2"
@@ -4103,10 +4066,6 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
-
-vlq@^0.2.2:
-  version "0.2.3"
-  resolved "http://registry.npm.taobao.org/vlq/download/vlq-0.2.3.tgz#8f3e4328cf63b1540c0d67e1b2778386f8975b26"
 
 which-module@^2.0.0:
   version "2.0.0"

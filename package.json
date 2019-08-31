@@ -11,7 +11,7 @@
         "bignumber.js": "github:LemoFoundationLtd/bignumber.js#fit_otto",
         "deep-eql": "^4.0.0",
         "lemo-tx": "^1.1.4",
-        "lemo-utils": "^1.1.0"
+        "lemo-utils": "^1.1.4"
     },
     "devDependencies": {
         "@babel/core": "7.2.2",
