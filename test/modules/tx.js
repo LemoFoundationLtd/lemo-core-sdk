@@ -16,6 +16,15 @@ describe('module_tx_send', () => {
             }),
         )
     })
+    it('send a string txConfig', () => {
+        return Promise.all(
+            txInfos.map(async (test, i) => {
+                const lemo = new LemoCore({chainID})
+                const result = await lemo.tx.send(JSON.stringify(test.txConfig), testPrivate)
+                assert.equal(result, test.hashAfterSign, `index=${i}`)
+            }),
+        )
+    })
     it('send a signed tx', async () => {
         return Promise.all(
             txInfos.map(async (test, i) => {
