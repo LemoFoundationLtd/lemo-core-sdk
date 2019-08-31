@@ -10,7 +10,7 @@
         "axios": "0.18.0",
         "bignumber.js": "github:LemoFoundationLtd/bignumber.js#fit_otto",
         "deep-eql": "^4.0.0",
-        "lemo-tx": "^1.0.0",
+        "lemo-tx": "^1.1.4",
         "lemo-utils": "^1.1.0"
     },
     "devDependencies": {
