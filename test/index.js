@@ -4,7 +4,7 @@ import HttpConn from '../lib/network/conn/http_conn'
 import errors from '../lib/errors'
 
 describe('LemoCore_static', () => {
-    const props = ['SDK_VERSION', 'BigNumber']
+    const props = ['SDK_VERSION', 'BigNumber', 'TxType']
     const lemo = new LemoCore()
     props.forEach(prop => {
         it(prop, () => {
@@ -17,7 +17,7 @@ describe('LemoCore_static', () => {
 describe('LemoCore_new', () => {
     it('no config', () => {
         const lemo = new LemoCore()
-        assert.equal(lemo._requester.conn instanceof HttpConn, true)
+        assert.equal(lemo.requester.conn instanceof HttpConn, true)
         assert.equal(lemo.config.chainID, 1)
         assert.deepEqual(lemo.config.conn, {
             send: undefined,
@@ -63,12 +63,12 @@ describe('LemoCore_new', () => {
     })
     it('http conn', () => {
         const lemo = new LemoCore({host: 'http://127.0.0.1:8002'})
-        assert.equal(lemo._requester.conn instanceof HttpConn, true)
-        assert.equal(lemo._requester.conn.host, 'http://127.0.0.1:8002')
+        assert.equal(lemo.requester.conn instanceof HttpConn, true)
+        assert.equal(lemo.requester.conn.host, 'http://127.0.0.1:8002')
     })
     it('http conn localhost', () => {
         const lemo = new LemoCore({host: 'http://localhost:8002'})
-        assert.equal(lemo._requester.conn.host, 'http://localhost:8002')
+        assert.equal(lemo.requester.conn.host, 'http://localhost:8002')
     })
     it('custom conn', async () => {
         let sendRecord = null
@@ -80,7 +80,7 @@ describe('LemoCore_new', () => {
         }
 
         const lemo = new LemoCore(conn)
-        assert.equal(lemo._requester.conn.send, conn.send)
+        assert.equal(lemo.requester.conn.send, conn.send)
         await lemo.getNewestBlock()
         assert.deepEqual(sendRecord, [
             {
@@ -93,16 +93,16 @@ describe('LemoCore_new', () => {
     })
     it('conn.host no http ip', () => {
         const lemo = new LemoCore({host: '127.0.0.1:8001'})
-        assert.equal(lemo._requester.conn instanceof HttpConn, true)
-        assert.equal(lemo._requester.conn.host, 'http://127.0.0.1:8001')
+        assert.equal(lemo.requester.conn instanceof HttpConn, true)
+        assert.equal(lemo.requester.conn.host, 'http://127.0.0.1:8001')
     })
     it('conn.host no http domain', () => {
         const lemo = new LemoCore({host: 'lemochain.com'})
-        assert.equal(lemo._requester.conn instanceof HttpConn, true)
-        assert.equal(lemo._requester.conn.host, 'http://lemochain.com')
+        assert.equal(lemo.requester.conn instanceof HttpConn, true)
+        assert.equal(lemo.requester.conn.host, 'http://lemochain.com')
     })
     it('hide property', () => {
-        const hideProperties = ['_requester', '_blockWatcher', '_txWatcher', '_createAPI', '_parser']
+        const hideProperties = ['requester', 'blockWatcher', 'txWatcher', 'createAPI', 'parser']
         hideProperties.forEach(property => {
             const lemo = new LemoCore()
             assert.exists(lemo[property], `property = ${property}`)
@@ -116,19 +116,20 @@ describe('LemoCore_new', () => {
 
 describe('LemoCore_createAPI', () => {
     const testConn = {
-        send: () => {},
+        send: () => {
+        },
     }
 
     it('lemo.test.setData', () => {
         const lemo = new LemoCore(testConn)
-        lemo._createAPI('test', 'setData', 'api_name')
+        lemo.createAPI('test', 'setData', 'api_name')
         assert.isFunction(lemo.test.setData)
     })
 
     it('2 apis without module name', async () => {
         const lemo = new LemoCore(testConn)
-        lemo._createAPI('', 'setData', 'api_name')
-        lemo._createAPI('', 'setData2', () => 1)
+        lemo.createAPI('', 'setData', 'api_name')
+        lemo.createAPI('', 'setData2', () => 1)
         assert.isFunction(lemo.setData)
         assert.isFunction(lemo.setData2)
     })
@@ -136,21 +137,21 @@ describe('LemoCore_createAPI', () => {
     it('incorrect method name', async () => {
         const lemo = new LemoCore(testConn)
         assert.throws(() => {
-            lemo._createAPI('stopWatch', 'setData')
+            lemo.createAPI('stopWatch', 'setData')
         }, errors.InvalidAPIName(undefined))
     })
 
     it('moduleName is unavailable', async () => {
         const lemo = new LemoCore(testConn)
         assert.throws(() => {
-            lemo._createAPI('stopWatch', 'setData', 'api_name')
+            lemo.createAPI('stopWatch', 'setData', 'api_name')
         }, errors.UnavailableAPIModule('stopWatch'))
     })
 
     it('moduleName is unavailable', async () => {
         const lemo = new LemoCore(testConn)
         assert.throws(() => {
-            lemo._createAPI('stopWatch', 'setData', 'api_name')
+            lemo.createAPI('stopWatch', 'setData', 'api_name')
         }, errors.UnavailableAPIModule('stopWatch'))
     })
 
@@ -167,7 +168,7 @@ describe('LemoCore_createAPI', () => {
             },
         }
         const lemo = new LemoCore(conn)
-        lemo._createAPI('', 'setData2', methodName)
+        lemo.createAPI('', 'setData2', methodName)
         return lemo.setData2(params)
     })
 
@@ -175,7 +176,7 @@ describe('LemoCore_createAPI', () => {
         const testParam = 'abc'
         const lemo = new LemoCore(testConn)
         // eslint-disable-next-line func-names
-        lemo._createAPI('', 'setData2', function(param) {
+        lemo.createAPI('', 'setData2', function(param) {
             assert.exists(this.requester)
             assert.equal(param, testParam)
         })
