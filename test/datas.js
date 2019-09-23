@@ -89,7 +89,6 @@ export const formattedNotExistLemoBase = {
 // empty tx
 export const emptyTxInfo = {
     txConfig: {
-        chainID,
         expirationTime: 1544584596,
         from: testAddr,
     },
