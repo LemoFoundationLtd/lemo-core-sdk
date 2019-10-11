@@ -219,8 +219,10 @@ export const formattedCurrentBlock = {
     transactions: [
         {
             ...currentBlock.transactions[0],
+            gasPriceText: '3000000000',
             gasPrice: new BigNumber('3000000000'),
             gasLimit: 2000000,
+            amountText: '101',
             amount: new BigNumber('101'),
             expirationTime: 1541649536,
             type: 0,
@@ -309,8 +311,10 @@ export const formattedBlock1 = {
     transactions: [
         {
             ...block1.transactions[0],
+            gasPriceText: '3000000000',
             gasPrice: new BigNumber('3000000000'),
             gasLimit: 2000000,
+            amountText: '100',
             amount: new BigNumber('100'),
             expirationTime: 1541649535,
             type: 0,
