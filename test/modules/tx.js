@@ -100,17 +100,23 @@ describe('module_tx_waitConfirm', () => {
             chainID,
             expirationTime: time,
         }
-        // Change block timestamp
-        const blockData = {
-            ...block1,
-            header: {
-                timestamp: nowTime,
-            },
-        }
         // new a LemoCore
         const lemo = new LemoCore({
             chainID,
         })
+        // Send real-time trading
+        const txHash = await lemo.tx.send(txConfig, testPrivate)
+        // Change block timestamp
+        const blockData = {
+            ...block1,
+            transactions: [{
+                ...block1.transactions[0],
+                hash: txHash,
+            }],
+            header: {
+                timestamp: nowTime,
+            },
+        }
         // New lemoCore with serverMode to verify waitTxByWatchBlock
         const lemo1 = new LemoCore({
             chainID,
@@ -123,10 +129,6 @@ describe('module_tx_waitConfirm', () => {
                 }
             },
         })
-        // Send real-time trading
-        const txHash = await lemo.tx.send(txConfig, testPrivate)
-        // Change the latest transaction txHash
-        blockData.transactions[0].hash = txHash
         const result = await lemo1.tx.waitConfirm(txHash, txConfig.expirationTime)
         assert.equal(result.hash, txHash)
     })
@@ -135,19 +137,21 @@ describe('module_tx_waitConfirm', () => {
         const nowTime = Math.floor(Date.now() / 1000)
         // Restructure, change the transaction expirationTime
         const txConfig = {
-            ...block2.transactions[0],
+            ...block1.transactions[0],
             chainID,
             expirationTime: time,
         }
+        // new a LemoCore
+        const lemo = new LemoCore({chainID})
+        // Send real-time trading
+        const txHash = await lemo.tx.send(txConfig, testPrivate)
         // Change block timestamp
         const blockData = {
-            ...block2,
+            ...block1,
             header: {
                 timestamp: nowTime,
             },
         }
-        // new a LemoCore
-        const lemo = new LemoCore({chainID})
         // New lemoCore with serverMode to verify waitTxByWatchBlock
         const lemo1 = new LemoCore({
             chainID,
@@ -160,8 +164,6 @@ describe('module_tx_waitConfirm', () => {
                 }
             },
         })
-        // Send real-time trading
-        const txHash = await lemo.tx.send(txConfig, testPrivate)
         const result = await lemo1.tx.waitConfirm(txHash, txConfig.expirationTime)
         assert.equal(result.hash, txConfig.hash)
     })
@@ -174,6 +176,12 @@ describe('module_tx_waitConfirm', () => {
             chainID,
             expirationTime: time,
         }
+        // new a LemoCore
+        const lemo = new LemoCore({
+            chainID,
+        })
+        // Send real-time trading
+        const txHash = await lemo.tx.send(txConfig, testPrivate)
         // Change block timestamp
         const blockData = {
             ...block3,
@@ -181,10 +189,6 @@ describe('module_tx_waitConfirm', () => {
                 timestamp: nowTime,
             },
         }
-        // new a LemoCore
-        const lemo = new LemoCore({
-            chainID,
-        })
         // New lemoCore with serverMode to verify waitTxByWatchBlock
         const lemo1 = new LemoCore({
             chainID,
@@ -197,8 +201,6 @@ describe('module_tx_waitConfirm', () => {
                 }
             },
         })
-        // Send real-time trading
-        const txHash = await lemo.tx.send(txConfig, testPrivate)
         const expectedErr = errors.InvalidTxTimeOut()
         lemo1.tx.waitConfirm(txHash, txConfig.expirationTime).then(() => {
             assert.fail('success', `throw error: ${expectedErr}`)
