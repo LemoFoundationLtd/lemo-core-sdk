@@ -50,7 +50,7 @@ export const miner = {
                 '5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
             port: '7001',
         },
-        votes: '1599999000000000000000000000',
+        votes: '1599999000',
     },
     voteFor: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
 }
@@ -89,7 +89,6 @@ export const formattedNotExistLemoBase = {
 // empty tx
 export const emptyTxInfo = {
     txConfig: {
-        chainID,
         expirationTime: 1544584596,
         from: testAddr,
     },
@@ -610,7 +609,7 @@ const formattedCandidate1 = {
         isCandidate: true,
         port: 7001,
     },
-    votes: '1599999000.000000000000000001',
+    votes: '1599999000000000000000000001',
 }
 
 const candidate2 = {

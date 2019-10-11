@@ -2,7 +2,7 @@ import {assert} from 'chai'
 import LemoTx from 'lemo-tx'
 import LemoCore from '../../lib/index'
 import {resetRPC} from '../../lib/network/jsonrpc'
-import {block1, chainID, testPrivate, txInfo, tx4, testAddr} from '../datas'
+import {block1, emptyTxInfo, txInfos, chainID, testPrivate, txInfo, tx4, testAddr} from '../datas'
 import '../mock'
 import {DEFAULT_POLL_DURATION} from '../../lib/const'
 import errors from '../../lib/errors'
@@ -20,6 +20,11 @@ describe('module_tx_send', () => {
         const result = LemoTx.sign(testPrivate, tx)
         const sendHash = await lemo.tx.send(JSON.parse(result), testPrivate)
         assert.equal(sendHash, nowHash)
+    })
+    it('different chainID', async () => {
+        const lemo = new LemoCore({chainID})
+        const result = await lemo.tx.send(emptyTxInfo.txConfig, testPrivate)
+        assert.equal(result, emptyTxInfo.hashAfterSign)
     })
     it('send a string txConfig', async () => {
         const lemo = new LemoCore({chainID})

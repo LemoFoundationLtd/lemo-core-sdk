@@ -2437,22 +2437,22 @@ lcov-parse@^0.0.10:
   resolved "https://registry.yarnpkg.com/lcov-parse/-/lcov-parse-0.0.10.tgz#1b0b8ff9ac9c7889250582b70b71315d9da6d9a3"
   integrity sha1-GwuP+ayceIklBYK3C3ExXZ2m2aM=
 
-lemo-tx@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/lemo-tx/-/lemo-tx-1.1.4.tgz#d64da9bbf5f7de2d3e3c772dd9f121dad37c35bb"
-  integrity sha512-cX3ZOpJXp6eqZKXkFXv//ds//EX9beRHWrs9Jm53dtnY6MYKvqBNteRpEGMUh7iWGF8gB7EjBBwAh8uKN8xW/Q==
+lemo-tx@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/lemo-tx/-/lemo-tx-1.1.6.tgz#4e9fb8e6da1512b6a6a1d766b047c741be968968"
+  integrity sha512-CxanWiUJifZdpBCBVEcP0PJtTCdMk/RAm+1kum9vAvY7vmzOzjifn90Hmql7P4kgEzkUtxaTc1PLKjyNne/4jw==
   dependencies:
     "@babel/runtime" "7.5.5"
     base64-url "2.3.2"
     bignumber.js "9.0.0"
     core-js "^3.2.1"
     js-base64 "2.5.1"
-    lemo-utils "^1.1.4"
+    lemo-utils "^1.1.6"
 
-lemo-utils@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/lemo-utils/-/lemo-utils-1.1.4.tgz#ff484aa4feeba9da08bf135ebe7d356c751c45df"
-  integrity sha512-U+3RbkkoLuwnxts/X7GJ9fv/aQOxiESCSlH4HAMemRG/8RzJwfDJ8+EM9pLLzWmWHArv6zXZkhnQIhCp7EYJ/w==
+lemo-utils@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/lemo-utils/-/lemo-utils-1.1.6.tgz#e97f4e8253b3e197dd4024d5a12d7b9d6ff4a4d3"
+  integrity sha512-cRo/36QzK9+l5EHpKjBMe4peB7y6XmX/uzhksAlm9/fNRBb/k3COD70Eq7v2JWuUjbqDxQVEEPWpkvlEfVPXLQ==
   dependencies:
     "@babel/runtime" "7.5.5"
     base-x "3.0.6"

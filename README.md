@@ -77,11 +77,10 @@ API | description | asynchronous | available for remote
 [lemo.account.createTempAddress(from, userId)](#submodule-account-createTempAddress) | create a temp address | ✖ | ✓
 [lemo.account.isTempAddress(address)](#submodule-account-isTempAddress) | True if the current address is a temporary account | ✖ | ✓
 [lemo.account.isContractAddress(address)](#submodule-account-isContractAddress) | True if the current address is a contract account | ✖ | ✓
-[lemo.tx.send(signedTxInfo)](#submodule-tx-send) | Send a signed transaction | ✓ | ✓
+[lemo.tx.send(signedTxInfo, privateKey)](#submodule-tx-send) | Send transaction | ✓ | ✓
 [lemo.tx.waitConfirm(txHash)](#submodule-tx-waitConfirm)                           |  wait for the transaction to be confirmed               | ✓    | ✓ 
 [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx) | listen and filter for transaction of block | ✖ | ✓ |
 [lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx) | Stop listening transaction | ✖ | ✓ |
-[lemo.tx.watchPendingTx(callback)](#submodule-tx-watchPendingTx) | Listening for new transactions | ✖ | ✖
 [lemo.stopWatch()](#submodule-global-stopWatch) | Stop listening | ✖ | ✓
 [lemo.isWatching()](#submodule-global-isWatching) | True if is listening | ✖ | ✓
 
@@ -89,10 +88,7 @@ API | description | asynchronous | available for remote
 | --- | --- |
 | [LemoCore.SDK_VERSION](#submodule-tool-SDK_VERSION) | The version of js SDK |
 | [LemoCore.TxType](#submodule-tool-TxType) | Enum of transaction type |
-| [LemoCore.verifyAddress(addr)](#submodule-tool-verifyAddress) | Verify a LemoChain address |
-| [LemoCore.moToLemo(mo)](#submodule-tool-moToLemo) | Convert the unit from mo to LEMO |
-| [LemoCore.lemoToMo(ether)](#submodule-tool-lemoToMo) | Convert the unit from LEMO to mo |
-| [LemoCore.toBuffer(data)](#submodule-tool-data) | Convert the data to Buffer type |
+| [LemoCore.BigNumber](https://github.com/MikeMcl/bignumber.) | The BigNumber library
 
 ---
 
@@ -329,6 +325,8 @@ Account information
 ```json
 {
     "address": "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG",
+    "assetCodeRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "assetIdRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "balance": "1599999999999999999999999900",
     "records": {
         "BalanceLog": {
@@ -337,6 +335,7 @@ Account information
         }
     },
     "codeHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "equityRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "root": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "txCount": 0,
     "voteFor": "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG",
@@ -349,14 +348,18 @@ Account information
             "nodeID": "5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0",
             "port": "7001"
         }
-    }
+    },
+    "signers": [{"address": "Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY","weight": "60"}, {"address": "Lemo842BJZ4DKCC764C63Y6A943775JH6NQ3Z33Y", "weight":  "50"}]
 }
 ```
 - `address` Account address
+- `assetCodeRoot` The hash of created assets MPT root
+- `assetIdRoot` The hash of issued assets MPT root
 - `balance` Account balance. It is a modified `BigNumber` object. It has a method `toMoney()` to output formatted balance
 - `records` Modification record object of account. The key is type of [ChangeLog](data-structure-changeLog), value is the newest `ChangeLog`'s version and height of the block which contains this newest `ChangeLog`
 - `codeHash` Hash of contract code
-- `root` The hash of contranct storage MPT root
+- `equityRoot` The hash of asset equities MPT root
+- `root` The hash of contract storage MPT root
 - `txCount` Transactions count from or to this account
 - `voteFor` Vote target address of this account
 - `candidate` If this account is a consensus candidate, then this property exist
@@ -367,6 +370,9 @@ Account information
         - `minerAddress` The address of miner account who receive miner benefit
         - `nodeID` The LemoChain node ID, it is from the public key whose private key is using for sign blocks. The length should be 128 characters without `0x`
         - `port` Port of the candidate node server
+- `signers` The signers for a multi-sign account. It is necessary to collect over 100 weight to sign a transaction
+    - `address` The signer's account address
+    - `weight` Weight for the signer
 
 ---
 
@@ -1023,31 +1029,35 @@ console.log(result) // false
 
 ### tx API
 
+---
+
 <a name="submodule-tx-send"></a>
 #### lemo.tx.send
 ```
-lemo.tx.send(txConfig, waitConfirm)
+lemo.tx.send(txConfig, privateKey)
 ```
-Send a signed transaction
+Send a transaction
 
 ##### Parameters
-1. `object|string` - Signed [transaction](#data-structure-transaction) information. It could be a string which returned by [`lemo.tx.sign`](#submodule-tx-sign), as well as an object like the same parameter in [`lemo.tx.sendTx`](#submodule-tx-sendTx), but these fields instead of `type`, `version`:
-    - `sig` - (string) Transaction signature field
-    - `gasPayerSig` - (string) Paid gas transaction signature data
-2. `boolean` - (optional) Waiting for [transaction](#data-structure-transaction) consensus.default value is `true`
+1. `object|string` - Unsinged [transaction](#data-structure-transaction) information. Or a [LemoTx](https://github.com/LemoFoundationLtd/lemo-tx) object or json string.  
+2. `string` - (optional) Account private key, it will be used to sign if exist  
 
 ##### Returns
 `Promise` - Call `then` method to get transaction hash
 
 ##### Example
 ```js
-const txInfo = {to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
-lemo.tx.sign('0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52', txInfo)
-    .then(function(signedTx) {
-        return lemo.tx.send(signedTx)
-    }).then(function(txHash) {
-        console.log(txHash) // "0xe116a56b301f3bede1ad10c1496d57d6cb89454b4d6efbc20ca39132a4bc2b96"
-    })
+const txInfo = {from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
+lemo.tx.send(txInfo, '0xc21b6b2fbf230f665b936194d14da67187732bf9d28768aef1a3cbb26608f8aa').then(function(txHash) {
+    console.log(txHash) // 0x03fea27a8d140574dc648e1cb1a198f5ade450a347095cff7f3d961a11dac505
+})
+```
+```js
+const tx = new LemoTx({chainID: 100, from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100})
+tx.signWith('0xc21b6b2fbf230f665b936194d14da67187732bf9d28768aef1a3cbb26608f8aa')
+lemo.tx.send(tx).then(function(txHash) {
+    console.log(txHash) // 0x03fea27a8d140574dc648e1cb1a198f5ade450a347095cff7f3d961a11dac505
+})
 ```
 
 ---
@@ -1130,66 +1140,6 @@ lemo.tx.stopWatchTx(watchTxId)
 
 ---
 
-<a name="submodule-tx-watchPendingTx"></a>
-#### lemo.tx.watchPendingTx
-```
-lemo.tx.watchPendingTx(callback)
-```
-Listen for new transactions. The callback function will be called at the beginning and every times new transactions come. (unimplemented in 1.0.0)
-
-##### Parameters
-1. `Function` - Used to receive [transaction](#data-structure-transaction) list
-
-##### Returns
-`number` - WatchId for [stop watching](#submodule-stopWatch)
-
-##### Example
-```js
-lemo.watchPendingTx(true, function(transactions) {
-    console.log(transactions.length);
-})
-```
-
----
-
-### other API
-
-<a name="submodule-tool-SDK_VERSION"></a>
-
-#### LemoCore.SDK_VERSION
-
-```
-LemoCore.SDK_VERSION
-```
-
-`string` - The version of SDK
-
-##### Example
-
-```js
-console.log(LemoCore.SDK_VERSION) // "1.0.0"
-```
-
----
-
-<a name="submodule-tool-TxType"></a>
-
-#### LemoCore.TxType
-
-```
-LemoCore.TxType
-```
-
-Enum of [transaction type](#data-transaction-type), the value is `number` type
-
-##### Example
-
-```js
-console.log(LemoCore.TxType.VOTE) // 1
-```
-
----
-
 <a name="submodule-global-stopWatch"></a>
 #### lemo.stopWatch
 ```
@@ -1230,88 +1180,40 @@ console.log(lemo.isWatching() ? 'watching' : 'not watching')
 
 ---
 
-<a name="submodule-tool-verifyAddress"></a>
-#### LemoCore.verifyAddress
-```
-LemoCore.verifyAddress(addr)
-```
-Verify LemoChain address
+### Class Properties
 
-##### Parameters
-1. `string` - LemoChain address
+<a name="submodule-tool-SDK_VERSION"></a>
 
-##### Returns
-`string` - Verify error message. If the address is valid, then return empty string
+#### LemoCore.SDK_VERSION
+
+```
+LemoCore.SDK_VERSION
+```
+
+`string` - The version of SDK
 
 ##### Example
+
 ```js
-const errMsg = LemoCore.verifyAddress('LEMObw')
-if (errMsg) {
-    console.error(errMsg);
-}
+console.log(LemoCore.SDK_VERSION) // "1.0.0"
 ```
 
 ---
 
-<a name="submodule-tool-moToLemo"></a>
-#### LemoCore.moToLemo
-```
-lemo.tool.moToLemo(mo)
-```
-Convert the unit from mo to LEMO
+<a name="submodule-tool-TxType"></a>
 
-##### Parameters
-1. `string|number` - mo
+#### LemoCore.TxType
 
-##### Returns
-`bigNumber` - It returns an object of type bigNumber. If input an illegal string or number, it will throw an exception.
+```
+LemoCore.TxType
+```
+
+Enum of [transaction type](#data-transaction-type), the value is `number` type
 
 ##### Example
+
 ```js
-const result = LemoCore.moToLemo('0.1')
-console.log(result.toString(10));// '0.0000000000000000001'
-```
-
----
-
-<a name="submodule-tool-lemoToMo"></a>
-#### LemoCore.lemoToMo
-```
-LemoCore.lemoToMo(ether)
-```
-Convert the unit from LEMO to mo
-
-##### Parameters
-1. `string|number` - LEMO
-
-##### Returns
-`bigNumber` - It returns an object of type bigNumber. If input an illegal string or number, it will throw an exception.
-
-##### Example
-```js
-const result = LemoCore.lemoToMo('0.1')
-console.log(result.toString(10)) // '100000000000000000'
-```
-
----
-
-<a name="submodule-tool-toBuffer"></a>
-#### LemoCore.toBuffer
-```
-LemoCore.toBuffer(data)
-```
-Convert the unit from LEMO to mo
-
-##### Parameters
-1. `number|string|BigNumber|Buffer|null` - The source data
-
-##### Returns
-`Buffer` - It returns an object of type Buffer. If the type of input is not supported, it will throw an exception.
-
-##### Example
-```js
-const result = LemoCore.toBuffer('{"value": 100}')
-console.log(result.toString('hex')) // '100000000000000000'
+console.log(LemoCore.TxType.VOTE) // 1
 ```
 
 ---
