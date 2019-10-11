@@ -299,52 +299,6 @@ export const block1 = {
     deputyNodes: [],
 }
 
-export const block2 = {
-    ...block1,
-    transactions: [
-        {
-            chainID: '1',
-            version: '1',
-            type: '0',
-            from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
-            to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
-            toName: '',
-            gasPrice: '3000000000',
-            gasLimit: '2000000',
-            amount: '100',
-            data: '0x',
-            expirationTime: '1541649535',
-            message: '',
-            sigs:
-                ['0x800be6a0cf31ab9e86d547fb8cf964339276233a2b260ad8a4b4c93b39a48d6b1761e125f601bc6953e30eaad3e698c12add332a5740f1618915c12432dc610601'],
-            hash: '0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2de',
-        },
-    ],
-}
-
-export const block3 = {
-    ...block2,
-    transactions: [
-        {
-            chainID: '1',
-            version: '1',
-            type: '0',
-            from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
-            to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
-            toName: '',
-            gasPrice: '3000000000',
-            gasLimit: '2000000',
-            amount: '100',
-            data: '0x',
-            expirationTime: '1541649535',
-            message: '',
-            sigs:
-                ['0x800be6a0cf31ab9e86d547fb8cf964339276233a2b260ad8a4b4c93b39a48d6b1761e125f601bc6953e30eaad3e698c12add332a5740f1618915c12432dc610601'],
-            hash: '0x94ad0a9869cb6418f6a67df76d1293b557adb567ca3d29bfc8d8ff0d5f4ac2de',
-        },
-    ],
-}
-
 export const formattedBlock1 = {
     ...block1,
     header: {

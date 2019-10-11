@@ -2,7 +2,7 @@ import {assert} from 'chai'
 import LemoTx from 'lemo-tx'
 import LemoCore from '../../lib/index'
 import {resetRPC} from '../../lib/network/jsonrpc'
-import {block1, block2, block3, chainID, testPrivate, txInfo, tx4, testAddr} from '../datas'
+import {block1, chainID, testPrivate, txInfo, tx4, testAddr} from '../datas'
 import '../mock'
 import {DEFAULT_POLL_DURATION} from '../../lib/const'
 import errors from '../../lib/errors'
@@ -151,6 +151,9 @@ describe('module_tx_waitConfirm', () => {
             header: {
                 timestamp: nowTime,
             },
+            transactions: [{
+                ...block1.transactions[0],
+            }],
         }
         // New lemoCore with serverMode to verify waitTxByWatchBlock
         const lemo1 = new LemoCore({
@@ -172,7 +175,7 @@ describe('module_tx_waitConfirm', () => {
         const nowTime = Math.floor(Date.now() / 1000) + (30 * 60)
         // Restructure, change the transaction expirationTime
         const txConfig = {
-            ...block3.transactions[0],
+            ...block1.transactions[0],
             chainID,
             expirationTime: time,
         }
@@ -184,10 +187,13 @@ describe('module_tx_waitConfirm', () => {
         const txHash = await lemo.tx.send(txConfig, testPrivate)
         // Change block timestamp
         const blockData = {
-            ...block3,
+            ...block1,
             header: {
                 timestamp: nowTime,
             },
+            transactions: [{
+                ...block1.transactions[0],
+            }],
         }
         // New lemoCore with serverMode to verify waitTxByWatchBlock
         const lemo1 = new LemoCore({
