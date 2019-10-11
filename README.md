@@ -256,65 +256,6 @@ chainID | description
 1 | LemoChain main net
 100 | LemoChain test net
 
-<a name="data-structure-asset"></a>
-#### asset
-Asset information
-```json
-{
-    "category": "1",
-    "decimal": 18,
-    "totalSupply": "15000000000000000000",
-    "isReplenishable": true,
-    "isDivisible": true,
-    "issuer": "Lemo83GWNWJQ3DQFN6F24WFZF5TGQ39A696GJ7Z3",
-    "profile": {
-        "name": "Demo Asset",
-        "symbol": "DT",
-        "description": "this is a asset information",
-        "suggestedGasLimit": "60000",
-        "freeze": "false"
-    }
-}
-```
-- `category` Asset type
-- `decimal` The decimal place of the issued asset, which indicates how many digits are reduced to the decimal point. The default is 18 digits.
-- `totalSupply` The total amount of assets issued, when the assets are issued and destroyed, the total amount of assets will change in real time, the total amount of assets issued is `issuance*10^decimal`
-- `isReplenishable` Whether the asset can be replenish. It is not changeable after setup when creating the asset. The default is `true`
-- `isDivisible` Whether the asset is divisible, set when the asset is created, the default is `true`
-- `issuer` The publisher address. It is not settable
-- `profile` Additional information about the asset
-    - `name` The name of the asset
-    - `symbol` Asset identification
-    - `description` Basic information of assets
-    - `suggesteGasLimit` Suggested gas limit. It is like the `gasLimit` field in transaction. The default is 60000
-    - `freeze` Whether to freeze asset. The default is false. Set it to true will stop all actions about the asset except query operations
-
-<a name="data-asset-category"></a>
-
-category | description
---- |---
-1 |  TokenAsset. Similar to Ethereum's ERC20 token. The issuer can decide whether additional issuance is allowed in the future when issuing. The token is divisible.
-2 |  NonFungibleAsset. Similar to Ethereum's ERC721 token, it can store a certain amount of information. Every token is indivisible.
-3 |  CommonAsset. More flexible digital assets. It is suitable for more complex scenarios. Actualy, the TokenAsset and NonFungibleAsset are two special CommonAsset.
-
-<a name="data-structure-equity"></a>
-
-#### equity
-
-Record the asset information of the asset holder and keep it in the account of the asset holder
-
-```json
-{
-    "assetCode": "0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884",
-    "assetId": "0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a",
-    "balance": "15000000000000000000"
-}
-```
-
--   `assetCode` Asset code, obtained when the asset is created
--   `assetId` The assetId, which is obtained when the asset is issued. It will be same as assetCode when the asset type is 1
--   `balance` The balance of assets, the unit is ` mo `
-
 <a name="data-structure-changeLog"></a>
 #### changeLog
 The modification record of data on chain
