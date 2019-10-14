@@ -1,7 +1,7 @@
 {
     "name": "lemo-core-sdk",
     "namespace": "LemoFoundationLtd",
-    "version": "0.10.9",
+    "version": "0.10.10",
     "description": "Lemochain JavaScript SDK, access to a lemochain node over RPC",
     "main": "dist/lemo-core-sdk.cjs.js",
     "module": "dist/lemo-core-sdk.esm.js",
@@ -12,8 +12,8 @@
         "bignumber.js": "9.0.0",
         "core-js": "^3.2.1",
         "deep-eql": "^4.0.0",
-        "lemo-tx": "^1.1.6",
-        "lemo-utils": "^1.1.6"
+        "lemo-tx": "^1.1.8",
+        "lemo-utils": "^1.1.7"
     },
     "devDependencies": {
         "@babel/core": "7.5.5",

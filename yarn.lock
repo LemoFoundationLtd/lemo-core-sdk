@@ -855,11 +855,6 @@ base-x@3.0.6:
   dependencies:
     safe-buffer "^5.0.1"
 
-base64-url@2.3.2:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/base64-url/-/base64-url-2.3.2.tgz#d7ea32e80ce3c3ad49f823e77c4dd247c6b81759"
-  integrity sha512-2QpXjtjndKqPn9JKBpMTCbDGpgicfLUu+N5Y1vEfbuyqb1MN1D68C9YKCth4SjTHRvJleF3tPuxhLbH79MM0iQ==
-
 bcrypt-pbkdf@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/bcrypt-pbkdf/-/bcrypt-pbkdf-1.0.2.tgz#a4301d389b6a43f9b67ff3ca11a3f6637e360e9e"
@@ -2437,22 +2432,21 @@ lcov-parse@^0.0.10:
   resolved "https://registry.yarnpkg.com/lcov-parse/-/lcov-parse-0.0.10.tgz#1b0b8ff9ac9c7889250582b70b71315d9da6d9a3"
   integrity sha1-GwuP+ayceIklBYK3C3ExXZ2m2aM=
 
-lemo-tx@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/lemo-tx/-/lemo-tx-1.1.6.tgz#4e9fb8e6da1512b6a6a1d766b047c741be968968"
-  integrity sha512-CxanWiUJifZdpBCBVEcP0PJtTCdMk/RAm+1kum9vAvY7vmzOzjifn90Hmql7P4kgEzkUtxaTc1PLKjyNne/4jw==
+lemo-tx@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/lemo-tx/-/lemo-tx-1.1.8.tgz#49190301e278220dda312847e68b18b9f1651d48"
+  integrity sha512-8vSvLJALb1AbTO1oj08wx8VMGMTCaZssv5gOufGb/JZLKVjX844ksLn+DdKioFBuo3CGeWtbJ75Alp+ARj3x7g==
   dependencies:
     "@babel/runtime" "7.5.5"
-    base64-url "2.3.2"
     bignumber.js "9.0.0"
     core-js "^3.2.1"
     js-base64 "2.5.1"
-    lemo-utils "^1.1.6"
+    lemo-utils "^1.1.7"
 
-lemo-utils@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/lemo-utils/-/lemo-utils-1.1.6.tgz#e97f4e8253b3e197dd4024d5a12d7b9d6ff4a4d3"
-  integrity sha512-cRo/36QzK9+l5EHpKjBMe4peB7y6XmX/uzhksAlm9/fNRBb/k3COD70Eq7v2JWuUjbqDxQVEEPWpkvlEfVPXLQ==
+lemo-utils@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/lemo-utils/-/lemo-utils-1.1.7.tgz#81cc2aecb3a15b83f546991b0ca796c0a1b922d9"
+  integrity sha512-mbQH7cQBOnVw8DjF1BuuYpOw1hrXmc2cRjlNcnM4oLE2HWa0rRBEw3xT3fy9KXj4gtC/9qcUEue1UB9CHpDYfw==
   dependencies:
     "@babel/runtime" "7.5.5"
     base-x "3.0.6"
