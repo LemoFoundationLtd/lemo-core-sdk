@@ -307,14 +307,14 @@ Deputy node information
 ```json
 {
     "minerAddress": "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG",
-    "nodeID": "5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0",
+    "nodeID": "0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0",
     "host": "127.0.0.1",
     "port": "7001",
     "votes": "50000"
 }
 ```
 - `minerAddress` The account address to receive mining benefit
-- `nodeID` The LemoChain node ID, it is from the public key whose private key is using for sign blocks. The length should be 128 characters without `0x`
+- `nodeID` The LemoChain node ID, it is from the public key whose private key is using for sign blocks. The length should be 130 characters with `0x`
 - `host` Deputy node IP address or domain. The max limit of length is 128.
 - `port` The port to connect other nodes
 - `votes` The votes count
@@ -345,7 +345,7 @@ Account information
             "host": "www.lemochain.com",
             "isCandidate": "true",
             "minerAddress": "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG",
-            "nodeID": "5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0",
+            "nodeID": "0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0",
             "port": "7001"
         }
     },
@@ -368,7 +368,7 @@ Account information
         - `host` Ip or domain of the candidate node server
         - `isCandidate` This account is or isn't a candidate. It is used to cancel candidate
         - `minerAddress` The address of miner account who receive miner benefit
-        - `nodeID` The LemoChain node ID, it is from the public key whose private key is using for sign blocks. The length should be 128 characters without `0x`
+        - `nodeID` The LemoChain node ID, it is from the public key whose private key is using for sign blocks. The length should be 130 characters with `0x`
         - `port` Port of the candidate node server
 - `signers` The signers for a multi-sign account. It is necessary to collect over 100 weight to sign a transaction
     - `address` The signer's account address
@@ -564,7 +564,7 @@ None
 lemo.getCandidateTop30().then(function(candidateList) {
     console.log(candidateList.length) // 1
     console.log(candidateList[0].address) // Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG
-    console.log(JSON.stringify(candidateList)) // [{"address":"Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG","profile":{"host":"127.0.0.1","isCandidate":true,"minerAddress":"Lemobw","nodeID":"5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0","port":7001},"votes":"1599999000"}]
+    console.log(JSON.stringify(candidateList)) // [{"address":"Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG","profile":{"host":"127.0.0.1","isCandidate":true,"minerAddress":"Lemobw","nodeID":"0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0","port":7001},"votes":"1599999000"}]
 })
 ```
 
@@ -587,7 +587,7 @@ None
 ```js
 lemo.getDeputyNodeList().then(function(nodeList) {
     console.log(nodeList.length) // 1
-    console.log(nodeList[0]) // "5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0@149.28.68.93:7003"
+    console.log(nodeList[0]) // "0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0@149.28.68.93:7003"
     lemo.net.connect(nodeList[0])
 })
 ```
@@ -726,7 +726,7 @@ lemo.net.getConnections().then(function(connections) {
     console.log(connections);
     // [{
     //   localAddress: "127.0.0.1:50825",
-    //   nodeID: "ddb5fc36c415799e4c0cf7046ddde04aad6de8395d777db4f46ebdf258e55ee1d698fdd6f81a950f00b78bb0ea562e4f7de38cb0adf475c5026bb885ce74afb0",
+    //   nodeID: "0xddb5fc36c415799e4c0cf7046ddde04aad6de8395d777db4f46ebdf258e55ee1d698fdd6f81a950f00b78bb0ea562e4f7de38cb0adf475c5026bb885ce74afb0",
     //   remoteAddress: "127.0.0.1:60002"
     // }]
 })
