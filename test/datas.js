@@ -1,8 +1,10 @@
 import BigNumber from 'bignumber.js'
+import {ChangeLogTypes, TxType} from '../lib/const'
 
 const bigNum = '0x111111111111111111111111111111111111111111111111111111111111'
 const bigString = '888888888888888888888888888888888888888888888888888888888888'
 const bigData = '0x4949494949494949'
+const balanceLog = ChangeLogTypes.BalanceLog
 
 export const testPrivate = '0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb'
 export const testAddr = 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'
@@ -23,7 +25,7 @@ export const infos = {
 }
 
 export const emptyAccount = {
-    balance: '0x0',
+    balance: '0',
     codeHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
     records: {},
     root: '0x0000000000000000000000000000000000000000000000000000000000000000',
@@ -34,9 +36,9 @@ export const miner = {
     balance: '1599999999999999999999999900',
     codeHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
     records: {
-        1: {
-            height: '1',
-            version: '3',
+        [balanceLog]: {
+            height: 1,
+            version: 3,
         },
     },
     root: '0x0000000000000000000000000000000000000000000000000000000000000000',
@@ -44,7 +46,7 @@ export const miner = {
     candidate: {
         profile: {
             host: '127.0.0.1',
-            isCandidate: 'true',
+            isCandidate: true,
             minerAddress: 'Lemobw',
             nodeID:
                 '0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0',
@@ -56,9 +58,9 @@ export const miner = {
 }
 export const formatedMiner = {
     ...miner,
-    balance: new BigNumber('1599999999999999999999999900'),
+    balance: '1599999999999999999999999900',
     records: {
-        BalanceLog: {
+        [balanceLog]: {
             height: 1,
             version: 3,
         },
@@ -67,11 +69,9 @@ export const formatedMiner = {
         profile: {
             ...miner.candidate.profile,
             isCandidate: true,
-            port: 7001,
         },
         votes: '1599999000',
     },
-    txCount: 0,
 }
 export const formattedSpecialLemoBase = {
     ...emptyAccount,
@@ -104,7 +104,7 @@ export const txInfo = {
     txConfig: {
         chainID,
         version: 1,
-        type: 0,
+        type: TxType.ORDINARY,
         to: 'Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH',
         toName: 'aa',
         gasPrice: 2,
@@ -128,7 +128,7 @@ export const bigTxInfo = {
     txConfig: {
         chainID,
         version: 1,
-        type: 0,
+        type: TxType.ORDINARY,
         to: 'Lemo837J796DDHYTQTRTQDT7B4QJJ9B6H559BCCT',
         toName: bigString,
         gasPrice: bigNum,
@@ -189,12 +189,13 @@ export const currentBlock = {
         {
             chainID: '1',
             version: '1',
-            type: '0',
+            type: TxType.ORDINARY,
             from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D',
             to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
             toName: 'aa',
             gasPrice: '3000000000',
             gasLimit: '2000000',
+            gasUsed: 0,
             amount: '101',
             data: '0x0c',
             expirationTime: '1541649536',
@@ -218,14 +219,12 @@ export const formattedCurrentBlock = {
     transactions: [
         {
             ...currentBlock.transactions[0],
-            gasPriceText: '3000000000',
-            gasPrice: new BigNumber('3000000000'),
+            gasPrice: '3000000000',
             gasLimit: 2000000,
-            amountText: '101',
-            amount: new BigNumber('101'),
+            amount: '101',
             expirationTime: 1541649536,
-            type: 0,
-            typeText: 'ORDINARY',
+            type: TxType.ORDINARY,
+            parsedData: undefined,
             version: 1,
         },
     ],
@@ -255,12 +254,13 @@ export const block1 = {
         {
             chainID: '1',
             version: '1',
-            type: '0',
+            type: TxType.ORDINARY,
             from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
             toName: '',
             gasPrice: '3000000000',
             gasLimit: '2000000',
+            gasUsed: 0,
             amount: '100',
             data: '0x',
             expirationTime: '1541649535',
@@ -272,21 +272,21 @@ export const block1 = {
     ],
     changeLogs: [
         {
-            type: '1',
+            type: TxType.ORDINARY,
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '2',
             newValue: '0x8c052b7d2dcc8093e1eb610f9c',
             extra: '',
         },
         {
-            type: '1',
+            type: TxType.ORDINARY,
             address: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
             version: '1',
             newValue: '0x64',
             extra: '',
         },
         {
-            type: '1',
+            type: TxType.ORDINARY,
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '3',
             newValue: '0x8c052b7d2dcc80cd2e3fffff9c',
@@ -310,31 +310,30 @@ export const formattedBlock1 = {
     transactions: [
         {
             ...block1.transactions[0],
-            gasPriceText: '3000000000',
-            gasPrice: new BigNumber('3000000000'),
+            gasPrice: '3000000000',
             gasLimit: 2000000,
-            amountText: '100',
-            amount: new BigNumber('100'),
+            gasUsed: 0,
+            amount: '100',
             expirationTime: 1541649535,
-            type: 0,
-            typeText: 'ORDINARY',
+            type: TxType.ORDINARY,
+            parsedData: undefined,
             version: 1,
         },
     ],
     changeLogs: [
         {
             ...block1.changeLogs[0],
-            type: 'BalanceLog',
+            type: TxType.ORDINARY,
             version: 2,
         },
         {
             ...block1.changeLogs[1],
-            type: 'BalanceLog',
+            type: TxType.ORDINARY,
             version: 1,
         },
         {
             ...block1.changeLogs[2],
-            type: 'BalanceLog',
+            type: TxType.ORDINARY,
             version: 3,
         },
     ],
@@ -397,7 +396,7 @@ export const oneChangeLogBlock = {
     transactions: [],
     changeLogs: [
         {
-            type: '1',
+            type: TxType.VOTE,
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '2',
             newValue: '0x8c052b7d2dcc8093e1eb610f9c',
@@ -430,7 +429,7 @@ export const formattedOneChangeLogBlock = {
     changeLogs: [
         {
             ...oneChangeLogBlock.changeLogs[0],
-            type: 'BalanceLog',
+            type: TxType.VOTE,
             version: 2,
         },
     ],
@@ -441,10 +440,11 @@ export const txInfos = [emptyTxInfo, txInfo, bigTxInfo]
 const tx1 = {
     ...emptyTxInfo.txConfig,
     version: '1',
-    type: '0',
+    type: TxType.ORDINARY,
     toName: '',
     gasPrice: '3000000000',
     gasLimit: '2000000',
+    gasUsed: 0,
     amount: '0',
     data: '0x',
     expirationTime: '1544584596',
@@ -455,21 +455,24 @@ const tx1 = {
 const formattedTx1 = {
     ...tx1,
     from: testAddr,
-    gasPrice: new BigNumber('3000000000'),
+    gasPrice: '3000000000',
     gasLimit: 2000000,
     expirationTime: 1544584596,
-    amount: new BigNumber('0'),
-    type: 0,
-    typeText: 'ORDINARY',
+    amount: '0',
+    type: TxType.ORDINARY,
+    parsedData: undefined,
     version: 1,
 }
 
 const tx2 = {
     ...txInfo.txConfig,
     version: '1',
-    type: '0',
+    type: TxType.ORDINARY,
     gasPrice: '2',
+    gasPriceText: '2',
     gasLimit: '100',
+    gasUsed: 0,
+    amountText: '1',
     amount: '1',
     expirationTime: '1544584596',
     sigs: ['0x8c0499083cb3d27bead4f21994aeebf8e75fa11df6bfe01c71cad583fc9a3c70778a437607d072540719a866adb630001fabbfb6b032d1a8dfbffac7daed8f0201'],
@@ -478,21 +481,22 @@ const tx2 = {
 const formattedTx2 = {
     ...tx2,
     from: testAddr,
-    gasPrice: new BigNumber('2'),
+    gasPrice: '2',
     gasLimit: 100,
     expirationTime: 1544584596,
-    amount: new BigNumber('1'),
-    type: 0,
-    typeText: 'ORDINARY',
+    amount: '1',
+    type: TxType.ORDINARY,
+    parsedData: undefined,
     version: 1,
 }
 
 const tx3 = {
     ...bigTxInfo.txConfig,
     version: '1',
-    type: '0',
+    type: TxType.ORDINARY,
     gasPrice: bigNum,
     gasLimit: '100',
+    gasUsed: 10,
     amount: bigNum,
     expirationTime: '1544584596',
     sigs: ['0xacba6ce994874d7b856d663a7f1d04bc7bf65278d33afb0a7fd8da69f626292a01e6badf976c360673b71c54ff363bbcb521ae545fec47cb0bf83eb4c83332b601'],
@@ -501,12 +505,12 @@ const tx3 = {
 const formattedTx3 = {
     ...tx3,
     from: testAddr,
-    gasPrice: new BigNumber(bigNum),
+    gasPrice: '0x111111111111111111111111111111111111111111111111111111111111',
     gasLimit: 100,
     expirationTime: 1544584596,
-    amount: new BigNumber(bigNum),
-    type: 0,
-    typeText: 'ORDINARY',
+    amount: '0x111111111111111111111111111111111111111111111111111111111111',
+    type: TxType.ORDINARY,
+    parsedData: undefined,
     version: 1,
 }
 
@@ -521,13 +525,19 @@ export const txRes1 = {
     height: '100',
     time: '1541649535',
     tx: tx1,
+    pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+    assetCode: '0x0000000000000000000000000000000000000000000000000000000000000000',
+    assetId: '0x0000000000000000000000000000000000000000000000000000000000000000',
 }
 
 export const formattedTxRes1 = {
     ...formattedTx1,
     blockHeight: 100,
     minedTime: 1541649535,
+    pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
     blockHash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
+    assetCode: '0x0000000000000000000000000000000000000000000000000000000000000000',
+    assetId: '0x0000000000000000000000000000000000000000000000000000000000000000',
 }
 
 export const txRes2 = {
@@ -535,12 +545,14 @@ export const txRes2 = {
     height: '100',
     time: '1541649535',
     tx: tx2,
+    pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
 }
 
 export const formattedTxRes2 = {
     ...formattedTx2,
     blockHeight: 100,
     minedTime: 1541649535,
+    pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
     blockHash: '0x425f4ca99da879aa97bd6feaef0d491096ff3437934a139f423fecf06f9fd5ab',
 }
 export const txRes3 = {
@@ -548,6 +560,7 @@ export const txRes3 = {
     height: '100',
     time: '1541649535',
     tx: tx3,
+    pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
 }
 
 export const formattedTxRes3 = {
@@ -561,30 +574,68 @@ export const txList = [
     {
         tx: tx1,
         time: '1541649535',
+        pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+        assetId: '0x1b9ef0086053ca7e41b7b5e5f0db422e4c987a5504f373fed5176635838ca446',
+        assetCode: '0x1b9ef0086053ca7e41b7b5e5f0db422e4c987a5504f373fed5176635838ca446',
     },
     {
         tx: tx2,
         time: '1541649536',
+        pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+        assetId: '0x1b9ef0086053ca7e41b7b5e5f0db422e4c987a5504f373fed5176635838ca446',
+        assetCode: '0x1b9ef0086053ca7e41b7b5e5f0db422e4c987a5504f373fed5176635838ca446',
     },
     {
         tx: tx3,
         time: '1541649536',
+        pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+        assetId: '0x8dd85a833c482b4cb24f261e2d5378c14507eb01a92d89eb4a8278302f70cff5',
+        assetCode: '0x8dd85a833c482b4cb24f261e2d5378c14507eb01a92d89eb4a8278302f70cff5',
     },
 ]
 
+
+export const formattedAssetTxListRes = {
+    txList: [
+        {
+            ...formattedTx1,
+            minedTime: 1541649535,
+            pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+            assetId: '0x1b9ef0086053ca7e41b7b5e5f0db422e4c987a5504f373fed5176635838ca446',
+            assetCode: '0x1b9ef0086053ca7e41b7b5e5f0db422e4c987a5504f373fed5176635838ca446',
+        },
+        {
+            ...formattedTx2,
+            minedTime: 1541649536,
+            pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+            assetId: '0x1b9ef0086053ca7e41b7b5e5f0db422e4c987a5504f373fed5176635838ca446',
+            assetCode: '0x1b9ef0086053ca7e41b7b5e5f0db422e4c987a5504f373fed5176635838ca446',
+        },
+    ],
+    total: 2,
+}
 export const formattedTxListRes = {
     txList: [
         {
             ...formattedTx1,
             minedTime: 1541649535,
+            pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+            assetId: '0x1b9ef0086053ca7e41b7b5e5f0db422e4c987a5504f373fed5176635838ca446',
+            assetCode: '0x1b9ef0086053ca7e41b7b5e5f0db422e4c987a5504f373fed5176635838ca446',
         },
         {
             ...formattedTx2,
             minedTime: 1541649536,
+            pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+            assetId: '0x1b9ef0086053ca7e41b7b5e5f0db422e4c987a5504f373fed5176635838ca446',
+            assetCode: '0x1b9ef0086053ca7e41b7b5e5f0db422e4c987a5504f373fed5176635838ca446',
         },
         {
             ...formattedTx3,
             minedTime: 1541649536,
+            pHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+            assetId: '0x8dd85a833c482b4cb24f261e2d5378c14507eb01a92d89eb4a8278302f70cff5',
+            assetCode: '0x8dd85a833c482b4cb24f261e2d5378c14507eb01a92d89eb4a8278302f70cff5',
         },
     ],
     total: 3,
@@ -607,7 +658,7 @@ const formattedCandidate1 = {
     profile: {
         ...candidate1.profile,
         isCandidate: true,
-        port: 7001,
+        port: '7001',
     },
     votes: '1599999000000000000000000001',
 }
@@ -629,7 +680,7 @@ const formattedCandidate2 = {
     profile: {
         ...candidate2.profile,
         isCandidate: true,
-        port: 8080,
+        port: '8080',
     },
 }
 
@@ -656,7 +707,7 @@ export const formattedEquities = [
     {
         assertCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
         assetId: '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a',
-        equity: new BigNumber(1),
+        equity: 1,
     },
 ]
 

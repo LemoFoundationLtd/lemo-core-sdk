@@ -14,23 +14,17 @@ describe('module_account_getAccount', () => {
     it('account with special balance', async () => {
         const lemo = new LemoCore()
         const addr = '0x015780F8456F9c1532645087a19DcF9a7e0c7F97'
-        const expectedErr = errors.InvalidAddress(addr)
-        return lemo.account.getAccount(addr).then(() => {
-            assert.fail('success', `throw error: ${expectedErr}`)
-        }, e => {
-            return assert.equal(e.message, expectedErr)
-        })
+        assert.throws(() => {
+            lemo.account.getAccount(addr)
+        }, errors.InvalidAddress(addr))
     })
 
     it('account is empty', async () => {
         const lemo = new LemoCore()
         const addr = ''
-        const expectedErr = errors.InvalidAddress(addr)
-        return lemo.account.getAccount(addr).then(() => {
-            assert.fail('success', `throw error: ${expectedErr}`)
-        }, e => {
-            return assert.equal(e.message, expectedErr)
-        })
+        assert.throws(() => {
+            lemo.account.getAccount(addr)
+        }, errors.InvalidAddress(addr))
     })
 })
 
@@ -61,25 +55,18 @@ describe('module_account_getBalance', () => {
     it('no-balance', async () => {
         const lemo = new LemoCore()
         const result = await lemo.account.getBalance('Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH')
-        assert.strictEqual(result instanceof BigNumber, true)
-        assert.exists(result.toMoney)
-        assert.strictEqual(result.toMoney(), '0 LEMO')
+        assert.strictEqual(result, '0')
     })
     it('balance', async () => {
         const lemo = new LemoCore()
         const result = await lemo.account.getBalance('Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG')
-        assert.strictEqual(result instanceof BigNumber, true)
-        assert.exists(result.toMoney)
-        assert.strictEqual(result.toMoney(), '1599999999.9999999999999999 LEMO')
+        assert.equal(result, '1599999999999999999999999900')
     })
     it('getBalance_error', () => {
         const lemo = new LemoCore()
         const addr = '0x015780F8456F9c1532645087a19DcF9a7e0c7F97'
-        const expectedErr = errors.InvalidAddress(addr)
-        return lemo.account.getBalance(addr).then(() => {
-            assert.fail('success', `throw error: ${expectedErr}`)
-        }, e => {
-            return assert.equal(e.message, expectedErr)
-        })
+        assert.throws(() => {
+            lemo.account.getBalance(addr)
+        }, errors.InvalidAddress(addr))
     })
 })

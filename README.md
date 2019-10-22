@@ -582,13 +582,24 @@ None
 
 ##### Returns
 `Promise` - Call `then` method to get the address list of current deputy nodes. The address can be used to [connect](#submodule-net-connect) LemoChain node.  
+    `minerAddress` - (string)The address of miner account who receive miner benefit
+    `incomeAddress` - (string)Nodal incomeAddress
+    `nodeID` - (string)The LemoChain node ID, it is from the public key whose private key is using for sign blocks. The length should be 130 characters with `0x`
+    `rank` - (string)The rank of the outgoing node
+    `votes` - (string)Node votes
+    `host` - (string)The LemoChain node ID, it is from the public key whose private key is using for sign blocks. The length should be 130 characters with `0x`
+    `port` - (string)Port of the candidate node server
+    `depositAmount` - (string)deposit amount
+    `introduction` - (string)Introduction of node
 
 ##### Example
 ```js
 lemo.getDeputyNodeList().then(function(nodeList) {
     console.log(nodeList.length) // 1
-    console.log(nodeList[0]) // "0x5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0@149.28.68.93:7003"
-    lemo.net.connect(nodeList[0])
+    console.log(JSON.stringify(nodeList[0]))
+// "{"minerAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","incomeAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","nodeID":"0x0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0","rank":"0","votes":"50000","host":"127.0.0.1","port":"8080","depositAmount":"5000000000000000000000000","introduction":"ddf"}"
+    const nodeName = `${nodeList[0].nodeID}@${nodeList[0].host}:${nodeList[0].port}`
+    lemo.net.connect(nodeName)
 })
 ```
 

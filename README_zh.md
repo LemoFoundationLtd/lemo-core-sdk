@@ -655,13 +655,24 @@ lemo.getDeputyNodeList()
 
 ##### Returns
 `Promise` - 通过`then`可以获取当前所有共识节点的地址列表。该地址可用于[连接节点](#submodule-net-connect)  
+    `minerAddress` - (string)节点出块账号
+    `incomeAddress` - (string)节点收益账号
+    `nodeID` - (string)节点ID
+    `rank` - (string)出块节点所在的排名
+    `votes` - (string)节点所得票数
+    `host` - (string)节点域名
+    `port` - (string)端口号
+    `depositAmount` - (string)质押金额
+    `introduction` - (string)节点简介
 
 ##### Example
 ```js
 lemo.getDeputyNodeList().then(function(nodeList) {
     console.log(nodeList.length) // 1
-    console.log(nodeList[0]) // "5e3600755f9b512a65603b38e30885c98cbac70259c3235c9b3f42ee563b480edea351ba0ff5748a638fe0aeff5d845bf37a3b437831871b48fd32f33cd9a3c0@149.28.68.93:7003"
-    lemo.net.connect(nodeList[0])
+    console.log(JSON.stringify(nodeList[0]))
+// "{"minerAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","incomeAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","nodeID":"0x0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0","rank":"0","votes":"50000","host":"127.0.0.1","port":"8080","depositAmount":"5000000000000000000000000","introduction":"ddf"}"
+    const nodeName = `${nodeList[0].nodeID}@${nodeList[0].host}:${nodeList[0].port}`
+    lemo.net.connect(nodeName)
 })
 ```
 
