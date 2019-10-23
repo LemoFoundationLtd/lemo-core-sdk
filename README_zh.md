@@ -648,7 +648,7 @@ lemo.getCandidateTop30().then(function(candidateList) {
 ```
 lemo.getDeputyNodeList()
 ```
-获取当前所有共识节点的地址列表
+获取当前所有共识节点的信息
 
 ##### Parameters
 无
@@ -664,15 +664,15 @@ lemo.getDeputyNodeList()
     `port` - (string)端口号
     `depositAmount` - (string)质押金额
     `introduction` - (string)节点简介
+    `p2pUri` - (string)连接到指定的 LemoChain 节点
 
 ##### Example
 ```js
 lemo.getDeputyNodeList().then(function(nodeList) {
     console.log(nodeList.length) // 1
     console.log(JSON.stringify(nodeList[0]))
-// "{"minerAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","incomeAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","nodeID":"0x0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0","rank":"0","votes":"50000","host":"127.0.0.1","port":"8080","depositAmount":"5000000000000000000000000","introduction":"ddf"}"
-    const nodeName = `${nodeList[0].nodeID}@${nodeList[0].host}:${nodeList[0].port}`
-    lemo.net.connect(nodeName)
+// "{"minerAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","incomeAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","nodeID":"0x0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0","rank":"0","votes":"50000","host":"127.0.0.1","port":"8080","depositAmount":"5000000000000000000000000","introduction":"ddf","p2pUri":"0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0@127.0.0.1:8080"}"
+    lemo.net.connect(nodeList[0].p2pUri)
 })
 ```
 

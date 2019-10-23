@@ -575,7 +575,7 @@ lemo.getCandidateTop30().then(function(candidateList) {
 ```
 lemo.getDeputyNodeList()
 ```
-Get the address list of current deputy nodes
+Get information of current deputy nodes
 
 ##### Parameters
 None
@@ -591,15 +591,15 @@ None
     `port` - (string)Port of the candidate node server
     `depositAmount` - (string)deposit amount
     `introduction` - (string)Introduction of node
+    `p2pUri` - (string)Connect to a LemoChain node
 
 ##### Example
 ```js
 lemo.getDeputyNodeList().then(function(nodeList) {
     console.log(nodeList.length) // 1
     console.log(JSON.stringify(nodeList[0]))
-// "{"minerAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","incomeAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","nodeID":"0x0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0","rank":"0","votes":"50000","host":"127.0.0.1","port":"8080","depositAmount":"5000000000000000000000000","introduction":"ddf"}"
-    const nodeName = `${nodeList[0].nodeID}@${nodeList[0].host}:${nodeList[0].port}`
-    lemo.net.connect(nodeName)
+// "{"minerAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","incomeAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","nodeID":"0x0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0","rank":"0","votes":"50000","host":"127.0.0.1","port":"8080","depositAmount":"5000000000000000000000000","introduction":"ddf","p2pUri":"0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0@127.0.0.1:8080"}"
+    lemo.net.connect(nodeList[0].p2pUri)
 })
 ```
 

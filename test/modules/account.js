@@ -1,5 +1,4 @@
 import {assert} from 'chai'
-import BigNumber from 'bignumber.js'
 import LemoCore from '../../lib/index'
 import {miner, formatedMiner} from '../datas'
 import '../mock'
