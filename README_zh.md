@@ -664,7 +664,7 @@ lemo.getDeputyNodeList()
     `port` - (string)端口号
     `depositAmount` - (string)质押金额
     `introduction` - (string)节点简介
-    `p2pUri` - (string)连接到指定的 LemoChain 节点的地址
+    `p2pUri` - (string)LemoChain节点的连接地址
 
 ##### Example
 ```js
