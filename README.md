@@ -591,7 +591,7 @@ None
     `port` - (string)Port of the candidate node server
     `depositAmount` - (string)deposit amount
     `introduction` - (string)Introduction of node
-    `p2pUri` - (string)Connect to a LemoChain node
+    `p2pUri` - (string)Connect to a LemoChain node address
 
 ##### Example
 ```js

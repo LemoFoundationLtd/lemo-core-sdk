@@ -13,17 +13,23 @@ describe('module_account_getAccount', () => {
     it('account with special balance', async () => {
         const lemo = new LemoCore()
         const addr = '0x015780F8456F9c1532645087a19DcF9a7e0c7F97'
-        assert.throws(() => {
-            lemo.account.getAccount(addr)
-        }, errors.InvalidAddress(addr))
+        const expectedErr = errors.InvalidAddress(addr)
+        return lemo.account.getAccount(addr).then(() => {
+            assert.fail('success', `throw error: ${expectedErr}`)
+        }, e => {
+            return assert.equal(e.message, expectedErr)
+        })
     })
 
     it('account is empty', async () => {
         const lemo = new LemoCore()
         const addr = ''
-        assert.throws(() => {
-            lemo.account.getAccount(addr)
-        }, errors.InvalidAddress(addr))
+        const expectedErr = errors.InvalidAddress(addr)
+        return lemo.account.getAccount(addr).then(() => {
+            assert.fail('success', `throw error: ${expectedErr}`)
+        }, e => {
+            return assert.equal(e.message, expectedErr)
+        })
     })
 })
 
