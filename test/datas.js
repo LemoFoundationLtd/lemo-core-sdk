@@ -704,6 +704,13 @@ export const deputyNodes = [
         p2pUri: '0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0@127.0.0.1:8080'
     },
 ]
+export const formattedDeputyNodes = [
+    {
+        ...deputyNodes[0],
+        rank: 0,
+        port: 8080,
+    },
+]
 
 export const equities = [
     {
@@ -761,4 +768,14 @@ export const metaData1 = {
     assetId: '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76652v',
     assetCode: '0x78d01bf80c705796328167963b0fdc857a4991aa1829fa68a7495d2980771228',
     owner: 'Lemo8498CBCJSY9G7JF4CGZDP64PRRNGP4HQ2QPF',
+}
+export const termRewardInfo = {
+    term: '0',
+    value: '1000000000',
+    rewardHeight: '10001',
+}
+export const formattedTermRewardInfo = {
+    term: 0,
+    value: '1000000000',
+    rewardHeight: 10001,
 }

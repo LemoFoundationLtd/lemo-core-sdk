@@ -27,6 +27,7 @@ import {
     creatAsset1,
     metaData1,
     unstableHeight,
+    termRewardInfo,
 } from './datas'
 
 const mockInfos = [
@@ -84,6 +85,13 @@ const mockInfos = [
         paramsCount: 1,
         reply([withBody]) {
             return withBody ? currentBlock : {...currentBlock, transactions: null}
+        },
+    },
+    {
+        method: 'chain_getTermReward',
+        paramsCount: 1,
+        reply() {
+            return termRewardInfo
         },
     },
     {

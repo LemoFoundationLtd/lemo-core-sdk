@@ -56,6 +56,7 @@ API | description | asynchronous | available for remote
 [lemo.getChainID()](#submodule-chain-getChainID) | Get the chain ID | ✓ | ✓
 [lemo.getCandidateTop30()](#submodule-chain-getCandidateTop30) | Get top 30 candidates information | ✓ | ✓
 [lemo.getDeputyNodeList()](#submodule-chain-getDeputyNodeList) | Get the address list of current deputy nodes | ✓ | ✓
+[lemo.getTermReward(height)](#submodule-chain-getTermReward) | Get miners' reward in current term | ✖ | ✓
 [lemo.getNodeVersion()](#submodule-chain-getNodeVersion) | Get the version of LemoChain node | ✓ | ✓
 [lemo.getSdkVersion()](#submodule-chain-getSdkVersion) | Get the version of lemo-core-sdk | ✖ | ✓
 [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock) | Listen for new block | ✖ | ✓
@@ -600,6 +601,31 @@ lemo.getDeputyNodeList().then(function(nodeList) {
     console.log(JSON.stringify(nodeList[0]))
 // "{"minerAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","incomeAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","nodeID":"0x0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0","rank":"0","votes":"50000","host":"127.0.0.1","port":"8080","depositAmount":"5000000000000000000000000","introduction":"ddf","p2pUri":"0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0@127.0.0.1:8080"}"
     lemo.net.connect(nodeList[0].p2pUri)
+})
+```
+
+---
+
+<a name="submodule-chain-getTermReward"></a>
+#### lemo.getTermReward
+```
+lemo.getTermReward(height)
+```
+Get miners' reward in current term
+
+##### Parameters
+1. `number` - the height of block which used to find the term reward block in same term
+
+##### Returns
+`object` - Term reward information，includes：
+    `term` - (number)Term index, starting from `0`
+    `value` - (string)The total amount of reward for all miners, The unit is `mo`
+    `rewardHeight` - (number)The height of reward block
+
+##### Example
+```js
+lemo.getTermReward(1001).then(function(result){
+console.log(JSON.stringify(result)) // {"term":0,"value":"1000000000","rewardHeight":10001}
 })
 ```
 

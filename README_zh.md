@@ -56,6 +56,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.getChainID()](#submodule-chain-getChainID)                           | 获取当前链 ID                  | ✓    | ✓          |
 | [lemo.getCandidateTop30()](#submodule-chain-getCandidateTop30)             | 获取排名前30的候选节点列表       | ✓    | ✓          |
 | [lemo.getDeputyNodeList()](#submodule-chain-getDeputyNodeList)             | 获取当前所有共识节点的地址列表    | ✓    | ✓          |
+| [lemo.getTermReward(height)](#submodule-chain-getTermReward) | 获取换届奖励信息                 | ✖    | ✓          |
 | [lemo.getNodeVersion()](#submodule-chain-getNodeVersion)                   | 节点版本号                     | ✓    | ✓          |
 | [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock)         | 监听新的区块                   | ✖    | ✓          |
 | [lemo.stopWatchBlock(subscribeId)](#submodule-chain-stopWatchBlock)            | 停止监听区块                   | ✖    | ✓          |
@@ -74,7 +75,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | 获取候选人信息                 | ✓    | ✓          |
 | [lemo.account.createTempAddress(from, userId)](#submodule-account-createTempAddress) | 创建临时账户                 | ✖    | ✓          |
 | [lemo.account.isTempAddress(address)](#submodule-account-isTempAddress) | 是否是临时账户                 | ✖    | ✓          |
-| [lemo.account.isContractAddress(address)](#submodule-account-isContractAddress) | 是否是合约账户账户                 | ✖    | ✓          |
+| [lemo.account.isContractAddress(address)](#submodule-account-isContractAddress) | 是否是合约账户                 | ✖    | ✓          |
 | [lemo.tx.send(signedTxInfo)](#submodule-tx-send)                           | 发送已签名的交易               | ✓    | ✓          |
 | [lemo.tx.waitConfirm(txHash)](#submodule-tx-waitConfirm)                           | 等待交易上链               | ✓    | ✓          |
 | [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx)         | 监听过滤区块的交易            | ✖    | ✓          |
@@ -658,10 +659,10 @@ lemo.getDeputyNodeList()
     `minerAddress` - (string)节点出块账号
     `incomeAddress` - (string)节点收益账号
     `nodeID` - (string)节点ID
-    `rank` - (string)出块节点所在的排名
+    `rank` - (number)出块节点所在的排名
     `votes` - (string)节点所得票数
     `host` - (string)节点域名
-    `port` - (string)端口号
+    `port` - (number)端口号
     `depositAmount` - (string)质押金额
     `introduction` - (string)节点简介
     `p2pUri` - (string)LemoChain节点的连接地址
@@ -673,6 +674,31 @@ lemo.getDeputyNodeList().then(function(nodeList) {
     console.log(JSON.stringify(nodeList[0]))
 // "{"minerAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","incomeAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","nodeID":"0x0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0","rank":"0","votes":"50000","host":"127.0.0.1","port":"8080","depositAmount":"5000000000000000000000000","introduction":"ddf","p2pUri":"0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0@127.0.0.1:8080"}"
     lemo.net.connect(nodeList[0].p2pUri)
+})
+```
+
+---
+
+<a name="submodule-chain-getTermReward"></a>
+#### lemo.getTermReward
+```
+lemo.getTermReward(height)
+```
+获取换届奖励信息
+
+##### Parameters
+1. `number` - 区块高度，将根据该高度找到这一届中发放奖励的区块
+
+##### Returns
+`object` - 换届奖励信息，包括：
+    `term` - (number)届数，从0开始
+    `value` - (string)发放奖励的总量，单位为`mo`
+    `rewardHeight` - (number)发放奖励区块的高度
+
+##### Example
+```js
+lemo.getTermReward(1001).then(function(result){
+console.log(JSON.stringify(result)) // {"term":0,"value":"1000000000","rewardHeight":10001}
 })
 ```
 
@@ -1194,6 +1220,31 @@ lemo.account.isContractAddress(address)
 ```js
 const result = lemo.account.isContractAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D')
 console.log(result) // false
+```
+
+---
+
+<a name="submodule-chain-getTermReward"></a>
+#### lemo.getTermReward
+```
+lemo.getTermReward(height)
+```
+获取换届奖励信息
+
+##### Parameters
+1. `number` - 区块高度
+
+##### Returns
+`object` - 换届奖励信息，包括：
+    `term` - (number)届数，从0开始
+    `value` - (string)发放奖励的总量，单位为`mo`
+    `rewardHeight` - (number)发放奖励区块的高度
+
+##### Example
+```js
+lemo.account.getTermReward(1001).then(function(result){
+console.log(JSON.stringify(result)) // {"term":0,"value":"1000000000","rewardHeight":10001}
+})
 ```
 
 ---

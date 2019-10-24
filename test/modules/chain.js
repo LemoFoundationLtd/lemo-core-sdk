@@ -8,11 +8,13 @@ import {
     formattedBlock1,
     currentHeight,
     formattedCandidateListRes,
-    deputyNodes,
+    formattedDeputyNodes,
     unstableHeight,
+    formattedTermRewardInfo,
 } from '../datas'
 import '../mock'
 import {DEFAULT_POLL_DURATION} from '../../lib/const'
+import errors from '../../lib/errors'
 
 
 describe('module_chain_getNewestBlock', () => {
@@ -192,6 +194,23 @@ describe('module_chain_getDeputyNodeList', () => {
     it('got 1 deputy nodes', async () => {
         const lemo = new LemoCore()
         const result = await lemo.getDeputyNodeList()
-        assert.deepEqual(result, deputyNodes)
+        assert.deepEqual(result, formattedDeputyNodes)
+    })
+})
+
+describe('module_account_getTermReward', () => {
+    it('normal_account_getTermReward', async () => {
+        const lemo = new LemoCore({chainID})
+        const result = await lemo.getTermReward(10001)
+        assert.deepEqual(result, formattedTermRewardInfo)
+    })
+    it('error', async () => {
+        const lemo = new LemoCore({chainID})
+        const expectedErr = errors.InvalidHeight()
+        return lemo.getTermReward('10001').then(() => {
+            assert.fail('success', `throw error: ${expectedErr}`)
+        }, e => {
+            return assert.equal(e.message, expectedErr)
+        })
     })
 })
