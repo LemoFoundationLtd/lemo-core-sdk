@@ -122,10 +122,10 @@ describe('module_tx_waitConfirm', () => {
             chainID,
             serverMode: true,
             send: (value) => {
-                if (value.id === 3) {
-                    return {jsonrpc: '2.0', id: 3, result: txConfig}
-                } else {
+                if (value.id === 2) {
                     return {jsonrpc: '2.0', id: 2, result: blockData}
+                } else {
+                    return {jsonrpc: '2.0', id: 3, result: txConfig}
                 }
             },
         })
@@ -160,10 +160,10 @@ describe('module_tx_waitConfirm', () => {
             chainID,
             serverMode: true,
             send: (value) => {
-                if (value.id === 3) {
-                    return {jsonrpc: '2.0', id: 3, result: txConfig}
-                } else {
+                if (value.id === 2) {
                     return {jsonrpc: '2.0', id: 2, result: blockData}
+                } else {
+                    return {jsonrpc: '2.0', id: 3, result: txConfig}
                 }
             },
         })
@@ -200,18 +200,20 @@ describe('module_tx_waitConfirm', () => {
             chainID,
             serverMode: true,
             send: (value) => {
-                if (value.id === 3) {
-                    return {jsonrpc: '2.0', id: 3, result: txConfig}
-                } else {
+                if (value.id === 2) {
                     return {jsonrpc: '2.0', id: 2, result: blockData}
+                } else {
+                    return {jsonrpc: '2.0', id: 3, result: null}
                 }
             },
         })
         const expectedErr = errors.InvalidTxTimeOut()
-        lemo1.tx.waitConfirm(txHash, txConfig.expirationTime).then(() => {
-            assert.fail('success', `throw error: ${expectedErr}`)
+        return lemo1.tx.waitConfirm(txHash, txConfig.expirationTime).then(() => {
+            throw new Error(`expected error: ${expectedErr}`)
         }, e => {
-            return assert.equal(e.message, expectedErr)
+            if (e.message !== expectedErr) {
+                throw new Error(`expected error: ${expectedErr}`)
+            }
         })
     })
     it('waitConfirm_timeOut', async () => {
