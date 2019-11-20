@@ -55,7 +55,7 @@ API | description | asynchronous | available for remote
 [lemo.getGenesis()](#submodule-chain-getGenesis) | Get the first block | ✓ | ✓
 [lemo.getChainID()](#submodule-chain-getChainID) | Get the chain ID | ✓ | ✓
 [lemo.getCandidateTop30()](#submodule-chain-getCandidateTop30) | Get top 30 candidates information | ✓ | ✓
-[lemo.getDeputyNodeList()](#submodule-chain-getDeputyNodeList) | Get the address list of current deputy nodes | ✓ | ✓
+[lemo.getDeputyNodeList()](#submodule-chain-getDeputyNodeList) | Get information of current deputy nodes | ✓ | ✓
 [lemo.getTermReward(height)](#submodule-chain-getTermReward) | Get miners' reward in current term | ✖ | ✓
 [lemo.getNodeVersion()](#submodule-chain-getNodeVersion) | Get the version of LemoChain node | ✓ | ✓
 [lemo.getSdkVersion()](#submodule-chain-getSdkVersion) | Get the version of lemo-core-sdk | ✖ | ✓
@@ -582,7 +582,7 @@ Get information of current deputy nodes
 None
 
 ##### Returns
-`Promise` - Call `then` method to get the address list of current deputy nodes. The address can be used to [connect](#submodule-net-connect) LemoChain node.  
+`Promise` - Call `then` method to get the information list of current deputy nodes  
     `minerAddress` - (string)The address of miner account who receive miner benefit
     `incomeAddress` - (string)Nodal incomeAddress
     `nodeID` - (string)The LemoChain node ID, it is from the public key whose private key is using for sign blocks. The length should be 130 characters with `0x`
@@ -592,14 +592,14 @@ None
     `port` - (string)Port of the candidate node server
     `depositAmount` - (string)deposit amount
     `introduction` - (string)Introduction of node
-    `p2pUri` - (string)Connection uri of a LemoChain node
+    `p2pUri` - (string)Connection uri of a LemoChain node. The address can be used to [connect](#submodule-net-connect) LemoChain node.
 
 ##### Example
 ```js
 lemo.getDeputyNodeList().then(function(nodeList) {
     console.log(nodeList.length) // 1
     console.log(JSON.stringify(nodeList[0]))
-// "{"minerAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","incomeAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","nodeID":"0x0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0","rank":"0","votes":"50000","host":"127.0.0.1","port":"8080","depositAmount":"5000000000000000000000000","introduction":"ddf","p2pUri":"0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0@127.0.0.1:8080"}"
+// "{"minerAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","incomeAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","nodeID":"0x0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0","rank":0,"votes":"50000","host":"127.0.0.1","port":8080,"depositAmount":"5000000000000000000000000","introduction":"ddf","p2pUri":"0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0@127.0.0.1:8080"}"
     lemo.net.connect(nodeList[0].p2pUri)
 })
 ```
