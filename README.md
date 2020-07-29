@@ -56,7 +56,7 @@ API | description | asynchronous | available for remote
 [lemo.getChainID()](#submodule-chain-getChainID) | Get the chain ID | ✓ | ✓
 [lemo.getCandidateTop30()](#submodule-chain-getCandidateTop30) | Get top 30 candidates information | ✓ | ✓
 [lemo.getDeputyNodeList()](#submodule-chain-getDeputyNodeList) | Get information of current deputy nodes | ✓ | ✓
-[lemo.getTermReward(height)](#submodule-chain-getTermReward) | Get miners' reward in current term | ✖ | ✓
+[lemo.getTermReward(height)](#submodule-chain-getTermReward) | Get miners' reward in current term | ✓ | ✓
 [lemo.getNodeVersion()](#submodule-chain-getNodeVersion) | Get the version of LemoChain node | ✓ | ✓
 [lemo.getSdkVersion()](#submodule-chain-getSdkVersion) | Get the version of lemo-core-sdk | ✖ | ✓
 [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock) | Listen for new block | ✖ | ✓

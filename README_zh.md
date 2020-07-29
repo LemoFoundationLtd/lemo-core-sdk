@@ -56,7 +56,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.getChainID()](#submodule-chain-getChainID)                           | 获取当前链 ID                  | ✓    | ✓          |
 | [lemo.getCandidateTop30()](#submodule-chain-getCandidateTop30)             | 获取排名前30的候选节点列表       | ✓    | ✓          |
 | [lemo.getDeputyNodeList()](#submodule-chain-getDeputyNodeList)             | 获取当前所有共识节点的信息列表    | ✓    | ✓          |
-| [lemo.getTermReward(height)](#submodule-chain-getTermReward) | 获取换届奖励信息                 | ✖    | ✓          |
+| [lemo.getTermReward(height)](#submodule-chain-getTermReward) | 获取换届奖励信息                 | ✓    | ✓          |
 | [lemo.getNodeVersion()](#submodule-chain-getNodeVersion)                   | 节点版本号                     | ✓    | ✓          |
 | [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock)         | 监听新的区块                   | ✖    | ✓          |
 | [lemo.stopWatchBlock(subscribeId)](#submodule-chain-stopWatchBlock)            | 停止监听区块                   | ✖    | ✓          |
