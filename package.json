@@ -12,8 +12,7 @@
         "bignumber.js": "9.0.0",
         "core-js": "3.6.5",
         "lemo-tx": "^1.1.13",
-        "lemo-utils": "^1.1.10",
-        "lodash": "4.17.20"
+        "lemo-utils": "^1.1.10"
     },
     "devDependencies": {
         "@babel/core": "7.11.1",
