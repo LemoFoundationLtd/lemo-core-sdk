@@ -67,7 +67,8 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.net.getConnectionsCount()](#submodule-net-getConnectionsCount)       | 获取已建立的连接数             | ✓    | ✓          |
 | [lemo.net.getInfo()](#submodule-net-getInfo)                               | 获取本节点信息                 | ✓    | ✓          |
 | [lemo.net.getNodeID()](#submodule-net-getNodeID)                               | 获取本节点的nodeId                 | ✓    | ✓          |
-| [lemo.net.broadcastConfirm()](#submodule-net-broadcastConfirm)                               | 广播确认                 | ✓    |  ✖         |
+| [lemo.net.broadcastConfirm(hash)](#submodule-net-broadcastConfirm)                   | 广播确认                 | ✓    |  ✖         |
+| [lemo.net.fetchConfirm(height)](#submodule-net-fetchConfirm)            | 拉取指定高度区块的确认包                 | ✓    |  ✖         |
 | [lemo.mine.start()](#submodule-mine-start)                                 | 开启挖矿                       | ✓    | ✖          |
 | [lemo.mine.stop()](#submodule-mine-stop)                                   | 停止挖矿                       | ✓    | ✖          |
 | [lemo.mine.getMining()](#submodule-mine-getMining)                         | 是否正在挖矿                   | ✓    | ✓          |
@@ -714,14 +715,14 @@ console.log(JSON.stringify(result)) // {"term":0,"value":"1000000000","rewardHei
 ```
 lemo.getAllRewardValue()
 ```
-获取当前节点所有的收益信息
+获取当前链所有的收益信息
 
 ##### Parameters
 无
 
 ##### Returns
-`object` - 换届奖励信息，包括：
-    `term` - (number)届数，从0开始
+`object` - 矿工的获奖信息，包括：
+    `term` - (string)届数，从0开始
     `value` - (string)该届设置的奖励金额
     `times` - (number)这届奖励金额的修改次数
 
@@ -1001,19 +1002,39 @@ lemo.net.getNodeID().then(function(info) {
 <a name="submodule-net-broadcastConfirm"></a>
 #### lemo.net.broadcastConfirm
 ```
-lemo.net.broadcastConfirm()
+lemo.net.broadcastConfirm(hash)
 ```
 广播确认
 
 ##### Parameters
-无
+1. `string` - 交易hash
 
 ##### Returns
 无
 
 ##### Example
 ```js
-lemo.net.broadcastConfirm()
+lemo.net.broadcastConfirm('0x6d3062a9f5d4400b2002b436bc69485449891c83e23bf9e27229234da5b25dcf')
+```
+
+---
+
+<a name="submodule-net-fetchConfirm"></a>
+#### lemo.net.fetchConfirm
+```
+lemo.net.fetchConfirm(height)
+```
+拉取指定高度区块的确认包
+
+##### Parameters
+1. `string` - 区块高度
+
+##### Returns
+无
+
+##### Example
+```js
+lemo.net.fetchConfirm('1001')
 ```
 
 ---
@@ -1248,7 +1269,7 @@ lemo.account.getVoteFor(address)
 1. `string` - 账户地址
 
 ##### Returns
-`Promise` - 通过`then`可以获取到当前账户所投票的地址
+`Promise` - 返回一个投票目标地址
 
 ##### Example
 ```js
@@ -1275,7 +1296,7 @@ lemo.account.getAssetEquity(address, assetId)
 `Promise` - 通过`then`可以获取到当前资产的信息，包括：
     `assertCode` - (string)资产code
     `assetId` - (string)资产id
-    `equity` - (number)资产权益
+    `equity` - (string)资产权益
 
 ##### Example
 ```js

@@ -67,7 +67,8 @@ API | description | asynchronous | available for remote
 [lemo.net.getConnections()](#submodule-net-getConnections) | Get the information of connections | ✓ | ✖
 [lemo.net.getConnectionsCount()](#submodule-net-getConnectionsCount) | Get the count of connections | ✓ | ✓
 [lemo.net.getInfo()](#submodule-net-getInfo) | Get current node information | ✓ | ✓
-[lemo.net.broadcastConfirm()](#submodule-net-broadcastConfirm)  | Radio and confirm                 | ✓    |  ✖         
+[lemo.net.broadcastConfirm(hash)](#submodule-net-broadcastConfirm)  | broadcast confirms of a block            | ✓    |  ✖         
+[lemo.net.fetchConfirm(height)](#submodule-net-fetchConfirm)  | Pulls the acknowledgement packet for the specified height block   | ✓    |  ✖         
 [lemo.net.getNodeID()](#submodule-net-getNodeID)  | Gets the nodeID of the current node                | ✓    | ✓   
 [lemo.mine.start()](#submodule-mine-start) | Start mining | ✓ | ✖
 [lemo.mine.stop()](#submodule-mine-stop) | Stop mining | ✓ | ✖
@@ -710,16 +711,16 @@ lemo.stopWatchBlock(watchBlockId)
 ```
 lemo.getAllRewardValue()
 ```
-Gets all reward information for the node
+Gets all reward information for the chain
 
 ##### Parameters
 None
 
 ##### Returns
-`object` - Change of leadership award information，includes：
-    `term` - (string)Terms, starting at 0
+`object` - Miners' award information，includes：
+    `term` - (string)Terms index, starting at 0
     `value` - (string)The total amount of awards given
-    `times` - (number)The height of the award block
+    `times` - (number)Updated times
 
 ##### Example
 ```js
@@ -874,19 +875,39 @@ lemo.net.getNodeID().then(function(info) {
 <a name="submodule-net-broadcastConfirm"></a>
 #### lemo.net.broadcastConfirm
 ```
-lemo.net.broadcastConfirm()
+lemo.net.broadcastConfirm(hash)
 ```
-Radio and confirm
+broadcast confirms of a block
 
 ##### Parameters
-None
+1. `string` - transaction hash
 
 ##### Returns
 None
 
 ##### Example
 ```js
-lemo.net.broadcastConfirm()
+lemo.net.broadcastConfirm('0x6d3062a9f5d4400b2002b436bc69485449891c83e23bf9e27229234da5b25dcf')
+```
+
+---
+
+<a name="submodule-net-fetchConfirm"></a>
+#### lemo.net.fetchConfirm
+```
+lemo.net.fetchConfirm(height)
+```
+Pulls the acknowledgement packet for the specified height block
+
+##### Parameters
+1. `string` - Block Height
+
+##### Returns
+None
+
+##### Example
+```js
+lemo.net.fetchConfirm('1001')
 ```
 
 ---
@@ -1147,7 +1168,7 @@ Get voting information for the current account
 1. `string` - lemo address
 
 ##### Returns
-`boolean` - True if the current address is a contract account
+`boolean` - return a vote target address
 
 ##### Example
 ```js
@@ -1174,7 +1195,7 @@ Get the proceeds from the account
 `Promise` - Call `then` method to get the proceeds from the account, includes:
     `assertCode` - (string) asset code
     `assetId` - (string) asset id
-    `equity` - (number)Rights and interests of assets
+    `equity` - (string)Rights and interests of assets
 
 ##### Example
 ```js
