@@ -779,3 +779,9 @@ export const formattedTermRewardInfo = {
     value: '1000000000',
     rewardHeight: 10001,
 }
+
+export const RewardValue = {
+    term: '1',
+    value: '1000000001',
+    times: '0',
+}

@@ -57,6 +57,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.getCandidateTop30()](#submodule-chain-getCandidateTop30)             | 获取排名前30的候选节点列表       | ✓    | ✓          |
 | [lemo.getDeputyNodeList()](#submodule-chain-getDeputyNodeList)             | 获取当前所有共识节点的信息列表    | ✓    | ✓          |
 | [lemo.getTermReward(height)](#submodule-chain-getTermReward) | 获取换届奖励信息                 | ✓    | ✓          |
+| [lemo.getAllRewardValue()](#submodule-chain-getAllRewardValue) | 获取所有的收益信息                 | ✓    | ✓          |
 | [lemo.getNodeVersion()](#submodule-chain-getNodeVersion)                   | 节点版本号                     | ✓    | ✓          |
 | [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock)         | 监听新的区块                   | ✖    | ✓          |
 | [lemo.stopWatchBlock(subscribeId)](#submodule-chain-stopWatchBlock)            | 停止监听区块                   | ✖    | ✓          |
@@ -65,6 +66,10 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.net.getConnections()](#submodule-net-getConnections)                 | 获取已建立的连接信息           | ✓    | ✖          |
 | [lemo.net.getConnectionsCount()](#submodule-net-getConnectionsCount)       | 获取已建立的连接数             | ✓    | ✓          |
 | [lemo.net.getInfo()](#submodule-net-getInfo)                               | 获取本节点信息                 | ✓    | ✓          |
+| [lemo.net.getNodeID()](#submodule-net-getNodeID)                               | 获取本节点的nodeId                 | ✓    | ✓          |
+| [lemo.net.connect()](#submodule-net-connect)                               | 连接节点                 | ✓    |  ✖         |
+| [lemo.net.Disconnect()](#submodule-net-Disconnect)                               | 断开节点连接                 | ✓    |  ✖         |
+| [lemo.net.BroadcastConfirm()](#submodule-net-BroadcastConfirm)                               | 广播确认                 | ✓    |  ✖         |
 | [lemo.mine.start()](#submodule-mine-start)                                 | 开启挖矿                       | ✓    | ✖          |
 | [lemo.mine.stop()](#submodule-mine-stop)                                   | 停止挖矿                       | ✓    | ✖          |
 | [lemo.mine.getMining()](#submodule-mine-getMining)                         | 是否正在挖矿                   | ✓    | ✓          |
@@ -73,6 +78,8 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.account.getBalance(addr)](#submodule-account-getBalance)             | 获取账户余额                   | ✓    | ✓          |
 | [lemo.account.getAccount(addr)](#submodule-account-getAccount)             | 获取账户信息                   | ✓    | ✓          |
 | [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | 获取候选人信息                 | ✓    | ✓          |
+| [lemo.account.getVoteFor(addr)](#submodule-account-getVoteFor) | 获取账户的投票信息                 | ✓    | ✓          |
+| [lemo.account.getAssetEquity(addr, assetId)](#submodule-account-getAssetEquity) | 获取账户的收益                 | ✓    | ✓          |
 | [lemo.account.createTempAddress(from, userId)](#submodule-account-createTempAddress) | 创建临时账户                 | ✖    | ✓          |
 | [lemo.account.isTempAddress(address)](#submodule-account-isTempAddress) | 是否是临时账户                 | ✖    | ✓          |
 | [lemo.account.isContractAddress(address)](#submodule-account-isContractAddress) | 是否是合约账户                 | ✖    | ✓          |
@@ -704,6 +711,31 @@ console.log(JSON.stringify(result)) // {"term":0,"value":"1000000000","rewardHei
 
 ---
 
+<a name="submodule-chain-getAllRewardValue"></a>
+#### lemo.getAllRewardValue
+```
+lemo.getAllRewardValue()
+```
+Get all reward information
+
+##### Parameters
+无
+
+##### Returns
+`object` - 换届奖励信息，包括：
+    `term` - (number)届数，从0开始
+    `value` - (string)该届设置的奖励金额
+    `times` - (number)这届奖励金额的修改次数
+
+##### Example
+```js
+lemo.getAllRewardValue().then(function(result){
+console.log(result) // { 0: { term: '1', value: '1000000001', times: '0' } }
+})
+```
+
+---
+
 <a name="submodule-chain-getNodeVersion"></a>
 
 #### lemo.getNodeVersion
@@ -940,6 +972,94 @@ lemo.net.getInfo().then(function(info) {
 
 ---
 
+<a name="submodule-net-getNodeID"></a>
+
+#### lemo.net.getNodeID
+
+```
+lemo.net.getNodeID()
+```
+
+获取当前节点nodeID
+
+##### Parameters
+
+无
+
+##### Returns
+
+`Promise` - 通过`then`可以获取到当前节点的nodeID
+
+##### Example
+
+```js
+lemo.net.getNodeID().then(function(info) {
+    console.log(info) // "0x0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0"
+})
+```
+
+---
+
+<a name="submodule-net-connect"></a>
+#### lemo.net.connect
+```
+lemo.net.connect()
+```
+连接节点
+
+##### Parameters
+无
+
+##### Returns
+无
+
+##### Example
+```js
+lemo.net.connect()
+```
+
+---
+
+<a name="submodule-net-Disconnect"></a>
+#### lemo.net.Disconnect
+```
+lemo.net.Disconnect()
+```
+断开节点连接
+
+##### Parameters
+无
+
+##### Returns
+无
+
+##### Example
+```js
+lemo.net.Disconnect()
+```
+
+---
+
+<a name="submodule-net-BroadcastConfirm"></a>
+#### lemo.net.BroadcastConfirm
+```
+lemo.net.BroadcastConfirm()
+```
+广播确认
+
+##### Parameters
+无
+
+##### Returns
+无
+
+##### Example
+```js
+lemo.net.BroadcastConfirm()
+```
+
+---
+
 ### mine 模块 API
 
 <a name="submodule-mine-start"></a>
@@ -1154,6 +1274,56 @@ lemo.account.getCandidateInfo(address)
 lemo.account.getCandidateInfo('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
     .then(function(candidate) {
         console.log(candidate.votes); // "1599999000"
+    })
+```
+
+---
+
+<a name="submodule-account-getVoteFor"></a>
+#### lemo.account.getVoteFor
+```
+lemo.account.getVoteFor(address)
+```
+获取当前账户的投票地址
+
+##### Parameters
+1. `string` - 账户地址
+
+##### Returns
+`Promise` - 通过`then`可以获取到当前账户所投票的地址
+
+##### Example
+```js
+lemo.account.getVoteFor('Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG')
+    .then(function(info) {
+        console.log(info); // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
+    })
+```
+
+---
+
+<a name="submodule-account-getAssetEquity"></a>
+#### lemo.account.getAssetEquity
+```
+lemo.account.getAssetEquity(address, assetId)
+```
+获取账号的收益情况
+
+##### Parameters
+1. `string` - 账户地址
+2. `string` - 资产id
+
+##### Returns
+`Promise` - 通过`then`可以获取到当前资产的信息，包括：
+    `assertCode` - (string)资产code
+    `assetId` - (string)资产id
+    `equity` - (number)资产权益
+
+##### Example
+```js
+lemo.account.getAssetEquity('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a')
+    .then(function(info) {
+        console.log(info.assertCode); // "0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884"
     })
 ```
 
