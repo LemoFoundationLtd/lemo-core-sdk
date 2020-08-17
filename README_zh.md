@@ -716,7 +716,7 @@ console.log(JSON.stringify(result)) // {"term":0,"value":"1000000000","rewardHei
 ```
 lemo.getAllRewardValue()
 ```
-Get all reward information
+获取当前节点所有的收益信息
 
 ##### Parameters
 无

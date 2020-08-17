@@ -715,7 +715,7 @@ lemo.getAllRewardValue()
 Gets all reward information for the node
 
 ##### Parameters
-无
+None
 
 ##### Returns
 `object` - Change of leadership award information，includes：
