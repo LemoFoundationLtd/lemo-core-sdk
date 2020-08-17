@@ -67,9 +67,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.net.getConnectionsCount()](#submodule-net-getConnectionsCount)       | 获取已建立的连接数             | ✓    | ✓          |
 | [lemo.net.getInfo()](#submodule-net-getInfo)                               | 获取本节点信息                 | ✓    | ✓          |
 | [lemo.net.getNodeID()](#submodule-net-getNodeID)                               | 获取本节点的nodeId                 | ✓    | ✓          |
-| [lemo.net.connect()](#submodule-net-connect)                               | 连接节点                 | ✓    |  ✖         |
-| [lemo.net.Disconnect()](#submodule-net-Disconnect)                               | 断开节点连接                 | ✓    |  ✖         |
-| [lemo.net.BroadcastConfirm()](#submodule-net-BroadcastConfirm)                               | 广播确认                 | ✓    |  ✖         |
+| [lemo.net.broadcastConfirm()](#submodule-net-broadcastConfirm)                               | 广播确认                 | ✓    |  ✖         |
 | [lemo.mine.start()](#submodule-mine-start)                                 | 开启挖矿                       | ✓    | ✖          |
 | [lemo.mine.stop()](#submodule-mine-stop)                                   | 停止挖矿                       | ✓    | ✖          |
 | [lemo.mine.getMining()](#submodule-mine-getMining)                         | 是否正在挖矿                   | ✓    | ✓          |
@@ -1000,50 +998,10 @@ lemo.net.getNodeID().then(function(info) {
 
 ---
 
-<a name="submodule-net-connect"></a>
-#### lemo.net.connect
+<a name="submodule-net-broadcastConfirm"></a>
+#### lemo.net.broadcastConfirm
 ```
-lemo.net.connect()
-```
-连接节点
-
-##### Parameters
-无
-
-##### Returns
-无
-
-##### Example
-```js
-lemo.net.connect()
-```
-
----
-
-<a name="submodule-net-Disconnect"></a>
-#### lemo.net.Disconnect
-```
-lemo.net.Disconnect()
-```
-断开节点连接
-
-##### Parameters
-无
-
-##### Returns
-无
-
-##### Example
-```js
-lemo.net.Disconnect()
-```
-
----
-
-<a name="submodule-net-BroadcastConfirm"></a>
-#### lemo.net.BroadcastConfirm
-```
-lemo.net.BroadcastConfirm()
+lemo.net.broadcastConfirm()
 ```
 广播确认
 
@@ -1055,7 +1013,7 @@ lemo.net.BroadcastConfirm()
 
 ##### Example
 ```js
-lemo.net.BroadcastConfirm()
+lemo.net.broadcastConfirm()
 ```
 
 ---

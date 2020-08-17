@@ -67,9 +67,7 @@ API | description | asynchronous | available for remote
 [lemo.net.getConnections()](#submodule-net-getConnections) | Get the information of connections | ✓ | ✖
 [lemo.net.getConnectionsCount()](#submodule-net-getConnectionsCount) | Get the count of connections | ✓ | ✓
 [lemo.net.getInfo()](#submodule-net-getInfo) | Get current node information | ✓ | ✓
-[lemo.net.connect()](#submodule-net-connect)    | connected node                 | ✓    |  ✖         |
-[lemo.net.Disconnect()](#submodule-net-Disconnect)   | Disconnect node                 | ✓    |  ✖         |
-[lemo.net.BroadcastConfirm()](#submodule-net-BroadcastConfirm)  | Radio and confirm                 | ✓    |  ✖         
+[lemo.net.broadcastConfirm()](#submodule-net-broadcastConfirm)  | Radio and confirm                 | ✓    |  ✖         
 [lemo.net.getNodeID()](#submodule-net-getNodeID)  | Gets the nodeID of the current node                | ✓    | ✓   
 [lemo.mine.start()](#submodule-mine-start) | Start mining | ✓ | ✖
 [lemo.mine.stop()](#submodule-mine-stop) | Stop mining | ✓ | ✖
@@ -873,50 +871,10 @@ lemo.net.getNodeID().then(function(info) {
 
 ---
 
-<a name="submodule-net-connect"></a>
-#### lemo.net.connect
+<a name="submodule-net-broadcastConfirm"></a>
+#### lemo.net.broadcastConfirm
 ```
-lemo.net.connect()
-```
-Connected node
-
-##### Parameters
-None
-
-##### Returns
-None
-
-##### Example
-```js
-lemo.net.connect()
-```
-
----
-
-<a name="submodule-net-Disconnect"></a>
-#### lemo.net.Disconnect
-```
-lemo.net.Disconnect()
-```
-Disconnect node
-
-##### Parameters
-None
-
-##### Returns
-None
-
-##### Example
-```js
-lemo.net.Disconnect()
-```
-
----
-
-<a name="submodule-net-BroadcastConfirm"></a>
-#### lemo.net.BroadcastConfirm
-```
-lemo.net.BroadcastConfirm()
+lemo.net.broadcastConfirm()
 ```
 Radio and confirm
 
@@ -928,7 +886,7 @@ None
 
 ##### Example
 ```js
-lemo.net.BroadcastConfirm()
+lemo.net.broadcastConfirm()
 ```
 
 ---
