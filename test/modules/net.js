@@ -1,6 +1,7 @@
 import {assert} from 'chai'
 import LemoCore from '../../lib/index'
 import '../mock'
+import {deputyNodes} from '../datas'
 
 describe('module_net_getConnectionsCount', () => {
     it('getConnectionsCount', async () => {
@@ -21,5 +22,13 @@ describe('module_net_getInfo', () => {
             port: '7001',
             runtime: 'go1.9.2',
         })
+    })
+})
+
+describe('module_net_getNodeID', () => {
+    it('getInfo', async () => {
+        const lemo = new LemoCore()
+        const result = await lemo.net.getNodeID()
+        assert.deepEqual(result, deputyNodes[0].nodeID)
     })
 })

@@ -61,11 +61,15 @@ API | description | asynchronous | available for remote
 [lemo.getSdkVersion()](#submodule-chain-getSdkVersion) | Get the version of lemo-core-sdk | ✖ | ✓
 [lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock) | Listen for new block | ✖ | ✓
 [lemo.stopWatchBlock(subscribeId)](#submodule-chain-stopWatchBlock) | Stop listening block | ✖ | ✓
+[lemo.getAllRewardValue()](#submodule-chain-getAllRewardValue) | Get all reward information | ✓    | ✓    
 [lemo.net.connect(nodeAddr)](#submodule-net-connect) | Connect to a LemoChain node | ✓ | ✖
 [lemo.net.disconnect(nodeAddr)](#submodule-net-disconnect) | Disconnect to a LemoChain node | ✓ | ✖
 [lemo.net.getConnections()](#submodule-net-getConnections) | Get the information of connections | ✓ | ✖
 [lemo.net.getConnectionsCount()](#submodule-net-getConnectionsCount) | Get the count of connections | ✓ | ✓
 [lemo.net.getInfo()](#submodule-net-getInfo) | Get current node information | ✓ | ✓
+[lemo.net.broadcastConfirm(hash)](#submodule-net-broadcastConfirm)  | broadcast confirms of a block            | ✓    |  ✖         
+[lemo.net.fetchConfirm(height)](#submodule-net-fetchConfirm)  | Pulls the acknowledgement packet for the specified height block   | ✓    |  ✖         
+[lemo.net.getNodeID()](#submodule-net-getNodeID)  | Gets the nodeID of the current node                | ✓    | ✓   
 [lemo.mine.start()](#submodule-mine-start) | Start mining | ✓ | ✖
 [lemo.mine.stop()](#submodule-mine-stop) | Stop mining | ✓ | ✖
 [lemo.mine.getMining()](#submodule-mine-getMining) | True if current LemoChain node is mining | ✓ | ✓
@@ -78,6 +82,8 @@ API | description | asynchronous | available for remote
 [lemo.account.createTempAddress(from, userId)](#submodule-account-createTempAddress) | create a temp address | ✖ | ✓
 [lemo.account.isTempAddress(address)](#submodule-account-isTempAddress) | True if the current address is a temporary account | ✖ | ✓
 [lemo.account.isContractAddress(address)](#submodule-account-isContractAddress) | True if the current address is a contract account | ✖ | ✓
+[lemo.account.getVoteFor(addr)](#submodule-account-getVoteFor) | Get voting information for the current account                 | ✓    | ✓          
+[lemo.account.getAssetEquity(addr, assetId)](#submodule-account-getAssetEquity) | Get the proceeds from the account                 | ✓    | ✓          
 [lemo.tx.send(signedTxInfo, privateKey)](#submodule-tx-send) | Send transaction | ✓ | ✓
 [lemo.tx.waitConfirm(txHash)](#submodule-tx-waitConfirm)                           |  wait for the transaction to be confirmed               | ✓    | ✓ 
 [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx) | listen and filter for transaction of block | ✖ | ✓ |
@@ -700,6 +706,31 @@ lemo.stopWatchBlock(watchBlockId)
 
 ---
 
+<a name="submodule-chain-getAllRewardValue"></a>
+#### lemo.getAllRewardValue
+```
+lemo.getAllRewardValue()
+```
+Gets all reward information for the chain
+
+##### Parameters
+None
+
+##### Returns
+`object` - Miners' award information，includes：
+    `term` - (string)Terms index, starting at 0
+    `value` - (string)The total amount of awards given
+    `times` - (string)Updated times，times must be 1 or 2
+
+##### Example
+```js
+lemo.getAllRewardValue().then(function(result){
+console.log(result) // { 0: { term: '1', value: '1000000001', times: '1' } }
+})
+```
+
+---
+
 ### net API
 
 <a name="submodule-net-connect"></a>
@@ -815,6 +846,68 @@ lemo.net.getInfo().then(function(info) {
     console.log(info.port); // "60001"
     console.log(info.runtime); // "go1.10.1"
 })
+```
+
+---
+
+<a name="submodule-net-getNodeID"></a>
+#### lemo.net.getNodeID
+```
+lemo.net.getNodeID()
+```
+Get the nodeID of the current node
+
+##### Parameters
+None
+
+##### Returns
+`Promise` - Call `then` method to get the nodeID of the current node
+
+##### Example
+```js
+lemo.net.getNodeID().then(function(info) {
+    console.log(info.nodeName); // "0x0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0"
+})
+```
+
+---
+
+<a name="submodule-net-broadcastConfirm"></a>
+#### lemo.net.broadcastConfirm
+```
+lemo.net.broadcastConfirm(hash)
+```
+broadcast confirms of a block
+
+##### Parameters
+1. `string` - block hash
+
+##### Returns
+None
+
+##### Example
+```js
+lemo.net.broadcastConfirm('0x6d3062a9f5d4400b2002b436bc69485449891c83e23bf9e27229234da5b25dcf')
+```
+
+---
+
+<a name="submodule-net-fetchConfirm"></a>
+#### lemo.net.fetchConfirm
+```
+lemo.net.fetchConfirm(height)
+```
+Pulls the confirms (signatures from miners) of the specified height block
+
+##### Parameters
+1. `number` - Block Height
+
+##### Returns
+None
+
+##### Example
+```js
+lemo.net.fetchConfirm(1001)
 ```
 
 ---
@@ -1060,6 +1153,56 @@ Verify that the account is temporary
 ```js
 const result = lemo.account.isContractAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D')
 console.log(result) // false
+```
+
+---
+
+<a name="submodule-account-getVoteFor"></a>
+#### lemo.account.getVoteFor
+```
+lemo.account.getVoteFor(address)
+```
+Get voting information for the current account
+
+##### Parameters
+1. `string` - lemo address
+
+##### Returns
+`promise` - return a vote target address
+
+##### Example
+```js
+lemo.account.getVoteFor('Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG')
+    .then(function(info) {
+        console.log(info); // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
+    })
+```
+
+---
+
+<a name="submodule-account-getAssetEquity"></a>
+#### lemo.account.getAssetEquity
+```
+lemo.account.getAssetEquity(address, assetId)
+```
+Get the proceeds from the account
+
+##### Parameters
+1. `string` - The account address
+2. `string` - asset id
+
+##### Returns
+`Promise` - Call `then` method to get the proceeds from the account, includes:
+    `assertCode` - (string) asset code
+    `assetId` - (string) asset id
+    `equity` - (string) amount of asset
+
+##### Example
+```js
+lemo.account.getAssetEquity('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a')
+    .then(function(info) {
+        console.log(info.assertCode); // "0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884"
+    })
 ```
 
 ---

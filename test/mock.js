@@ -28,6 +28,7 @@ import {
     metaData1,
     unstableHeight,
     termRewardInfo,
+    RewardValue,
 } from './datas'
 
 const mockInfos = [
@@ -47,17 +48,6 @@ const mockInfos = [
         },
     },
     {
-        method: 'account_getAssetEquity',
-        paramsCount: 3,
-        reply([address, index, limit]) {
-            let list = []
-            if (address === 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D') {
-                list = equities.slice(index, index + limit)
-            }
-            return {equities: list, total: String(list.length)}
-        },
-    },
-    {
         method: 'account_getAsset',
         paramsCount: 1,
         reply([assetCode]) {
@@ -71,6 +61,28 @@ const mockInfos = [
         reply([assetId]) {
             const result = assetId === metaData.assetId ? metaData : metaData1
             return {...result}
+        },
+    },
+    {
+        method: 'account_getVoteFor',
+        paramsCount: 1,
+        reply([address]) {
+            return address === miner.address ? miner.voteFor : 'Lemo888888888888888888888888888888888888'
+        },
+    },
+    {
+        method: 'account_getAssetEquity',
+        paramsCount: 2,
+        reply([address, assetId]) {
+            if (address === 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D') {
+                const result = assetId === metaData.assetId ? equities[0] : metaData1
+                return {...result}
+            }
+            return {
+                assertCode: '0x0000000000000000000000000000000000000000000000000000000000000000',
+                assetId: '0x0000000000000000000000000000000000000000000000000000000000000000',
+                equity: '0',
+            }
         },
     },
     {
@@ -92,6 +104,15 @@ const mockInfos = [
         paramsCount: 1,
         reply() {
             return termRewardInfo
+        },
+    },
+    {
+        method: 'chain_getAllRewardValue',
+        paramsCount: 0,
+        reply() {
+            return  {
+                RewardValue,
+            }
         },
     },
     {
@@ -222,6 +243,13 @@ const mockInfos = [
         paramsCount: 0,
         reply() {
             return infos
+        },
+    },
+    {
+        method: 'net_nodeID',
+        paramsCount: 0,
+        reply() {
+            return deputyNodes[0].nodeID
         },
     },
     {
