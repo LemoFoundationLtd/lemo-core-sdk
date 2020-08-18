@@ -1168,7 +1168,7 @@ Get voting information for the current account
 1. `string` - lemo address
 
 ##### Returns
-`string` - return a vote target address
+`promise` - return a vote target address
 
 ##### Example
 ```js

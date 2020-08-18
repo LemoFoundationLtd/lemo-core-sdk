@@ -1269,7 +1269,7 @@ lemo.account.getVoteFor(address)
 1. `string` - 账户地址
 
 ##### Returns
-`string` - 返回一个投票目标地址
+`promise` - 返回一个投票目标地址
 
 ##### Example
 ```js
