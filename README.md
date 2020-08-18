@@ -720,7 +720,7 @@ None
 `object` - Miners' award information，includes：
     `term` - (string)Terms index, starting at 0
     `value` - (string)The total amount of awards given
-    `times` - (number)Updated times
+    `times` - (string)Updated times
 
 ##### Example
 ```js
@@ -880,7 +880,7 @@ lemo.net.broadcastConfirm(hash)
 broadcast confirms of a block
 
 ##### Parameters
-1. `string` - transaction hash
+1. `string` - block hash
 
 ##### Returns
 None

@@ -724,7 +724,7 @@ lemo.getAllRewardValue()
 `object` - 矿工的获奖信息，包括：
     `term` - (string)届数，从0开始
     `value` - (string)该届设置的奖励金额
-    `times` - (number)这届奖励金额的修改次数
+    `times` - (string)这届奖励金额的修改次数
 
 ##### Example
 ```js
@@ -1007,7 +1007,7 @@ lemo.net.broadcastConfirm(hash)
 广播确认
 
 ##### Parameters
-1. `string` - 交易hash
+1. `string` - 区块hash
 
 ##### Returns
 无
