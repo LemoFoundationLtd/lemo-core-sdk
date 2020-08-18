@@ -724,12 +724,12 @@ lemo.getAllRewardValue()
 `object` - 矿工的获奖信息，包括：
     `term` - (string)届数，从0开始
     `value` - (string)该届设置的奖励金额
-    `times` - (string)这届奖励金额的修改次数
+    `times` - (string)这届奖励金额的修改次数，修改次数为1或2
 
 ##### Example
 ```js
 lemo.getAllRewardValue().then(function(result){
-console.log(result) // { 0: { term: '1', value: '1000000001', times: '0' } }
+console.log(result) // { 0: { term: '1', value: '1000000001', times: '1' } }
 })
 ```
 
@@ -1027,14 +1027,14 @@ lemo.net.fetchConfirm(height)
 拉取指定高度区块的确认包
 
 ##### Parameters
-1. `string` - 区块高度
+1. `number` - 区块高度
 
 ##### Returns
 无
 
 ##### Example
 ```js
-lemo.net.fetchConfirm('1001')
+lemo.net.fetchConfirm(1001)
 ```
 
 ---
@@ -1269,7 +1269,7 @@ lemo.account.getVoteFor(address)
 1. `string` - 账户地址
 
 ##### Returns
-`Promise` - 返回一个投票目标地址
+`string` - 返回一个投票目标地址
 
 ##### Example
 ```js
@@ -1296,7 +1296,7 @@ lemo.account.getAssetEquity(address, assetId)
 `Promise` - 通过`then`可以获取到当前资产的信息，包括：
     `assertCode` - (string)资产code
     `assetId` - (string)资产id
-    `equity` - (string)资产权益
+    `equity` - (string)资产金额
 
 ##### Example
 ```js

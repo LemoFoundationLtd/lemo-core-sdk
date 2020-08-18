@@ -720,12 +720,12 @@ None
 `object` - Miners' award information，includes：
     `term` - (string)Terms index, starting at 0
     `value` - (string)The total amount of awards given
-    `times` - (string)Updated times
+    `times` - (string)Updated times，times must be 1 or 2
 
 ##### Example
 ```js
 lemo.getAllRewardValue().then(function(result){
-console.log(result) // { 0: { term: '1', value: '1000000001', times: '0' } }
+console.log(result) // { 0: { term: '1', value: '1000000001', times: '1' } }
 })
 ```
 
@@ -897,17 +897,17 @@ lemo.net.broadcastConfirm('0x6d3062a9f5d4400b2002b436bc69485449891c83e23bf9e2722
 ```
 lemo.net.fetchConfirm(height)
 ```
-Pulls the acknowledgement packet for the specified height block
+Pulls the confirms (signatures from miners) of the specified height block
 
 ##### Parameters
-1. `string` - Block Height
+1. `number` - Block Height
 
 ##### Returns
 None
 
 ##### Example
 ```js
-lemo.net.fetchConfirm('1001')
+lemo.net.fetchConfirm(1001)
 ```
 
 ---
@@ -1168,7 +1168,7 @@ Get voting information for the current account
 1. `string` - lemo address
 
 ##### Returns
-`boolean` - return a vote target address
+`string` - return a vote target address
 
 ##### Example
 ```js
@@ -1195,7 +1195,7 @@ Get the proceeds from the account
 `Promise` - Call `then` method to get the proceeds from the account, includes:
     `assertCode` - (string) asset code
     `assetId` - (string) asset id
-    `equity` - (string)Rights and interests of assets
+    `equity` - (string) amount of asset
 
 ##### Example
 ```js
