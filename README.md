@@ -84,7 +84,7 @@ API | description | asynchronous | available for remote
 [lemo.account.isContractAddress(address)](#submodule-account-isContractAddress) | True if the current address is a contract account | ✖ | ✓
 [lemo.account.getVoteFor(addr)](#submodule-account-getVoteFor) | Get voting information for the current account                 | ✓    | ✓          
 [lemo.account.getAssetEquity(addr, assetId)](#submodule-account-getAssetEquity) | Get the proceeds from the account                 | ✓    | ✓          
-[lemo.tx.send(signedTxInfo, privateKey)](#submodule-tx-send) | Send transaction | ✓ | ✓
+[lemo.tx.send(txConfig, privateKey)](#submodule-tx-send) | Send transaction | ✓ | ✓
 [lemo.tx.waitConfirm(txHash)](#submodule-tx-waitConfirm)                           |  wait for the transaction to be confirmed               | ✓    | ✓ 
 [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx) | listen and filter for transaction of block | ✖ | ✓ |
 [lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx) | Stop listening transaction | ✖ | ✓ |
@@ -1219,7 +1219,7 @@ lemo.tx.send(txConfig, privateKey)
 Send a transaction
 
 ##### Parameters
-1. `object|string` - Unsinged [transaction](#data-structure-transaction) information. Or a [LemoTx](https://github.com/LemoFoundationLtd/lemo-tx) object or json string.  
+1. `LemoTx|object|string` - Signed or unsigned [transaction](#data-structure-transaction) information. Or a [LemoTx](https://github.com/LemoFoundationLtd/lemo-tx) object or json string.  
 2. `string` - (optional) Account private key, it will be used to sign if exist  
 
 ##### Returns
@@ -1227,8 +1227,8 @@ Send a transaction
 
 ##### Example
 ```js
-const txInfo = {from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
-lemo.tx.send(txInfo, '0xc21b6b2fbf230f665b936194d14da67187732bf9d28768aef1a3cbb26608f8aa').then(function(txHash) {
+const txConfig = {from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
+lemo.tx.send(txConfig, '0xc21b6b2fbf230f665b936194d14da67187732bf9d28768aef1a3cbb26608f8aa').then(function(txHash) {
     console.log(txHash) // 0x03fea27a8d140574dc648e1cb1a198f5ade450a347095cff7f3d961a11dac505
 })
 ```

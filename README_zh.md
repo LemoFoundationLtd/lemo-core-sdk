@@ -82,7 +82,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.account.createTempAddress(from, userId)](#submodule-account-createTempAddress) | 创建临时账户                 | ✖    | ✓          |
 | [lemo.account.isTempAddress(address)](#submodule-account-isTempAddress) | 是否是临时账户                 | ✖    | ✓          |
 | [lemo.account.isContractAddress(address)](#submodule-account-isContractAddress) | 是否是合约账户                 | ✖    | ✓          |
-| [lemo.tx.send(signedTxInfo)](#submodule-tx-send)                           | 发送已签名的交易               | ✓    | ✓          |
+| [lemo.tx.send(txConfig)](#submodule-tx-send)                           | 发送交易               | ✓    | ✓          |
 | [lemo.tx.waitConfirm(txHash)](#submodule-tx-waitConfirm)                           | 等待交易上链               | ✓    | ✓          |
 | [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx)         | 监听过滤区块的交易            | ✖    | ✓          |
 | [lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx)                | 停止指定交易            | ✖    | ✓          |
@@ -1408,14 +1408,11 @@ console.log(JSON.stringify(result)) // {"term":0,"value":"1000000000","rewardHei
 lemo.tx.send(txConfig)
 ```
 
-发送已签名的交易
+发送交易
 
 ##### Parameters
 
-1. `object|string` - 签名后的[交易](#data-structure-transaction)信息，可以是对象形式也可以是[`lemo.tx.sign`](#submodule-tx-sign)返回的字符串形式  
-   相对于[`lemo.tx.sendTx`](#submodule-tx-sendTx)中的交易信息少了`type`、`version`字段，并多出了以下字段
-    - `sig` - (string) 交易签名字段
-    - `gasPayerSig` - (string) 代付gas交易签名字段
+1. `LemoTx|object|string` - 签过名或未签名的[交易](#data-structure-transaction)信息，可以是对象形式也可以是[`lemo.tx.sign`](#submodule-tx-sign)返回的字符串形式  
 
 ##### Returns
 
@@ -1424,11 +1421,17 @@ lemo.tx.send(txConfig)
 ##### Example
 
 ```js
-const txInfo = {from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
-const signedTx = lemo.tx.sign('0xc21b6b2fbf230f665b936194d14da67187732bf9d28768aef1a3cbb26608f8aa', txInfo)
-lemo.tx.send(signedTx).then(function(txHash) {
-    console.log(txHash) //0x03fea27a8d140574dc648e1cb1a198f5ade450a347095cff7f3d961a11dac505
-    })
+const txConfig = {from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
+lemo.tx.send(txConfig, '0xc21b6b2fbf230f665b936194d14da67187732bf9d28768aef1a3cbb26608f8aa').then(function(txHash) {
+    console.log(txHash) // 0x03fea27a8d140574dc648e1cb1a198f5ade450a347095cff7f3d961a11dac505
+})
+```
+```js
+const tx = new LemoTx({chainID: 100, from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100})
+tx.signWith('0xc21b6b2fbf230f665b936194d14da67187732bf9d28768aef1a3cbb26608f8aa')
+lemo.tx.send(tx).then(function(txHash) {
+    console.log(txHash) // 0x03fea27a8d140574dc648e1cb1a198f5ade450a347095cff7f3d961a11dac505
+})
 ```
 
 ---
