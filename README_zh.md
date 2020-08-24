@@ -1413,6 +1413,7 @@ lemo.tx.send(txConfig)
 ##### Parameters
 
 1. `LemoTx|object|string` - 签过名或未签名的[交易](#data-structure-transaction)信息，可以是对象形式也可以是[`lemo.tx.sign`](#submodule-tx-sign)返回的字符串形式  
+2. `string` - (optional) 交易发送者的账户私钥，用来为交易签名  
 
 ##### Returns
 
