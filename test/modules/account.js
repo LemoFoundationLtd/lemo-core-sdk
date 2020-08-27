@@ -100,7 +100,7 @@ describe('module_account_getAssetEquity', () => {
         const lemo = new LemoCore()
         assert.throws(() => {
             lemo.account.getAssetEquity('Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W', '')
-        }, errors.InvalidEmptyFiled())
+        }, errors.InvalidNoAssetId())
     })
     it('normal', async () => {
         const lemo = new LemoCore()

@@ -67,9 +67,8 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.net.getConnectionsCount()](#submodule-net-getConnectionsCount)       | 获取已建立的连接数             | ✓    | ✓          |
 | [lemo.net.getInfo()](#submodule-net-getInfo)                               | 获取本节点信息                 | ✓    | ✓          |
 | [lemo.net.getNodeID()](#submodule-net-getNodeID)                               | 获取本节点的nodeId                 | ✓    | ✓          |
-| [lemo.net.connect()](#submodule-net-connect)                               | 连接节点                 | ✓    |  ✖         |
-| [lemo.net.Disconnect()](#submodule-net-Disconnect)                               | 断开节点连接                 | ✓    |  ✖         |
-| [lemo.net.BroadcastConfirm()](#submodule-net-BroadcastConfirm)                               | 广播确认                 | ✓    |  ✖         |
+| [lemo.net.broadcastConfirm(hash)](#submodule-net-broadcastConfirm)                   | 广播确认                 | ✓    |  ✖         |
+| [lemo.net.fetchConfirm(height)](#submodule-net-fetchConfirm)            | 拉取指定高度区块的确认包                 | ✓    |  ✖         |
 | [lemo.mine.start()](#submodule-mine-start)                                 | 开启挖矿                       | ✓    | ✖          |
 | [lemo.mine.stop()](#submodule-mine-stop)                                   | 停止挖矿                       | ✓    | ✖          |
 | [lemo.mine.getMining()](#submodule-mine-getMining)                         | 是否正在挖矿                   | ✓    | ✓          |
@@ -83,7 +82,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.account.createTempAddress(from, userId)](#submodule-account-createTempAddress) | 创建临时账户                 | ✖    | ✓          |
 | [lemo.account.isTempAddress(address)](#submodule-account-isTempAddress) | 是否是临时账户                 | ✖    | ✓          |
 | [lemo.account.isContractAddress(address)](#submodule-account-isContractAddress) | 是否是合约账户                 | ✖    | ✓          |
-| [lemo.tx.send(signedTxInfo)](#submodule-tx-send)                           | 发送已签名的交易               | ✓    | ✓          |
+| [lemo.tx.send(txConfig)](#submodule-tx-send)                           | 发送交易               | ✓    | ✓          |
 | [lemo.tx.waitConfirm(txHash)](#submodule-tx-waitConfirm)                           | 等待交易上链               | ✓    | ✓          |
 | [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx)         | 监听过滤区块的交易            | ✖    | ✓          |
 | [lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx)                | 停止指定交易            | ✖    | ✓          |
@@ -716,21 +715,21 @@ console.log(JSON.stringify(result)) // {"term":0,"value":"1000000000","rewardHei
 ```
 lemo.getAllRewardValue()
 ```
-Get all reward information
+获取当前链所有的收益信息
 
 ##### Parameters
 无
 
 ##### Returns
-`object` - 换届奖励信息，包括：
-    `term` - (number)届数，从0开始
+`object` - 矿工的获奖信息，包括：
+    `term` - (string)届数，从0开始
     `value` - (string)该届设置的奖励金额
-    `times` - (number)这届奖励金额的修改次数
+    `times` - (string)这届奖励金额的修改次数，修改次数为1或2
 
 ##### Example
 ```js
 lemo.getAllRewardValue().then(function(result){
-console.log(result) // { 0: { term: '1', value: '1000000001', times: '0' } }
+console.log(result) // { 0: { term: '1', value: '1000000001', times: '1' } }
 })
 ```
 
@@ -1000,62 +999,42 @@ lemo.net.getNodeID().then(function(info) {
 
 ---
 
-<a name="submodule-net-connect"></a>
-#### lemo.net.connect
+<a name="submodule-net-broadcastConfirm"></a>
+#### lemo.net.broadcastConfirm
 ```
-lemo.net.connect()
-```
-连接节点
-
-##### Parameters
-无
-
-##### Returns
-无
-
-##### Example
-```js
-lemo.net.connect()
-```
-
----
-
-<a name="submodule-net-Disconnect"></a>
-#### lemo.net.Disconnect
-```
-lemo.net.Disconnect()
-```
-断开节点连接
-
-##### Parameters
-无
-
-##### Returns
-无
-
-##### Example
-```js
-lemo.net.Disconnect()
-```
-
----
-
-<a name="submodule-net-BroadcastConfirm"></a>
-#### lemo.net.BroadcastConfirm
-```
-lemo.net.BroadcastConfirm()
+lemo.net.broadcastConfirm(hash)
 ```
 广播确认
 
 ##### Parameters
-无
+1. `string` - 区块hash
 
 ##### Returns
 无
 
 ##### Example
 ```js
-lemo.net.BroadcastConfirm()
+lemo.net.broadcastConfirm('0x6d3062a9f5d4400b2002b436bc69485449891c83e23bf9e27229234da5b25dcf')
+```
+
+---
+
+<a name="submodule-net-fetchConfirm"></a>
+#### lemo.net.fetchConfirm
+```
+lemo.net.fetchConfirm(height)
+```
+拉取指定高度区块的确认包
+
+##### Parameters
+1. `number` - 区块高度
+
+##### Returns
+无
+
+##### Example
+```js
+lemo.net.fetchConfirm(1001)
 ```
 
 ---
@@ -1290,7 +1269,7 @@ lemo.account.getVoteFor(address)
 1. `string` - 账户地址
 
 ##### Returns
-`Promise` - 通过`then`可以获取到当前账户所投票的地址
+`promise` - 返回一个投票目标地址
 
 ##### Example
 ```js
@@ -1317,7 +1296,7 @@ lemo.account.getAssetEquity(address, assetId)
 `Promise` - 通过`then`可以获取到当前资产的信息，包括：
     `assertCode` - (string)资产code
     `assetId` - (string)资产id
-    `equity` - (number)资产权益
+    `equity` - (string)资产金额
 
 ##### Example
 ```js
@@ -1429,14 +1408,12 @@ console.log(JSON.stringify(result)) // {"term":0,"value":"1000000000","rewardHei
 lemo.tx.send(txConfig)
 ```
 
-发送已签名的交易
+发送交易
 
 ##### Parameters
 
-1. `object|string` - 签名后的[交易](#data-structure-transaction)信息，可以是对象形式也可以是[`lemo.tx.sign`](#submodule-tx-sign)返回的字符串形式  
-   相对于[`lemo.tx.sendTx`](#submodule-tx-sendTx)中的交易信息少了`type`、`version`字段，并多出了以下字段
-    - `sig` - (string) 交易签名字段
-    - `gasPayerSig` - (string) 代付gas交易签名字段
+1. `LemoTx|object|string` - 签过名或未签名的[交易](#data-structure-transaction)信息，可以是对象形式也可以是[`lemo.tx.sign`](#submodule-tx-sign)返回的字符串形式  
+2. `string` - (optional) 交易发送者的账户私钥，用来为交易签名  
 
 ##### Returns
 
@@ -1445,11 +1422,17 @@ lemo.tx.send(txConfig)
 ##### Example
 
 ```js
-const txInfo = {from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
-const signedTx = lemo.tx.sign('0xc21b6b2fbf230f665b936194d14da67187732bf9d28768aef1a3cbb26608f8aa', txInfo)
-lemo.tx.send(signedTx).then(function(txHash) {
-    console.log(txHash) //0x03fea27a8d140574dc648e1cb1a198f5ade450a347095cff7f3d961a11dac505
-    })
+const txConfig = {from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
+lemo.tx.send(txConfig, '0xc21b6b2fbf230f665b936194d14da67187732bf9d28768aef1a3cbb26608f8aa').then(function(txHash) {
+    console.log(txHash) // 0x03fea27a8d140574dc648e1cb1a198f5ade450a347095cff7f3d961a11dac505
+})
+```
+```js
+const tx = new LemoTx({chainID: 100, from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100})
+tx.signWith('0xc21b6b2fbf230f665b936194d14da67187732bf9d28768aef1a3cbb26608f8aa')
+lemo.tx.send(tx).then(function(txHash) {
+    console.log(txHash) // 0x03fea27a8d140574dc648e1cb1a198f5ade450a347095cff7f3d961a11dac505
+})
 ```
 
 ---

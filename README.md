@@ -67,9 +67,8 @@ API | description | asynchronous | available for remote
 [lemo.net.getConnections()](#submodule-net-getConnections) | Get the information of connections | ✓ | ✖
 [lemo.net.getConnectionsCount()](#submodule-net-getConnectionsCount) | Get the count of connections | ✓ | ✓
 [lemo.net.getInfo()](#submodule-net-getInfo) | Get current node information | ✓ | ✓
-[lemo.net.connect()](#submodule-net-connect)    | connected node                 | ✓    |  ✖         |
-[lemo.net.Disconnect()](#submodule-net-Disconnect)   | Disconnect node                 | ✓    |  ✖         |
-[lemo.net.BroadcastConfirm()](#submodule-net-BroadcastConfirm)  | Radio and confirm                 | ✓    |  ✖         
+[lemo.net.broadcastConfirm(hash)](#submodule-net-broadcastConfirm)  | broadcast confirms of a block            | ✓    |  ✖         
+[lemo.net.fetchConfirm(height)](#submodule-net-fetchConfirm)  | Pulls the acknowledgement packet for the specified height block   | ✓    |  ✖         
 [lemo.net.getNodeID()](#submodule-net-getNodeID)  | Gets the nodeID of the current node                | ✓    | ✓   
 [lemo.mine.start()](#submodule-mine-start) | Start mining | ✓ | ✖
 [lemo.mine.stop()](#submodule-mine-stop) | Stop mining | ✓ | ✖
@@ -85,7 +84,7 @@ API | description | asynchronous | available for remote
 [lemo.account.isContractAddress(address)](#submodule-account-isContractAddress) | True if the current address is a contract account | ✖ | ✓
 [lemo.account.getVoteFor(addr)](#submodule-account-getVoteFor) | Get voting information for the current account                 | ✓    | ✓          
 [lemo.account.getAssetEquity(addr, assetId)](#submodule-account-getAssetEquity) | Get the proceeds from the account                 | ✓    | ✓          
-[lemo.tx.send(signedTxInfo, privateKey)](#submodule-tx-send) | Send transaction | ✓ | ✓
+[lemo.tx.send(txConfig, privateKey)](#submodule-tx-send) | Send transaction | ✓ | ✓
 [lemo.tx.waitConfirm(txHash)](#submodule-tx-waitConfirm)                           |  wait for the transaction to be confirmed               | ✓    | ✓ 
 [lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx) | listen and filter for transaction of block | ✖ | ✓ |
 [lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx) | Stop listening transaction | ✖ | ✓ |
@@ -712,21 +711,21 @@ lemo.stopWatchBlock(watchBlockId)
 ```
 lemo.getAllRewardValue()
 ```
-Gets all reward information for the node
+Gets all reward information for the chain
 
 ##### Parameters
-无
+None
 
 ##### Returns
-`object` - Change of leadership award information，includes：
-    `term` - (string)Terms, starting at 0
+`object` - Miners' award information，includes：
+    `term` - (string)Terms index, starting at 0
     `value` - (string)The total amount of awards given
-    `times` - (number)The height of the award block
+    `times` - (string)Updated times，times must be 1 or 2
 
 ##### Example
 ```js
 lemo.getAllRewardValue().then(function(result){
-console.log(result) // { 0: { term: '1', value: '1000000001', times: '0' } }
+console.log(result) // { 0: { term: '1', value: '1000000001', times: '1' } }
 })
 ```
 
@@ -873,62 +872,42 @@ lemo.net.getNodeID().then(function(info) {
 
 ---
 
-<a name="submodule-net-connect"></a>
-#### lemo.net.connect
+<a name="submodule-net-broadcastConfirm"></a>
+#### lemo.net.broadcastConfirm
 ```
-lemo.net.connect()
+lemo.net.broadcastConfirm(hash)
 ```
-Connected node
+broadcast confirms of a block
 
 ##### Parameters
-None
+1. `string` - block hash
 
 ##### Returns
 None
 
 ##### Example
 ```js
-lemo.net.connect()
+lemo.net.broadcastConfirm('0x6d3062a9f5d4400b2002b436bc69485449891c83e23bf9e27229234da5b25dcf')
 ```
 
 ---
 
-<a name="submodule-net-Disconnect"></a>
-#### lemo.net.Disconnect
+<a name="submodule-net-fetchConfirm"></a>
+#### lemo.net.fetchConfirm
 ```
-lemo.net.Disconnect()
+lemo.net.fetchConfirm(height)
 ```
-Disconnect node
+Pulls the confirms (signatures from miners) of the specified height block
 
 ##### Parameters
-None
+1. `number` - Block Height
 
 ##### Returns
 None
 
 ##### Example
 ```js
-lemo.net.Disconnect()
-```
-
----
-
-<a name="submodule-net-BroadcastConfirm"></a>
-#### lemo.net.BroadcastConfirm
-```
-lemo.net.BroadcastConfirm()
-```
-Radio and confirm
-
-##### Parameters
-None
-
-##### Returns
-None
-
-##### Example
-```js
-lemo.net.BroadcastConfirm()
+lemo.net.fetchConfirm(1001)
 ```
 
 ---
@@ -1189,7 +1168,7 @@ Get voting information for the current account
 1. `string` - lemo address
 
 ##### Returns
-`boolean` - True if the current address is a contract account
+`promise` - return a vote target address
 
 ##### Example
 ```js
@@ -1216,7 +1195,7 @@ Get the proceeds from the account
 `Promise` - Call `then` method to get the proceeds from the account, includes:
     `assertCode` - (string) asset code
     `assetId` - (string) asset id
-    `equity` - (number)Rights and interests of assets
+    `equity` - (string) amount of asset
 
 ##### Example
 ```js
@@ -1240,7 +1219,7 @@ lemo.tx.send(txConfig, privateKey)
 Send a transaction
 
 ##### Parameters
-1. `object|string` - Unsinged [transaction](#data-structure-transaction) information. Or a [LemoTx](https://github.com/LemoFoundationLtd/lemo-tx) object or json string.  
+1. `LemoTx|object|string` - Signed or unsigned [transaction](#data-structure-transaction) information. Or a [LemoTx](https://github.com/LemoFoundationLtd/lemo-tx) object or json string.  
 2. `string` - (optional) Account private key, it will be used to sign if exist  
 
 ##### Returns
@@ -1248,8 +1227,8 @@ Send a transaction
 
 ##### Example
 ```js
-const txInfo = {from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
-lemo.tx.send(txInfo, '0xc21b6b2fbf230f665b936194d14da67187732bf9d28768aef1a3cbb26608f8aa').then(function(txHash) {
+const txConfig = {from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG', to: 'Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34', amount: 100}
+lemo.tx.send(txConfig, '0xc21b6b2fbf230f665b936194d14da67187732bf9d28768aef1a3cbb26608f8aa').then(function(txHash) {
     console.log(txHash) // 0x03fea27a8d140574dc648e1cb1a198f5ade450a347095cff7f3d961a11dac505
 })
 ```

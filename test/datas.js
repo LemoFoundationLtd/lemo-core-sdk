@@ -716,7 +716,7 @@ export const equities = [
     {
         assertCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
         assetId: '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a',
-        equity: 1,
+        equity: '1',
     },
 ]
 
@@ -724,7 +724,7 @@ export const formattedEquities = [
     {
         assertCode: '0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884',
         assetId: '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a',
-        equity: 1,
+        equity: '1',
     },
 ]
 
@@ -783,5 +783,5 @@ export const formattedTermRewardInfo = {
 export const RewardValue = {
     term: '1',
     value: '1000000001',
-    times: '0',
+    times: '1',
 }
