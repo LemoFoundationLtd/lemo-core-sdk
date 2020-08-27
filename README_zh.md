@@ -55,7 +55,7 @@ lemo.chain.getBlockByNumber(0).then(function(block) {
 | [lemo.getGenesis()](#submodule-chain-getGenesis)                           | 获取创世区块                   | ✓    | ✓          |
 | [lemo.getChainID()](#submodule-chain-getChainID)                           | 获取当前链 ID                  | ✓    | ✓          |
 | [lemo.getCandidateTop30()](#submodule-chain-getCandidateTop30)             | 获取排名前30的候选节点列表       | ✓    | ✓          |
-| [lemo.getDeputyNodeList()](#submodule-chain-getDeputyNodeList)             | 获取当前所有共识节点的信息列表    | ✓    | ✓          |
+| [lemo.getDeputyNodeList(onlyBlockSigner)](#submodule-chain-getDeputyNodeList)             | 获取当前所有共识节点的信息列表    | ✓    | ✓          |
 | [lemo.getTermReward(height)](#submodule-chain-getTermReward) | 获取换届奖励信息                 | ✓    | ✓          |
 | [lemo.getAllRewardValue()](#submodule-chain-getAllRewardValue) | 获取所有的收益信息                 | ✓    | ✓          |
 | [lemo.getNodeVersion()](#submodule-chain-getNodeVersion)                   | 节点版本号                     | ✓    | ✓          |
@@ -653,12 +653,13 @@ lemo.getCandidateTop30().then(function(candidateList) {
 <a name="submodule-chain-getDeputyNodeList"></a>
 #### lemo.getDeputyNodeList
 ```
-lemo.getDeputyNodeList()
+lemo.getDeputyNodeList(onlyBlockSigner)
 ```
 获取当前所有共识节点的信息
+若为true则获取当前可对区块竞选签名的共识节点信息，false则获取当前已当选的共识节点信息
 
 ##### Parameters
-无
+1. `boolean` - （可选）是否是区块的唯一签名者
 
 ##### Returns
 `Promise` - 通过`then`可以获取当前所有共识节点的信息列表  
@@ -675,7 +676,7 @@ lemo.getDeputyNodeList()
 
 ##### Example
 ```js
-lemo.getDeputyNodeList().then(function(nodeList) {
+lemo.getDeputyNodeList(true).then(function(nodeList) {
     console.log(nodeList.length) // 1
     console.log(JSON.stringify(nodeList[0]))
 // "{"minerAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","incomeAddress":"Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W","nodeID":"0x0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0","rank":0,"votes":"50000","host":"127.0.0.1","port":8080,"depositAmount":"5000000000000000000000000","introduction":"ddf","p2pUri":"0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0@127.0.0.1:8080"}"
