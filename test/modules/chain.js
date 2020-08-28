@@ -196,6 +196,16 @@ describe('module_chain_getDeputyNodeList', () => {
         const result = await lemo.getDeputyNodeList()
         assert.deepEqual(result, formattedDeputyNodes)
     })
+    it('onlyBlockSigner is true', async () => {
+        const lemo = new LemoCore()
+        const result = await lemo.getDeputyNodeList(true)
+        assert.deepEqual(result, formattedDeputyNodes)
+    })
+    it('onlyBlockSigner is false', async () => {
+        const lemo = new LemoCore()
+        const result = await lemo.getDeputyNodeList(false)
+        assert.deepEqual(result, formattedDeputyNodes)
+    })
 })
 
 describe('module_account_getTermReward', () => {

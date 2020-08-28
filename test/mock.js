@@ -212,9 +212,13 @@ const mockInfos = [
     },
     {
         method: 'chain_getDeputyNodeList',
-        paramsCount: 0,
-        reply() {
-            return deputyNodes
+        paramsCount: 1,
+        reply([onlyBlockSigner]) {
+            if (onlyBlockSigner) {
+                return deputyNodes
+            } else {
+                return deputyNodes
+            }
         },
     },
     {
