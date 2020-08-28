@@ -583,7 +583,7 @@ lemo.getCandidateTop30().then(function(candidateList) {
 lemo.getDeputyNodeList()
 ```
 Get information of current deputy nodes
-If true obtains consensus node information that can currently be signed for block campaigns, false gets the currently elected consensus node information.
+If true it returns deputy node information of who can currently sign blocks, false returns who has become deputy node from candidate in current stable state.
 
 ##### Parameters
 1. `boolean` - （Optional.）Whether it is the only signer of the block.
