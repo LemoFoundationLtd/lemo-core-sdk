@@ -659,7 +659,7 @@ lemo.getDeputyNodeList(onlyBlockSigner)
 若为true则获取当前可对区块竞选签名的共识节点信息，false则获取当前已当选的共识节点信息
 
 ##### Parameters
-1. `boolean` - （可选）是否是区块的唯一签名者
+1. `boolean` - （可选）是否只拉取可对区块进行签名的节点
 
 ##### Returns
 `Promise` - 通过`then`可以获取当前所有共识节点的信息列表  
