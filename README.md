@@ -586,7 +586,7 @@ Get information of current deputy nodes
 If true it returns deputy node information of who can currently sign blocks, false returns who has become deputy node from candidate in current stable state.
 
 ##### Parameters
-1. `boolean` - （Optional.）Whether it is the only signer of the block.
+1. `boolean` - （Optional.）Whether to return only block signers.
 
 ##### Returns
 `Promise` - Call `then` method to get the information list of current deputy nodes  
