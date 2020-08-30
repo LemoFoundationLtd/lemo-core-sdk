@@ -53,6 +53,9 @@
     "files": [
         "dist"
     ],
+    "mocha": {
+        "require": ["reify"]
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/LemoFoundationLtd/lemo-core-sdk.git"
