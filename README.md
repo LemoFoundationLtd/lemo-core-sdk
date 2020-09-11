@@ -1,6 +1,7 @@
 ![Logo of the project](./logo.png)
 
 # LemoChain Core SDK
+
 [![npm](https://img.shields.io/npm/v/lemo-core-sdk.svg?style=flat-square)](https://www.npmjs.com/package/lemo-core-sdk)
 [![Build Status](https://travis-ci.org/LemoFoundationLtd/lemo-core-sdk.svg?branch=master)](https://travis-ci.org/LemoFoundationLtd/lemo-core-sdk)
 [![Coverage Status](https://coveralls.io/repos/github/LemoFoundationLtd/lemo-core-sdk/badge.svg?branch=master)](https://coveralls.io/github/LemoFoundationLtd/lemo-core-sdk?branch=master)
@@ -24,8 +25,8 @@ yarn add lemo-core-sdk
 
 ### As Browser module
 
-* Include `lemo-core-sdk.min.js` in your html file.
-* Use the `LemoCore` object directly from global namespace
+- Include `lemo-core-sdk.min.js` in your html file.
+- Use the `LemoCore` object directly from global namespace
 
 ## Example
 
@@ -35,10 +36,9 @@ const lemo = new LemoCore({
     host: 'http://127.0.0.1:8001'
 })
 
-lemo.chain.getBlockByNumber(0)
-    .then(function(block) {
-        console.log(block)
-    })
+lemo.chain.getBlockByNumber(0).then(function(block) {
+    console.log(block)
+})
 ```
 
 ## LemoChain Core API
@@ -49,53 +49,51 @@ API | description | asynchronous | available for remote
 ---|---|---|---
 [lemo.getBlock(heightOrHash, withBody)](#submodule-chain-getBlock) | Get block by height or block hash | ✓ | ✓
 [lemo.getNewestBlock(withBody)](#submodule-chain-getNewestBlock) | Get the newest block | ✓ | ✓
-[lemo.getNewestUnstableBlock()](#submodule-chain-getNewestUnstableBlock) | Get the newest unstable block | ✓ | ✖
+[lemo.getNewestUnstableBlock()](#submodule-chain-getNewestUnstableBlock) | Get the newest unstable block | ✓ | 
 [lemo.getNewestHeight()](#submodule-chain-getNewestHeight) | Get the newest block height | ✓ | ✓
-[lemo.getNewestUnstableHeight()](#submodule-chain-getNewestUnstableHeight) | Get the newest unstable block height | ✓ | ✖
+[lemo.getNewestUnstableHeight()](#submodule-chain-getNewestUnstableHeight) | Get the newest unstable block height | ✓ | 
 [lemo.getGenesis()](#submodule-chain-getGenesis) | Get the first block | ✓ | ✓
 [lemo.getChainID()](#submodule-chain-getChainID) | Get the chain ID | ✓ | ✓
 [lemo.getCandidateTop30()](#submodule-chain-getCandidateTop30) | Get top 30 candidates information | ✓ | ✓
 [lemo.getDeputyNodeList(onlyBlockSigner)](#submodule-chain-getDeputyNodeList) | Get information of current deputy nodes | ✓ | ✓
 [lemo.getTermReward(height)](#submodule-chain-getTermReward) | Get miners' reward in current term | ✓ | ✓
+[lemo.getAllRewardValue()](#submodule-chain-getAllRewardValue) | Get all reward information | ✓ | ✓
 [lemo.getNodeVersion()](#submodule-chain-getNodeVersion) | Get the version of LemoChain node | ✓ | ✓
-[lemo.getSdkVersion()](#submodule-chain-getSdkVersion) | Get the version of lemo-core-sdk | ✖ | ✓
-[lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock) | Listen for new block | ✖ | ✓
-[lemo.stopWatchBlock(subscribeId)](#submodule-chain-stopWatchBlock) | Stop listening block | ✖ | ✓
-[lemo.getAllRewardValue()](#submodule-chain-getAllRewardValue) | Get all reward information | ✓    | ✓    
-[lemo.net.connect(nodeAddr)](#submodule-net-connect) | Connect to a LemoChain node | ✓ | ✖
-[lemo.net.disconnect(nodeAddr)](#submodule-net-disconnect) | Disconnect to a LemoChain node | ✓ | ✖
-[lemo.net.getConnections()](#submodule-net-getConnections) | Get the information of connections | ✓ | ✖
+[lemo.watchBlock(withBody, callback)](#submodule-chain-watchBlock) | Listen for new block | | ✓
+[lemo.stopWatchBlock(subscribeId)](#submodule-chain-stopWatchBlock) | Stop listening block | | ✓
+[lemo.net.connect(nodeAddr)](#submodule-net-connect) | Connect to a LemoChain node | ✓ | 
+[lemo.net.disconnect(nodeAddr)](#submodule-net-disconnect) | Disconnect to a LemoChain node | ✓ | 
+[lemo.net.getConnections()](#submodule-net-getConnections) | Get the information of connections | ✓ | 
 [lemo.net.getConnectionsCount()](#submodule-net-getConnectionsCount) | Get the count of connections | ✓ | ✓
 [lemo.net.getInfo()](#submodule-net-getInfo) | Get current node information | ✓ | ✓
-[lemo.net.broadcastConfirm(hash)](#submodule-net-broadcastConfirm)  | broadcast confirms of a block            | ✓    |  ✖         
-[lemo.net.fetchConfirm(height)](#submodule-net-fetchConfirm)  | Pulls the acknowledgement packet for the specified height block   | ✓    |  ✖         
-[lemo.net.getNodeID()](#submodule-net-getNodeID)  | Gets the nodeID of the current node                | ✓    | ✓   
-[lemo.mine.start()](#submodule-mine-start) | Start mining | ✓ | ✖
-[lemo.mine.stop()](#submodule-mine-stop) | Stop mining | ✓ | ✖
+[lemo.net.getNodeID()](#submodule-net-getNodeID)  | Gets the nodeID of the current node | ✓    | ✓   
+[lemo.net.broadcastConfirm(hash)](#submodule-net-broadcastConfirm)  | broadcast confirms of a block | ✓ |          
+[lemo.net.fetchConfirm(height)](#submodule-net-fetchConfirm) | Pulls the acknowledgement packet for the specified height block   | ✓    |          
+[lemo.mine.start()](#submodule-mine-start) | Start mining | ✓ | 
+[lemo.mine.stop()](#submodule-mine-stop) | Stop mining | ✓ | 
 [lemo.mine.getMining()](#submodule-mine-getMining) | True if current LemoChain node is mining | ✓ | ✓
 [lemo.mine.getMiner()](#submodule-mine-getMiner) | Get the mining benefit account address of current LemoChain node | ✓ | ✓
 [lemo.account.newKeyPair()](#submodule-account-newKeyPair) | Create a private key and account address | ✓ | ✓
 [lemo.account.getBalance(addr)](#submodule-account-getBalance) | Get the balance of an account | ✓ | ✓
 [lemo.account.getAccount(addr)](#submodule-account-getAccount) | Get the information of an account | ✓ | ✓
 [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | Get the information of an candidate | ✓ | ✓
-[lemo.account.getAllAssets(address, index, limit)](#submodule-account-getAllAssets) | Obtain all asset equities held in the specified account | ✓ | ✓
-[lemo.account.createTempAddress(from, userId)](#submodule-account-createTempAddress) | create a temp address | ✖ | ✓
-[lemo.account.isTempAddress(address)](#submodule-account-isTempAddress) | True if the current address is a temporary account | ✖ | ✓
-[lemo.account.isContractAddress(address)](#submodule-account-isContractAddress) | True if the current address is a contract account | ✖ | ✓
 [lemo.account.getVoteFor(addr)](#submodule-account-getVoteFor) | Get voting information for the current account                 | ✓    | ✓          
 [lemo.account.getAssetEquity(addr, assetId)](#submodule-account-getAssetEquity) | Get the proceeds from the account                 | ✓    | ✓          
+[lemo.account.createTempAddress(from, userId)](#submodule-account-createTempAddress) | create a temp address | | ✓
+[lemo.account.isTempAddress(address)](#submodule-account-isTempAddress) | True if the current address is a temporary account | | ✓
+[lemo.account.isContractAddress(address)](#submodule-account-isContractAddress) | True if the current address is a contract account | | ✓
 [lemo.tx.send(txConfig, privateKey)](#submodule-tx-send) | Send transaction | ✓ | ✓
 [lemo.tx.waitConfirm(txHash)](#submodule-tx-waitConfirm)                           |  wait for the transaction to be confirmed               | ✓    | ✓ 
-[lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx) | listen and filter for transaction of block | ✖ | ✓ |
-[lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx) | Stop listening transaction | ✖ | ✓ |
-[lemo.stopWatch()](#submodule-global-stopWatch) | Stop listening | ✖ | ✓
-[lemo.isWatching()](#submodule-global-isWatching) | True if is listening | ✖ | ✓
+[lemo.tx.watchTx(filterTxConfig, callback)](#submodule-tx-watchTx) | listen and filter for transaction of block | | ✓ |
+[lemo.tx.stopWatchTx(subscribeId)](#submodule-tx-stopWatchTx) | Stop listening transaction | | ✓ |
+[lemo.stopWatch()](#submodule-global-stopWatch) | Stop listening | | ✓
+[lemo.isWatching()](#submodule-global-isWatching) | True if is listening | | ✓
 
-| Class Properties | description |
-| --- | --- |
-| [LemoCore.SDK_VERSION](#submodule-tool-SDK_VERSION) | The version of js SDK |
-| [LemoCore.TxType](#submodule-tool-TxType) | Enum of transaction type |
-| [LemoCore.BigNumber](https://github.com/MikeMcl/bignumber.) | The BigNumber library
+Class Properties | description
+---|---
+[LemoCore.SDK_VERSION](#submodule-tool-SDK_VERSION) | The version of js SDK
+[LemoCore.TxType](#submodule-tool-TxType) | Enum of transaction type
+[LemoCore.BigNumber](https://github.com/MikeMcl/bignumber.) | The BigNumber library
 
 ---
 
@@ -207,26 +205,26 @@ The header of block
 Signed transaction
 ```json
 {
-  "type": "1",
-  "chainID": "1",
-  "version": "1",
-  "from": "Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D",
-  "to": "Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY",
-  "gasPayer": "",
-  "toName": "",
-  "amount": "100",
-  "data": "0x",
-  "expirationTime": 1541566996,
-  "gasLimit": 2000000,
-  "gasPrice": "3000000000",
-  "hash": "0x6d3062a9f5d4400b2002b436bc69485449891c83e23bf9e27229234da5b25dcf",
-  "message": "",
-  "sigs": ["0xd9a9f9f41ea020185a6480fe6938d776f0a675d89057c071fc890e09742a4dd96edb9d48c9978c2f12fbde0d0445f2ff5f08a448b91469511c663567d0b015f601"],
-  "gasPayerSigs": ["0x800be6a0cf31ab9e86d547fb8cf964339276233a2b260ad8a4b4c93b39a48d6b1761e125f601bc6953e30eaad3e698c12add332a5740f1618915c12432dc610601"]
+    "type": "1",
+    "chainID": "1",
+    "version": "1",
+    "from": "Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D",
+    "to": "Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY",
+    "gasPayer": "",
+    "toName": "",
+    "amount": "100",
+    "data": "0x",
+    "expirationTime": 1541566996,
+    "gasLimit": 2000000,
+    "gasPrice": "3000000000",
+    "hash": "0x6d3062a9f5d4400b2002b436bc69485449891c83e23bf9e27229234da5b25dcf",
+    "message": "",
+    "sigs": ["0xd9a9f9f41ea020185a6480fe6938d776f0a675d89057c071fc890e09742a4dd96edb9d48c9978c2f12fbde0d0445f2ff5f08a448b91469511c663567d0b015f601"],
+    "gasPayerSigs": ["0x800be6a0cf31ab9e86d547fb8cf964339276233a2b260ad8a4b4c93b39a48d6b1761e125f601bc6953e30eaad3e698c12add332a5740f1618915c12432dc610601"]
 }
 ```
 - `type` The type of transaction
-- `chainID` The LemoChain id
+- `chainID` The LemoChain ID
 - `version` Current transaction version, Between 0 and 128
 - `from` Sender address.
 - `to` Recipient address
@@ -372,7 +370,7 @@ Account information
 - `candidate` If this account is a consensus candidate, then this property exist
     - `votes` Received votes count for a candidate account
     - `profile` Candidate account profile
-        - `host` Ip or domain of the candidate node server
+        - `host` IP or domain of the candidate node server
         - `isCandidate` This account is or isn't a candidate. It is used to cancel candidate
         - `minerAddress` The address of miner account who receive miner benefit
         - `nodeID` The LemoChain node ID, it is from the public key whose private key is using for sign blocks. The length should be 130 characters with `0x`
@@ -391,7 +389,7 @@ lemo = new LemoCore({
 })
 ```
 - `chainID` The ID of LemoChain. Default value is `1`, it represents main net
-- `host` LemoChain node's http listening address. The default value is  `http://127.0.0.1:8001`
+- `host` LemoChain node's HTTP listening address. The default value is  `http://127.0.0.1:8001`
     > NOTE: If the cross domain issue appear. Try to use flag `--rpccorsdomain http://[domain of the web page]:[port]` to restart LemoChain node.
 
 ---
@@ -415,7 +413,7 @@ Get block by height or block hash
 ##### Example
 ```js
 lemo.getBlock(0).then(function(block) {
-    console.log(block.header.hash); // "0x11d9153b14adb92a14c16b66c3524d62b4742c0e7d375025525e2f131de37a8b"
+    console.log(block.header.hash) // "0x11d9153b14adb92a14c16b66c3524d62b4742c0e7d375025525e2f131de37a8b"
 })
 ```
 
@@ -437,7 +435,7 @@ Get the newest block
 ##### Example
 ```js
 lemo.getNewestBlock(true).then(function(block) {
-    console.log(block.header.miner); // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
+    console.log(block.header.miner) // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
 })
 ```
 
@@ -459,7 +457,7 @@ None
 ##### Example
 ```js
 lemo.getNewestUnstableBlock().then(function(block) {
-    console.log(block.header.miner); // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
+    console.log(block.header.miner) // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
 })
 ```
 
@@ -481,7 +479,7 @@ None
 ##### Example
 ```js
 lemo.getNewestHeight().then(function(height) {
-    console.log(height); // "100"
+    console.log(height) // "100"
 })
 ```
 
@@ -503,7 +501,7 @@ None
 ##### Example
 ```js
 lemo.getNewestUnstableHeight().then(function(height) {
-    console.log(height); // "100"
+    console.log(height) // "100"
 })
 ```
 
@@ -525,7 +523,7 @@ None
 ##### Example
 ```js
 lemo.getGenesis().then(function(block) {
-    console.log(block.header.parentHash); // "0x0000000000000000000000000000000000000000000000000000000000000000"
+    console.log(block.header.parentHash) // "0x0000000000000000000000000000000000000000000000000000000000000000"
 })
 ```
 
@@ -547,7 +545,7 @@ None
 ##### Example
 ```js
 lemo.getChainID().then(function(chainID) {
-    console.log(chainID); // "1"
+    console.log(chainID) // "1"
 })
 ```
 
@@ -580,13 +578,12 @@ lemo.getCandidateTop30().then(function(candidateList) {
 <a name="submodule-chain-getDeputyNodeList"></a>
 #### lemo.getDeputyNodeList
 ```
-lemo.getDeputyNodeList()
+lemo.getDeputyNodeList(onlyBlockSigner)
 ```
 Get information of current deputy nodes
-If true it returns deputy node information of who can currently sign blocks, false returns who has become deputy node from candidate in current stable state.
 
 ##### Parameters
-1. `boolean` - （Optional.）Whether to return only block signers.
+1. `boolean` - (Optional) If true it returns deputy node information of who can currently sign blocks, false returns who has become deputy node from candidate in current stable state.
 
 ##### Returns
 `Promise` - Call `then` method to get the information list of current deputy nodes  
@@ -595,7 +592,7 @@ If true it returns deputy node information of who can currently sign blocks, fal
     `nodeID` - (string)The LemoChain node ID, it is from the public key whose private key is using for sign blocks. The length should be 130 characters with `0x`
     `rank` - (string)The rank of the outgoing node
     `votes` - (string)Node votes
-    `host` - (string)The LemoChain node ID, it is from the public key whose private key is using for sign blocks. The length should be 130 characters with `0x`
+    `host` - (string)Domain or IP of the candidate node server
     `port` - (string)Port of the candidate node server
     `depositAmount` - (string)deposit amount
     `introduction` - (string)Introduction of node
@@ -638,6 +635,31 @@ console.log(JSON.stringify(result)) // {"term":0,"value":"1000000000","rewardHei
 
 ---
 
+<a name="submodule-chain-getAllRewardValue"></a>
+#### lemo.getAllRewardValue
+```
+lemo.getAllRewardValue()
+```
+Get all miners' award information for the chain
+
+##### Parameters
+None
+
+##### Returns
+`object` - Miners' award information，includes：
+    `term` - (number)Terms index, starting at 0
+    `value` - (string)The total amount of awards given
+    `times` - (number)Updated times，times must be 1 or 2
+
+##### Example
+```js
+lemo.getAllRewardValue().then(function(result){
+console.log(result) // { 0: { term: '1', value: '1000000001', times: '1' } }
+})
+```
+
+---
+
 <a name="submodule-chain-getNodeVersion"></a>
 #### lemo.getNodeVersion
 ```
@@ -654,7 +676,7 @@ None
 ##### Example
 ```js
 lemo.getNodeVersion().then(function(version) {
-    console.log(version); // "1.0.0"
+    console.log(version) // "1.0.0"
 })
 ```
 
@@ -668,66 +690,41 @@ lemo.watchBlock(withBody, callback)
 Listen for new block. The callback function will be called at the beginning and every times a new stable block produced.
 
 ##### Parameters
-1. `boolean` - (optional) Enable to get block body such as transactions. Default value is `false`
+1. `boolean` - Enable to get block body such as transactions. Default value is `false`
 2. `Function` - Used to receive [block](#data-structure-block) object
 
 ##### Returns
-`number` - watchId for [stop watching](#submodule-stopWatch)
+`number` - subscribeId, it is used to [stop watching](#submodule-chain-stopWatchBlock)
 
 ##### Example
 ```js
 lemo.watchBlock(true, function(block) {
     const d = new Date(1000 * parseInt(block.header.timestamp, 10))
-    console.log(d.toUTCString()); // "Thu, 30 Aug 2018 12:00:00 GMT"
+    console.log(d.toUTCString()) // "Thu, 30 Aug 2018 12:00:00 GMT"
 })
 ```
 
 ---
 
 <a name="submodule-chain-stopWatchBlock"></a>
-#### lemo.stopWatchBlock 
+#### lemo.stopWatchBlock
 ```
-lemo.stopWatchBlock(subscribeId) 
+lemo.stopWatchBlock(subscribeId)
 ```
 Stop watching and filtering transactions of block
 
 ##### Parameters
-1. `number` - Get the subscribeId, it is used to stop watching
+1. `number` - The subscribeId from [watchBlock](#submodule-chain-watchBlock)
 
 ##### Returns
 None
 
 ##### Example
 ```js
-const watchBlockId = lemo.watchBlock(false, function(newBlock) {
+const subscribeId = lemo.watchBlock(false, function(newBlock) {
     console.log(newBlock)
 })
-lemo.stopWatchBlock(watchBlockId)
-```
-
----
-
-<a name="submodule-chain-getAllRewardValue"></a>
-#### lemo.getAllRewardValue
-```
-lemo.getAllRewardValue()
-```
-Gets all reward information for the chain
-
-##### Parameters
-None
-
-##### Returns
-`object` - Miners' award information，includes：
-    `term` - (string)Terms index, starting at 0
-    `value` - (string)The total amount of awards given
-    `times` - (string)Updated times，times must be 1 or 2
-
-##### Example
-```js
-lemo.getAllRewardValue().then(function(result){
-console.log(result) // { 0: { term: '1', value: '1000000001', times: '1' } }
-})
+lemo.stopWatchBlock(subscribeId)
 ```
 
 ---
@@ -770,7 +767,7 @@ Disconnect to a LemoChain node
 ##### Example
 ```js
 lemo.net.disconnect('127.0.0.1:60002').then(function(success) {
-    console.log(sucess ? 'success' : 'fail');
+    console.log(sucess ? 'success' : 'fail')
 })
 ```
 
@@ -792,7 +789,7 @@ None
 ##### Example
 ```js
 lemo.net.getConnections().then(function(connections) {
-    console.log(connections);
+    console.log(connections)
     // [{
     //   localAddress: "127.0.0.1:50825",
     //   nodeID: "0xddb5fc36c415799e4c0cf7046ddde04aad6de8395d777db4f46ebdf258e55ee1d698fdd6f81a950f00b78bb0ea562e4f7de38cb0adf475c5026bb885ce74afb0",
@@ -819,7 +816,7 @@ None
 ##### Example
 ```js
 lemo.net.getConnectionsCount().then(function(count) {
-    console.log(count); // "1"
+    console.log(count) // "1"
 })
 ```
 
@@ -841,11 +838,11 @@ None
 ##### Example
 ```js
 lemo.net.getInfo().then(function(info) {
-    console.log(info.nodeName); // "Lemo"
-    console.log(info.nodeVersion); // "1.0.0"
-    console.log(info.os); // "windows-amd64"
-    console.log(info.port); // "60001"
-    console.log(info.runtime); // "go1.10.1"
+    console.log(info.nodeName) // "Lemo"
+    console.log(info.nodeVersion) // "1.0.0"
+    console.log(info.os) // "windows-amd64"
+    console.log(info.port) // "60001"
+    console.log(info.runtime) // "go1.10.1"
 })
 ```
 
@@ -867,7 +864,7 @@ None
 ##### Example
 ```js
 lemo.net.getNodeID().then(function(info) {
-    console.log(info.nodeName); // "0x0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0"
+    console.log(info) // "0x0e7dcd418dbe7717eb0e83162f8810a3c7725e0d386b324dc5f3ef5a27a2a83e393a193f6ab53d3a51b490adeee362357676f50eed3d188824ef1fb3af02b2d0"
 })
 ```
 
@@ -971,7 +968,7 @@ None
 ##### Example
 ```js
 lemo.mine.getMining().then(function(isMining) {
-    console.log(isMining ? 'mining' : 'not mining');
+    console.log(isMining ? 'mining' : 'not mining')
 })
 ```
 
@@ -992,10 +989,9 @@ None
 
 ##### Example
 ```js
-lemo.mine.getMiner()
-    .then(function(miner) {
-        console.log(miner); // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
-    })
+lemo.mine.getMiner().then(function(miner) {
+    console.log(miner) // "Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG"
+})
 ```
 
 ---
@@ -1018,7 +1014,7 @@ None
 ##### Example
 ```js
 const result = lemo.account.newKeyPair()
-console.log(result.private) // "0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52"
+console.log(result.privateKey) // "0xfdbd9978910ce9e1ed276a75132aacb0a12e6c517d9bd0311a736c57a228ee52"
 console.log(result.address) // "Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34"
 ```
 
@@ -1039,10 +1035,9 @@ Get the balance of an account
 
 ##### Example
 ```js
-lemo.account.getBalance('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
-    .then(function(balance) {
-        console.log(balance.toString(10)); // "1600000000000000000000000000"
-    })
+lemo.account.getBalance('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34').then(function(balance) {
+    console.log(balance.toString(10)) // "1600000000000000000000000000"
+})
 ```
 
 ---
@@ -1062,10 +1057,9 @@ Get the information of an account
 
 ##### Example
 ```js
-lemo.account.getAccount('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
-    .then(function(account) {
-        console.log(account.balance.toMoney()); // "1600000000 LEMO"
-    })
+lemo.account.getAccount('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34').then(function(account) {
+    console.log(account.balance.toMoney()) // "1600000000 LEMO"
+})
 ```
 
 ---
@@ -1089,71 +1083,6 @@ lemo.account.getCandidateInfo('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
     .then(function(candidate) {
         console.log(candidate.votes); // "1599999000"
     })
-```
-
----
-
-<a name="submodule-account-createTempAddress"></a>
-#### lemo.account.createTempAddress
-```
-lemo.account.createTempAddress(from, userId)
-```
-create a temp account
-
-##### Parameters
-1. `string` - account address
-2. `string` - customized user id, which's length should be 10 bytes in hexadecimal at most
-
-##### Returns
-`string` - Temporary account address
-
-##### Example
-```js
-const userId = '1110000000000000000'
-const result = lemo.account.createTempAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', userId)
-console.log(result) // Lemo85SY56SGRTQQ63A2Y43KYA8C7QAZB37P3KY5
-```
-
----
-
-<a name="submodule-account-isTempAddress"></a>
-#### lemo.account.isTempAddress
-```
-lemo.account.isTempAddress(address)
-```
-True if the specific address is a temporary account
-
-##### Parameters
-1. `string` - Asset ID
-
-##### Returns
-`boolean` - True if the current address is a temporary account
-
-##### Example
-```js
-const result = lemo.account.isTempAddress('Lemo85SY56SGRTQQ63A2Y43KYA8C7QAZB37P3KY5')
-console.log(result) // true
-```
-
----
-
-<a name="submodule-account-isContractAddress"></a>
-#### lemo.account.isContractAddress
-```
-lemo.account.isContractAddress(address)
-```
-Verify that the account is temporary
-
-##### Parameters
-1. `string` - Asset ID
-
-##### Returns
-`boolean` - True if the current address is a contract account
-
-##### Example
-```js
-const result = lemo.account.isContractAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D')
-console.log(result) // false
 ```
 
 ---
@@ -1208,9 +1137,72 @@ lemo.account.getAssetEquity('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', '0x34b04
 
 ---
 
-### tx API
+<a name="submodule-account-createTempAddress"></a>
+#### lemo.account.createTempAddress
+```
+lemo.account.createTempAddress(from, userId)
+```
+create a temp account
+
+##### Parameters
+1. `string` - account address
+2. `string` - customized user id, which's length should be 10 bytes in hexadecimal at most
+
+##### Returns
+`string` - Temporary account address
+
+##### Example
+```js
+const userId = '1110000000000000000'
+const result = lemo.account.createTempAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', userId)
+console.log(result) // Lemo85SY56SGRTQQ63A2Y43KYA8C7QAZB37P3KY5
+```
 
 ---
+
+<a name="submodule-account-isTempAddress"></a>
+#### lemo.account.isTempAddress
+```
+lemo.account.isTempAddress(address)
+```
+Test whether the specific address is a temporary account or not
+
+##### Parameters
+1. `string` - Account address
+
+##### Returns
+`boolean` - True if the current address is a temporary account
+
+##### Example
+```js
+const result = lemo.account.isTempAddress('Lemo85SY56SGRTQQ63A2Y43KYA8C7QAZB37P3KY5')
+console.log(result) // true
+```
+
+---
+
+<a name="submodule-account-isContractAddress"></a>
+#### lemo.account.isContractAddress
+```
+lemo.account.isContractAddress(address)
+```
+Test whether the specific address is a contract account or not
+
+##### Parameters
+1. `string` - Account address
+
+##### Returns
+`boolean` - True if the current address is a contract account
+
+##### Example
+```js
+const result = lemo.account.isContractAddress('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D')
+console.log(result) // false
+```
+
+---
+
+### tx API
 
 <a name="submodule-tx-send"></a>
 #### lemo.tx.send
@@ -1283,7 +1275,7 @@ Listen for transactions of block. Returns an array with transactions from block 
 2. `function` - Used to receive transaction list
 
 ##### Returns
-`Promise` - Returns the value of the subscribeId, it is used to stop watching
+`number` - subscribeId, it is used to [stop watching](#submodule-tx-stopWatchTx)
 
 ##### Example
 ```js
@@ -1306,17 +1298,17 @@ lemo.tx.stopWatchTx(subscribeId)
 Stop watching and filtering transactions of block
 
 ##### Parameters
-1. `number` - Get the subscribeId, it is used to stop watching
+1. `number` - The subscribeId from [watchTx](#submodule-tx-watchTx)
 
 ##### Returns
 None
 
 ##### Example
 ```js
-const watchTxId = lemo.tx.watchTx({to:'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY'}, function(transaction) {
-    console.log(transaction[0].version)
+const subscribeId = lemo.tx.watchTx({to:'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY'}, function(transactions) {
+    console.log(transactions[0].version)
 }); 
-lemo.tx.stopWatchTx(watchTxId)
+lemo.tx.stopWatchTx(subscribeId)
 ```
 
 ---
@@ -1326,7 +1318,7 @@ lemo.tx.stopWatchTx(watchTxId)
 ```
 lemo.stopWatch()
 ```
-Stop listening
+Stop all listening
 
 ##### Parameters
 None
@@ -1404,8 +1396,8 @@ console.log(LemoCore.TxType.VOTE) // 1
 
 ### Requirements
 
-* Node.js
-* yarn
+- Node.js
+- yarn
 
 ```bash
 sudo apt-get update
