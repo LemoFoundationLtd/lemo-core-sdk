@@ -104,11 +104,11 @@ describe('module_account_getVoteFor', () => {
     })
 })
 
-describe('module_account_getAssetEquity', async() => {
+describe('module_account_getEquity', async() => {
     it('no-assetId', async () => {
         const lemo = new LemoCore()
         try {
-            await lemo.account.getAssetEquity('Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W', '')
+            await lemo.account.getEquity('Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W', '')
         } catch (e) {
             assert.equal(e.message, errors.InvalidNoAssetId())
             return
@@ -117,12 +117,12 @@ describe('module_account_getAssetEquity', async() => {
     })
     it('normal', async () => {
         const lemo = new LemoCore()
-        const result = await lemo.account.getAssetEquity('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a')
+        const result = await lemo.account.getEquity('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a')
         assert.deepEqual(result, equities[0])
     })
     it('no-equity', async () => {
         const lemo = new LemoCore()
-        const result = await lemo.account.getAssetEquity('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24F', '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a')
+        const result = await lemo.account.getEquity('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24F', '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a')
         assert.strictEqual(result.assetCode, '0x0000000000000000000000000000000000000000000000000000000000000000')
     })
 })

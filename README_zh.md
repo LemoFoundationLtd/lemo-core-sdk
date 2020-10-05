@@ -77,7 +77,7 @@ API | 功能 | 异步 | 可远程使用
 [lemo.account.getAccount(addr)](#submodule-account-getAccount) | 获取账户信息 | ✓ | ✓
 [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | 获取候选人信息 | ✓ | ✓
 [lemo.account.getVoteFor(addr)](#submodule-account-getVoteFor) | 获取账户的投票信息 | ✓ | ✓
-[lemo.account.getAssetEquity(addr, assetId)](#submodule-account-getAssetEquity) | 获取账户的收益 | ✓ | ✓
+[lemo.account.getEquity(addr, assetId)](#submodule-account-getEquity) | 获取账户的资产余额 | ✓ | ✓
 [lemo.account.createTempAddress(from, userId)](#submodule-account-createTempAddress) | 创建临时账户 | | ✓
 [lemo.account.isTempAddress(address)](#submodule-account-isTempAddress) | 是否是临时账户 | | ✓
 [lemo.account.isContractAddress(address)](#submodule-account-isContractAddress) | 是否是合约账户 | | ✓
@@ -1180,10 +1180,10 @@ lemo.account.getVoteFor('Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG')
 
 ---
 
-<a name="submodule-account-getAssetEquity"></a>
-#### lemo.account.getAssetEquity
+<a name="submodule-account-getEquity"></a>
+#### lemo.account.getEquity
 ```
-lemo.account.getAssetEquity(address, assetId)
+lemo.account.getEquity(address, assetId)
 ```
 获取账号的收益情况
 
@@ -1199,7 +1199,7 @@ lemo.account.getAssetEquity(address, assetId)
 
 ##### Example
 ```js
-lemo.account.getAssetEquity('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a')
+lemo.account.getEquity('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a')
     .then(function(info) {
         console.log(info.assetCode); // "0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884"
     })

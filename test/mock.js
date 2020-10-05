@@ -71,7 +71,7 @@ const mockInfos = [
         },
     },
     {
-        method: 'account_getAssetEquity',
+        method: 'account_getEquity',
         paramsCount: 2,
         reply([address, assetId]) {
             if (address === 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D') {

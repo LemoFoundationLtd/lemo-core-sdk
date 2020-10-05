@@ -77,8 +77,8 @@ API | description | asynchronous | available for remote
 [lemo.account.getBalance(addr)](#submodule-account-getBalance) | Get the balance of an account | ✓ | ✓
 [lemo.account.getAccount(addr)](#submodule-account-getAccount) | Get the information of an account | ✓ | ✓
 [lemo.account.getCandidateInfo(addr)](#submodule-account-getCandidateInfo) | Get the information of an candidate | ✓ | ✓
-[lemo.account.getVoteFor(addr)](#submodule-account-getVoteFor) | Get voting information for the current account                 | ✓    | ✓          
-[lemo.account.getAssetEquity(addr, assetId)](#submodule-account-getAssetEquity) | Get the proceeds from the account                 | ✓    | ✓          
+[lemo.account.getVoteFor(addr)](#submodule-account-getVoteFor) | Get voting information from account                 | ✓    | ✓          
+[lemo.account.getEquity(addr, assetId)](#submodule-account-getEquity) | Get the balance of asset from account                 | ✓    | ✓          
 [lemo.account.createTempAddress(from, userId)](#submodule-account-createTempAddress) | create a temp address | | ✓
 [lemo.account.isTempAddress(address)](#submodule-account-isTempAddress) | True if the current address is a temporary account | | ✓
 [lemo.account.isContractAddress(address)](#submodule-account-isContractAddress) | True if the current address is a contract account | | ✓
@@ -1104,7 +1104,7 @@ lemo.account.getCandidateInfo('Lemo83BYKZJ4RN4TKC9C78RFW7YHW6S87TPRSH34')
 ```
 lemo.account.getVoteFor(address)
 ```
-Get voting information for the current account
+Get voting information from account
 
 ##### Parameters
 1. `string` - lemo address
@@ -1122,26 +1122,26 @@ lemo.account.getVoteFor('Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG')
 
 ---
 
-<a name="submodule-account-getAssetEquity"></a>
-#### lemo.account.getAssetEquity
+<a name="submodule-account-getEquity"></a>
+#### lemo.account.getEquity
 ```
-lemo.account.getAssetEquity(address, assetId)
+lemo.account.getEquity(address, assetId)
 ```
-Get the proceeds from the account
+Get the balance of asset from account
 
 ##### Parameters
 1. `string` - The account address
 2. `string` - asset id
 
 ##### Returns
-`Promise` - Call `then` method to get the proceeds from the account, includes:
+`Promise` - Call `then` method to get the balance of asset from account, includes:
     `assetCode` - (string) asset code
     `assetId` - (string) asset id
     `equity` - (string) amount of asset
 
 ##### Example
 ```js
-lemo.account.getAssetEquity('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a')
+lemo.account.getEquity('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a')
     .then(function(info) {
         console.log(info.assetCode); // "0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884"
     })
