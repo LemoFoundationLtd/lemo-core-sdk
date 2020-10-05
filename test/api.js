@@ -49,16 +49,16 @@ describe('Api_attachTo', () => {
         const api = new Api(apiConfig, testRequester, chainID)
         api.attachTo(apiHolder)
         const result = apiHolder.myValue
-        assert.equal(result, 'value 1')
+        assert.strictEqual(result, 'value 1')
     })
 
     it('custom call', async () => {
         const apiConfig = {
             name: 'callMyFunc',
             call(...args) {
-                assert.equal(this, api)
-                assert.equal(this.requester, testRequester)
-                assert.equal(this.chainID, chainID)
+                assert.strictEqual(this, api)
+                assert.strictEqual(this.requester, testRequester)
+                assert.strictEqual(this.chainID, chainID)
                 assert.deepEqual(args, [123, {a: '8293'}])
                 return 100
             },
@@ -66,7 +66,7 @@ describe('Api_attachTo', () => {
         const api = new Api(apiConfig, {requester: testRequester, chainID})
         api.attachTo(apiHolder)
         const result = apiHolder.callMyFunc(123, {a: '8293'})
-        assert.equal(result, 100)
+        assert.strictEqual(result, 100)
     })
 
     it('custom async call', async () => {
@@ -76,7 +76,7 @@ describe('Api_attachTo', () => {
         }
         new Api(apiConfig, testRequester, chainID).attachTo(apiHolder)
         const result = await apiHolder.callMyFuncAsync()
-        assert.equal(result, 200)
+        assert.strictEqual(result, 200)
     })
 
     it('attach twice', async () => {

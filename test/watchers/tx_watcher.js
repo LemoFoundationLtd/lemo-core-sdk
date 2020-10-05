@@ -46,7 +46,7 @@ describe('module_tx_watcher', () => {
         return txWatcher.waitTx(hash).then(() => {
             assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
         }, (e) => {
-            assert.equal(e.message, errors.InvalidPollTxTimeOut())
+            assert.strictEqual(e.message, errors.InvalidPollTxTimeOut())
         })
     })
     it('server_mode_false_has_tx', async () => {
@@ -64,7 +64,7 @@ describe('module_tx_watcher', () => {
         return txWatcher.waitTx(hash).then(() => {
             assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
         }, (e) => {
-            assert.equal(e.message, errors.InvalidPollTxTimeOut())
+            assert.strictEqual(e.message, errors.InvalidPollTxTimeOut())
         })
     })
     it('server_mode_false_error', async () => {
@@ -80,7 +80,7 @@ describe('module_tx_watcher', () => {
         return txWatcher.waitTx(hash).then(() => {
             assert.fail('success', `throw error: ${error}`)
         }, e => {
-            return assert.equal(e, error)
+            return assert.strictEqual(e, error)
         })
     })
 })
@@ -103,7 +103,7 @@ describe('module_tx_watcher_server_mode', () => {
         return txWatcher.waitTx(hash).then(() => {
             assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
         }, (e) => {
-            assert.equal(e.message, errors.InvalidPollTxTimeOut())
+            assert.strictEqual(e.message, errors.InvalidPollTxTimeOut())
         })
     })
     it('server_mode_false_has_tx', async () => {
@@ -121,7 +121,7 @@ describe('module_tx_watcher_server_mode', () => {
         return txWatcher.waitTx(hash).then(() => {
             assert.fail(`expect error:${errors.InvalidPollTxTimeOut()}`)
         }, (e) => {
-            assert.equal(e.message, errors.InvalidPollTxTimeOut())
+            assert.strictEqual(e.message, errors.InvalidPollTxTimeOut())
         })
     })
 })
@@ -140,7 +140,7 @@ describe('module_tx_watcher_watchTx', () => {
             message: 'aaa',
         }
         const watchTxId = txWatcher.watchTx(testConfig, (txArr => {
-            assert.equal(txArr.length, 1)
+            assert.strictEqual(txArr.length, 1)
             assert.deepEqual(txArr[0], formattedCurrentBlock.transactions[0])
             txWatcher.stopWatchTx(watchTxId)
             done()
@@ -155,7 +155,7 @@ describe('module_tx_watcher_watchTx', () => {
             type: 0,
         }
         const watchTxId = txWatcher.watchTx(testConfig, (txArr => {
-            assert.equal(txArr.length, 1)
+            assert.strictEqual(txArr.length, 1)
             assert.deepEqual(txArr[0], formattedCurrentBlock.transactions[0])
             txWatcher.stopWatchTx(watchTxId)
             done()

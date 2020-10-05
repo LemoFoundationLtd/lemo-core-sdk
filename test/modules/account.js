@@ -17,7 +17,7 @@ describe('module_account_getAccount', () => {
         return lemo.account.getAccount(addr).then(() => {
             assert.fail('success', `throw error: ${expectedErr}`)
         }, e => {
-            return assert.equal(e.message, expectedErr)
+            return assert.strictEqual(e.message, expectedErr)
         })
     })
 
@@ -28,7 +28,7 @@ describe('module_account_getAccount', () => {
         return lemo.account.getAccount(addr).then(() => {
             assert.fail('success', `throw error: ${expectedErr}`)
         }, e => {
-            return assert.equal(e.message, expectedErr)
+            return assert.strictEqual(e.message, expectedErr)
         })
     })
 })
@@ -42,7 +42,7 @@ describe('module_account_getCandidateInfo', () => {
     it('not candidate', async () => {
         const lemo = new LemoCore()
         const result = await lemo.account.getCandidateInfo('Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH')
-        assert.equal(result, undefined)
+        assert.strictEqual(result, undefined)
     })
     it('error candidate', () => {
         const lemo = new LemoCore()
@@ -51,7 +51,7 @@ describe('module_account_getCandidateInfo', () => {
         return lemo.account.getCandidateInfo(addr).then(() => {
             assert.fail('success', `throw error: ${expectedErr}`)
         }, e => {
-            return assert.equal(e.message, expectedErr)
+            return assert.strictEqual(e.message, expectedErr)
         })
     })
 })
@@ -65,7 +65,7 @@ describe('module_account_getBalance', () => {
     it('balance', async () => {
         const lemo = new LemoCore()
         const result = await lemo.account.getBalance('Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG')
-        assert.equal(result, '1599999999999999999999999900')
+        assert.strictEqual(result, '1599999999999999999999999900')
     })
     it('getBalance_error', async() => {
         const lemo = new LemoCore()
@@ -73,7 +73,7 @@ describe('module_account_getBalance', () => {
         try {
             await lemo.account.getBalance(addr)
         } catch (e) {
-            assert.equal(e.message, errors.InvalidAddress(addr))
+            assert.strictEqual(e.message, errors.InvalidAddress(addr))
             return
         }
         assert.fail(undefined, errors.InvalidAddress(addr))
@@ -92,7 +92,7 @@ describe('module_account_getVoteFor', () => {
         try {
             await lemo.account.getVoteFor(addr)
         } catch (e) {
-            assert.equal(e.message, errors.InvalidAddress(addr))
+            assert.strictEqual(e.message, errors.InvalidAddress(addr))
             return
         }
         assert.fail(undefined, errors.InvalidAddress(addr))
@@ -110,7 +110,7 @@ describe('module_account_getEquity', async() => {
         try {
             await lemo.account.getEquity('Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W', '')
         } catch (e) {
-            assert.equal(e.message, errors.InvalidNoAssetId())
+            assert.strictEqual(e.message, errors.InvalidNoAssetId())
             return
         }
         assert.fail(undefined, errors.InvalidNoAssetId())

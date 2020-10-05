@@ -19,7 +19,7 @@ describe('module_tx_send', () => {
         const nowHash = tx.hash()
         const result = LemoTx.sign(testPrivate, tx)
         const sendHash = await lemo.tx.send(JSON.parse(result), testPrivate)
-        assert.equal(sendHash, nowHash)
+        assert.strictEqual(sendHash, nowHash)
     })
     it('send a string txConfig', async () => {
         const lemo = new LemoCore({chainID})
@@ -32,7 +32,7 @@ describe('module_tx_send', () => {
         const nowHash = tx.hash()
         const result = LemoTx.sign(testPrivate, tx)
         const sendHash = await lemo.tx.send(result, testPrivate)
-        assert.equal(sendHash, nowHash)
+        assert.strictEqual(sendHash, nowHash)
     })
     it('send a signed tx', async () => {
         const lemo = new LemoCore({chainID})
@@ -45,7 +45,7 @@ describe('module_tx_send', () => {
         const sendHash = await lemo.tx.send(tx)
         const result = LemoTx.sign(testPrivate, tx)
         const resultHash = await lemo.tx.send(result, testPrivate)
-        assert.equal(resultHash, sendHash)
+        assert.strictEqual(resultHash, sendHash)
     })
     it('send a unsigned tx', async () => {
         const lemo = new LemoCore({chainID})
@@ -58,7 +58,7 @@ describe('module_tx_send', () => {
         try {
             await lemo.tx.send(tx)
         } catch (e) {
-            assert.equal(e.message, errors.InvalidTxSigs())
+            assert.strictEqual(e.message, errors.InvalidTxSigs())
             return
         }
         assert.fail(undefined, errors.InvalidTxSigs())
@@ -69,7 +69,7 @@ describe('module_tx_send', () => {
         try {
             await lemo.tx.send(tx)
         } catch (e) {
-            assert.equal(e.message, errors.InvalidTxTimeOut())
+            assert.strictEqual(e.message, errors.InvalidTxTimeOut())
             return
         }
         assert.fail(undefined, errors.InvalidTxTimeOut())
@@ -97,7 +97,7 @@ describe('module_tx_waitConfirm', () => {
         })
         const txHash = await lemo.tx.send(txConfig, testPrivate)
         const result = await lemo1.tx.waitConfirm(txHash)
-        assert.equal(result.data, txInfo.txConfig.data)
+        assert.strictEqual(result.data, txInfo.txConfig.data)
     })
     it('waitConfirm_has_serverMode_one_time', async () => {
         const time = Math.floor(Date.now() / 1000) + (30 * 60)
@@ -138,7 +138,7 @@ describe('module_tx_waitConfirm', () => {
             },
         })
         const result = await lemo1.tx.waitConfirm(txHash, txConfig.expirationTime)
-        assert.equal(result.hash, txHash)
+        assert.strictEqual(result.hash, txHash)
     })
     it('waitConfirm_has_serverMode_two_time', async () => {
         const time = Math.floor(Date.now() / 1000) + (30 * 60)
@@ -176,7 +176,7 @@ describe('module_tx_waitConfirm', () => {
             },
         })
         const result = await lemo1.tx.waitConfirm(txHash, txConfig.expirationTime)
-        assert.equal(result.hash, txConfig.hash)
+        assert.strictEqual(result.hash, txConfig.hash)
     })
     it('waitConfirm_has_serverMode_timeOut', async () => {
         const time = Math.floor(Date.now() / 1000)
@@ -232,7 +232,7 @@ describe('module_tx_waitConfirm', () => {
         return lemo.tx.waitConfirm(txHash).then(() => {
             assert.fail('success', `throw error: ${expectedErr}`)
         }, e => {
-            return assert.equal(e.message, expectedErr)
+            return assert.strictEqual(e.message, expectedErr)
         })
     })
     it('waitConfirm_has_expirationTime', async () => {
@@ -252,7 +252,7 @@ describe('module_tx_waitConfirm', () => {
         })
         const txHash = await lemo.tx.send(txConfig, testPrivate)
         const result = await lemo1.tx.waitConfirm(txHash)
-        assert.equal(result.data, txInfo.txConfig.data)
+        assert.strictEqual(result.data, txInfo.txConfig.data)
     })
 })
 

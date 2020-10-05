@@ -82,7 +82,7 @@ describe('module_chain_getBlock', () => {
     it('getBlockByHash not exist', async () => {
         const lemo = new LemoCore()
         const result = await lemo.getBlock('0x1234')
-        assert.equal(result, null)
+        assert.strictEqual(result, null)
     })
 })
 
@@ -122,7 +122,7 @@ describe('module_chain_getNodeVersion', () => {
     it('getNodeVersion', async () => {
         const lemo = new LemoCore()
         const result = await lemo.getNodeVersion()
-        assert.equal(result, '1.0.0')
+        assert.strictEqual(result, '1.0.0')
     })
 })
 
@@ -164,7 +164,7 @@ describe('module_chain_watchBlock', () => {
             done()
         })
         lemo.stopWatchBlock(watchId1)
-        assert.equal(watchId1 + 1, watchId2)
+        assert.strictEqual(watchId1 + 1, watchId2)
     })
     it('multiple_watchBlock(false)_watchBlock(true)', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 50)
@@ -220,7 +220,7 @@ describe('module_account_getTermReward', () => {
         return lemo.getTermReward('10001').then(() => {
             assert.fail('success', `throw error: ${expectedErr}`)
         }, e => {
-            return assert.equal(e.message, expectedErr)
+            return assert.strictEqual(e.message, expectedErr)
         })
     })
 })

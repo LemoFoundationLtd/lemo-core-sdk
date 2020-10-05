@@ -25,7 +25,7 @@ describe('Requester_new', () => {
     it('custom conn', async () => {
         const conn = new HttpConn('http://127.0.0.1:8001')
         const requester = new Requester(conn)
-        assert.equal(requester.conn, conn)
+        assert.strictEqual(requester.conn, conn)
     })
 })
 
@@ -89,7 +89,7 @@ describe('Requester_watch_stopWatch_isWatching', () => {
                 reject(error)
             })
             requester.stopWatch(id)
-            assert.equal(requester.isWatching(), false)
+            assert.strictEqual(requester.isWatching(), false)
             wait(20).then(resolve)
         })
     })
@@ -101,38 +101,38 @@ describe('Requester_watch_stopWatch_isWatching', () => {
                 reject(error)
             })
             requester.stopWatch(id)
-            assert.equal(requester.isWatching(), false)
+            assert.strictEqual(requester.isWatching(), false)
             wait(20).then(resolve)
         })
     })
     it('stop immediately twice', () => {
         const requester = new Requester(conn)
-        assert.equal(requester.isWatching(), false)
+        assert.strictEqual(requester.isWatching(), false)
         let id = requester.watch('m', ['p'], () => {
         })
-        assert.equal(requester.isWatching(), true)
+        assert.strictEqual(requester.isWatching(), true)
         requester.stopWatch(id)
-        assert.equal(requester.isWatching(), false)
+        assert.strictEqual(requester.isWatching(), false)
 
         // try twice
         id = requester.watch('m', ['p'], () => {
         })
-        assert.equal(requester.isWatching(), true)
+        assert.strictEqual(requester.isWatching(), true)
         requester.stopWatch(id)
-        assert.equal(requester.isWatching(), false)
+        assert.strictEqual(requester.isWatching(), false)
     })
     it('stop all immediately', () => {
         const requester = new Requester(conn)
-        assert.equal(requester.isWatching(), false)
+        assert.strictEqual(requester.isWatching(), false)
         requester.watch('m', ['p'], () => {
         })
-        assert.equal(requester.isWatching(), true)
+        assert.strictEqual(requester.isWatching(), true)
 
         requester.watch('m', ['p'], () => {
         })
-        assert.equal(requester.isWatching(), true)
+        assert.strictEqual(requester.isWatching(), true)
         requester.stopWatch()
-        assert.equal(requester.isWatching(), false)
+        assert.strictEqual(requester.isWatching(), false)
     })
     it('stop after callback', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 1000)
@@ -140,7 +140,7 @@ describe('Requester_watch_stopWatch_isWatching', () => {
         const requester = new Requester(conn)
         requester.watch('m', ['p'], (result) => {
             try {
-                assert.equal(result, response.result)
+                assert.strictEqual(result, response.result)
                 requester.stopWatch()
                 done()
             } catch (e) {
@@ -154,7 +154,7 @@ describe('Requester_watch_stopWatch_isWatching', () => {
         for (let i = 1; i < 4; i++) {
             const id = requester.watch('m', ['p'], () => {
             })
-            assert.equal(id, i)
+            assert.strictEqual(id, i)
         }
         requester.stopWatch()
     })
@@ -166,7 +166,7 @@ describe('Requester_watch_error', () => {
         const conn = new HttpConn('http://127.0.0.1:8001')
         const requester = new Requester(conn, {maxPollRetry: 0})
         const watchId = requester.watch('13', [true], (block, error) => {
-            assert.equal(error.message, errors.InvalidConnection('http://127.0.0.1:8001'))
+            assert.strictEqual(error.message, errors.InvalidConnection('http://127.0.0.1:8001'))
             requester.stopWatch(watchId)
             done()
         })

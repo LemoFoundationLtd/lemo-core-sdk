@@ -40,7 +40,7 @@
                     it('sign_send_with_hex_address', async () => {
                         const lemo = new LemoCore(conn)
                         const result = await lemo.tx.send(emptyTxInfo.txConfig, testPrivate)
-                        assert.equal(result, emptyTxInfo.hashAfterSign)
+                        assert.strictEqual(result, emptyTxInfo.hashAfterSign)
                     })
                 })
             })()

@@ -24,7 +24,7 @@ describe('utils_deepEqual', () => {
     tests.forEach(test => {
         it(`${JSON.stringify(test.input[0])} ${test.output ? '==' : '!='} ${JSON.stringify(test.input[1])}`, () => {
             const result = utils.deepEqual(test.input[0], test.input[1])
-            assert.equal(result, test.output)
+            assert.strictEqual(result, test.output)
         })
     })
 })
