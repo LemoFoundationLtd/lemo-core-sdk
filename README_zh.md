@@ -1193,7 +1193,7 @@ lemo.account.getAssetEquity(address, assetId)
 
 ##### Returns
 `Promise` - 通过`then`可以获取到当前资产的信息，包括：
-    `assertCode` - (string)资产code
+    `assetCode` - (string)资产code
     `assetId` - (string)资产id
     `equity` - (string)资产金额
 
@@ -1201,7 +1201,7 @@ lemo.account.getAssetEquity(address, assetId)
 ```js
 lemo.account.getAssetEquity('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D', '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a')
     .then(function(info) {
-        console.log(info.assertCode); // "0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884"
+        console.log(info.assetCode); // "0xd0befd3850c574b7f6ad6f7943fe19b212affb90162978adc2193a035ced8884"
     })
 ```
 

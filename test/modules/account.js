@@ -110,6 +110,6 @@ describe('module_account_getAssetEquity', () => {
     it('no-equity', async () => {
         const lemo = new LemoCore()
         const result = await lemo.account.getAssetEquity('Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24F', '0x34b04e018488f37f449193af2f24feb3b034c994cde95d30e3181403ac76528a')
-        assert.strictEqual(result.assertCode, '0x0000000000000000000000000000000000000000000000000000000000000000')
+        assert.strictEqual(result.assetCode, '0x0000000000000000000000000000000000000000000000000000000000000000')
     })
 })
