@@ -1,10 +1,11 @@
 import BigNumber from 'bignumber.js'
-import {ChangeLogTypes, TxType} from '../lib/const'
+import LemoTx from 'lemo-tx'
+import {ChangeLogType} from '../lib/const'
 
 const bigNum = '0x111111111111111111111111111111111111111111111111111111111111'
 const bigString = '888888888888888888888888888888888888888888888888888888888888'
 const bigData = '0x4949494949494949'
-const balanceLog = ChangeLogTypes.BalanceLog
+const balanceLog = ChangeLogType.BalanceLog
 
 export const testPrivate = '0x432a86ab8765d82415a803e29864dcfc1ed93dac949abf6f95a583179f27e4bb'
 export const testAddr = 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D'
@@ -104,7 +105,7 @@ export const txInfo = {
     txConfig: {
         chainID,
         version: 1,
-        type: TxType.ORDINARY,
+        type: LemoTx.TxType.ORDINARY,
         to: 'Lemo846Q4NQCKJ2YWY6GHTSQHC7K24JDC7CPCWYH',
         toName: 'aa',
         gasPrice: 2,
@@ -128,7 +129,7 @@ export const bigTxInfo = {
     txConfig: {
         chainID,
         version: 1,
-        type: TxType.ORDINARY,
+        type: LemoTx.TxType.ORDINARY,
         to: 'Lemo837J796DDHYTQTRTQDT7B4QJJ9B6H559BCCT',
         toName: bigString,
         gasPrice: bigNum,
@@ -189,7 +190,7 @@ export const currentBlock = {
         {
             chainID: '1',
             version: '1',
-            type: TxType.ORDINARY,
+            type: LemoTx.TxType.ORDINARY,
             from: 'Lemo836BQKCBZ8Z7B7N4G4N4SNGBT24ZZSJQD24D',
             to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
             toName: 'aa',
@@ -223,7 +224,7 @@ export const formattedCurrentBlock = {
             gasLimit: 2000000,
             amount: '101',
             expirationTime: 1541649536,
-            type: TxType.ORDINARY,
+            type: LemoTx.TxType.ORDINARY,
             parsedData: undefined,
             version: 1,
         },
@@ -254,7 +255,7 @@ export const block1 = {
         {
             chainID: '1',
             version: '1',
-            type: TxType.ORDINARY,
+            type: LemoTx.TxType.ORDINARY,
             from: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             to: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
             toName: '',
@@ -272,21 +273,21 @@ export const block1 = {
     ],
     changeLogs: [
         {
-            type: TxType.ORDINARY,
+            type: LemoTx.TxType.ORDINARY,
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '2',
             newValue: '0x8c052b7d2dcc8093e1eb610f9c',
             extra: '',
         },
         {
-            type: TxType.ORDINARY,
+            type: LemoTx.TxType.ORDINARY,
             address: 'Lemo83JW7TBPA7P2P6AR9ZC2WCQJYRNHZ4NJD4CY',
             version: '1',
             newValue: '0x64',
             extra: '',
         },
         {
-            type: TxType.ORDINARY,
+            type: LemoTx.TxType.ORDINARY,
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '3',
             newValue: '0x8c052b7d2dcc80cd2e3fffff9c',
@@ -315,7 +316,7 @@ export const formattedBlock1 = {
             gasUsed: 0,
             amount: '100',
             expirationTime: 1541649535,
-            type: TxType.ORDINARY,
+            type: LemoTx.TxType.ORDINARY,
             parsedData: undefined,
             version: 1,
         },
@@ -323,17 +324,17 @@ export const formattedBlock1 = {
     changeLogs: [
         {
             ...block1.changeLogs[0],
-            type: TxType.ORDINARY,
+            type: LemoTx.TxType.ORDINARY,
             version: 2,
         },
         {
             ...block1.changeLogs[1],
-            type: TxType.ORDINARY,
+            type: LemoTx.TxType.ORDINARY,
             version: 1,
         },
         {
             ...block1.changeLogs[2],
-            type: TxType.ORDINARY,
+            type: LemoTx.TxType.ORDINARY,
             version: 3,
         },
     ],
@@ -396,7 +397,7 @@ export const oneChangeLogBlock = {
     transactions: [],
     changeLogs: [
         {
-            type: TxType.VOTE,
+            type: LemoTx.TxType.VOTE,
             address: 'Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG',
             version: '2',
             newValue: '0x8c052b7d2dcc8093e1eb610f9c',
@@ -429,7 +430,7 @@ export const formattedOneChangeLogBlock = {
     changeLogs: [
         {
             ...oneChangeLogBlock.changeLogs[0],
-            type: TxType.VOTE,
+            type: LemoTx.TxType.VOTE,
             version: 2,
         },
     ],
@@ -440,7 +441,7 @@ export const txInfos = [emptyTxInfo, txInfo, bigTxInfo]
 const tx1 = {
     ...emptyTxInfo.txConfig,
     version: '1',
-    type: TxType.ORDINARY,
+    type: LemoTx.TxType.ORDINARY,
     toName: '',
     gasPrice: '3000000000',
     gasLimit: '2000000',
@@ -459,7 +460,7 @@ const formattedTx1 = {
     gasLimit: 2000000,
     expirationTime: 1544584596,
     amount: '0',
-    type: TxType.ORDINARY,
+    type: LemoTx.TxType.ORDINARY,
     parsedData: undefined,
     version: 1,
 }
@@ -467,7 +468,7 @@ const formattedTx1 = {
 const tx2 = {
     ...txInfo.txConfig,
     version: '1',
-    type: TxType.ORDINARY,
+    type: LemoTx.TxType.ORDINARY,
     gasPrice: '2',
     gasPriceText: '2',
     gasLimit: '100',
@@ -485,7 +486,7 @@ const formattedTx2 = {
     gasLimit: 100,
     expirationTime: 1544584596,
     amount: '1',
-    type: TxType.ORDINARY,
+    type: LemoTx.TxType.ORDINARY,
     parsedData: undefined,
     version: 1,
 }
@@ -493,7 +494,7 @@ const formattedTx2 = {
 const tx3 = {
     ...bigTxInfo.txConfig,
     version: '1',
-    type: TxType.ORDINARY,
+    type: LemoTx.TxType.ORDINARY,
     gasPrice: bigNum,
     gasLimit: '100',
     gasUsed: 10,
@@ -509,7 +510,7 @@ const formattedTx3 = {
     gasLimit: 100,
     expirationTime: 1544584596,
     amount: '0x111111111111111111111111111111111111111111111111111111111111',
-    type: TxType.ORDINARY,
+    type: LemoTx.TxType.ORDINARY,
     parsedData: undefined,
     version: 1,
 }

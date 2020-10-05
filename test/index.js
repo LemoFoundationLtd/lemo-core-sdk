@@ -4,7 +4,7 @@ import HttpConn from '../lib/network/conn/http_conn'
 import errors from '../lib/errors'
 
 describe('LemoCore_static', () => {
-    const props = ['SDK_VERSION', 'BigNumber', 'TxType']
+    const props = ['SDK_VERSION', 'BigNumber', 'TxType', 'ChangeLogType']
     const lemo = new LemoCore()
     props.forEach(prop => {
         it(prop, () => {

@@ -93,6 +93,7 @@ Class Properties | description
 ---|---
 [LemoCore.SDK_VERSION](#submodule-tool-SDK_VERSION) | The version of js SDK
 [LemoCore.TxType](#submodule-tool-TxType) | Enum of transaction type
+[LemoCore.ChangeLogType](#submodule-tool-ChangeLogType) | Enum of change log type
 [LemoCore.BigNumber](https://github.com/MikeMcl/bignumber.) | The BigNumber library
 
 ---
@@ -277,18 +278,29 @@ The modification record of data on chain
 - `version` The version of account data. Every type data has its own version
 - Depends on different `type`, the `newValue` and `extra` have different functions
 
-type | description | newValue | extra
----|---|---|---
-BalanceLog | The change of account balance | New balance | -
-StorageLog | The change of storage in contract account | storage value | storage key
-CodeLog | Creation of contract account | Contract's code | -
-AddEventLog | Creation a contract event | Contract event | -
-SuicideLog | Destroying a contract account | - | -
-VoteForLog | The change of vote target address in account | new vote target address | -
-VotesLog | The change of received votes count in candidate account | new votes count | -
-CandidateProfileLog | The change of candidate profile in account | candidate profile map | -
-TxCountLog | The change of number of transactions which send from the account | Number of transactions | -
-SignersLog | The change of singers address and weight of the account | signers profile map | -
+<a name="data-change-log-type"></a>
+
+type | number value | description | newValue | extra
+---|---|---|---|---
+lemo.ChangeLogType.BalanceLog | 1 | The change of account balance | New balance | -
+lemo.ChangeLogType.StorageLog | 2 | The change of storage in contract account | storage value | storage key
+lemo.ChangeLogType.StorageRootLog | 3 | The change of the storage trie's root in contract account | storage root hash | -
+lemo.ChangeLogType.AssetCodeLog | 4 | Creation of asset type information | whole information of asset type | asset code
+lemo.ChangeLogType.AssetCodeStateLog | 5 | The change of one asset profile field | field value | asset code and field key
+lemo.ChangeLogType.AssetCodeRootLog | 6 | The change of the asset code trie's root in account | asset code root hash | -
+lemo.ChangeLogType.AssetCodeTotalSupplyLog | 7 | Issue, replenish or destory asset | asset supply amount | asset code
+lemo.ChangeLogType.AssetIdLog | 8 | Issue asset token or modify its metadata | asset metadata in asset token | asset id
+lemo.ChangeLogType.AssetIdRootLog | 9 | The change of the asset metadata trie's root in account | asset metadata root hash | -
+lemo.ChangeLogType.EquityLog | 10 | The change of equity which owned by the account | asset equity information | asset id
+lemo.ChangeLogType.EquityRootLog | 11 | The change of the equity trie's root in account | equity root hash | -
+lemo.ChangeLogType.CandidateLog | 12 | Creation or modification of candidate profile | candidate profile map | -
+lemo.ChangeLogType.CandidateStateLog | 13 | The change of one candidate profile field in account | field value | field key
+lemo.ChangeLogType.CodeLog | 14 | Creation of contract account | Contract's code | -
+lemo.ChangeLogType.AddEventLog | 15 | A contract event has been made | Contract event | -
+lemo.ChangeLogType.SuicideLog | 16 | Destroying a contract account | - | -
+lemo.ChangeLogType.VoteForLog | 17 | The change of vote target address in account | new vote target address | -
+lemo.ChangeLogType.VotesLog | 18 | The change of received votes count in candidate account | new votes count | -
+lemo.ChangeLogType.SignersLog | 19 | The change of singers address and weight of the account | signers profile map | -
 
 <a name="data-structure-confirm"></a>
 #### confirm
@@ -1387,6 +1399,24 @@ Enum of [transaction type](#data-transaction-type), the value is `number` type
 
 ```js
 console.log(LemoCore.TxType.VOTE) // 1
+```
+
+---
+
+<a name="submodule-tool-ChangeLogType"></a>
+
+#### LemoCore.ChangeLogType
+
+```
+LemoCore.ChangeLogType
+```
+
+Enum of [change log type](#data-change-log-type), the value is `number` type
+
+##### Example
+
+```js
+console.log(LemoCore.ChangeLogType.BalanceLog) // 1
 ```
 
 ---

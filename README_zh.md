@@ -94,6 +94,7 @@ API | 功能 | 异步 | 可远程使用
 ---|---
 [LemoCore.SDK_VERSION](#submodule-tool-SDK_VERSION) | js SDK 版本号
 [LemoCore.TxType](#submodule-tool-TxType) | 交易类型枚举
+[LemoCore.ChangeLogType](#submodule-tool-ChangeLogType) | 修改记录类型枚举
 [LemoCore.BigNumber](https://github.com/MikeMcl/bignumber.) | 大数处理三方库
 
 ---
@@ -335,18 +336,29 @@ chainID | 说明
 - `version` 账户数据的版本号，每种`type`的数据版本号彼此独立
 - 根据`type`的不同，`newValue`和`extra`内保存的数据也不同
 
-type | 功能 | newValue | extra
----|---|---|---
-BalanceLog | 账户余额变化 | 新的余额 | -
-StorageLog | 合约账户存储数据变化 | value | key
-CodeLog | 合约账户创建 | 合约 code | -
-AddEventLog | 产生一条合约日志 | 合约日志 | -
-SuicideLog | 合约账户销毁 | - | -
-VoteForLog | 修改投票对象账号地址 | 新的投票对象地址 | -
-VotesLog | 候选者收到的票数变化 | 新的票数 | -
-CandidateProfileLog | 候选者修改自己的节点信息 | 节点信息对象 | -
-TxCountLog | 交易数量的变化 | 交易数量 | -
-SignersLog | 多重签名账户的变化 | 多重签名对象 | -
+<a name="data-change-log-type"></a>
+
+type | 数值 | 功能 | newValue | extra
+---|---|---|---|---
+lemo.ChangeLogType.BalanceLog | 1 | 账户余额变化 | 新的余额 | -
+lemo.ChangeLogType.StorageLog | 2 | 合约账户存储数据变化 | value | key
+lemo.ChangeLogType.StorageRootLog | 3 | 合约账户存储树的根节点变化 | 存储树的根节点hash | -
+lemo.ChangeLogType.AssetCodeLog | 4 | 创建资产类型信息 | 完整的资产类型信息 | 资产code
+lemo.ChangeLogType.AssetCodeStateLog | 5 | 修改资产类型信息中的字段 | 字段值 | 资产code和字段key
+lemo.ChangeLogType.AssetCodeRootLog | 6 | 账户创建的资产类型信息的树的根节点变化 | 资产类型信息树的根节点hash | -
+lemo.ChangeLogType.AssetCodeTotalSupplyLog | 7 | 发行、增发或销毁资产 | 资产总量 | 资产code
+lemo.ChangeLogType.AssetIdLog | 8 | 发行资产通证或修改其metadata | 资产通证中的metadata | 资产id
+lemo.ChangeLogType.AssetIdRootLog | 9 | 账户发行的资产通证信息的树的根节点变化 | 资产通证信息树的根节点hash | -
+lemo.ChangeLogType.EquityLog | 10 | 账户持有资产的余额变化 | 资产余额信息 | 资产id
+lemo.ChangeLogType.EquityRootLog | 11 | 账户持有资产的余额树的根节点变化 | 资产余额树的根节点hash | -
+lemo.ChangeLogType.CandidateLog | 12 | 创建或修改竞选信息 | 竞选信息对象 | -
+lemo.ChangeLogType.CandidateStateLog | 13 | 账户竞选信息的某字段变化 | 字段值 | 字段key
+lemo.ChangeLogType.CodeLog | 14 | 创建合约账户 | 合约 code | -
+lemo.ChangeLogType.AddEventLog | 15 | 产生一条合约日志 | 合约日志 | -
+lemo.ChangeLogType.SuicideLog | 16 | 销毁合约账户 | - | -
+lemo.ChangeLogType.VoteForLog | 17 | 修改投票对象账号地址 | 新的投票对象地址 | -
+lemo.ChangeLogType.VotesLog | 18 | 候选者收到的票数变化 | 新的票数 | -
+lemo.ChangeLogType.SignersLog | 19 | 多重签名账户的变化 | 多重签名对象 | -
 
 <a name="data-structure-confirm"></a>
 #### confirm
@@ -1467,6 +1479,24 @@ LemoCore.TxType
 
 ```js
 console.log(LemoCore.TxType.VOTE) // 1
+```
+
+---
+
+<a name="submodule-tool-ChangeLogType"></a>
+
+#### LemoCore.ChangeLogType
+
+```
+LemoCore.ChangeLogType
+```
+
+[修改记录类型](#data-change-log-type)枚举类型，其中的值都是`number`类型
+
+##### Example
+
+```js
+console.log(LemoCore.ChangeLogType.BalanceLog) // 1
 ```
 
 ---
