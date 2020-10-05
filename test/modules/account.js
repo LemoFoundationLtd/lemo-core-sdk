@@ -67,12 +67,16 @@ describe('module_account_getBalance', () => {
         const result = await lemo.account.getBalance('Lemo83GN72GYH2NZ8BA729Z9TCT7KQ5FC3CR6DJG')
         assert.equal(result, '1599999999999999999999999900')
     })
-    it('getBalance_error', () => {
+    it('getBalance_error', async() => {
         const lemo = new LemoCore()
         const addr = '0x015780F8456F9c1532645087a19DcF9a7e0c7F97'
-        assert.throws(() => {
-            lemo.account.getBalance(addr)
-        }, errors.InvalidAddress(addr))
+        try {
+            await lemo.account.getBalance(addr)
+        } catch (e) {
+            assert.equal(e.message, errors.InvalidAddress(addr))
+            return
+        }
+        assert.fail(undefined, errors.InvalidAddress(addr))
     })
 })
 
@@ -84,9 +88,14 @@ describe('module_account_getVoteFor', () => {
     })
     it('no-address', async () => {
         const lemo = new LemoCore()
-        assert.throws(() => {
-            lemo.account.getVoteFor('')
-        }, errors.InvalidAddress(''))
+        const addr = ''
+        try {
+            await lemo.account.getVoteFor(addr)
+        } catch (e) {
+            assert.equal(e.message, errors.InvalidAddress(addr))
+            return
+        }
+        assert.fail(undefined, errors.InvalidAddress(addr))
     })
     it('normal', async () => {
         const lemo = new LemoCore()
@@ -95,12 +104,16 @@ describe('module_account_getVoteFor', () => {
     })
 })
 
-describe('module_account_getAssetEquity', () => {
+describe('module_account_getAssetEquity', async() => {
     it('no-assetId', async () => {
         const lemo = new LemoCore()
-        assert.throws(() => {
-            lemo.account.getAssetEquity('Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W', '')
-        }, errors.InvalidNoAssetId())
+        try {
+            await lemo.account.getAssetEquity('Lemo83DZ5J99JSK5ZH89TCW7T6ZZCWJ8H7FDGA7W', '')
+        } catch (e) {
+            assert.equal(e.message, errors.InvalidNoAssetId())
+            return
+        }
+        assert.fail(undefined, errors.InvalidNoAssetId())
     })
     it('normal', async () => {
         const lemo = new LemoCore()

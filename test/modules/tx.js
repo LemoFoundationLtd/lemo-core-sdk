@@ -47,7 +47,7 @@ describe('module_tx_send', () => {
         const resultHash = await lemo.tx.send(result, testPrivate)
         assert.equal(resultHash, sendHash)
     })
-    it('send a unsigned tx', () => {
+    it('send a unsigned tx', async () => {
         const lemo = new LemoCore({chainID})
         const time = Math.floor(Date.now() / 1000) + 30 * 60
         const txConfig = {
@@ -55,16 +55,24 @@ describe('module_tx_send', () => {
             expirationTime: time,
         }
         const tx = new LemoTx(txConfig)
-        assert.throws(() => {
-            lemo.tx.send(tx)
-        }, errors.InvalidTxSigs())
+        try {
+            await lemo.tx.send(tx)
+        } catch (e) {
+            assert.equal(e.message, errors.InvalidTxSigs())
+            return
+        }
+        assert.fail(undefined, errors.InvalidTxSigs())
     })
-    it('send a timeOut tx', () => {
+    it('send a timeOut tx', async () => {
         const lemo = new LemoCore({chainID})
         const tx = new LemoTx(txInfo.txConfig)
-        assert.throws(() => {
-            lemo.tx.send(tx)
-        }, errors.InvalidTxTimeOut())
+        try {
+            await lemo.tx.send(tx)
+        } catch (e) {
+            assert.equal(e.message, errors.InvalidTxTimeOut())
+            return
+        }
+        assert.fail(undefined, errors.InvalidTxTimeOut())
     })
 })
 
