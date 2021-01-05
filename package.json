@@ -8,7 +8,7 @@
     "browser": "dist/lemo-core-sdk.js",
     "dependencies": {
         "@babel/runtime": "7.11.2",
-        "axios": "0.19.2",
+        "axios": "0.21.1",
         "bignumber.js": "9.0.0",
         "core-js": "3.6.5",
         "lemo-tx": "^1.1.14",
