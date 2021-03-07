@@ -8,7 +8,7 @@ import errors from '../../lib/errors'
 import {formattedCurrentBlock, txInfo, txRes2} from '../datas'
 import '../mock'
 
-describe('module_tx_watcher', () => {
+describe('TxWatcher', () => {
     it('tx_watcher', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 1000)
         const responses = [{jsonrpc: '2.0', id: 1, result: null}, {jsonrpc: '2.0', id: 2, result: {hash: 'hash'}}]
@@ -85,7 +85,7 @@ describe('module_tx_watcher', () => {
     })
 })
 
-describe('module_tx_watcher_server_mode', () => {
+describe('TxWatcher_server_mode', () => {
     it('server_mode_true_has_tx', async () => {
         const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))
         const blockWatcher = new BlockWatcher(requester)
@@ -126,7 +126,7 @@ describe('module_tx_watcher_server_mode', () => {
     })
 })
 
-describe('module_tx_watcher_watchTx', () => {
+describe('TxWatcher_watchTx', () => {
     it('watchTx_multiple_params', function itFunc(done) {
         this.timeout(DEFAULT_POLL_DURATION + 1000)
         const requester = new Requester(new HttpConn('http://127.0.0.1:8001'))

@@ -119,14 +119,8 @@ const mockInfos = [
         method: 'chain_getBlockByHeight',
         paramsCount: 2,
         reply([height, withBody]) {
-            let result = null
-            if (height === 2) {
-                result = currentBlock
-            } else if (height === 1) {
-                result = block1
-            } else if (height === 0) {
-                result = block0
-            }
+            const blocks = [block0, block1, currentBlock]
+            let result = blocks[height] || null
             if (result && !withBody) {
                 result = {...result, transactions: null}
             }
@@ -137,14 +131,8 @@ const mockInfos = [
         method: 'chain_getBlockByHash',
         paramsCount: 2,
         reply([hash, withBody]) {
-            let result = null
-            if (hash === currentBlock.header.hash) {
-                result = currentBlock
-            } else if (hash === block1.header.hash) {
-                result = block1
-            } else if (hash === block0.header.hash) {
-                result = block0
-            }
+            const blocks = [block0, block1, currentBlock]
+            let result = blocks.find(item => item.header.hash === hash) || null
             if (result && !withBody) {
                 result = {...result, transactions: null}
             }
